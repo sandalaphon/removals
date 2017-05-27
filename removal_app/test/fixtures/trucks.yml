@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  modeltype: MyString
+  maxvolume: 1
+  branch_id: 
+  registration_number: MyString
+  sidedoors: false
+  tail_lift: false
+  service_due: 2017-05-24
+
+two:
+  modeltype: MyString
+  maxvolume: 1
+  branch_id: 
+  registration_number: MyString
+  sidedoors: false
+  tail_lift: false
+  service_due: 2017-05-24

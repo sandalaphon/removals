@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  telephone: 1
+  driver: false
+  porter: false
+  ops_manager: false
+  surveyor: false
+  branch_manager: false
+  admin: false
+  branch_id: 
+  software_user: false
+  email: MyString
+  job_title: MyString
+  driver_licence: MyString
+
+two:
+  name: MyString
+  telephone: 1
+  driver: false
+  porter: false
+  ops_manager: false
+  surveyor: false
+  branch_manager: false
+  admin: false
+  branch_id: 
+  software_user: false
+  email: MyString
+  job_title: MyString
+  driver_licence: MyString

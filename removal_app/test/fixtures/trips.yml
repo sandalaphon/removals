@@ -1,0 +1,39 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2017-05-24 11:25:19
+  branch_id: 
+  moveware_code: 1
+  type: 
+  client_name: MyString
+  client_address: MyString
+  client_postcode: MyString
+  collection_postcode: MyString
+  collection_address: MyString
+  delivery_address: MyString
+  delivery_postcode: MyString
+  allocated: false
+  hourly: false
+  arrival_time: 2017-05-24 11:25:19
+  men_requested: 1
+  volume: 1
+  notes: MyText
+
+two:
+  date: 2017-05-24 11:25:19
+  branch_id: 
+  moveware_code: 1
+  type: 
+  client_name: MyString
+  client_address: MyString
+  client_postcode: MyString
+  collection_postcode: MyString
+  collection_address: MyString
+  delivery_address: MyString
+  delivery_postcode: MyString
+  allocated: false
+  hourly: false
+  arrival_time: 2017-05-24 11:25:19
+  men_requested: 1
+  volume: 1
+  notes: MyText
