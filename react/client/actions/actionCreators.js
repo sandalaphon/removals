@@ -17,7 +17,7 @@ export function loginPassword(password){
 export function signUploginEmail(signup_email){
   return {
     type: 'SIGNUP_EMAIL_CHANGE',
-    signup_email
+    signup_email: signup_email
   }
 }
 
