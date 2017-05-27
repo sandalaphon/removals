@@ -1,10 +1,13 @@
 import {combineReducers} from 'redux'
 import { routerReducer} from 'react-router-redux'
+import handleLogin from './login'
 
 
 
-
-const rootReducer = combineReducers({ routing: routerReducer})
+const rootReducer = combineReducers({
+  loginDetails: handleLogin, 
+  routing: routerReducer
+})
 
 
 

@@ -37,11 +37,14 @@ class TopComponent extends React.Component {
       
       <Route path="/" component= {Main}> 
       <IndexRoute component= {Planner}></IndexRoute> 
-      <Route path="/home" component= {Home}></Route>
-      <Route path="/planner" component= {Planner}></Route>
-      <Route path="/surveyors_diary" component= {Surveyor}></Route>
-      <Route path="/update_data" component= {UpdateData}></Route>
+      <Route path="home" component= {Home}></Route>
+      <Route path="planner" component= {Planner}></Route>
+      <Route path="surveyors_diary" component= {Surveyor}></Route>
+      <Route path="update_data" component= {UpdateData}></Route>
+     
       </Route>
+    
+    
  
 
       </Router>

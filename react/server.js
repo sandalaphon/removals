@@ -1,12 +1,18 @@
 var express = require('express');
 var app = express();
 var path = require('path')
+var compression = require('compression')
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+
+app.use(compression())
+
+app.use(express.static(path.join(__dirname,'client', 'build')));
+
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'client','build', 'index.html'));
 });
 
-app.use(express.static('client/build'));
+
 
 
 var server = app.listen(2000, function () {

@@ -1,7 +1,15 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
+
+
 
   get '/api/:company_id' => 'companies#index'
+
+  resources :users do
+    collection {post :create_user, via: :options}
+  end
+
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.

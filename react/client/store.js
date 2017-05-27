@@ -8,7 +8,7 @@ import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 
 const  defaultState = {
-  // posts,
+    loginDetails: {}
   // comments
 }
 
@@ -20,12 +20,12 @@ const store = createStore(rootReducer, defaultState, middleware, logger(),  enha
 
 export const history = syncHistoryWithStore(browserHistory, store)
 
-if(module.hot){
-  module.hot.accept('./reducers/', ()=>{
-    const nextRootReducer = require('./reducers/index').default
-    store.replaceReducer(nextRootReducer)
-  })
+//if(module.hot){
+ // module.hot.accept('./reducers/', ()=>{
+ //   const nextRootReducer = require('./reducers/index').default
+ //   store.replaceReducer(nextRootReducer)
+ // })
  
-}
+//}
 
 export default store;

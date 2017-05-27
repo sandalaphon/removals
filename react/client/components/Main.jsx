@@ -7,9 +7,9 @@ import Layout from './Layout'
 
 function mapStateToProps(state){
   return {
-    posts: state.posts,
-    comments: state.comments,
-    search: state.search
+    // posts: state.posts,
+    // comments: state.comments,
+    // search: state.search
   }
 }
 

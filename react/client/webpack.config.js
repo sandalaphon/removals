@@ -2,7 +2,7 @@ var webpack = require('webpack');
 
 var config = {
   entry: [
-  'webpack-hot-middleware/client',
+  // 'webpack-hot-middleware/client',
   __dirname + '/app.js'
   ],
   output: {
@@ -14,7 +14,7 @@ var config = {
     extensions: ['.js', '.jsx']
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+   // new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ],
   module: {

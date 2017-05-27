@@ -6,10 +6,10 @@ class Nav extends React.Component {
   return(
     <div>
     <h1>I am so Nav</h1>
-    <Link to = "/home">Home</Link>
-    <Link to = "/planner">Planner</Link>
-    <Link to = "/surveyors_diary">Surveyors Diary</Link>
-    <Link to = "/update_data">Drop CSV File in Box</Link>
+    <Link to = "home">Home</Link>
+    <Link to = "planner">Planner</Link>
+    <Link to = "surveyors_diary">Surveyors Diary</Link>
+    <Link to = "update_data">Drop CSV File in Box</Link>
     </div>
     )
  }
