@@ -11,6 +11,7 @@ import Planner from './components/Planner'
 import Surveyor from './components/Surveyor'
 import UpdateData from './components/UpdateData'
 import Main from './components/Main'
+import AccountManagementSmart from './components/AccountManagementSmart'
 
 
 Raven.config(sentry_url, {
@@ -41,6 +42,7 @@ class TopComponent extends React.Component {
       <Route path="planner" component= {Planner}></Route>
       <Route path="surveyors_diary" component= {Surveyor}></Route>
       <Route path="update_data" component= {UpdateData}></Route>
+      <Route path="account_management" component= {AccountManagementSmart}></Route>
      
       </Route>
     

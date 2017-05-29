@@ -2,10 +2,13 @@ function handleLogin(state = {
   currentUser: null,
   user_email: null,
   user_password: null,
-  signup_email: "",
+  signup_email: '',
   signup_password: null,
   signup_password_confirm: null,
-  signUpError: null
+  signUpError: null,
+  fetchUserError: null,
+  users: null,
+  getUsersError: null
 
 
 }
@@ -43,6 +46,39 @@ function handleLogin(state = {
     break;
     case 'SIGN_UP_REJECTED':
     return {...state, currentUser: null, signUpError: action.payload}
+    break;
+
+    //fetchuser
+    case 'FETCH_USER_FULFILLED':
+    return {...state, currentUser: action.payload, fetchUserError: null}
+    break;
+    case 'FETCH_USER_REJECTED':
+    return {...state, currentUser: null, fetchUserError: action.payload}
+    break;
+
+    //sign out
+    case 'SIGN_OUT_FULFILLED':
+    return {...state, currentUser: null, signOutError: null}
+    break;
+    case 'SIGN_OUT_REJECTED':
+    return {...state, signOutError: action.payload}
+    break;
+    //GET USERS
+    case 'GET_USERS_FULFILLED':
+    return {...state, users: action.payload, getUsersError: null}
+    break;
+    case 'GET_USERS_REJECTED':
+    return {...state, getUsersError: action.payload}
+    break;
+    //update admin
+    case 'ADMIN_UPDATE_FULFILLED':
+    return {...state, users: action.payload, adminUpdateError: null}
+    break;
+    case 'ADMIN_UPDATE_REJECTED':
+    return {...state, adminUpdateError: action.payload}
+    break;
+
+
 
   }
   return state

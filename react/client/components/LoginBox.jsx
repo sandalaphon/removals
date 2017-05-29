@@ -1,10 +1,10 @@
 import React from 'react'
 import {Link} from 'react-router'
-import store from '../store.js'
+// import store from '../store.js'
 
 class LoginBox extends React.Component {
 
-
+  
 
   handleChangeEmail(event){
     event.preventDefault()
@@ -17,18 +17,21 @@ class LoginBox extends React.Component {
   }
 
   handleSignInClick(event){
-    const {user_email, user_password} = store.getState().loginDetails
     event.preventDefault()
-    this.props.signInClick(user_email, user_password)
+
+    this.props.signInClick(this.props.user_email, this.props.user_password)
 
   }
+
+  // componentWillUnmount(){
+  //   store.unsubscribe()
+  // }
 
 
   render(){
     return(
       <div>
       <h1>We are LoginBox</h1>
-      {console.log(this.props)}
 
       <input type = 'text' className="sign_in_email" placeholder = "email" onChange={this.handleChangeEmail.bind(this)}/>
 

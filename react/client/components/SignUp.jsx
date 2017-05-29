@@ -21,19 +21,22 @@ class SignUp extends React.Component {
 
   handleSignUpClick(event){
     event.preventDefault()
-    console.log(store.getState())
-    const {signup_email, signup_password,signup_password_confirm} = store.getState().loginDetails
-    console.log("signup_email", signup_email)
-    this.props.signUpClick(signup_email, signup_password,signup_password_confirm)
+    const checkbox = document.querySelector('#admin_checkbox')
 
+    const {signup_email, signup_password,signup_password_confirm} = store.getState().loginDetails
+    if(checkbox.checked){
+      this.props.signUpClick(signup_email, signup_password,signup_password_confirm, true)
+    }else{
+    this.props.signUpClick(signup_email, signup_password,signup_password_confirm,false)
+}
   }
 
 
   render(){
+    const checkbox = <input type = 'checkbox' id="admin_checkbox" />
     return(
       <div>
       <h1>We are SignUp</h1>
-      {console.log(this.props)}
 
       <input type = 'text' className="sign_in_email" placeholder = "email" onChange={this.handleChangeSignUpEmail.bind(this)}/>
 
@@ -41,6 +44,8 @@ class SignUp extends React.Component {
       <input type = 'text' className="sign_in_password" placeholder = "password" onChange={this.handleChangeSignUpPassword.bind(this)}/>
 
       <input type = 'text' className="sign_in_password" placeholder = "confirm password" onChange={this.handleChangeSignUpPasswordConfirm.bind(this)}/>
+
+      {checkbox}
 
       <input type = 'submit' className="sign_in_button" value="Sign In" onClick = {this.handleSignUpClick.bind(this)}/>
       </div>

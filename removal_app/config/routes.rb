@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
 
-
+  get '/api/users' => 'users#allusers'
+  put '/users/:id(.:format)' => 'users#update'
 
   get '/api/:company_id' => 'companies#index'
 
