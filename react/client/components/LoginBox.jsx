@@ -1,6 +1,5 @@
 import React from 'react'
 import {Link} from 'react-router'
-// import store from '../store.js'
 
 class LoginBox extends React.Component {
 
@@ -22,10 +21,6 @@ class LoginBox extends React.Component {
     this.props.signInClick(this.props.user_email, this.props.user_password)
 
   }
-
-  // componentWillUnmount(){
-  //   store.unsubscribe()
-  // }
 
 
   render(){

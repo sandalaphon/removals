@@ -23,4 +23,15 @@ def update
 end
 
 
+
+def delete
+  user = User.find(params[:id])
+  if user.destroy!
+    render json: User.all
+else
+  render json: {status: :delete_failed}
+end
+  end
+
+
 end

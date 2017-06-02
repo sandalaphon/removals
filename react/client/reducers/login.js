@@ -42,10 +42,10 @@ function handleLogin(state = {
 
 
     case 'SIGN_UP_FULFILLED':
-    return {...state, currentUser: action.currentUser, signUpError: null}
+    return {...state, signUpError: null}
     break;
     case 'SIGN_UP_REJECTED':
-    return {...state, currentUser: null, signUpError: action.payload}
+    return {...state, signUpError: action.payload}
     break;
 
     //fetchuser
@@ -76,6 +76,13 @@ function handleLogin(state = {
     break;
     case 'ADMIN_UPDATE_REJECTED':
     return {...state, adminUpdateError: action.payload}
+    break;
+    //delete user
+    case 'DELETE_USER_FULFILLED':
+    return {...state, users: action.payload, deleteUserError: null}
+    break;
+    case 'DELETE_USER_REJECTED':
+    return {...state, deleteUserError: action.payload}
     break;
 
 

@@ -8,8 +8,9 @@ import {sentry_url, logException} from './helpers/config'
 import LoginBox from './components/LoginBox'
 import Home from './components/Home'
 import Planner from './components/Planner'
+import Today from './components/Today'
 import Surveyor from './components/Surveyor'
-import UpdateData from './components/UpdateData'
+import UpdateDataSmart from './components/UpdateDataSmart'
 import Main from './components/Main'
 import AccountManagementSmart from './components/AccountManagementSmart'
 
@@ -40,9 +41,12 @@ class TopComponent extends React.Component {
       <IndexRoute component= {Planner}></IndexRoute> 
       <Route path="home" component= {Home}></Route>
       <Route path="planner" component= {Planner}></Route>
+      <Route path="today" component= {Today}></Route>
       <Route path="surveyors_diary" component= {Surveyor}></Route>
-      <Route path="update_data" component= {UpdateData}></Route>
+      <Route path="update_data" component= {UpdateDataSmart}></Route>
       <Route path="account_management" component= {AccountManagementSmart}></Route>
+      <Route path="account_management/add_user" component= {AccountManagementSmart}></Route>
+      
      
       </Route>
     

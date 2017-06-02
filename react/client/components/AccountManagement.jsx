@@ -1,8 +1,15 @@
 import React from 'react'
 import SignUp from './SignUp'
 import UserList from './UserList'
+import {Button, Collapse, Well} from 'react-bootstrap'
 
 class AccountManagement extends React.Component {
+
+  constructor(...args) {
+      super(...args);
+
+      this.state = {};
+    }
 
   componentWillMount(){
 
@@ -12,20 +19,47 @@ class AccountManagement extends React.Component {
   }
 
   render(){
-    var {signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm, getUsers} = this.props
+    var {signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm, getUsers, deleteUser} = this.props
+   
+   
+     
+    
     
     return(
       
       <div>
-      <p>We are AccountManagement</p>
-       <SignUp 
-       signUpClick={signUpClick} 
-       signUploginEmail={signUploginEmail} 
-       signUploginPassword={signUploginPassword}
-       signUpPasswordConfirm={signUpPasswordConfirm}/>
-       <UserList updateAdmin={this.props.updateAdmin} users={this.props.loginDetails}/>
+      <Button bsSize="small" bsStyle="success" onClick={ ()=> this.setState({ open: !this.state.open })}>
+               Click To Add A User
+             </Button>
 
-          
+             <Collapse in={this.state.open}>
+               <div>
+                 <Well>
+                   <SignUp 
+                      signUpClick={signUpClick} 
+                      signUploginEmail={signUploginEmail} 
+                      signUploginPassword={signUploginPassword}
+                      signUpPasswordConfirm={signUpPasswordConfirm}
+                      getUsers={getUsers}/>
+                 </Well>
+               </div>
+             </Collapse>
+
+             <Button bsSize="small" bsStyle="success" onClick={ ()=> this.setState({ open1: !this.state.open1 })}>
+                      View Users
+                    </Button>
+
+                    <Collapse in={this.state.open1}>
+                      <div>
+                        <Well>
+                        <UserList 
+                        updateAdmin={this.props.updateAdmin} 
+                        users={this.props.loginDetails}
+                        deleteUser={deleteUser}/>
+                          
+                        </Well>
+                      </div>
+                    </Collapse>       
       </div>
       )
        }
@@ -33,5 +67,12 @@ class AccountManagement extends React.Component {
 
 
 export default AccountManagement
+
+// <SignUp 
+ // signUpClick={signUpClick} 
+ // signUploginEmail={signUploginEmail} 
+ // signUploginPassword={signUploginPassword}
+ // signUpPasswordConfirm={signUpPasswordConfirm}
+ // getUsers={getUsers}/>
 
 

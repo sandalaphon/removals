@@ -1,20 +1,19 @@
 import React from 'react'
 import Gmap from './Gmap'
 import Filter from './Filter'
-import TruckDayView from './TruckDayView'
 import {Grid, Row, Col, Clearfix} from 'react-bootstrap'
 
-class Planner extends React.Component {
+class Today extends React.Component {
   render(){
     return(
       <div className = 'container-fluid'>
         <Grid className='gridClass'>
           <Row>
-          <Col xs={1} smHidden md={1}>
+          <Col xs={2} md={2}>
               <Filter/>
           </Col>
-          <Col className='truckTable' xs={5} sm={6} md={5} lg={5}>
-            <TruckDayView/>
+          <Col xs={4} md={4}>
+            Lists
           </Col>
             <Col xs={6} md={6}>
                 <Gmap />
@@ -26,6 +25,6 @@ class Planner extends React.Component {
   }
 }
 
-export default Planner
+export default Today
 
-// <p>We are Planner</p>
+// <p>We are Today</p>

@@ -1,3 +1,97 @@
-a{
-  margin-right: 20px;
+.GMap {
+  border: 3px solid #73AD21;
+  height: 90vh;
+  width:100vh;
+  border: 2px solid blue;
+  /*position: relative;*/
+/*  transform: translateY(30%);
+  transform: translateX(100%);*/
+  /*display: flex*/
+  /*position: absolute;*/
+  /*width: 95vh;*/
+  /*min-width: 50%;*/
+ /*width: 50%;*/
 }
+.GMap-canvas {
+  /*top: 20px;*/
+  /*display: inline-block;*/
+border: 3px solid black;
+  /*width: 100%;
+  height: 66.7%;*/
+  min-width: 100%;
+  /*min-height: 500px;*/
+  min-height: 66.7vh;
+}
+
+.gridClass{
+  border: 2px solid green;
+  width:100%;
+  height: 90vh;
+}
+
+html, body, .container-fluid {
+    height:100%;
+    border: 2px solid black;
+}
+
+/*.navrow {
+    height: 5vh;
+    border: 6px solid hotpink;
+    }*/
+
+/*.truck-button{
+  background-color: hotpink; 
+  height: 220px;
+  width: 66px;
+  border: 2px solid red;
+}*/
+
+.truck_flicker{
+  text-align: center;
+}
+
+/*.cw-table-list{
+    margin:0px !important;
+    table-layout:fixed;  
+  }
+  .cw-table-list td{
+    padding-bottom: 0px !important;  
+    overflow:hidden;
+    height: 5vh;*/
+  /*}*/
+
+ .truck-day-time-cell{
+
+    height: 12vh;
+    border: 1px solid black;
+  }
+
+  .cell{
+    border: 1px solid black;
+    display: inline-block;
+    height: 5vh;
+    /*width: 5vh;*/
+  }
+
+  .trow{
+    border: 1px solid blue;
+    width: 100vh;
+  }
+
+  .truckTable{
+    width:100vh;
+  }
+
+  /*.truck_day_table{
+    height: 100vh;
+    /*overflow: scroll;*/
+    /*overflow-y: auto;*/
+    /*overflow-x: auto;*/
+    /*table-layout:fixed;*/
+  /*}*/
+
+ /* .truck_day_table::-webkit-scrollbar {
+      -webkit-appearance: none;
+  }*/
+
+

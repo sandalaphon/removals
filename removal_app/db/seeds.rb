@@ -9,3 +9,5 @@ Company.destroy_all
 Company.create({name: "Hello Joseph", head_office_postcode: "sfdadf"})
 Trip.destroy_all
 Trip.create({moveware_code: 1234567})
+Branch.destroy_all
+Branch.create({name: "Edinburgh", address: "23 here", postcode: "EH39LB", telephone: "453245234"})

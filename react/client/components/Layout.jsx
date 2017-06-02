@@ -1,5 +1,5 @@
 import React from 'react'
-import Nav from './Nav'
+import Navb from './Navb'
 import {Link} from 'react-router'
 import LoginBox from './LoginBox'
 import SignUp from './SignUp'
@@ -11,7 +11,7 @@ class Layout extends React.Component {
   }
 render(){
 
-  var {loginEmail, loginPassword, signInClick, signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm,  signOut } = this.props
+  var {loginEmail, loginPassword, signInClick, signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm,  signOut,addUser } = this.props
 
   var {user_email, user_password} = this.props.loginDetails
 
@@ -22,7 +22,8 @@ render(){
 
  toDisplay = 
  <div>
- <Nav signOut={signOut} displayEmail={this.props.loginDetails.currentUser.email}/>
+ <Navb signOut={signOut} displayEmail={this.props.loginDetails.currentUser.email}
+   />
  {this.props.children}
 
  </div>
@@ -32,7 +33,6 @@ render(){
   <div>
   <LoginBox signInClick={signInClick} loginEmail={loginEmail} user_email={user_email} user_password={user_password} loginPassword={loginPassword} />
 
-  
   </div>
  }
   return(
@@ -45,5 +45,3 @@ render(){
 
 export default Layout
 
-// <SignUp signUpClick={signUpClick} signUploginEmail={signUploginEmail} signUploginPassword={signUploginPassword}
-// signUpPasswordConfirm={signUpPasswordConfirm}/>

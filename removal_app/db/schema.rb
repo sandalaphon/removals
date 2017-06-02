@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170529100109) do
+ActiveRecord::Schema.define(version: 20170530140050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,7 +79,6 @@ ActiveRecord::Schema.define(version: 20170529100109) do
     t.datetime "date"
     t.integer  "branch_id"
     t.integer  "moveware_code"
-    t.string   "type"
     t.string   "client_name"
     t.string   "client_address"
     t.string   "client_postcode"
@@ -95,6 +94,7 @@ ActiveRecord::Schema.define(version: 20170529100109) do
     t.text     "notes"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.string   "kind"
   end
 
   add_index "trips", ["branch_id"], name: "index_trips_on_branch_id", using: :btree

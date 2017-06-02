@@ -20,6 +20,7 @@ export function fetchUser(){
 }
 }
 
+
 export function loginEmail(email){
   return {
     type: 'LOGIN_EMAIL_CHANGE',
@@ -57,25 +58,27 @@ export function signUpPasswordConfirm(password){
 
 
 
-export function signUpClick(signup_email, signup_password, signup_password_confirm,checked){
+export function signUpClick(signup_email, signup_password, signup_password_confirm, callback){
   return function(dispatch){
     const data = {
       user: {
         email: signup_email,
         password: signup_password,
-        password_confirmation: signup_password_confirm,
-        admin: checked
+        password_confirmation: signup_password_confirm
       }
     }
 
     const url = 'http://localhost:5000/users.json'
-
+    
     axios.post(url, data)
     .then((response)=>{
+      console.log('hello', callback)
+     callback() 
       dispatch({
         type: 'SIGN_UP_FULFILLED',
         currentUser: response.data
       })
+
     })
     .catch((error)=>{
       dispatch({
@@ -83,6 +86,29 @@ export function signUpClick(signup_email, signup_password, signup_password_confi
         payload: error
       })
     })
+   
+  }
+}
+
+export function sendSingleTripToRails(trip){
+  console.log('into the action')
+  return function(dispatch){
+    const data = {trip}
+    const url = 'http://localhost:5000/api/trips/new.json'
+     axios.post(url, data, {withCredentials: true})
+     .then((response)=>{
+      dispatch({
+        type: 'SEND_TRIP_FULFILLED',
+        payload: response.data
+      })
+     })
+     .catch((error)=>{
+      dispatch({
+        type: 'SEND_TRIP_REJECTED',
+        payload: error
+      })
+     })
+
   }
 }
 
@@ -176,5 +202,26 @@ export function signUpClick(signup_email, signup_password, signup_password_confi
           payload: error
         })
       })
+    }
+  }
+
+  export function deleteUser(id){
+    return function(dispatch){
+      const url = 'http://localhost:5000/users/' + id +'.json'
+
+      axios.delete(url, { withCredentials: true})
+      .then((response)=>{
+        dispatch({
+          type: 'DELETE_USER_FULFILLED',
+          payload: response.data
+        })
+      })
+      .catch((error)=>{
+        dispatch({
+          type: 'DELETE_USER_REJECTED',
+          payload: error
+        })
+      })
+
     }
   }
