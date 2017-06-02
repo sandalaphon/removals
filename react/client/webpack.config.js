@@ -17,10 +17,11 @@ var config = {
    // new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ],
+
   node:{
     fs: "empty",
     child_process: "empty"
-  },
+  },   
 
   module: {
     rules: [

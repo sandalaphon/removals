@@ -31,24 +31,25 @@ class TruckDayView extends React.Component{
       var rowIndex = `row${index} trow`
 
       return(                                           //////////
-        
+        <div >
         <div className={rowIndex}>{
           numberCells.map((cell, cellIndex)=>{
             // var widthNum = 99/numberCells.length
             // var widthVh = `${widthNum}vh`
-            var inlineStyle = {justify-content: 'space-around'}
-            var width = {width: widthNum+'vh'}
+            var inlineStyle = {'justify-content': 'space-around'}
+            // var width = {width: widthNum+'vh'}
             var keyValue = `row${index}col${cellIndex}`
             var cell = `row${index}+col${cellIndex} cell`
             
             return(                                 //////////////////
              
               <div style = {inlineStyle} key={keyValue} className={cell} onDrop={this.drop.bind(this)} onDragOver={this.allowDrop.bind(this)} >{keyValue}</div>
-             
+            
               )                                       ///////////////
           })
         }  
 
+        </div>
         </div>
 
 
@@ -58,30 +59,10 @@ class TruckDayView extends React.Component{
 
 
     return(
-      <div className='truck_day_table table-responsive'>
-      <table  className="">
-      <thead>
-      <tr>
-      <th>7:00</th>
-      <th>8:00</th>
-      <th>9:00</th>
-      <th>10:00</th>
-      <th>11:00</th>
-      <th>12:00</th>
-      <th>13:00</th>
-      <th>14:00</th>
-      <th>15:00</th>
-      <th>16:00</th>
-      <th>17:00</th>
-      <th>18:00</th>
-      <th>19:00</th>
-      </tr>
-      </thead>
-      <tbody>
-      {table}
-      </tbody>
+      <div className='truckDayView-grid-item'>
       
-      </table>
+      {table}
+   
       </div>
       )
   }
@@ -90,6 +71,21 @@ class TruckDayView extends React.Component{
 //////////here
 
 export default TruckDayView
+// <th>7:00</th>
+// <th>8:00</th>
+// <th>9:00</th>
+// <th>10:00</th>
+// <th>11:00</th>
+// <th>12:00</th>
+// <th>13:00</th>
+// <th>14:00</th>
+// <th>15:00</th>
+// <th>16:00</th>
+// <th>17:00</th>
+// <th>18:00</th>
+// <th>19:00</th>
+
+
 //////////here
     // var table = this.state.trucks.map((truck, index)=>{
       // return(                                           //////////

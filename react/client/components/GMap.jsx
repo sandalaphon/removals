@@ -34,7 +34,7 @@ class GMap extends React.Component {
   render() {
 
     return (
-    <div>  
+    <div className="gmap-grid-item">  
     <TruckFlicker/>
       <div className='GMap-canvas' ref="mapCanvas">
       

@@ -32,7 +32,7 @@ render(){
       )
   })
 return(
-  <div>
+  <div className='filter-grid-item'>
   <Form>
   <FormGroup>
   <FormControl type="text" placeholder="Search" />
