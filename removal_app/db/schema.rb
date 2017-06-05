@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -24,9 +23,8 @@ ActiveRecord::Schema.define(version: 20170530140050) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "company_id"
+    t.index ["company_id"], name: "index_branches_on_company_id", using: :btree
   end
-
-  add_index "branches", ["company_id"], name: "index_branches_on_company_id", using: :btree
 
   create_table "companies", force: :cascade do |t|
     t.string   "name"
@@ -61,19 +59,17 @@ ActiveRecord::Schema.define(version: 20170530140050) do
     t.string   "driver_licence"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.index ["branch_id"], name: "index_employees_on_branch_id", using: :btree
   end
-
-  add_index "employees", ["branch_id"], name: "index_employees_on_branch_id", using: :btree
 
   create_table "jobs", force: :cascade do |t|
     t.integer  "truck_id"
     t.integer  "trip_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["trip_id"], name: "index_jobs_on_trip_id", using: :btree
+    t.index ["truck_id"], name: "index_jobs_on_truck_id", using: :btree
   end
-
-  add_index "jobs", ["trip_id"], name: "index_jobs_on_trip_id", using: :btree
-  add_index "jobs", ["truck_id"], name: "index_jobs_on_truck_id", using: :btree
 
   create_table "trips", force: :cascade do |t|
     t.datetime "date"
@@ -95,9 +91,8 @@ ActiveRecord::Schema.define(version: 20170530140050) do
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.string   "kind"
+    t.index ["branch_id"], name: "index_trips_on_branch_id", using: :btree
   end
-
-  add_index "trips", ["branch_id"], name: "index_trips_on_branch_id", using: :btree
 
   create_table "trucks", force: :cascade do |t|
     t.string   "modeltype"
@@ -109,9 +104,8 @@ ActiveRecord::Schema.define(version: 20170530140050) do
     t.date     "service_due"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.index ["branch_id"], name: "index_trucks_on_branch_id", using: :btree
   end
-
-  add_index "trucks", ["branch_id"], name: "index_trucks_on_branch_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -128,11 +122,10 @@ ActiveRecord::Schema.define(version: 20170530140050) do
     t.datetime "updated_at",                             null: false
     t.integer  "company_id"
     t.boolean  "admin",                  default: false
+    t.index ["company_id"], name: "index_users_on_company_id", using: :btree
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
-
-  add_index "users", ["company_id"], name: "index_users_on_company_id", using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "branches", "companies"
   add_foreign_key "employees", "branches"

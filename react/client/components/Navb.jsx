@@ -25,45 +25,56 @@ class Navb extends React.Component {
  render(){
 
   return(
-    <Navbar className="row navrow">  
-    <Navbar.Header>
-    <Navbar.Toggle />
+    <Navbar inverse className="row navrow">  
+      <Navbar.Header>
+      <Navbar.Toggle />
       </Navbar.Header>
       <Navbar.Collapse>
-     
- <Nav bsStyle= 'pills' onSelect={this.handleSelect} >
 
- <LinkContainer to="/home">
- <NavItem  >Home</NavItem>
- </LinkContainer>
- <LinkContainer to="/planner">
- <NavItem >Planner</NavItem>
- </LinkContainer>
- <LinkContainer to="/today">
- <NavItem >Today</NavItem>
- </LinkContainer>
- <LinkContainer to="/surveyors_diary">
- <NavItem >Surveyors Diary</NavItem>
- </LinkContainer>
- <LinkContainer to="/update_data">
- <NavItem >Update Data</NavItem>
- </LinkContainer>
- <NavDropdown title="Account" id="nav-dropdown">
-          <MenuItem ><LinkContainer to="/account_management"><NavItem >View/Edit User</NavItem></LinkContainer></MenuItem>
-          <MenuItem eventKey="1"><LinkContainer to="/account_management/add_user"><NavItem >Add a User</NavItem></LinkContainer></MenuItem>
-          <MenuItem >Something else here</MenuItem>
-          <MenuItem divider />
-          <MenuItem >Separated link</MenuItem>
-        </NavDropdown>
-</Nav>
+      <Nav bsStyle= 'pills' onSelect={this.handleSelect} >
 
-<Nav pullRight>
-  <NavItem ><Button bsStyle="danger" onClick={this.signOut.bind(this)}>Sign Out</Button></NavItem>
- </Nav>
+      <LinkContainer to="/home">
+      <NavItem  >Home</NavItem>
+      </LinkContainer>
 
- <Navbar.Text pullRight>{this.props.displayEmail}</Navbar.Text>
-     
-    </Navbar.Collapse>
+      <LinkContainer to="/planner">
+      <NavItem >Planner</NavItem>
+      </LinkContainer>
+
+      <LinkContainer to="/today">
+      <NavItem >Today</NavItem>
+      </LinkContainer>
+
+      <LinkContainer to="/surveyors_diary">
+      <NavItem >Surveyors Diary</NavItem>
+      </LinkContainer>
+
+      <LinkContainer to="/update_data">
+      <NavItem >Update Data</NavItem>
+      </LinkContainer>
+
+      <NavDropdown title="Account" id="nav-dropdown">
+        <MenuItem ><LinkContainer to="/account_management"><NavItem >View/Edit User</NavItem></LinkContainer></MenuItem>
+        <MenuItem eventKey="1"><LinkContainer to="/account_management/add_user"><NavItem >Add a User</NavItem></LinkContainer></MenuItem>
+        <MenuItem >Something else here</MenuItem>
+        <MenuItem divider />
+        <MenuItem >Separated link</MenuItem>
+      </NavDropdown>
+
+
+
+      
+      </Nav>
+
+      <Nav pullRight>
+      <NavItem><Button bsStyle="danger" onClick={this.signOut.bind(this)}>Sign Out</Button></NavItem>
+      </Nav>
+      <Navbar.Text pullRight>{this.props.displayEmail}</Navbar.Text>
+
+
+
+
+      </Navbar.Collapse>
     </Navbar>
   
 

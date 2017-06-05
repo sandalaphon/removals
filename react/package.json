@@ -10,12 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "compression":"^1.6.1",
+    "compression": "^1.6.1",
     "express": "^4.13.4"
   },
   "devDependencies": {
     "eslint-rallycoding": "^1.2.0"
-  },
-  "description": ""
-  
+  }
 }
