@@ -46,7 +46,7 @@ class TruckDayView extends React.Component{
             
             return(                                 //////////////////
              
-              <div style = {inlineStyle} key={keyValue} className={cell} onDrop={this.drop.bind(this)} onDragOver={this.allowDrop.bind(this)} >{keyValue}</div>
+              <div style = {inlineStyle} key={keyValue} className={cell} onDrop={this.drop.bind(this)} onDragOver={this.allowDrop.bind(this)} ></div>
             
               )                                       ///////////////
           })
