@@ -11,7 +11,7 @@ class Layout extends React.Component {
   }
 render(){
 
-  var {loginEmail, loginPassword, signInClick, signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm,  signOut,addUser } = this.props
+  var {loginEmail, loginPassword, signInClick, signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm,  signOut, addUser, getUsers } = this.props
 
   var {user_email, user_password} = this.props.loginDetails
 
@@ -31,7 +31,13 @@ render(){
  if(!this.props.loginDetails.currentUser){
   toDisplay =
   <div>
-  <LoginBox signInClick={signInClick} loginEmail={loginEmail} user_email={user_email} user_password={user_password} loginPassword={loginPassword} />
+  <LoginBox signInClick={signInClick} loginEmail={loginEmail} user_email={user_email} user_password={user_password} loginPassword={loginPassword} 
+    signUpClick={signUpClick} 
+    signUploginEmail={signUploginEmail} 
+    signUpPasswordConfirm={signUpPasswordConfirm} 
+    signUploginPassword={signUploginPassword}
+    getUsers ={getUsers}
+  />
 
   </div>
  }
