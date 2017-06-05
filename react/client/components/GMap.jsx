@@ -7,8 +7,8 @@ class GMap extends React.Component {
   constructor(props){
     super(props)
     this.state = { 
-      zoom: 5,
-      center: { lng: -3.2 , lat: 53.9717272 }
+      zoom: 11,
+      center: { lng: -3.1883 , lat: 55.9533 }
    };
   }
   componentDidMount() {

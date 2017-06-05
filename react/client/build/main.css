@@ -18,9 +18,11 @@
 border: 3px solid black;
   /*width: 100%;
   height: 66.7%;*/
-  min-width: 100vh !important;
+  /*min-width: 100vh !important;*/
+  min-width: 1fr;
   /*min-height: 500px;*/
   min-height: 66.7vh;
+  /*height: 1fr;*/
 }
 
 /*.gridClass{
@@ -48,6 +50,7 @@ border: 3px solid black;
 
 .truck_flicker{
   text-align: center;
+  height: 1fr;
 }
 
 /*.cw-table-list{
@@ -119,6 +122,8 @@ border: 3px solid black;
 */    /*width:100vh;*/
     border:1px solid red;
     grid-area: cal;
+    overflow: scroll;
+
     /*overflow-y:auto; */
     /*overflow-x:auto;*/
   }
@@ -127,6 +132,10 @@ border: 3px solid black;
  /*   width:100vh;*/
     border:1px solid goldenrod;
     grid-area: fil;
+  }
+
+  .trow{
+    
   }
 
   /*.truck_day_table{

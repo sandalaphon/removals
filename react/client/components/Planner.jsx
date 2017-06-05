@@ -9,7 +9,7 @@ class Planner extends React.Component {
     return(
       <div className = 'planner-grid'>
             <Filter/>
-            <TruckDayView/>
+            <TruckDayView />
             <Gmap />
       </div>
       )

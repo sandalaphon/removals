@@ -23,7 +23,7 @@ class Filter extends React.Component {
 render(){
   var trips = this.state.trips.map((trip, index)=>{
     return(
-      <li>
+      <li key={index}>
         {trip.clientName}
         {trip.startTime}
         {trip.endTime}

@@ -29,16 +29,19 @@ class TruckDayView extends React.Component{
 //////////here//////////
     var table = this.state.trucks.map((truck, index)=>{
       var rowIndex = `row${index} trow`
-
+      var trowStyle = {'gridTemplateColumns': `repeat(${numberCells.length}, 1fr)`,
+      'display': 'grid'}
       return(                                           //////////
-        <div >
-        <div className={rowIndex}>{
+        <div key={index}>
+        <div style={trowStyle}  className={rowIndex}>{
           numberCells.map((cell, cellIndex)=>{
             // var widthNum = 99/numberCells.length
             // var widthVh = `${widthNum}vh`
-            var inlineStyle = {'justify-content': 'space-around'}
+            var inlineStyle = {'justifyContent': 'spaceAround', 'backgroundColor': 'beige'}
+            // var inlineStyle = {width: '40px'}
             // var width = {width: widthNum+'vh'}
             var keyValue = `row${index}col${cellIndex}`
+            var smallerKeyValue = `${index}${cellIndex}`
             var cell = `row${index}+col${cellIndex} cell`
             
             return(                                 //////////////////
@@ -56,7 +59,7 @@ class TruckDayView extends React.Component{
         )                                               ////////
     })
 
-
+     
 
     return(
       <div className='truckDayView-grid-item'>
