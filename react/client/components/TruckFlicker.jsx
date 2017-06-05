@@ -23,6 +23,7 @@ class TruckFlicker extends React.Component {
     return (
     <div className= 'truck_flicker'>
       <Pagination
+        className = "truck-pagi"
         prev
         next
         first

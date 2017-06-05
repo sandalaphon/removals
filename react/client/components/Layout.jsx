@@ -23,9 +23,9 @@ render(){
  toDisplay = 
  <div>
  <Navb signOut={signOut} displayEmail={this.props.loginDetails.currentUser.email}
-   />
- {this.props.children}
+    />
 
+  {this.props.children}
  </div>
 }
  if(!this.props.loginDetails.currentUser){
@@ -51,3 +51,6 @@ render(){
 
 export default Layout
 
+ // <Navb signOut={signOut} displayEmail={this.props.loginDetails.currentUser.email}
+   // />
+ // {this.props.children}
