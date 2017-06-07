@@ -18,15 +18,26 @@
   "fil job job job job map map map map map"
   "fil job job job job map map map map map"
   "fil job job job job map map map map map";
-  /*grid-template-rows: repeat(11,1fr);
-  grid-auto-columns: 10%;*/
+  grid-template-rows: repeat(10,1fr);
+  grid-auto-columns: 10%;
   /*grid-template-columns: repeat(10,1fr);*/
 }
 
 .grid-item-truck-day-view{
-  grid-area: cal;
-  border:1px solid red;
+  display:inline-grid;
+   border:1px solid red;
+   grid-area: cal;
+   overflow: scroll;
+   grid-template-columns: repeat(24,1fr);
 }
+
+.truck-day-time-cell{
+  border: 1px solid black;
+}
+
+
+
+
 
 .grid-item-filter{
   grid-area: fil;
@@ -60,12 +71,22 @@
 
 .cell{
   border: 1px solid black;
-  display: inline-block;
-  height: 20px;
+  /*display: inline-block;*/
+  height: 5vh;
+  /*width:1fr;*/
+  justify-content:space-around;
+  background-color: beige;
 }
 
 .trow{
   border: 1px solid blue;
+  display: grid;
+  grid-template-columns: repeat(24,1fr);
+}
+
+.truckimage{
+  max-width: 100%;
+  max-height: 100%;
 }
 
 
