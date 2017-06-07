@@ -25,7 +25,7 @@ class Navb extends React.Component {
 
   return(
 
-    <nav onSelect={this.handleSelect} className="nav-bar">
+    <nav  className="nav-bar">
      
       <div className="home-nav">
        <Link to="/">Home</Link>
@@ -39,8 +39,8 @@ class Navb extends React.Component {
        <Link to="/today">Today</Link>
       </div> 
 
-      <div className="planner2-nav">
-       <Link to="/planner">planner</Link>
+      <div className="planner2-nav active">
+       <Link  to="/planner">planner</Link>
       </div>
   
       <div id="current-email">{this.props.displayEmail}</div>
