@@ -143,12 +143,12 @@
   justify-content:space-around;
   background-color: beige;
 }
-
+/*
 .trow{
   border: 1px solid blue;
   display: grid;
   grid-template-columns: repeat(24,1fr);
-}
+}*/
 
 .truckimage{
   max-width: 100%;
