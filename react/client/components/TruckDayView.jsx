@@ -4,7 +4,7 @@ import {Table, Button} from 'react-bootstrap'
 class TruckDayView extends React.Component{
   constructor(props) {
     super(props)
-    var image = <img src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG19KHC5X8zluprjBG3bDahqriPbAMzHFOEHUexlOO74ZIyvotL4t0MBo' draggable='true' onDragStart={this.drag.bind(this)} id='draggableButton' width="40" height="20"></img>
+    var image = <img src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG19KHC5X8zluprjBG3bDahqriPbAMzHFOEHUexlOO74ZIyvotL4t0MBo' draggable='true' onDragStart={this.drag.bind(this)} id='draggableButton'></img>
     this.state= {trucks: [1,2,3,4,5,6], image}
   }
 
@@ -24,46 +24,89 @@ class TruckDayView extends React.Component{
   }
 
   render(){
-    var numberCells = [1,2,3,4,5,6,7,8,9,10,11,12,13]
+    var timeColumns = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
 
 //////////here//////////
-    var table = this.state.trucks.map((truck, index)=>{
-      var rowIndex = `row${index} trow`
-      var trowStyle = {'gridTemplateColumns': `repeat(${numberCells.length}, 1fr)`,
-      'display': 'grid'}
-      return(                                           //////////
-        <div key={index}>
-        <div style={trowStyle}  className={rowIndex}>{
-          numberCells.map((cell, cellIndex)=>{
-            // var widthNum = 99/numberCells.length
-            // var widthVh = `${widthNum}vh`
-            var inlineStyle = {'justifyContent': 'spaceAround', 'backgroundColor': 'beige'}
-            // var inlineStyle = {width: '40px'}
-            // var width = {width: widthNum+'vh'}
-            var keyValue = `row${index}col${cellIndex}`
-            var smallerKeyValue = `${index}${cellIndex}`
-            var cell = `row${index}+col${cellIndex} cell`
+
+        var table = timeColumns.map((time, timeIndex)=>{
+          var timeString = `${time}:00`
+          var timeColumnClassName = 'timecolumn'
+          return(
+            <div key={timeIndex} className={timeColumnClassName}>{
+
+              this.state.trucks.map((truck, truckIndex)=>{
+                var truckClassName=`cell truck${truckIndex} time${timeIndex}`
+                var truckKey = `truck${truckIndex}time${timeIndex}`
+                var headerKey = `header${timeIndex}`
+
+                return(
+                  
+                  <div className={truckClassName} key={truckKey} onDrop={this.drop.bind(this)} onDragOver={this.allowDrop.bind(this)}>
+                   
+                  </div>
+                  )
+              })
+
+            }</div>
+            )
+        })
+
+        table.forEach((columnArray, index)=>{
+        var timeString = `${index}:00`
+        console.log('child', columnArray.props.children)
+        return columnArray.props.children.unshift(<div className='cell'>{timeString}</div>)
+       })
+
+
+    //   var tableHeaderDivs = []
+    //   for(var i = 0; i<numberCells.length; i++){
+    //     var tableHeaderkey = `tableHeader${i}`
+    //     var time = `${i}:00`
+    //    tableHeaderDivs.push(<div  key={tableHeaderkey} className='cell'>{time}</div>)
+    //   }
+    //   console.log(tableHeaderDivs)
+    //   var tableHeader= <div className='trow'>{tableHeaderDivs}</div> 
+
+
+
+
+
+
+
+
+    // var table = this.state.trucks.map((truck, index)=>{
+    //   var rowIndex = `row${index} trow`
+     
+    //   return( 
+
+
+    //     <div key={index}   className={rowIndex}>{
+    //       numberCells.map((timeCell, cellIndex)=>{
+
+    //         var keyValue = `row${index}col${cellIndex}`
+    //         var smallerKeyValue = `${index}${cellIndex}`
+    //         var cell = `row${index}+col${cellIndex} cell col${cellIndex}`
             
-            return(                                 //////////////////
+    //         return(                                 //////////////////
              
-              <div style = {inlineStyle} key={keyValue} className={cell} onDrop={this.drop.bind(this)} onDragOver={this.allowDrop.bind(this)} ></div>
+    //           <div  key={keyValue} className={cell} onDrop={this.drop.bind(this)} onDragOver={this.allowDrop.bind(this)} >{cell}</div>
             
-              )                                       ///////////////
-          })
-        }  
+    //           )                                       ///////////////
+    //       })
+    //     }  
 
-        </div>
-        </div>
+    //     </div>
+       
+    //     )                                               ////////
+    // })
 
-
-        )                                               ////////
-    })
+    console.log(table)
 
      
 
     return(
       <div className='truckDayView-grid-item'>
-      
+ 
       {table}
    
       </div>

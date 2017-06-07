@@ -27,7 +27,7 @@ render(){
         {trip.clientName}
         {trip.startTime}
         {trip.endTime}
-        <img src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG19KHC5X8zluprjBG3bDahqriPbAMzHFOEHUexlOO74ZIyvotL4t0MBo' draggable='true' onDragStart={this.drag.bind(this)}  id={trip.clientName} width="40" height="20"></img>
+        <img className='truckimage' src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG19KHC5X8zluprjBG3bDahqriPbAMzHFOEHUexlOO74ZIyvotL4t0MBo' draggable='true' onDragStart={this.drag.bind(this)}  id={trip.clientName} ></img>
       </li>
       )
   })
