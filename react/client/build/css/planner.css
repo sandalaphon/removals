@@ -29,11 +29,11 @@
    grid-area: cal;
    overflow: scroll;
    grid-template-columns: repeat(24,1fr);
+   /*grid-template-rows: 1fr;*/
 }
 
-.truck-day-time-cell{
-  border: 1px solid black;
-}
+
+
 
 
 
@@ -72,17 +72,21 @@
 .cell{
   border: 1px solid black;
   /*display: inline-block;*/
-  height: 5vh;
+  /*height: 5vh;*/
   /*width:1fr;*/
+  /*align-items: stetch;*/
   justify-content:space-around;
   background-color: beige;
 }
-
-.trow{
-  border: 1px solid blue;
-  display: grid;
-  grid-template-columns: repeat(24,1fr);
+.truck-day-time-cell{
+  border: 1px solid black;
 }
+
+.timecolumn{
+  display:grid;
+}
+
+
 
 .truckimage{
   max-width: 100%;
