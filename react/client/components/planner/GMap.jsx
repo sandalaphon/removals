@@ -9,14 +9,17 @@ class GMap extends React.Component {
     this.state = { 
       zoom: 11,
       center: { lng: -3.1883 , lat: 55.9533 }
-   };
+    };
   }
+
   componentDidMount() {
     this.map = this.createMap()
   }
+
   componentDidUnMount() {
     google.maps.event.clearListeners(map, 'zoom_changed')
   }
+
   createMap() {
     let mapOptions = {
       zoom: this.state.zoom,
@@ -24,6 +27,7 @@ class GMap extends React.Component {
     }
     return new google.maps.Map(this.refs.mapCanvas, mapOptions)
   }
+
   mapCenter() {
     return new google.maps.LatLng(
       this.state.center.lat,
@@ -34,17 +38,13 @@ class GMap extends React.Component {
   render() {
 
     return (
-    <div className="gmap-grid-item">  
-    <TruckFlicker/>
-      <div className='GMap-canvas' ref="mapCanvas">
-      
-     {this.map}
-
-      </div>
+      <div className='grid-item-map' ref="mapCanvas">
+        {this.map}
       </div>
     )
+
   }
 
-
 }
+
 export default GMap

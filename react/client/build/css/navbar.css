@@ -1,0 +1,65 @@
+.nav-bar{
+  border: solid 2px orange;
+  display: grid;
+  grid-area: nav;
+  grid-template-areas:
+  "a b c d . . email signout";
+  grid-template-columns: repeat(8,1fr);
+  grid-template-rows: 1fr;
+  justify-items: center;
+  align-items: center;
+}
+
+
+
+.nav-bar > *:hover{
+ color: red;
+ border: solid 3px orange;
+}
+.nav-bar > *.active{
+ color: yellow;
+ border: solid 9px orange;
+}
+
+
+/*///////////////NAV/////////////////////////*/
+.planner-nav{
+  grid-area: c;
+}
+.planner-nav:hover{
+  background-color: yellow;
+  grid-area: c;
+}
+.today-nav{
+  grid-area: b;
+}
+.home-nav{
+  grid-area: a;
+}
+.planner2-nav{
+  grid-area: d;
+}
+
+
+
+/*///////////////NAV/////////////////////////*/
+
+
+
+
+
+ #current-email {
+  border: solid 2px green;
+  grid-area: email;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+#button-sign-out{
+  border: solid 2px pink;
+  grid-area: signout;
+  display: grid;
+  justify-content: center;
+  height: 100%;
+}
+

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router'
-import SignUp from './SignUp'
+import SignUp from '../account_management/SignUp'
 
 class LoginBox extends React.Component {
 

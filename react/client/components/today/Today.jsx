@@ -1,6 +1,6 @@
 import React from 'react'
-import Gmap from './Gmap'
-import Filter from './Filter'
+import Gmap from '../planner/Gmap'
+import Filter from '../planner/Filter'
 import {Grid, Row, Col, Clearfix} from 'react-bootstrap'
 
 class Today extends React.Component {

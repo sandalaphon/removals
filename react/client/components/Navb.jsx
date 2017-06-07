@@ -44,7 +44,7 @@ class Navb extends React.Component {
       </div>
   
       <div id="current-email">{this.props.displayEmail}</div>
-      <button id="button-sign-out"onClick={this.signOut.bind(this)}>Sign Out</button>
+      <button id="button-sign-out"onClick={this.signOut.bind(this)}/>
     </nav>
 
 

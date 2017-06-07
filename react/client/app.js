@@ -5,14 +5,17 @@ import {Provider} from 'react-redux'
 import store, {history} from './store'
 import Raven from 'raven-js'
 import {sentry_url, logException} from './helpers/config'
-import LoginBox from './components/LoginBox'
-import Home from './components/Home'
-import Planner from './components/Planner'
-import Today from './components/Today'
-import Surveyor from './components/Surveyor'
-import UpdateDataSmart from './components/UpdateDataSmart'
+
+import LoginBox from './components/sign_in/LoginBox'
 import Main from './components/Main'
-import AccountManagementSmart from './components/AccountManagementSmart'
+import Layout from './components/Layout'
+
+import Home from './components/home/Home'
+import Planner from './components/planner/Planner'
+import Today from './components/today/Today'
+import Surveyor from './components/surveyor_diary/Surveyor'
+import UpdateDataSmart from './components/update_data/UpdateDataSmart'
+import AccountManagementSmart from './components/account_management/AccountManagementSmart'
 
 
 Raven.config(sentry_url, {
@@ -22,48 +25,28 @@ Raven.config(sentry_url, {
 
 // Raven.showReportDialog()//user gets a pop up
 
-
-
-
 class TopComponent extends React.Component {
 
   render(){
-
-//const rendered = if
-
      
-    
     return(
       <Provider store= {store}>
       <Router history = {browserHistory}>
-      
-      <Route path="/" component= {Main}> 
-      <IndexRoute component= {Planner}></IndexRoute> 
-      <Route path="home" component= {Home}></Route>
-      <Route path="planner" component= {Planner}></Route>
-      <Route path="today" component= {Today}></Route>
-      <Route path="surveyors_diary" component= {Surveyor}></Route>
-      <Route path="update_data" component= {UpdateDataSmart}></Route>
-      <Route path="account_management" component= {AccountManagementSmart}></Route>
-      <Route path="account_management/add_user" component= {AccountManagementSmart}></Route>
-      
-     
-      </Route>
-    
-    
- 
-
+        <Route path="/" component= {Main}> 
+          <IndexRoute component= {Home}></IndexRoute> 
+          <Route path="home" component= {Home}></Route>
+          <Route path="planner" component= {Planner}></Route>
+          <Route path="today" component= {Today}></Route>
+          <Route path="surveyors_diary" component= {Surveyor}></Route>
+          <Route path="update_data" component= {UpdateDataSmart}></Route>
+          <Route path="account_management" component= {AccountManagementSmart}></Route>
+          <Route path="account_management/add_user" component= {AccountManagementSmart}></Route>
+        </Route>
       </Router>
       </Provider>
       )
   }
+
 }
-
-
-//
-// <IndexRoute component= {Home}/>
-
-
-
 
 ReactDOM.render(<TopComponent className='container'/>, document.getElementById('app'))

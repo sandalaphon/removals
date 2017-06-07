@@ -1,6 +1,6 @@
 import React from 'react'
 // import {Link} from 'react-router'
-import store from '../store.js'
+import store from '../../store.js'
 import {Button} from 'react-bootstrap'
 
 class SignUp extends React.Component {
