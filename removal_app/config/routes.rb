@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   put '/users/:id(.:format)' => 'users#update'
   delete '/users/:id(.:format)' => 'users#delete'
   post '/api/trips/new' => 'trips#create'
+  get '/api/trips' => 'trips#index'
 
   get '/api/:company_id' => 'companies#index'
 

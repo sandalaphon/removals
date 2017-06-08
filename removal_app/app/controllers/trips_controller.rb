@@ -16,6 +16,11 @@ def create
   render json: Trip.all.to_json()
   end
 
+  def index
+    trips = Trip.all
+    render json: trips.to_json()
+  end
+
 # private
 # def company_params
 #   params.require(:company).permit([:TABLE COLUMNS])

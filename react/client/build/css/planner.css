@@ -32,6 +32,11 @@
    /*grid-template-rows: 1fr;*/
 }
 
+.grid-item-joblist{
+  grid-area:job;
+  border: 3px solid purple;
+}
+
 
 
 .grid-item-filter{

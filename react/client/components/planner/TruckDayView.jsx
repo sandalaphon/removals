@@ -11,7 +11,7 @@ class TruckDayView extends React.Component{
 
   drop(event){
     event.preventDefault()
-    console.log(event.target)
+
     var data = event.dataTransfer.getData('text')
     event.target.appendChild(document.getElementById(data))
   }
@@ -55,13 +55,13 @@ class TruckDayView extends React.Component{
 
         table.forEach((columnArray, index)=>{
         var timeString = `${index}:00`
-        console.log('child', columnArray.props.children)
+   
         return columnArray.props.children.unshift(<div className='cell'>{timeString}</div>)
        })
 
 
 
-    console.log(table)
+
 
 
      
