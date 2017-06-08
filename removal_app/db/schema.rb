@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170530140050) do
+ActiveRecord::Schema.define(version: 20170608125350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,8 @@ ActiveRecord::Schema.define(version: 20170530140050) do
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.string   "kind"
+    t.json     "collection_LatLng"
+    t.json     "delivery_LatLng"
     t.index ["branch_id"], name: "index_trips_on_branch_id", using: :btree
   end
 

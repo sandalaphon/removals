@@ -39,8 +39,8 @@ class Navb extends React.Component {
        <Link to="/today">Today</Link>
       </div> 
 
-      <div className="planner2-nav active">
-       <Link  to="/planner">planner</Link>
+      <div className="csv-nav active">
+       <Link  to="/update_data">Update Data</Link>
       </div>
   
       <div id="current-email">{this.props.displayEmail}</div>

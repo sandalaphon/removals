@@ -1,6 +1,7 @@
 import React from 'react'
 import {Form, Button, FormControl,form, FormGroup, ControlLabel, HelpBlock} from 'react-bootstrap'
 import {Converter} from 'csvtojson'
+import Geocoder from '../../models/geocoder'
 
 class UpdateData extends React.Component {
 
@@ -15,6 +16,9 @@ class UpdateData extends React.Component {
       reader.onload = this.convertToJson.bind(this)
      
   }
+  logger(input){
+    console.log('json object with latlng?', input)
+  }
 
   convertToJson(event){
     var csv = new Converter()
@@ -26,14 +30,23 @@ class UpdateData extends React.Component {
     csv
     .fromString(text)
     .on('json', (json) =>{ 
-      arr.push(json)
-      console.log('here json', json)
-      var object = json
-      console.log("inside", this.props)
-      this.props.sendSingleTripToRails(json)
+      console.log(json)
+      // arr.push(json)
+      // console.log('here json', json)
+      // var object = json
+      // console.log("inside", this.props)
+      //adjust
+
+      var geocoder = new Geocoder
+      geocoder.setLatLngAndSendToRailsDb(json, this.props.sendSingleTripToRails.bind(this))
+
+      ////////////////////////////////////////////////
+      // this.props.sendSingleTripToRails(json)
+      ///////////////////////////////////////////////
     })
     .on('done', ()=>{
-      console.log('end', arr)
+      console.log('end')
+      window.alert("Thank you for the submission, the data is saved")
       // this.props.sendTripsToRails(arr)
     })
 

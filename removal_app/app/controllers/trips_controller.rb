@@ -41,7 +41,9 @@ def trip_params
     :arrival_time,
     :men_requested,
     :volume,
-    :notes
+    :notes,
+    :delivery_LatLng,
+    :collection_LatLng
     ])
 end
 
