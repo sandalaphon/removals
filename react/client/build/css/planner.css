@@ -34,11 +34,6 @@
 
 
 
-
-
-
-
-
 .grid-item-filter{
   grid-area: fil;
   border:1px solid blue;
@@ -49,6 +44,7 @@
   border:1px solid yellow;
   justify-self: center;
   align-self: center;
+
 }
 
 .grid-item-map {
@@ -72,18 +68,21 @@
 .cell{
   border: 1px solid black;
   /*display: inline-block;*/
-  /*height: 5vh;*/
   /*width:1fr;*/
   /*align-items: stetch;*/
-  justify-content:space-around;
+  /*justify-content:space-around;*/
+  /*display: inline-block;*/
   background-color: beige;
+  text-align:center;
+  align-items: center;
 }
-.truck-day-time-cell{
+/*.truck-day-time-cell{
   border: 1px solid black;
-}
+}*/
 
 .timecolumn{
-  display:grid;
+  display:grid; 
+  grid-auto-rows:1fr;
 }
 
 

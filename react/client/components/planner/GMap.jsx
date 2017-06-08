@@ -39,7 +39,7 @@ class GMap extends React.Component {
 
     return (
       <div className='grid-item-map' ref="mapCanvas">
-        {this.map}
+        this.map
       </div>
     )
 
