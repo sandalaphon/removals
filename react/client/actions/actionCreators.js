@@ -20,6 +20,13 @@ export function fetchUser(){
 }
 }
 
+export function setIsInScheduler(){
+  return {
+    type: 'IS_IN_SCHEDULER',
+    payload: true
+  }
+}
+
 
 export function loginEmail(email){
   return {

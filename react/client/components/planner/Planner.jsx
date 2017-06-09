@@ -15,12 +15,13 @@ class Planner extends React.Component {
 
   render(){
     console.log('props', this.props)
+    console.log('props.actions', this.props.actions)
 
     return(
       <div className = 'grid-planner'>
-            <JobList all_trips={this.props.state.trips.all_trips}/>
+            <JobList all_trips={this.props.state.trips.all_trips} isInScheduler={this.props.state.trips.isInScheduler} />
             <Filter/>
-            <TruckDayView />
+            <TruckDayView isInScheduler={this.props.state.trips.isInScheduler} setIsInScheduler={this.props.actions.setIsInScheduler}/>
             <Gmap />
             <TruckFlicker/>
       </div>

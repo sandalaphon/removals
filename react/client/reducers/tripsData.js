@@ -1,5 +1,6 @@
 function handleData(state = {
-trips: null
+trips: null,
+isInScheduler: false
 },action){
 
 
@@ -17,6 +18,8 @@ trips: null
     case 'GET_TRIPS_REJECTED':
     return {...state,  getTripsError: action.payload}
     break;
+    case 'IS_IN_SCHEDULER':
+    return{...state, isInScheduler: action.payload}
 
   }
   return state

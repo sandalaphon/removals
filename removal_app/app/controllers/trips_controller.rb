@@ -48,7 +48,8 @@ def trip_params
     :volume,
     :notes,
     :delivery_latlng,
-    :collection_latlng
+    :collection_latlng,
+    :estimated_hours
     ])
 end
 

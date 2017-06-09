@@ -16,6 +16,17 @@ class TruckDayView extends React.Component{
     event.target.appendChild(document.getElementById(data))
   }
 
+  handleDragEnter(event){
+    event.preventDefault()
+    if(!this.props.isInScheduler){
+
+      
+      this.props.setIsInScheduler()
+    }
+    
+    console.log('fuckloads of events')
+  }
+
   allowDrop(event){
     event.preventDefault()
   }
@@ -43,7 +54,7 @@ class TruckDayView extends React.Component{
 
                 return(
                   
-                  <div className={truckClassName} key={truckKey} onDrop={this.drop.bind(this)} onDragOver={this.allowDrop.bind(this)}>
+                  <div className={truckClassName} key={truckKey} onDragEnter={this.handleDragEnter.bind(this)} onDrop={this.drop.bind(this)} onDragOver={this.allowDrop.bind(this)}>
                    
                   </div>
                   )
