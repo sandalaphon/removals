@@ -13,6 +13,8 @@ class TruckDayView extends React.Component{
     event.preventDefault()
 
     var data = event.dataTransfer.getData('text')
+    console.log('data',data)
+    console.log('event', event)
     event.target.appendChild(document.getElementById(data))
   }
 
