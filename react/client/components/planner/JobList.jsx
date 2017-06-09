@@ -4,20 +4,21 @@ class JobList extends React.Component{
 //   constructor(props){
 //     super(props)
 //     this.state={
-      
+
 //     }
 //   }
-render(){
+jobs(){
+  return this.props.all_trips.map((job,index)=>{
+ return <li key={index}>{job.moveware_code}</li>
+})
+}
 
-    const jobs= this.props.all_trips.map((job,index)=>{
-     return <li>{job.moveware_code}</li>
-    })
+render(){ 
   
-  
-if(jobs){
+if(this.props.all_trips){
   return(
     <div className='grid-item-joblist'>
-    <ul>{jobs}
+    <ul>{this.jobs()}
     </ul>
     </div>
     )
