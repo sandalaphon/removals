@@ -12,11 +12,12 @@ class Layout extends React.Component {
 
   render(){
 
-    var {loginEmail, loginPassword, signInClick, signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm,  signOut, addUser, getUsers } = this.props
+    var {loginEmail, loginPassword, signInClick, signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm,  signOut, addUser, getUsers, getAllTripsFromRails } = this.props
     var {user_email, user_password} = this.props.loginDetails
     var toDisplay ;
       
     if(this.props.loginDetails.currentUser){
+      if(!this.props.trips.all_trips) getAllTripsFromRails()
       toDisplay = 
         <div>
           <Navb 
@@ -27,6 +28,7 @@ class Layout extends React.Component {
     }
 
     if(!this.props.loginDetails.currentUser){
+
       toDisplay =
         <LoginBox 
         signInClick={signInClick} 

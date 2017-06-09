@@ -10,6 +10,14 @@ trips: null
     case 'SEND_TRIP_REJECTED':
     return {...state, sendTripError: action.payload}
     break;
+    //getAllTripsFromRails
+    case 'GET_TRIPS_FULFILLED':
+    return {...state, all_trips: action.payload, getTripsError: null}
+    break;
+    case 'GET_TRIPS_REJECTED':
+    return {...state,  getTripsError: action.payload}
+    break;
+
   }
   return state
 }

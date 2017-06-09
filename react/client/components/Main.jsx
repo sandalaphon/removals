@@ -10,7 +10,8 @@ function mapStateToProps(state){
     // posts: state.posts,
     // comments: state.comments,
     // search: state.search
-    loginDetails: state.loginDetails
+    loginDetails: state.loginDetails,
+    trips: state.trips
   }
 }
 

@@ -112,6 +112,25 @@ export function sendSingleTripToRails(trip){
   }
 }
 
+export function getAllTripsFromRails(){
+  return function(dispatch){
+    const url = 'http://localhost:5000/api/trips'
+    axios.get(url, {withCredentials:true})
+    .then((response)=>{
+      dispatch({
+        type: 'GET_TRIPS_FULFILLED',
+        payload: response.data
+      })
+    })
+    .catch((error)=>{
+      dispatch({
+        type: 'GET_TRIPS_REJECTED',
+        payload: error
+      })
+    })
+  }
+}
+
 
   export function signInClick(user_email, user_password){
     return function(dispatch){

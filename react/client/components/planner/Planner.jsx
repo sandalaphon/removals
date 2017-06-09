@@ -18,7 +18,7 @@ class Planner extends React.Component {
 
     return(
       <div className = 'grid-planner'>
-            <JobList/>
+            <JobList all_trips={this.props.state.trips.all_trips}/>
             <Filter/>
             <TruckDayView />
             <Gmap />
