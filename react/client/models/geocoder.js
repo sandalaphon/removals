@@ -51,8 +51,8 @@ setCollectionLatLng(postcode, json, callback){
 
 adjustJsonAndSendToRails(json, callback){
   var jsonForRails=json
-  jsonForRails['collection_latlng']=`${JSON.stringify(this.collection_LatLng)}`
-  jsonForRails['delivery_latlng']=`${JSON.stringify(this.delivery_LatLng)}`
+  jsonForRails['collection_latlng']=JSON.stringify(this.collection_LatLng)
+  jsonForRails['delivery_latlng']=JSON.stringify(this.delivery_LatLng)
   console.log('this.collection_LatLng',this.collection_LatLng)
   console.log('jsonForRails',jsonForRails)
   callback(jsonForRails)
