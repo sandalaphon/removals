@@ -6,15 +6,13 @@ class TruckDayView extends React.Component{
   constructor(props) {
     super(props)
     var image = <img src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG19KHC5X8zluprjBG3bDahqriPbAMzHFOEHUexlOO74ZIyvotL4t0MBo' draggable='true' onDragStart={this.drag.bind(this)} id='draggableButton'></img>
-    this.state= {trucks: [1,2,3,4,5,6], image}
+    this.state= {trucks: [1,2,3,4,5,6,7], image}
   }
 
   drop(event){
     event.preventDefault()
 
     var data = event.dataTransfer.getData('text')
-    console.log('data',data)
-    console.log('event', event)
     event.target.appendChild(document.getElementById(data))
   }
 

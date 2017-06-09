@@ -33,10 +33,21 @@
 }
 
 .grid-item-joblist{
+  display: inline-block;
+  /*display: grid;*/
   grid-area:job;
   border: 3px solid purple;
+  grid-auto-rows:1fr;
 }
 
+table{
+  overflow: scroll;
+}
+
+td, th{
+border: 1px solid black;
+width: 11.1111%;
+}
 
 
 .grid-item-filter{
