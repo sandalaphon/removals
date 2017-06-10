@@ -13,18 +13,21 @@ class TruckDayView extends React.Component{
     event.preventDefault()
 
     var data = event.dataTransfer.getData('text')
+    console.log('data', data)
     event.target.appendChild(document.getElementById(data))
+    // event.target.appendChild(document.getElementById(data))
   }
 
   handleDragEnter(event){
     event.preventDefault()
-    if(!this.props.isInScheduler){
+    // if(!this.props.isInScheduler){
 
-      
-      this.props.setIsInScheduler()
-    }
+
+    //   this.props.setIsInScheduler()
+    // }
     
-    console.log('fuckloads of events')
+    // console.log('fuckloads of events')
+
   }
 
   allowDrop(event){

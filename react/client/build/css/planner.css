@@ -42,17 +42,23 @@
 
 table{
   overflow: scroll;
+  /*table-layout: fixed;*/
+  /*width:50vw;*/
 }
 
 td, th{
 border: 1px solid black;
-width: 11.1111%;
+vertical-align: middle;
+text-align: center;
+/*width: 10%;*/
+min-width:5vw;
 }
 
 
 .grid-item-filter{
   grid-area: fil;
   border:1px solid blue;
+  overflow: scroll;
 }
 
 .grid-item-truck-flicker{
@@ -91,6 +97,8 @@ width: 11.1111%;
   background-color: beige;
   text-align:center;
   align-items: center;
+  display:grid;
+  font-size: 1fr;
 }
 /*.truck-day-time-cell{
   border: 1px solid black;
@@ -101,11 +109,14 @@ width: 11.1111%;
   grid-auto-rows:1fr;
 }
 
-
+.material-icons.md-48{
+  font-size: 1fr;
+}
 
 .truckimage{
   max-width: 100%;
   max-height: 100%;
+  
 }
 
 
