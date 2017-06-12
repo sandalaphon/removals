@@ -6,16 +6,17 @@ class TruckDayView extends React.Component{
   constructor(props) {
     super(props)
     var image = <img src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG19KHC5X8zluprjBG3bDahqriPbAMzHFOEHUexlOO74ZIyvotL4t0MBo' draggable='true' onDragStart={this.drag.bind(this)} id='draggableButton'></img>
-    this.state= {trucks: [1,2,3,4,5,6,7], image}
+    this.state = {trucks: [1,2,3,4,5,6,7], image}
   }
 
   drop(event){
     event.preventDefault()
-    event.target.classList.remove('drop-target')
+    event.target.style.background=''
+    // event.target.classList.remove('drop-target')
 
     var data = event.dataTransfer.getData('text')
-    console.log('data', event.dataTransfer.getData('text'))
-    console.log("related target, event",  JSON.parse(data)[1])
+    // console.log('data', event.dataTransfer.getData('text'))
+    // console.log("related target, event",  JSON.parse(data)[1])
     event.target.appendChild(document.getElementById(JSON.parse(data)[0]))
     // console.log("related target, event",  typeof data)
     // event.target.appendChild(document.getElementById(data))
@@ -24,17 +25,18 @@ class TruckDayView extends React.Component{
   handleDragEnter(event){
     event.preventDefault()
       var data = event.dataTransfer.getData('text')
-      event.target.classList.add('drop-target')
+      // event.target.classList.add('drop-target')
       // var colorToUse=`${event.dataTransfer.getData('text')}`
-      console.log('this color', event.dataTransfer.getData('text'))
-      // event.target.style.background='hotpink'
+      // console.log('this color', event.dataTransfer.getData('text'))
+      event.target.style.background=this.props.currentDragJob.colour
+      console.log(this.props.currentDragJob.estimated_hours)
       
       
     // if(!this.props.isInScheduler){
     //   this.props.setIsInScheduler()
     // }
-    console.log('fuckloads of events', event.target.classList)
-    console.log("related target, event",  event.target)
+    // console.log('fuckloads of events', event.target.classList)
+    console.log("this.state.currentDragColour",  this.props.currentDragColour)
   }
 
   allowDrop(event){
@@ -48,8 +50,8 @@ class TruckDayView extends React.Component{
 
   handleDragExit(event){
     event.preventDefault()
-    event.target.classList.remove('drop-target')
-    // event.target.style.background=''
+    // event.target.classList.remove('drop-target')
+    event.target.style.background=''
   }
 
   render(){

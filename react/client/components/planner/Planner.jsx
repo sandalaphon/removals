@@ -19,9 +19,9 @@ class Planner extends React.Component {
 
     return(
       <div className = 'grid-planner'>
-            <JobList all_trips={this.props.state.trips.all_trips} isInScheduler={this.props.state.trips.isInScheduler} />
+            <JobList setCurrentDragJob={this.props.actions.setCurrentDragJob} all_trips={this.props.state.trips.all_trips} isInScheduler={this.props.state.trips.isInScheduler} />
             <Filter/>
-            <TruckDayView isInScheduler={this.props.state.trips.isInScheduler} setIsInScheduler={this.props.actions.setIsInScheduler}/>
+            <TruckDayView isInScheduler={this.props.state.trips.isInScheduler} setIsInScheduler={this.props.actions.setIsInScheduler} currentDragJob={this.props.state.trips.currentDragJob}/>
             <Gmap />
             <TruckFlicker/>
       </div>

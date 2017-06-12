@@ -20,6 +20,10 @@ isInScheduler: false
     break;
     case 'IS_IN_SCHEDULER':
     return{...state, isInScheduler: action.payload}
+    break;
+    case 'SET_CURRENT_DRAG_JOB':
+    return{...state, currentDragJob: action.payload}
+
 
   }
   return state

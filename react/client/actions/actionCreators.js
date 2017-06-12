@@ -63,6 +63,13 @@ export function signUpPasswordConfirm(password){
   }
 }
 
+export function setCurrentDragJob(jobObject){
+  return {
+    type: 'SET_CURRENT_DRAG_JOB',
+    payload: jobObject
+  }
+}
+
 
 
 export function signUpClick(signup_email, signup_password, signup_password_confirm, callback){
