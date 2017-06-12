@@ -15,9 +15,17 @@ class JobList extends React.Component{
 //   }
 drag(event){
    
-  event.dataTransfer.setData('text', event.target.id)
-  
-}
+  event.dataTransfer.setData('text', JSON.stringify([event.target.id, 56]))
+
+
+  // event.dataTransfer.items
+
+  // if(event.target.classList){
+    // event.target.classList.remove('drop-target')
+   
+  // }
+    }
+
 
 // getAppropriateImage(){
 //   var imageToUse = ''
@@ -36,21 +44,22 @@ jobs(){
   return this.props.all_trips.map((job,index)=>{
     var arrival_time = job.arrival_time
     var inlineStyleColor = {color: this.state.colours[index]}
-    // var image = <div draggable='true' onDragStart={this.drag.bind(this)}><img  className="truckimage" src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG19KHC5X8zluprjBG3bDahqriPbAMzHFOEHUexlOO74ZIyvotL4t0MBo' id={index}></img></div>
+    // var image = <div draggable='true' tabIndex='0' onDragStart={this.drag.bind(this)}><img  className="truckimage" src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG19KHC5X8zluprjBG3bDahqriPbAMzHFOEHUexlOO74ZIyvotL4t0MBo' id={index}></img></div>
     // var image = <div draggable='true' onDragStart={this.drag.bind(this)}><i  className="fa fa-truck truckimage" aria-hidden="true" id={index}></i></div>
-    var image = <i draggable='true' onDragStart={this.drag.bind(this)} className="material-icons md-48 truckimage" style={inlineStyleColor} id={index}>local_shipping</i>
+    var image = <i draggable='true' tabIndex='0' onDragStart={this.drag.bind(this)} className="material-icons md-48 truckimage" style={inlineStyleColor} id={this.state.colours[index]}>local_shipping</i>
     // var image = <div draggable='true' onDragStart={this.drag.bind(this)}><img className="truckimage" src = 'images/truckimage.png' style={inlineStyleColor} id={index}></img></div>
 
    return (<tr key={index}>
       <td ><button id={job.id}>Expand</button></td>
       <td >{job.client_name}</td>
+      <td >{image}</td>
       <td >'colour code here'</td>
       <td >{job.volume}</td>
       <td >{job.men_requested}</td>
       <td >{job.arrival_time}</td>
       <td >'notes hover'</td>
       <td> {job.estimated_hours}</td>
-      <td >{image}</td>
+      
       <td >'programatic registation numberSSSS</td>
       </tr>)
 
@@ -67,13 +76,13 @@ render(){
       <tr>
       <th>Expand</th>
       <th>Client Name</th>
+      <th>Drag Icon</th>
       <th>Colour</th>
       <th>Volume</th>
       <th>Men Requested</th>
       <th>Start</th>
       <th>Notes</th>
-      <th>Estimated Hours</th>
-      <th>Drag Icon</th>
+      <th>Estimated Hours</th> 
       <th>Allocated Trucks</th>
       </tr>
       

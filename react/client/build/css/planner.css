@@ -28,7 +28,7 @@
    border:1px solid red;
    grid-area: cal;
    overflow: scroll;
-   grid-template-columns: repeat(24,1fr);
+   grid-template-columns: repeat(19,1fr);
    /*grid-template-rows: 1fr;*/
 }
 
@@ -38,6 +38,10 @@
   grid-area:job;
   border: 3px solid purple;
   grid-auto-rows:1fr;
+}
+
+.drop-target{
+  background-color: hotpink;
 }
 
 table{
@@ -94,7 +98,7 @@ min-width:5vw;
   /*align-items: stetch;*/
   /*justify-content:space-around;*/
   /*display: inline-block;*/
-  background-color: beige;
+  /*background-color: beige;*/
   text-align:center;
   align-items: center;
   display:grid;
