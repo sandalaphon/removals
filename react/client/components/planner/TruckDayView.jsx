@@ -49,6 +49,7 @@ handleDragOver(event){
     var data = event.dataTransfer.getData('text')
     event.target.appendChild(document.getElementById(JSON.parse(data)[0]))
   }
+  
 
   render(){
 
@@ -78,7 +79,7 @@ handleDragOver(event){
               
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
                 if(this.state.highlightedCells.includes(cellId)){
-                  var inlineStyle = {border: `1px dashed ${this.state.backgroundColour}`}
+                  var inlineStyle = {border: `2px dashed ${this.state.backgroundColour}`}
         
                 }else{inlineStyle={border: ''}}
    

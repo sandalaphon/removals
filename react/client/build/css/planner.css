@@ -92,7 +92,7 @@ min-width:5vw;
 
 
 .cell{
-  /*border: 1px solid black;*/
+  border: 1px solid black;
   /*display: inline-block;*/
   /*width:1fr;*/
   /*align-items: stetch;*/
