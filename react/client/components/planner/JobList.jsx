@@ -21,12 +21,17 @@ drag(event){
 
     }
 
+    handleDragEnd(event){
+      event.preventDefault()
+      console.log('dragend target',event.relatedTarget)
+    }
+
 
 jobs(){
   return this.props.state.trips.all_trips.map((job,index)=>{
     var arrival_time = job.arrival_time
     var inlineStyleColor = {color: this.state.colours[index]}
-    var image = <i draggable='true' onDragStart={this.drag.bind(this)}  className="material-icons md-48 truckimage" style={inlineStyleColor} id={index}>local_shipping</i>
+    var image = <i draggable='true' onDragEnd={this.handleDragEnd.bind(this)} onDragStart={this.drag.bind(this)}  className="material-icons md-48 truckimage" style={inlineStyleColor} id={index}>local_shipping</i>
 
    return (<tr key={index}>
       <td ><button id={job.id}>Expand</button></td>
