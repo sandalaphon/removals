@@ -70,6 +70,20 @@ export function setCurrentDragJob(jobObject){
   }
 }
 
+export function setDroppedCells(colourAndCellsObject){
+  return {
+    type: 'SET_DROPPED_CELLS',
+    payload: colourAndCellsObject
+  }
+}
+
+export function deleteDroppedCells(colour){
+  return {
+    type: 'DELETE_DROPPED_CELLS',
+    payload: colour
+  }
+}
+
 
 
 export function signUpClick(signup_email, signup_password, signup_password_confirm, callback){

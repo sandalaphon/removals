@@ -1,6 +1,7 @@
 function handleData(state = {
 trips: null,
-isInScheduler: false
+isInScheduler: false,
+droppedCells: []
 },action){
 
 
@@ -23,6 +24,22 @@ isInScheduler: false
     break;
     case 'SET_CURRENT_DRAG_JOB':
     return{...state, currentDragJob: action.payload}
+    break;
+    case 'SET_DROPPED_CELLS':
+    return{...state, droppedCells: state.droppedCells.concat(action.payload)}
+    break;
+    case 'DELETE_DROPPED_CELLS':
+   
+        var newArray = state.droppedCells.slice()
+    state.droppedCells.forEach((object, index)=>{
+        if(object.colour===action.payload) {
+            newArray.splice(index,1)
+        }
+    })
+
+    
+    
+    return{...state, droppedCells: newArray}
 
 
   }

@@ -14,12 +14,14 @@ class Planner extends React.Component {
   
 
   render(){
-    console.log('props', this.props)
-    console.log('props.actions', this.props.actions)
 
     return(
       <div className = 'grid-planner'>
-            <JobList setCurrentDragJob={this.props.actions.setCurrentDragJob} all_trips={this.props.state.trips.all_trips} isInScheduler={this.props.state.trips.isInScheduler} />
+            <JobList 
+              deleteDroppedCells={this.props.actions.deleteDroppedCells}
+              setCurrentDragJob={this.props.actions.setCurrentDragJob} 
+              all_trips={this.props.state.trips.all_trips} 
+              isInScheduler={this.props.state.trips.isInScheduler} />
             <Filter/>
             <TruckDayView />
             <Gmap />
