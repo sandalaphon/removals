@@ -85,6 +85,13 @@ export function deleteDroppedCells(colour){
 }
 
 
+export function setHighlightedCells(cellIds){
+  return {
+    type: 'SET_HIGHLIGHTED_CELLS',
+    payload: cellIds
+  }
+}
+
 
 export function signUpClick(signup_email, signup_password, signup_password_confirm, callback){
   return function(dispatch){

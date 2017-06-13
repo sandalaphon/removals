@@ -8,7 +8,7 @@ class TruckDayView extends React.Component{
 
   constructor(props) {
     super(props)
-    this.state = {trucks: [1,2,3,4,5,6,7], backgroundColour: '', highlightedCells: []}
+    this.state = {trucks: [1,2,3,4,5,6,7], backgroundColour: ''}
    
   }
 
@@ -32,7 +32,9 @@ class TruckDayView extends React.Component{
       }
       newCellArray.push(newCellId)
     }
-    this.setState({highlightedCells: newCellArray, backgroundColour: this.props.state.trips.currentDragJob.colour})
+    this.setState({backgroundColour: this.props.state.trips.currentDragJob.colour})
+    ///////////////////////
+    this.props.actions.setHighlightedCells(newCellArray)
 }
 
 handleDragOver(event){
@@ -45,11 +47,11 @@ handleDragOver(event){
 
   drop(event){
     event.preventDefault()
-    this.props.actions.setDroppedCells({cells: this.state.highlightedCells, colour: this.state.backgroundColour})
+    this.props.actions.setDroppedCells({cells: this.props.state.trips.highlightedCells, colour: this.state.backgroundColour})
     var data = event.dataTransfer.getData('text')
     event.target.appendChild(document.getElementById(JSON.parse(data)[0]))
   }
-  
+
 
   render(){
 
@@ -78,7 +80,7 @@ handleDragOver(event){
 
               
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-                if(this.state.highlightedCells.includes(cellId)){
+                if(this.props.state.trips.highlightedCells.includes(cellId)){
                   var inlineStyle = {border: `2px dashed ${this.state.backgroundColour}`}
         
                 }else{inlineStyle={border: ''}}

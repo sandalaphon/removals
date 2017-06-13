@@ -1,4 +1,7 @@
 import React from 'react'
+import * as actionCreators from '../../actions/actionCreators'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 
 class JobList extends React.Component{
   constructor(props){
@@ -10,19 +13,17 @@ class JobList extends React.Component{
 
 drag(event){
 
+  event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.state.trips.all_trips[event.target.id], this.state.colours[event.target.id]]))
 
-   
-  event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.all_trips[event.target.id], this.state.colours[event.target.id]]))
+  this.props.actions.setCurrentDragJob({colour: this.state.colours[event.target.id], estimated_hours: this.props.state.trips.all_trips[event.target.id].estimated_hours})
 
-  this.props.setCurrentDragJob({colour: this.state.colours[event.target.id], estimated_hours: this.props.all_trips[event.target.id].estimated_hours})
-
-  this.props.deleteDroppedCells(this.state.colours[event.target.id])
+  this.props.actions.deleteDroppedCells(this.state.colours[event.target.id])
 
     }
 
 
 jobs(){
-  return this.props.all_trips.map((job,index)=>{
+  return this.props.state.trips.all_trips.map((job,index)=>{
     var arrival_time = job.arrival_time
     var inlineStyleColor = {color: this.state.colours[index]}
     var image = <i draggable='true' onDragStart={this.drag.bind(this)}  className="material-icons md-48 truckimage" style={inlineStyleColor} id={index}>local_shipping</i>
@@ -45,7 +46,7 @@ jobs(){
 
 render(){ 
 
-  if(this.props.all_trips){
+  if(this.props.state.trips.all_trips){
     return(
       <table className='grid-item-joblist'>
       <tbody>
@@ -76,4 +77,10 @@ render(){
 }
 }
 
-export default JobList
+// export default JobList
+
+const mapDispatchToProps=(dispatch)=>({
+actions: bindActionCreators(actionCreators, dispatch)
+})
+const mapStateToProps=(state)=>({state})
+export default connect(mapStateToProps, mapDispatchToProps)(JobList)
