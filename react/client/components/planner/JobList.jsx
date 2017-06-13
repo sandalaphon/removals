@@ -14,7 +14,7 @@ class JobList extends React.Component{
 //     }
 //   }
 drag(event){
-  console.log('this.props.all_trips', this.props.all_trips, event.target)
+  console.log('this.props.all_trips', this.props.all_trips, event.relatedTarget)
    
   event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.all_trips[event.target.id], this.state.colours[event.target.id]]))
 
