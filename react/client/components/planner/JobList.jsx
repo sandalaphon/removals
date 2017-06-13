@@ -12,8 +12,8 @@ class JobList extends React.Component{
   }
 
 drag(event){
-
-  event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.state.trips.all_trips[event.target.id], this.state.colours[event.target.id]]))
+    event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.state.trips.all_trips[event.target.id], this.state.colours[event.target.id]]))
+    
 
   this.props.actions.setCurrentDragJob({colour: this.state.colours[event.target.id], estimated_hours: this.props.state.trips.all_trips[event.target.id].estimated_hours})
 
@@ -34,7 +34,7 @@ jobs(){
     var image = <i draggable='true' onDragEnd={this.handleDragEnd.bind(this)} onDragStart={this.drag.bind(this)}  className="material-icons md-48 truckimage" style={inlineStyleColor} id={index}>local_shipping</i>
 
    return (<tr key={index}>
-      <td ><button id={job.id}>Expand</button></td>
+      <td ><button id={job.id}>View Route</button></td>
       <td >{job.client_name}</td>
       <td >{image}</td>
       <td >'colour code here'</td>
@@ -56,7 +56,7 @@ render(){
       <table className='grid-item-joblist'>
       <tbody>
       <tr>
-      <th>Expand</th>
+      <th>View Route</th>
       <th>Client Name</th>
       <th>Drag Icon</th>
       <th>Colour</th>

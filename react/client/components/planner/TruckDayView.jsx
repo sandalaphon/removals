@@ -14,6 +14,7 @@ class TruckDayView extends React.Component{
   handleDragEnter(event){
 
       event.preventDefault()
+
       console.log('current event.target', event.target)
 
     let cellId = event.target.id
@@ -40,6 +41,7 @@ class TruckDayView extends React.Component{
 
   handleDragOver(event){
     event.preventDefault() 
+
   }
 
   handleDragLeave(event){
@@ -48,13 +50,16 @@ class TruckDayView extends React.Component{
 
   drop(event){
     event.preventDefault()
-
     this.props.actions.setDroppedCells({
       cells: this.props.state.trips.highlightedCells, 
       colour: this.state.backgroundColour
     })
-
     var data = event.dataTransfer.getData('text')
+    // var nodeCopy = document.getElementById(data).cloneNode(true);
+    //  nodeCopy.id = 'newId'; /* We cannot use the same ID */
+    //  ev.target.appendChild(nodeCopy);
+
+  
     event.target.appendChild(document.getElementById(JSON.parse(data)[0]))
   }
 
