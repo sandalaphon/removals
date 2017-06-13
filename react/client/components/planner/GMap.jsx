@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import TruckFlicker from './TruckFlicker'
+import * as actionCreators from '../../actions/actionCreators'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 
 class GMap extends React.Component {
 
@@ -47,4 +50,8 @@ class GMap extends React.Component {
 
 }
 
-export default GMap
+const mapDispatchToProps=(dispatch)=>({
+actions: bindActionCreators(actionCreators, dispatch)
+})
+const mapStateToProps=(state)=>({state})
+export default connect(mapStateToProps, mapDispatchToProps)(GMap)
