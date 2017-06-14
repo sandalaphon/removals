@@ -19,6 +19,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 //   window.devToolsExtension ? window.devToolsExtension() : f => f
 //   )
 const middleware = applyMiddleware(thunk, logger())
+// const middleware = applyMiddleware(thunk)
 
 const enhancer = composeEnhancers(middleware)
 

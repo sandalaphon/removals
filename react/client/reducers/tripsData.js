@@ -1,9 +1,7 @@
 function handleData(state = {
 trips: null,
-isInScheduler: false,
 droppedCells: [],
-highlightedCells: [],
-divCounter: 0
+highlightedCells: []
 },action){
 
 
@@ -21,9 +19,6 @@ divCounter: 0
     case 'GET_TRIPS_REJECTED':
     return {...state,  getTripsError: action.payload}
     break;
-    case 'IS_IN_SCHEDULER':
-    return{...state, isInScheduler: action.payload}
-    break;
     case 'SET_CURRENT_DRAG_JOB':
     return{...state, currentDragJob: action.payload}
     break;
@@ -32,12 +27,6 @@ divCounter: 0
     break;
     case 'SET_HIGHLIGHTED_CELLS':
     return{...state, highlightedCells: action.payload}
-    break;
-    case 'INCREMENT_DIV_COUNTER':
-    return{...state, divCounter: state.divCounter+1}
-    break;
-    case 'DECREMENT_DIV_COUNTER':
-    return{...state, divCounter: state.divCounter-1}
     break;
     case 'DELETE_DROPPED_CELLS':
         var newArray = state.droppedCells.slice()

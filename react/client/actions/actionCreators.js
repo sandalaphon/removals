@@ -20,26 +20,6 @@ export function fetchUser(){
 }
 }
 
-export function incrementDivCounter(){
-  return {
-    type: 'INCREMENT_DIV_COUNTER'
-  }
-}
-
-export function decrementDivCounter(){
-  return {
-    type: 'DECREMENT_DIV_COUNTER'
-  }
-}
-
-export function setIsInScheduler(){
-  return {
-    type: 'IS_IN_SCHEDULER',
-    payload: true
-  }
-}
-
-
 export function loginEmail(email){
   return {
     type: 'LOGIN_EMAIL_CHANGE',

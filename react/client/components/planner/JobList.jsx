@@ -1,5 +1,5 @@
 import React from 'react'
-import * as actionCreators from '../../actions/actionCreators'
+import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells} from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -11,89 +11,96 @@ class JobList extends React.Component{
     }
   }
 
-drag(event){
-    event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.state.trips.all_trips[event.target.id], this.state.colours[event.target.id]]))
+  drag(event){
+    event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.trips.all_trips[event.target.id], this.state.colours[event.target.id]]))
     
 
-  this.props.actions.setCurrentDragJob({colour: this.state.colours[event.target.id], estimated_hours: this.props.state.trips.all_trips[event.target.id].estimated_hours})
+    this.props.actions.setCurrentDragJob({colour: this.state.colours[event.target.id], estimated_hours: this.props.trips.all_trips[event.target.id].estimated_hours})
 
-  this.props.actions.deleteDroppedCells(this.state.colours[event.target.id])
+    this.props.actions.deleteDroppedCells(this.state.colours[event.target.id])
 
-    }
+  }
 
-    handleDragEnd(event){
-      event.preventDefault()
-      console.log('divCounter on dragend', this.props.state.trips.divCounter)
-      console.log('dragend target',event.target)
-      if(this.props.state.trips.divCounter===1){
-        // var tableDataElement =document.querySelector('td#index')
-        console.log('tableDataElement')
-        // var draggedImage=
-        // tableDataElement.appendChild()
-      }
+
+  handleDragEnd(event){
+    event.preventDefault()
+    if(event.dataTransfer.dropEffect==='none'){
+      this.props.actions.setHighlightedCells([])
+      var tableDataElement =document.getElementById(`${event.target.id}${this.state.colours[event.target.id]}`)
+      tableDataElement.appendChild(event.target)
     }
 
 
-jobs(){
-  return this.props.state.trips.all_trips.map((job,index)=>{
-    var arrival_time = job.arrival_time
-    var iconHome = `${index}${this.state.colours[index]}`
-    var inlineStyleColor = {color: this.state.colours[index]}
-    var image = <i draggable='true' onDragEnd={this.handleDragEnd.bind(this)} onDragStart={this.drag.bind(this)}  className="material-icons md-48 truckimage" style={inlineStyleColor} id={index}>local_shipping</i>
+  }
 
-   return (<tr key={index}>
-      <td ><button id={job.id}>View Route</button></td>
-      <td >{job.client_name}</td>
-      <td id={iconHome}>{image}</td>
-      <td >'colour code here'</td>
-      <td >{job.volume}</td>
-      <td >{job.men_requested}</td>
-      <td >{job.arrival_time}</td>
-      <td >'notes hover'</td>
-      <td> {job.estimated_hours}</td>
-      
-      <td >'programatic registation numberSSSS</td>
-      </tr>)
- })
-}
 
-render(){ 
+  jobs(){
+    return this.props.trips.all_trips.map((job,index)=>{
+      var arrival_time = job.arrival_time
+      var iconHome = `${index}${this.state.colours[index]}`
+      var inlineStyleColor = {color: this.state.colours[index]}
+      var image = <i 
+          draggable='true' 
+          onDragEnd={this.handleDragEnd.bind(this)} 
+          onDragStart={this.drag.bind(this)}  
+          className="material-icons md-48 truckimage" 
+          style={inlineStyleColor} 
+          id={index}>local_shipping</i>
 
-  if(this.props.state.trips.all_trips){
-    return(
-      <table className='grid-item-joblist'>
-      <tbody>
-      <tr>
-      <th>View Route</th>
-      <th>Client Name</th>
-      <th>Drag Icon</th>
-      <th>Colour</th>
-      <th>Volume</th>
-      <th>Men Requested</th>
-      <th>Start</th>
-      <th>Notes</th>
-      <th>Estimated Hours</th> 
-      <th>Allocated Trucks</th>
-      </tr>
-      
-      {this.jobs()}
-      </tbody>
-      </table>
-      )
-  }else{
-    return(
-      <div className='grid-item-joblist'>
-      No Jobs Yet
-      </div>
-      )
+      return (<tr key={index}>
+        <td ><button id={job.id}>View Route</button></td>
+        <td >{job.client_name}</td>
+        <td id={iconHome}>{image}</td>
+        <td >'colour code here'</td>
+        <td >{job.volume}</td>
+        <td >{job.men_requested}</td>
+        <td >{job.arrival_time}</td>
+        <td >'notes hover'</td>
+        <td> {job.estimated_hours}</td>
+
+        <td >'programatic registation numberSSSS</td>
+        </tr>)
+    })
+  }
+
+  render(){ 
+
+    if(this.props.trips.all_trips){
+      return(
+        <table className='grid-item-joblist'>
+        <tbody>
+        <tr>
+        <th>View Route</th>
+        <th>Client Name</th>
+        <th>Drag Icon</th>
+        <th>Colour</th>
+        <th>Volume</th>
+        <th>Men Requested</th>
+        <th>Start</th>
+        <th>Notes</th>
+        <th>Estimated Hours</th> 
+        <th>Allocated Trucks</th>
+        </tr>
+
+        {this.jobs()}
+        </tbody>
+        </table>
+        )
+    }else{
+      return(
+        <div className='grid-item-joblist'>
+        No Jobs Yet
+        </div>
+        )
+    }
   }
 }
-}
 
-// export default JobList
 
 const mapDispatchToProps=(dispatch)=>({
-actions: bindActionCreators(actionCreators, dispatch)
+  actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells}, dispatch)
 })
-const mapStateToProps=(state)=>({state})
+const mapStateToProps=(state)=>({trips: state.trips})
+
+
 export default connect(mapStateToProps, mapDispatchToProps)(JobList)
