@@ -90,6 +90,12 @@ export function sortByClientName(order){
     payload: order
   }
 }
+export function assignColours(colours){
+  return {
+    type: 'ASSIGN_COLOURS',
+    payload: colours
+  }
+}
 
 
 export function signUpClick(signup_email, signup_password, signup_password_confirm, callback){

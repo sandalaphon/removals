@@ -30,6 +30,23 @@ highlightedCells: []
     break;
 
 
+    case 'ASSIGN_COLOURS':
+    console.log("logged",state.all_trips)
+    
+    var coloured = state.all_trips.slice()
+    console.log(coloured)
+    for(var i = 0; i< coloured.length; i++){
+        var colour = action.payload.shift()
+        console.log(colour)
+        coloured[i].assigned_colour = colour
+        
+    }
+
+
+    return{...state, all_trips: coloured}
+    break;
+
+
     case 'SORT_BY_CLIENT_NAME':
        var sorted
         if(action.payload === 'asc'){

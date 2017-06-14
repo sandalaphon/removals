@@ -1,5 +1,5 @@
 import React from 'react'
-import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells,sortByClientName} from '../../actions/actionCreators'
+import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells,sortByClientName,assignColours} from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -69,6 +69,12 @@ class JobList extends React.Component{
 
     }
   }
+
+
+  componentDidMount() {
+    this.props.actions.assignColours(this.state.colours)
+  }
+
 
   drag(event){
 
@@ -202,7 +208,7 @@ class JobList extends React.Component{
 
 
 const mapDispatchToProps=(dispatch)=>({
-  actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName}, dispatch)
+  actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName,assignColours}, dispatch)
 })
 const mapStateToProps=(state)=>({trips: state.trips})
 
