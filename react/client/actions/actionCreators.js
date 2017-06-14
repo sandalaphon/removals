@@ -27,6 +27,13 @@ export function loginEmail(email){
   }
 }
 
+export function setSearchQuery(searchString){
+  return {
+    type: 'SET_SEARCH_STRING',
+    payload: searchString
+  }
+}
+
 export function loginPassword(password){
   return {
     type: 'LOGIN_PASSWORD_CHANGE',

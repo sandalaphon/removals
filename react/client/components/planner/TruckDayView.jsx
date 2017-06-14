@@ -46,8 +46,6 @@ class TruckDayView extends React.Component{
   }
 
   drop(event){
-    event.preventDefault()
-
         this.props.actions.setDroppedCells({
           cells: this.props.trips.highlightedCells, 
           colour: this.state.backgroundColour

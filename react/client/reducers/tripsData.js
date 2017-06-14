@@ -28,6 +28,9 @@ highlightedCells: []
     case 'SET_HIGHLIGHTED_CELLS':
     return{...state, highlightedCells: action.payload}
     break;
+    case 'SET_SEARCH_STRING':
+    return{...state, searchString: action.payload}
+    break;
     case 'DELETE_DROPPED_CELLS':
         var newArray = state.droppedCells.slice()
     state.droppedCells.forEach((object, index)=>{
