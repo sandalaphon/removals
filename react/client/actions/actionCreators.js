@@ -41,6 +41,13 @@ export function loginPassword(password){
   }
 }
 
+export function sortByClientName(order){
+  return {
+    type: 'SORT_BY_CLIENT_NAME',
+    payload: order
+  }
+}
+
 export function signUploginEmail(signup_email){
   return {
     type: 'SIGNUP_EMAIL_CHANGE',

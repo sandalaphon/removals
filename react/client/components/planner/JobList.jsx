@@ -1,5 +1,5 @@
 import React from 'react'
-import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells} from '../../actions/actionCreators'
+import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName} from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -7,16 +7,17 @@ class JobList extends React.Component{
   constructor(props){
     super(props)
     this.state={
-      colours: ['Black', 'Blue', 'DarkGreen', 'DarkMagenta',  'DimGrey', 'GoldenRod', 'Tomato', 'YellowGreen', 'SlateBlue', 'Sienna', 'Plum', 'HotPink']
+      colours: ['Black', 'Blue', 'DarkGreen', 'DarkMagenta',  'DimGrey', 'GoldenRod', 'Tomato', 'YellowGreen', 'SlateBlue', 'Sienna', 'Plum', 'HotPink'],
+      order: true
     }
   }
 
   drag(event){
 
-    event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.trips.all_trips[event.target.id], this.state.colours[event.target.id]]))
+    event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.trips.all_trips_reference[event.target.id], this.state.colours[event.target.id]]))
     
    
-    this.props.actions.setCurrentDragJob({colour: this.state.colours[event.target.id], estimated_hours: this.props.trips.all_trips[event.target.id].estimated_hours})
+    this.props.actions.setCurrentDragJob({colour: this.state.colours[event.target.id], estimated_hours: this.props.trips.all_trips_reference[event.target.id].estimated_hours})
 
     this.props.actions.deleteDroppedCells(this.state.colours[event.target.id])
     console.log('target.id', event.target.id)
@@ -33,20 +34,25 @@ class JobList extends React.Component{
     }
   }
 
+  handleClientNameSort(){
+    if(this.state.order){
+      this.props.actions.sortByClientName('asc')
+      this.setState({order:false})
+    }else{
+      this.props.actions.sortByClientName('dec')
+      this.setState({order:true})
+    }
+  }
+
 
   jobs(){
-    // var relevantTrips = this.props.trips.all_trips.filter((job)=>{
-      // return (job.client_name||'').toUpperCase().indexOf((this.props.trips.searchString||'').toUpperCase())>=0
-    // })
-    // console.log(relevantTrips)
+    var tripIdOrder = this.props.trips.all_trips_reference.map((ajob)=>{return ajob.id})
     return this.props.trips.all_trips.map((job,index)=>{
       var arrival_time = job.arrival_time
-     
-      var indexInAllTrips =  this.props.trips.all_trips.map((ajob)=>{return ajob.id}).indexOf(job.id)
+      var indexInAllTrips =  tripIdOrder.indexOf(job.id)
       var inlineStyleColor = {color: this.state.colours[indexInAllTrips]}
       var collapseStyle={display: 'none'}
       var iconHome = `${indexInAllTrips}${this.state.colours[indexInAllTrips]}`
-      // var name = job.client_name
      
       var image = <i 
           draggable='true' 
@@ -88,14 +94,14 @@ class JobList extends React.Component{
   }
 
   render(){ 
-    // console.log(this.props.trips.searchString)
+
     if(this.props.trips.all_trips){
       return(
         <table className='grid-item-joblist'>
         <tbody>
         <tr>
         <th>View Route</th>
-        <th>Client Name</th>
+        <th onClick={this.handleClientNameSort.bind(this)} >Client Name</th>
         <th>Drag Icon</th>
         <th>Colour</th>
         <th>Volume</th>
@@ -122,7 +128,7 @@ class JobList extends React.Component{
 
 
 const mapDispatchToProps=(dispatch)=>({
-  actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells}, dispatch)
+  actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName}, dispatch)
 })
 const mapStateToProps=(state)=>({trips: state.trips})
 

@@ -19,7 +19,7 @@ import AccountManagementSmart from './components/account_management/AccountManag
 
 
 Raven.config(sentry_url, {
-  tags: { git_commit: "Joseph what the fuck",
+  tags: { git_commit: "Hello Joseph",
   user_level: "access level mega"}
 }).install()
 
