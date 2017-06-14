@@ -8,7 +8,7 @@ class TruckDayView extends React.Component{
 
   constructor(props) {
     super(props)
-    this.state = {trucks: [1,2,3,4,5,6,7], backgroundColour: ''}
+    this.state = {trucks: [1,2,3,4,5,6,7]}
   }
 
   handleDragEnter(event){
@@ -30,11 +30,8 @@ class TruckDayView extends React.Component{
       }
       newCellArray.push(newCellId)
     }
-    ////////////////////////
-    this.setState({backgroundColour: this.props.trips.currentDragJob.colour})
-    ///////////////////////
     this.props.actions.setHighlightedCells(newCellArray)
-    ///////////////////////
+
   }
 
   handleDragOver(event){
@@ -43,12 +40,13 @@ class TruckDayView extends React.Component{
 
   handleDragLeave(event){
     event.preventDefault()
+
   }
 
   drop(event){
         this.props.actions.setDroppedCells({
           cells: this.props.trips.highlightedCells, 
-          colour: this.state.backgroundColour
+          colour: this.props.trips.currentDragJob.colour
         })
         var data = event.dataTransfer.getData('text')
 
@@ -87,7 +85,7 @@ class TruckDayView extends React.Component{
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     if(this.props.trips.highlightedCells.includes(cellId)){
-      var inlineStyle = {border: `2px dashed ${this.state.backgroundColour}`}
+      var inlineStyle = {border: `2px dashed ${this.props.trips.currentDragJob.colour}`}
 
     }else{inlineStyle={border: ''}}
 
