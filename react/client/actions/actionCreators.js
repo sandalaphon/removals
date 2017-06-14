@@ -84,6 +84,13 @@ export function setHighlightedCells(cellIds){
   }
 }
 
+export function sortByClientName(order){
+  return {
+    type: 'SORT_BY_CLIENT_NAME',
+    payload: order
+  }
+}
+
 
 export function signUpClick(signup_email, signup_password, signup_password_confirm, callback){
   return function(dispatch){

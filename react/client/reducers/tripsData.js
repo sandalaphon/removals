@@ -28,6 +28,33 @@ highlightedCells: []
     case 'SET_HIGHLIGHTED_CELLS':
     return{...state, highlightedCells: action.payload}
     break;
+
+
+    case 'SORT_BY_CLIENT_NAME':
+       var sorted
+        if(action.payload === 'asc'){
+            sorted = state.all_trips.sort(
+                (a,b)=>{
+                    if (a.client_name < b.client_name) return -1
+                    if (b.client_name < a.client_name) return 1
+                    return 0
+            })
+        }else{
+            sorted = state.all_trips.sort(
+                (a,b)=>{
+                    if (a.client_name < b.client_name) return 1
+                    if (b.client_name < a.client_name) return -1
+                    return 0
+            })
+        }
+
+        
+
+
+    return{...state, all_trips: sorted}
+    break;
+
+
     case 'DELETE_DROPPED_CELLS':
         var newArray = state.droppedCells.slice()
     state.droppedCells.forEach((object, index)=>{

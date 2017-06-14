@@ -16,9 +16,10 @@ class TruckDayView extends React.Component{
     event.preventDefault()
 
     let cellId = event.target.id
+    console.log("heeddd",cellId)
     var newCellArray = []
     let hours = this.props.trips.currentDragJob.estimated_hours
-
+    console.log("hours", hours)
     for(let i = 0; i<hours; i++){
       let startIndex=cellId.substring(event.target.id.length-2)
       let newStartIndex = +startIndex+i
@@ -30,6 +31,8 @@ class TruckDayView extends React.Component{
       }
       newCellArray.push(newCellId)
     }
+
+    console.log(newCellArray)
     ////////////////////////
     this.setState({backgroundColour: this.props.trips.currentDragJob.colour})
     ///////////////////////
