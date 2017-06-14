@@ -2,7 +2,8 @@ function handleData(state = {
 trips: null,
 isInScheduler: false,
 droppedCells: [],
-highlightedCells: []
+highlightedCells: [],
+divCounter: 0
 },action){
 
 
@@ -31,6 +32,12 @@ highlightedCells: []
     break;
     case 'SET_HIGHLIGHTED_CELLS':
     return{...state, highlightedCells: action.payload}
+    break;
+    case 'INCREMENT_DIV_COUNTER':
+    return{...state, divCounter: state.divCounter+1}
+    break;
+    case 'DECREMENT_DIV_COUNTER':
+    return{...state, divCounter: state.divCounter-1}
     break;
     case 'DELETE_DROPPED_CELLS':
         var newArray = state.droppedCells.slice()

@@ -16,6 +16,7 @@ class TruckDayView extends React.Component{
       event.preventDefault()
 
       console.log('current event.target', event.target)
+      this.props.actions.incrementDivCounter()
 
     let cellId = event.target.id
     var newCellArray = []
@@ -46,10 +47,18 @@ class TruckDayView extends React.Component{
 
   handleDragLeave(event){
     event.preventDefault()
+    this.props.actions.decrementDivCounter()
+    if(this.props.state.trips.divCounter===1){
+      this.props.actions.setHighlightedCells([])
+    }
+    console.log(this.props.state.trips.divCounter)
+    console.log(this.state.backgroundColour)
   }
 
   drop(event){
     event.preventDefault()
+
+        this.props.actions.decrementDivCounter()
     this.props.actions.setDroppedCells({
       cells: this.props.state.trips.highlightedCells, 
       colour: this.state.backgroundColour
@@ -93,6 +102,7 @@ class TruckDayView extends React.Component{
     var inlineStyle = {border: `2px dashed ${this.state.backgroundColour}`}
 
     }else{inlineStyle={border: ''}}
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 

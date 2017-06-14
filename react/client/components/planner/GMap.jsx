@@ -4,6 +4,7 @@ import TruckFlicker from './TruckFlicker'
 import * as actionCreators from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import {drawRoute} from '../../models/mapFunctions'
 
 class GMap extends React.Component {
 
@@ -12,13 +13,15 @@ class GMap extends React.Component {
     this.state = { 
       zoom: 11,
       center: { lng: -3.1883 , lat: 55.9533 }
-    };
+    };  
   }
 
   componentDidMount() {
     this.map = this.createMap()
+    drawRoute.call(this, {lng: -3.1883, lat: 55.9533}, {lng: -2.1883, lat: 54.9533}, this.map )
   }
 
+  
   componentDidUnMount() {
     google.maps.event.clearListeners(map, 'zoom_changed')
   }
@@ -39,14 +42,13 @@ class GMap extends React.Component {
   }
 
   render() {
-
     return (
       <div className='grid-item-map' ref="mapCanvas">
         this.map
       </div>
     )
-
   }
+
 
 }
 

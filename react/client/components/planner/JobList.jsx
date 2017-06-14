@@ -23,20 +23,28 @@ drag(event){
 
     handleDragEnd(event){
       event.preventDefault()
-      console.log('dragend target',event.relatedTarget)
+      console.log('divCounter on dragend', this.props.state.trips.divCounter)
+      console.log('dragend target',event.target)
+      if(this.props.state.trips.divCounter===1){
+        // var tableDataElement =document.querySelector('td#index')
+        console.log('tableDataElement')
+        // var draggedImage=
+        // tableDataElement.appendChild()
+      }
     }
 
 
 jobs(){
   return this.props.state.trips.all_trips.map((job,index)=>{
     var arrival_time = job.arrival_time
+    var iconHome = `${index}${this.state.colours[index]}`
     var inlineStyleColor = {color: this.state.colours[index]}
     var image = <i draggable='true' onDragEnd={this.handleDragEnd.bind(this)} onDragStart={this.drag.bind(this)}  className="material-icons md-48 truckimage" style={inlineStyleColor} id={index}>local_shipping</i>
 
    return (<tr key={index}>
       <td ><button id={job.id}>View Route</button></td>
       <td >{job.client_name}</td>
-      <td >{image}</td>
+      <td id={iconHome}>{image}</td>
       <td >'colour code here'</td>
       <td >{job.volume}</td>
       <td >{job.men_requested}</td>
