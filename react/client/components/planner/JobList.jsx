@@ -1,5 +1,5 @@
 import React from 'react'
-import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName} from '../../actions/actionCreators'
+import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName, renderNewRoute} from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -44,6 +44,23 @@ class JobList extends React.Component{
     }
   }
 
+  getTripById(tripId){
+    return this.props.trips.all_trips.find((job)=>{
+      return job.id=== +tripId
+    })
+  }
+
+  renderTripById(tripId){
+    var trip = this.getTripById(tripId)
+    let startLatLng = JSON.parse(trip.collection_latlng)
+    let endLatLng = JSON.parse(trip.delivery_latlng)
+    this.props.actions.renderNewRoute(startLatLng, endLatLng, tripId)
+  }
+
+  handleDrawRouteClick(event){
+    this.renderTripById(event.target.id)
+  }
+
 
   jobs(){
     var tripIdOrder = this.props.trips.all_trips_reference.map((ajob)=>{return ajob.id})
@@ -53,20 +70,21 @@ class JobList extends React.Component{
       var inlineStyleColor = {color: this.state.colours[indexInAllTrips]}
       var collapseStyle={display: 'none'}
       var iconHome = `${indexInAllTrips}${this.state.colours[indexInAllTrips]}`
+      var hoverHandStyle = {cursor: 'pointer'}
      
       var image = <i 
           draggable='true' 
           onDragEnd={this.handleDragEnd.bind(this)} 
           onDragStart={this.drag.bind(this)}  
-          className="material-icons md-48 truckimage" 
+          className="material-icons md-18 truckimage" 
           style={inlineStyleColor} 
           id={indexInAllTrips}>local_shipping</i>
           if((job.client_name||'').toUpperCase().indexOf((this.props.trips.searchString||'').toUpperCase())>=0){
       return (<tr key={indexInAllTrips}>
-        <td ><button id={job.id}>View Route</button></td>
+        <td ><button id={job.id} onClick={this.handleDrawRouteClick.bind(this)}>View Route</button></td>
         <td >{job.client_name}</td>
-        <td id={iconHome}>{image}</td>
-        <td >'colour code here'</td>
+        <td id={iconHome} style={hoverHandStyle} >{image}</td>
+        <td >{JSON.parse(job.collection_latlng).lat}</td>
         <td >{job.volume}</td>
         <td >{job.men_requested}</td>
         <td >{job.arrival_time}</td>
@@ -77,10 +95,10 @@ class JobList extends React.Component{
         </tr>)
 }else{
   return(<tr key={indexInAllTrips} style={collapseStyle}>
-        <td ><button id={job.id}>View Route</button></td>
+        <td ><button id={job.id} onClick={this.handleDrawRouteClick.bind(this)}>View Route</button></td>
         <td >{job.client_name}</td>
         <td id={iconHome}>{image}</td>
-        <td >'colour code here'</td>
+        <td >{job.collection_latlng}</td>
         <td >{job.volume}</td>
         <td >{job.men_requested}</td>
         <td >{job.arrival_time}</td>
@@ -94,14 +112,14 @@ class JobList extends React.Component{
   }
 
   render(){ 
-
+    var hoverHandStyle = {cursor: 'pointer'}
     if(this.props.trips.all_trips){
       return(
         <table className='grid-item-joblist'>
         <tbody>
         <tr>
         <th>View Route</th>
-        <th onClick={this.handleClientNameSort.bind(this)} >Client Name</th>
+        <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
         <th>Drag Icon</th>
         <th>Colour</th>
         <th>Volume</th>
@@ -128,7 +146,7 @@ class JobList extends React.Component{
 
 
 const mapDispatchToProps=(dispatch)=>({
-  actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName}, dispatch)
+  actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName, renderNewRoute}, dispatch)
 })
 const mapStateToProps=(state)=>({trips: state.trips})
 

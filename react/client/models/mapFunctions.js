@@ -21,10 +21,4 @@ directionsService.route(directionInput, function(response, status){
   }
 }.bind(this))
 
-
-
-
-
-
-
 }

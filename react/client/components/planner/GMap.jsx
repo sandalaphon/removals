@@ -13,7 +13,7 @@ class GMap extends React.Component {
     this.state = { 
       zoom: 11,
       center: { lng: -3.1883 , lat: 55.9533 }
-    };  
+    };
   }
 
   componentDidMount() {
@@ -42,6 +42,13 @@ class GMap extends React.Component {
   }
 
   render() {
+    var routeToRender = this.props.trips.newRouteToRender
+    if(routeToRender&&routeToRender!==this.state.routeToRender){
+      drawRoute.call(this, routeToRender.startlatlng, routeToRender.endlatlng, this.map)
+    }
+    // this.props.trips.renderedRoutes.forEach((job)=>{
+    //   drawRoute.call(this, job.startlatlng, job.endlatlng, this.map)
+    // })
     return (
       <div className='grid-item-map' ref="mapCanvas">
         this.map
@@ -55,5 +62,5 @@ class GMap extends React.Component {
 const mapDispatchToProps=(dispatch)=>({
 actions: bindActionCreators(actionCreators, dispatch)
 })
-const mapStateToProps=(state)=>({state})
+const mapStateToProps=(state)=>({trips: state.trips})
 export default connect(mapStateToProps, mapDispatchToProps)(GMap)

@@ -20,6 +20,13 @@ export function fetchUser(){
 }
 }
 
+export function renderNewRoute(startlatlng, endlatlng, trip_id){
+  return{
+    type: 'ADD_LAT_LNG_TO_RENDERED_ROUTES',
+      payload: {startlatlng, endlatlng, trip_id}
+  }
+}
+
 export function loginEmail(email){
   return {
     type: 'LOGIN_EMAIL_CHANGE',

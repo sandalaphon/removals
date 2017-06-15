@@ -21,7 +21,7 @@ getLatLng(postcode){
 }
 
 setDeliveryLatLng(postcode, json, callback){
-  this.geocoder.geocode({address: this.postcode}, (results, status)=>{
+  this.geocoder.geocode({address: postcode}, (results, status)=>{
     if(status===google.maps.GeocoderStatus.OK){
       console.log(results[0].geometry.location.lat(), results[0].geometry.location.lng())
       this.delivery_LatLng ={lat: results[0].geometry.location.lat(),lng: results[0].geometry.location.lng()}
@@ -36,11 +36,12 @@ setDeliveryLatLng(postcode, json, callback){
 
 
 setCollectionLatLng(postcode, json, callback){
-  this.geocoder.geocode({address: this.postcode}, (results, status)=>{
+  console.log('postcode', postcode)
+  this.geocoder.geocode({address: postcode}, (results, status)=>{
     if(status===google.maps.GeocoderStatus.OK){
       console.log(results[0].geometry.location.lat(), results[0].geometry.location.lng())
       this.collection_LatLng ={lat: results[0].geometry.location.lat(),lng: results[0].geometry.location.lng()}
-      this.setDeliveryLatLng(json.deliveryPostCode, json, callback)
+      this.setDeliveryLatLng(json.delivery_postcode, json, callback)
      
     }else{
       console.log(status)
@@ -59,7 +60,8 @@ adjustJsonAndSendToRails(json, callback){
 }
 
 setLatLngAndSendToRailsDb(json, callback){
- this.setCollectionLatLng(json.collectionPostCode, json, callback)
+  console.log('json',json)
+ this.setCollectionLatLng(json.collection_postcode, json, callback)
  // this.setDeliveryLatLng(json.deliveryPostCode)
 
 }

@@ -23,9 +23,9 @@ class UpdateData extends React.Component {
   convertToJson(event){
     var csv = new Converter()
     var text = event.target.result
-    console.log('here')
-    console.log('csv', csv)
-    console.log("outside or something", this.props)
+    // console.log('here')
+    // console.log('csv', csv)
+    // console.log("outside or something", this.props)
     const arr = []
     csv
     .fromString(text)
@@ -46,7 +46,7 @@ class UpdateData extends React.Component {
     })
     .on('done', ()=>{
       console.log('end')
-      window.alert("Thank you for the submission, the data is saved")
+      window.alert('Thank you for the submission, the data is saved')
       // this.props.sendTripsToRails(arr)
     })
 

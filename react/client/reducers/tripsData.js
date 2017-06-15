@@ -1,7 +1,8 @@
 function handleData(state = {
 trips: null,
 droppedCells: [],
-highlightedCells: []
+highlightedCells: [],
+renderedRoutes: []
 },action){
 
 
@@ -31,6 +32,11 @@ highlightedCells: []
     break;
     case 'SET_SEARCH_STRING':
     return{...state, searchString: action.payload}
+    break;
+    case 'ADD_LAT_LNG_TO_RENDERED_ROUTES':
+    var newRenderedRoutes = state.renderedRoutes.slice()
+    newRenderedRoutes.push(action.payload)
+    return{...state, renderedRoutes: newRenderedRoutes, newRouteToRender: action.payload}
     break;
     case 'DELETE_DROPPED_CELLS':
         var newArray = state.droppedCells.slice()
