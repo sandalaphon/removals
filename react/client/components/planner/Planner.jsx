@@ -21,7 +21,7 @@ class Planner extends React.Component {
             <Filter setSearchQuery={this.props.actions.setSearchQuery}/>
             <TruckDayView />
             <Gmap />
-            <TruckFlicker/>
+            <TruckFlicker all_trips={this.props.state.trips.all_trips}/>
       </div>
       )
   }

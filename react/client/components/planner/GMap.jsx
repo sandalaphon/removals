@@ -45,6 +45,7 @@ class GMap extends React.Component {
     var routeToRender = this.props.trips.newRouteToRender
     if(routeToRender&&routeToRender!==this.state.routeToRender){
       drawRoute.call(this, routeToRender.startlatlng, routeToRender.endlatlng, this.map)
+      this.props.actions.deleteRouteToRender()
     }
     // this.props.trips.renderedRoutes.forEach((job)=>{
     //   drawRoute.call(this, job.startlatlng, job.endlatlng, this.map)

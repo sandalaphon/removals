@@ -3,6 +3,8 @@ trips: null,
 droppedCells: [],
 highlightedCells: [],
 renderedRoutes: []
+// all_trips:[],
+// all_trips_reference: []
 },action){
 
 
@@ -29,6 +31,9 @@ renderedRoutes: []
     break;
     case 'SET_HIGHLIGHTED_CELLS':
     return{...state, highlightedCells: action.payload}
+    break;
+    case 'DELETE_ROUTE_TO_RENDER':
+    return{...state, newRouteToRender: null}
     break;
     case 'SET_SEARCH_STRING':
     return{...state, searchString: action.payload}

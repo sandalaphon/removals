@@ -20,6 +20,13 @@ export function fetchUser(){
 }
 }
 
+export function deleteRouteToRender(){
+  return {
+    type: 'DELETE_ROUTE_TO_RENDER'
+    
+  }
+}
+
 export function renderNewRoute(startlatlng, endlatlng, trip_id){
   return{
     type: 'ADD_LAT_LNG_TO_RENDERED_ROUTES',

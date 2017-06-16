@@ -20,7 +20,9 @@ class TruckFlicker extends React.Component {
 
 
   render(){
-
+    var visibleJourneys = this.props.all_trips ? 
+    this.props.all_trips.length : 0
+ 
     return (
       <Pagination
       className = "grid-item-truck-flicker"
@@ -30,7 +32,7 @@ class TruckFlicker extends React.Component {
       last
       ellipsis
       boundaryLinks
-      items={8}
+      items={visibleJourneys}
       maxButtons={8}
       activePage={this.state.activePage}
       onSelect={this.handleSelect.bind(this)}
