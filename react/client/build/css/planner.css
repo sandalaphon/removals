@@ -34,12 +34,12 @@
 }
 
 .grid-item-truck-day-view{
-  display:inline-grid;
+   display:inline-grid;
    border:1px solid red;
    grid-area: cal;
    overflow: scroll;
-   grid-template-columns: repeat(19,1fr);
-   /*grid-template-rows: 1fr;*/
+   /*grid-template-columns: repeat(19,1fr);*/
+   grid-template-rows: repeat(3,1fr);
 }
 
 .grid-item-joblist{
@@ -52,6 +52,21 @@
 
 .drop-target{
   background-color: hotpink;
+}
+
+.truckCell{
+  border: 5px solid purple;
+  width: 50px;
+  height: 50px;
+}
+
+.truckRow {
+  /*display: grid;*/
+  display: inline-block;
+  /*grid-auto-columns: 1fr;*/
+  border: 1px solid black;
+  min-height: 1fr;
+  min-width: 1fr;
 }
 
 table{

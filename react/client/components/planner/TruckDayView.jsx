@@ -43,15 +43,15 @@ class TruckDayView extends React.Component{
     const { canDrop, isOver, connectDropTarget } = this.props;
     const isActive = canDrop && isOver;
     const style = {
-      width: "100%",
-      height: "204px",
+      width: "1fr",
+      height: "1fr",
       border: '1px dashed gray'
     };
 
     const backgroundColor = isActive ? 'lightgreen' : '#FFF';
-
+    
     return connectDropTarget(
-      <div style={{...style, backgroundColor}}>
+      <div style={{ backgroundColor}} className = 'grid-item-truck-day-view' >
         {trucks.map((truck, i) => {
           return (
             <TruckRow 
@@ -73,9 +73,9 @@ class TruckDayView extends React.Component{
 const truckTarget = {
   drop(props, monitor, component ) {
     const { id } = props;
-    console.log(props)
+    console.log('props', props)
     const sourceObj = monitor.getItem();   
-    console.log(sourceObj) 
+    console.log('sourceObj', sourceObj) 
     component.placeTruck(sourceObj.truck);
     return {
       listId: id
