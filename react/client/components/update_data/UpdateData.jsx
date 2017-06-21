@@ -23,23 +23,12 @@ class UpdateData extends React.Component {
   convertToJson(event){
     var csv = new Converter()
     var text = event.target.result
-    // console.log('here')
-    // console.log('csv', csv)
-    // console.log("outside or something", this.props)
     const arr = []
     csv
     .fromString(text)
     .on('json', (json) =>{ 
-      console.log(json)
-      // arr.push(json)
-      // console.log('here json', json)
-      // var object = json
-      // console.log("inside", this.props)
-      //adjust
-
       var geocoder = new Geocoder
       geocoder.setLatLngAndSendToRailsDb(json, this.props.sendSingleTripToRails.bind(this))
-
       ////////////////////////////////////////////////
       // this.props.sendSingleTripToRails(json)
       ///////////////////////////////////////////////
@@ -47,7 +36,7 @@ class UpdateData extends React.Component {
     .on('done', ()=>{
       console.log('end')
       window.alert('Thank you for the submission, the data is saved')
-      // this.props.sendTripsToRails(arr)
+      
     })
 
   }
@@ -83,20 +72,3 @@ class UpdateData extends React.Component {
 }
 
 export default UpdateData
-
-// <label className="custom-file">
-// <input type="file" id='file' className="custom-file-input"/>
-// <span className='custom-file-control'></span>
-// <input type="submit"/>
-// </label>
-
-// <Form>
-
-// <FieldGroup
-      // id="formControlsFile"
-    //   type="file"
-    //   label="File"
-    //   help="Example block-level help text here."
-    // />
-
-// </Form>

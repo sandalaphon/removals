@@ -1,152 +1,99 @@
 import React from 'react'
-import {Table, Button} from 'react-bootstrap'
-import * as actionCreators from '../../actions/actionCreators'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
+import update from 'react/lib/update';
+//import {Table, Button} from 'react-bootstrap'
+//import * as actionCreators from '../../actions/actionCreators'
+//import {bindActionCreators} from 'redux'
+//import {connect} from 'react-redux'
+//import flow from 'lodash/flow';
+import { DragSource, DropTarget } from 'react-dnd';
+import TruckRow from './TruckRow'
 
 class TruckDayView extends React.Component{
 
   constructor(props) {
     super(props)
-    this.state = {trucks: [1,2,3,4,5,6,7]}
+    this.state = {trucks: [
+      { id: 1, text: "Item 1" , colour: "red"},
+      { id: 2, text: "Item 2" , colour: "blue"},
+      { id: 3, text: "Item 3" , colour: "green"}
+    ]}
   }
 
-  handleDragEnter(event){
-
-    event.preventDefault()
-
-    let cellId = event.target.id
-    var newCellArray = []
-    let hours = this.props.trips.currentDragJob.estimated_hours
-
-    for(let i = 0; i<hours; i++){
-      let startIndex=cellId.substring(event.target.id.length-2)
-      let newStartIndex = +startIndex+i
-      let newCellId=''
-      if(newStartIndex<10){
-        newCellId=`${cellId.substring(0, event.target.id.length-2)}0${newStartIndex}`
-      }else{
-        newCellId=`${cellId.substring(0, event.target.id.length-2)}${newStartIndex}`
+  placeTruck(truck) {
+    console.log("pushed")
+    this.setState(update(this.state, {
+      trucks: {
+        $push: [ truck ]
       }
-      newCellArray.push(newCellId)
-    }
-    this.props.actions.setHighlightedCells(newCellArray)
-
+    }));
   }
 
-  handleDragOver(event){
-    event.preventDefault() 
+  removeTruck(index) {   
+    this.setState(update(this.state, {
+      trucks: {
+        $splice: [
+          [index, 1]
+        ]
+      }
+    }));
   }
 
-  handleDragLeave(event){
-    event.preventDefault()
+  render() {
+    const { trucks } = this.state;
+    const { canDrop, isOver, connectDropTarget } = this.props;
+    const isActive = canDrop && isOver;
+    const style = {
+      width: "100%",
+      height: "204px",
+      border: '1px dashed gray'
+    };
 
-  }
+    const backgroundColor = isActive ? 'lightgreen' : '#FFF';
 
-  drop(event){
-        this.props.actions.setDroppedCells({
-          cells: this.props.trips.highlightedCells, 
-          colour: this.props.trips.currentDragJob.colour
-        })
-        var data = event.dataTransfer.getData('text')
-
-    // var nodeCopy = document.getElementById(data).cloneNode(true);
-    //  nodeCopy.id = 'newId'; /* We cannot use the same ID */
-    //  ev.target.appendChild(nodeCopy);
-
-
-    event.target.appendChild(document.getElementById(JSON.parse(data)[0]))
-  }
-
-
-  render(){
-
-    var timeColumns = [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
-
-  //////////////////MAP START///////
-
-  var truckCalendar = timeColumns.map((time, timeIndex)=>{
-    var timeString = `${time}:00`
-    var timeColumnClassName = 'timecolumn'
-    return(
-      <div key={timeIndex} className={timeColumnClassName}>{
-
-        this.state.trucks.map((truck, truckIndex)=>{
-
-          var truckClassName=`cell truck${truckIndex} time${timeIndex+5}`
-          var cellId =''
-
-          if(timeIndex.toString().length<2){
-            cellId = `truck${truckIndex}time0${timeIndex}`
-          }else{
-            cellId = `truck${truckIndex}time${timeIndex}`
-          }
-          var inlineStyle = ''
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    if(this.props.trips.highlightedCells.includes(cellId)){
-      var inlineStyle = {border: `2px dashed ${this.props.trips.currentDragJob.colour}`}
-
-    }else{inlineStyle={border: ''}}
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-
-    if(this.props.trips.droppedCells.length){
-      this.props.trips.droppedCells.forEach((object)=>{
-        if(object.cells.includes(cellId)){
-          inlineStyle = {backgroundColor: object.colour, opacity: 0.5}
-
-        }
-      })
-    }
-
-    var truckKey = `truck${truckIndex}time${timeIndex}`
-    var headerKey = `header${timeIndex}`
-
-    return(
-      <div 
-      className={truckClassName} 
-      key={truckKey}  
-      id={cellId} 
-      style={inlineStyle} 
-      onDrop={this.drop.bind(this)} 
-      onDragOver={this.handleDragOver.bind(this)} 
-      onDragLeave={this.handleDragLeave.bind(this)} 
-      onDragEnter={this.handleDragEnter.bind(this)} >
+    return connectDropTarget(
+      <div style={{...style, backgroundColor}}>
+        {trucks.map((truck, i) => {
+          return (
+            <TruckRow 
+              key={i}
+              index={i}
+              listId={this.props.id}
+              truck={truck}                           
+              removeTruck={this.removeTruck.bind(this)}
+              />
+          );
+        })}
       </div>
-      )
-  })
+    );
+  }
 
-      }</div>
-      )
-  })
-
-  ///////////// MAP END ///////////////////////
-
-  truckCalendar.forEach((columnArray, index)=>{
-    var timeString = `${index+5}:00`
-
-    return columnArray.props.children.unshift(<div className='cell'>{timeString}</div>)
-  })
-
-/////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////
-
-
-return(
-  <div className='grid-item-truck-day-view'>
-  {truckCalendar}
-  </div>
-  )
-}
 
 }
 
-const mapDispatchToProps=(dispatch)=>({
-  actions: bindActionCreators(actionCreators, dispatch)
-})
-const mapStateToProps=(state)=>({trips: state.trips})
-export default connect(mapStateToProps, mapDispatchToProps)(TruckDayView)
+const truckTarget = {
+  drop(props, monitor, component ) {
+    const { id } = props;
+    console.log(props)
+    const sourceObj = monitor.getItem();   
+    console.log(sourceObj) 
+    component.placeTruck(sourceObj.truck);
+    return {
+      listId: id
+    };
+  }
+}
 
 
+export default DropTarget("TRUCKROW", truckTarget, (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver(),
+  canDrop: monitor.canDrop()
+}))(TruckDayView);
+
+
+// const mapDispatchToProps=(dispatch)=>({
+//   actions: bindActionCreators(actionCreators, dispatch)
+// })
+// const mapStateToProps=(state)=>({trips: state.trips})
+
+//export default connect(mapStateToProps, mapDispatchToProps)(TruckDayView)

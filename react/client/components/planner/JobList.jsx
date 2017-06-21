@@ -2,6 +2,9 @@ import React from 'react'
 import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName, renderNewRoute} from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+//import DraggedStuff from './DraggedStuff';
+//import { DragDropContextProvider } from 'react-dnd';
+//import HTML5Backend from 'react-dnd-html5-backend';
 
 class JobList extends React.Component{
   constructor(props){
@@ -12,27 +15,36 @@ class JobList extends React.Component{
     }
   }
 
-  drag(event){
+  // drag(event){
+  //   event.dataTransfer.setData('text', JSON.stringify([
+  //     event.target.id, 
+  //     this.props.trips.all_trips_reference[event.target.id], 
+  //     this.state.colours[event.target.id]
+  //     ]))
 
-    event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.trips.all_trips_reference[event.target.id], this.state.colours[event.target.id]]))
-    
-   
-    this.props.actions.setCurrentDragJob({colour: this.state.colours[event.target.id], estimated_hours: this.props.trips.all_trips_reference[event.target.id].estimated_hours})
-
-    this.props.actions.deleteDroppedCells(this.state.colours[event.target.id])
-    console.log('target.id', event.target.id)
-
-  }
+  //   this.props.actions.setCurrentDragJob({
+  //     colour: this.state.colours[event.target.id], 
+  //     estimated_hours: this.props.trips.all_trips_reference[event.target.id].estimated_hours})
+  // }
 
 
-  handleDragEnd(event){
-    event.preventDefault()
-    if(event.dataTransfer.dropEffect==='none'){
-      this.props.actions.setHighlightedCells([])
-      var tableDataElement =document.getElementById(`${event.target.id}${this.state.colours[event.target.id]}`)
-      tableDataElement.appendChild(event.target)
-    }
-  }
+  // handleDragEnd(event){
+  //   event.preventDefault()
+  //   if(event.dataTransfer.dropEffect==='none'){
+  //     this.props.actions.setHighlightedCells([])
+  //     var tableDataElement =document.getElementById(`${event.target.id}${this.state.colours[event.target.id]}`)
+  //     tableDataElement.appendChild(event.target)
+
+  //     this.props.actions.deleteDroppedCells(this.state.colours[event.target.id])
+  //   }
+  //   if(event.dataTransfer.dropEffect!=='none'){
+  //     console.log("nem none")
+  //     // if drop successful delete from droppedcells with id before
+  //   }
+  //   // else{
+  //   //   this.props.actions.deleteDroppedCells(this.state.colours[event.target.id])
+  //   // }
+  // }
 
   handleClientNameSort(){
     if(this.state.order){
@@ -44,22 +56,22 @@ class JobList extends React.Component{
     }
   }
 
-  getTripById(tripId){
-    return this.props.trips.all_trips.find((job)=>{
-      return job.id=== +tripId
-    })
-  }
+  // getTripById(tripId){
+  //   return this.props.trips.all_trips.find((job)=>{
+  //     return job.id=== +tripId
+  //   })
+  // }
 
-  renderTripById(tripId){
-    var trip = this.getTripById(tripId)
-    let startLatLng = JSON.parse(trip.collection_latlng)
-    let endLatLng = JSON.parse(trip.delivery_latlng)
-    this.props.actions.renderNewRoute(startLatLng, endLatLng, tripId)
-  }
+  // renderTripById(tripId){
+  //   var trip = this.getTripById(tripId)
+  //   let startLatLng = JSON.parse(trip.collection_latlng)
+  //   let endLatLng = JSON.parse(trip.delivery_latlng)
+  //   this.props.actions.renderNewRoute(startLatLng, endLatLng, tripId)
+  // }
 
-  handleDrawRouteClick(event){
-    this.renderTripById(event.target.id)
-  }
+  // handleDrawRouteClick(event){
+  //   this.renderTripById(event.target.id)
+  // }
 
 
   jobs(){
@@ -73,19 +85,19 @@ class JobList extends React.Component{
       var collapseStyle = (job.client_name||'').toUpperCase().indexOf((this.props.trips.searchString||'').toUpperCase())>=0 ? {} : {display: 'none'}
       var image = <i 
           draggable='true' 
-          onDragEnd={this.handleDragEnd.bind(this)} 
-          onDragStart={this.drag.bind(this)}  
+          //onDragEnd={this.handleDragEnd.bind(this)} 
+         // onDragStart={this.drag.bind(this)}  
           className="material-icons md-18 truckimage" 
           style={inlineStyleColor} 
           id={indexInAllTrips}>local_shipping</i>
           
      
   return(<tr key={indexInAllTrips} style={collapseStyle}>
-        <td ><button id={job.id} onClick={this.handleDrawRouteClick.bind(this)}>View Route</button></td>
+        <td ></td>
         <td >{job.client_name}</td>
         <td id={iconHome}>{image}</td>
         <td >{job.collection_latlng}</td>
-        <td >{job.volume}</td>
+        <td ></td>
         <td >{job.men_requested}</td>
         <td >{job.arrival_time}</td>
         <td >{job.id}</td>
@@ -101,6 +113,7 @@ class JobList extends React.Component{
     var hoverHandStyle = {cursor: 'pointer'}
     if(this.props.trips.all_trips){
       return(
+       // <DragDropContextProvider backend={HTML5Backend}>
         <table className='grid-item-joblist'>
         <tbody>
         <tr>
@@ -119,6 +132,7 @@ class JobList extends React.Component{
         {this.jobs()}
         </tbody>
         </table>
+      //  </DragDropContextProvider>
         )
     }else{
       return(
@@ -138,3 +152,7 @@ const mapStateToProps=(state)=>({trips: state.trips})
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(JobList)
+
+
+
+// <button id={job.id} onClick={this.handleDrawRouteClick.bind(this)}>View Route</button>c

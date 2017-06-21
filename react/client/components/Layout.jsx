@@ -3,16 +3,20 @@ import Navb from './Navb'
 import {Link} from 'react-router'
 import LoginBox from './sign_in/LoginBox'
 import SignUp from './account_management/SignUp'
+import * as actionCreators from '../actions/actionCreators'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+
 
 class Layout extends React.Component {
 
   componentDidMount(){
-    this.props.fetchUser()
+    this.props.actions.fetchUser()
   }
 
   render(){
 
-    var {loginEmail, loginPassword, signInClick, signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm,  signOut, addUser, getUsers, getAllTripsFromRails } = this.props
+    var {loginEmail, loginPassword, signInClick, signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm,  signOut, addUser, getUsers, getAllTripsFromRails } = this.props.actions
     var {user_email, user_password} = this.props.loginDetails
     var toDisplay ;
       
@@ -54,5 +58,11 @@ class Layout extends React.Component {
 
 }
 
-export default Layout
-
+const mapDispatchToProps=(dispatch)=>({
+  actions: bindActionCreators(actionCreators, dispatch)
+})
+const mapStateToProps=(state)=>({
+  trips: state.trips,
+  loginDetails: state.loginDetails
+})
+export default connect(mapStateToProps, mapDispatchToProps)(Layout)

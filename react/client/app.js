@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory} from 'react-router'
 import {Provider} from 'react-redux'
 import store, {history} from './store'
-import Raven from 'raven-js'
+//import Raven from 'raven-js'
 import {sentry_url, logException} from './helpers/config'
 
 import LoginBox from './components/sign_in/LoginBox'
-import Main from './components/Main'
+
 import Layout from './components/Layout'
 
 import Home from './components/home/Home'
@@ -18,10 +18,10 @@ import UpdateDataSmart from './components/update_data/UpdateDataSmart'
 import AccountManagementSmart from './components/account_management/AccountManagementSmart'
 
 
-Raven.config(sentry_url, {
-  tags: { git_commit: "Hello Joseph",
-  user_level: "access level mega"}
-}).install()
+// Raven.config(sentry_url, {
+//   tags: { git_commit: "Hello Joseph",
+//   user_level: "access level mega"}
+// }).install()
 
 // Raven.showReportDialog()//user gets a pop up
 
@@ -32,7 +32,7 @@ class TopComponent extends React.Component {
     return(
       <Provider store= {store}>
       <Router history = {browserHistory}>
-        <Route path="/" component= {Main}> 
+        <Route path="/" component= {Layout}> 
           <IndexRoute component= {Home}></IndexRoute> 
           <Route path="home" component= {Home}></Route>
           <Route path="planner" component= {Planner}></Route>
