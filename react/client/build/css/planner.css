@@ -39,7 +39,7 @@
    grid-area: cal;
    overflow: scroll;
    /*grid-template-columns: repeat(19,1fr);*/
-   grid-template-rows: repeat(3,1fr);
+   /*grid-template-rows: repeat(3,1fr);*/
 }
 
 .grid-item-joblist{
@@ -55,18 +55,29 @@
 }
 
 .truckCell{
-  border: 5px solid purple;
-  width: 50px;
-  height: 50px;
+  border: 1px solid purple;
+  width: 1fr;
+  height: 1fr;
+}
+
+.truckDragCell{
+  border: 1px solid hotpink;
+  width: 1fr;
+  height: 1fr;
+  /*position: absolute;*/
+  /*margin: 0 auto;*/
 }
 
 .truckRow {
   /*display: grid;*/
-  display: inline-block;
+  display: inline-grid;
+  grid-template-columns: repeat(20,1fr);
   /*grid-auto-columns: 1fr;*/
   border: 1px solid black;
-  min-height: 1fr;
-  min-width: 1fr;
+  /*justify-content: center;*/
+  /*align-content: center;*/
+  /*min-height: 1fr;*/
+  /*min-width: 1fr;*/
 }
 
 table{

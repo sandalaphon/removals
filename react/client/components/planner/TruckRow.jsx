@@ -7,7 +7,15 @@ import TruckCell from './TruckCell'
 class TruckRow extends Component {
 
   render() {
-    const { truck, isDragging, connectDragSource, connectDropTarget } = this.props;
+    const handleStyle = {
+      backgroundColor: 'green',
+      width: '2rem',
+      height: '2rem',
+      position: 'absolute',
+      transform: 'translate(50%,50%)',
+      cursor: 'pointer',
+    };
+    const { truck, isDragging, connectDragSource, connectDropTarget, connectDragPreview } = this.props;
     console.log('this.props', this.props)
     const opacity = isDragging ? 0 : 1;
     const times = [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
@@ -20,15 +28,28 @@ class TruckRow extends Component {
 
 
 
-    return connectDragSource(
+   
+    return connectDragPreview(
+    // <div>
+    // connectDragSource(
+      
       <div className = 'truckRow'>
+      {connectDragSource(<div className = 'truckDragCell'>
+               <div style={handleStyle}> </div>
+               </div>
+             )}
          {times.map((time, index)=>{
+
                        return (
                          <TruckCell/>
                          )
                      })}
+
       </div>
+      
     );
+    // </div>
+    
   }
 
 }
@@ -54,7 +75,8 @@ const TruckRowTarget = {
 
 export default DragSource("TRUCKROW", TruckRowSource, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging()
+  isDragging: monitor.isDragging(),
+  connectDragPreview: connect.dragPreview(),
 }))(TruckRow);
 //  DropTarget("TRUCKROW", TruckRowTarget, connect => ({
 //   connectDropTarget: connect.dropTarget()

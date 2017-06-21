@@ -15,7 +15,8 @@ class TruckDayView extends React.Component{
     this.state = {trucks: [
       { id: 1, text: "Item 1" , colour: "red"},
       { id: 2, text: "Item 2" , colour: "blue"},
-      { id: 3, text: "Item 3" , colour: "green"}
+      { id: 3, text: "Item 3" , colour: "green"},
+      { id: 4, text: "Item 4" , colour: "yellow"}
     ]}
   }
 
