@@ -102,6 +102,7 @@ min-width:5vw;
 
 
 .cell{
+  /*font-size: 2rem;*/
   border: 1px solid black;
   /*display: inline-block;*/
   /*width:1fr;*/
@@ -114,7 +115,7 @@ min-width:5vw;
   align-items: center;
   display:grid;
   /*font-size: 100%;*/
-  object-fit:fill;
+  
 }
 /*.truck-day-time-cell{
   border: 1px solid black;
@@ -126,16 +127,17 @@ min-width:5vw;
 }
 
 .material-icons.md-18{
+  /*font-size: 3vw;*/
+  /*line-height: 100%*/
   /*font-size: 1fr;*/
-  font-size: 1fr;
   /*max-width: 100%;*/
   /*max-height: 100%;*/
 }
 
 .truckimage{
- max-width: 100%;
- max-height: 100%;
-  
+/* max-width: 100%;
+ max-height: 100%;*/
+  /*object-fit:fill;*/
 }
 
 
