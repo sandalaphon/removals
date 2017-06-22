@@ -14,7 +14,6 @@ class TruckDayView extends React.Component{
   handleDragEnter(event){
 
     event.preventDefault()
-
     let cellId = event.target.id
     var newCellArray = []
     let hours = this.props.trips.currentDragJob.estimated_hours
@@ -36,14 +35,18 @@ class TruckDayView extends React.Component{
 
   handleDragOver(event){
     event.preventDefault() 
+    //console.log("dragover targget",event.target)
   }
 
   handleDragLeave(event){
     event.preventDefault()
 
+
   }
 
   drop(event){
+    console.log('on drop scheduler_counter', this.props.trips.scheduler_counter)
+        this.props.actions.deleteDroppedCells(this.props.trips.currentDragJob.colour)
         this.props.actions.setDroppedCells({
           cells: this.props.trips.highlightedCells, 
           colour: this.props.trips.currentDragJob.colour

@@ -10,28 +10,67 @@ class JobList extends React.Component{
       colours: ['Black', 'Blue', 'DarkGreen', 'DarkMagenta',  'DimGrey', 'GoldenRod', 'Tomato', 'YellowGreen', 'SlateBlue', 'Sienna', 'Plum', 'HotPink'],
       order: true
     }
+    this.eventTarget = null,
+    this.currentDropTargetId = null
   }
 
   drag(event){
+  this.eventTarget = event.target
+
 
     event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.trips.all_trips_reference[event.target.id], this.state.colours[event.target.id]]))
+    event.dataTransfer.dropEffect = "copy";
+    // event.target.parentNode.removeChild(event.target)
     
    
     this.props.actions.setCurrentDragJob({colour: this.state.colours[event.target.id], estimated_hours: this.props.trips.all_trips_reference[event.target.id].estimated_hours})
 
-    this.props.actions.deleteDroppedCells(this.state.colours[event.target.id])
-    console.log('target.id', event.target.id)
+    
 
+  }
+
+  handleOnDragJobList(event){
+    event.preventDefault()
+  }
+
+  handleDragEnterJobList(event){
+    event.preventDefault()
+    // this.props.actions.setInJobList
+    // console.log('entered in joblist')
+    // this.inOutCounter++
+    //   console.log('drag enter',this.inOutCounter)
+    }
+  
+
+  handleDragLeaveJobList(event){
+    event.preventDefault()
+    // console.log('left in joblist')
+    // console.log('before drag leave',this.inOutCounter)
+    // this.inOutCounter--
+    // console.log('drag leave',this.inOutCounter)
   }
 
 
   handleDragEnd(event){
+    // console.log('dragend 1', this.inOutCounter)
     event.preventDefault()
-    if(event.dataTransfer.dropEffect==='none'){
-      this.props.actions.setHighlightedCells([])
-      var tableDataElement =document.getElementById(`${event.target.id}${this.state.colours[event.target.id]}`)
-      tableDataElement.appendChild(event.target)
-    }
+    this.props.actions.setHighlightedCells([])
+
+    // console.log('dragend', this.inOutCounter)
+
+    // var tableDataElement =document.getElementById(`${event.target.id}${this.state.colours[event.target.id]}`)
+    // if(event.dataTransfer.dropEffect==='none' && tableDataElement===){
+    // }
+
+    // console.log(this.props.trips.droppedCells.includes(this.props.trips.highlightedCells))
+
+    //if hightlight != dropped and none then 
+    // if(event.dataTransfer.dropEffect==='none' ){
+    //   this.props.actions.setHighlightedCells([])
+    //   tableDataElement.appendChild(event.target)
+    //   this.props.actions.deleteDroppedCells(this.state.colours[event.target.id])
+    // }
+
   }
 
   handleClientNameSort(){
@@ -60,6 +99,22 @@ class JobList extends React.Component{
   handleDrawRouteClick(event){
     this.renderTripById(event.target.id)
   }
+
+  handleJobListDrop(event){
+    var tableDataElement =document.getElementById(`${this.eventTarget.id}${this.state.colours[this.eventTarget.id]}`)
+    if(this.eventTarget.id === this.currentDropTargetId) return
+ 
+    tableDataElement.appendChild(this.eventTarget)
+    this.props.actions.deleteDroppedCells(this.state.colours[this.eventTarget.id])
+
+  }
+
+  handleDragOver(event){
+    event.preventDefault() 
+    this.currentDropTargetId = event.target.id
+
+  }
+
 
 
   jobs(){
@@ -101,7 +156,7 @@ class JobList extends React.Component{
     var hoverHandStyle = {cursor: 'pointer'}
     if(this.props.trips.all_trips){
       return(
-        <table className='grid-item-joblist'>
+        <table className='grid-item-joblist' onDrag={this.handleOnDragJobList.bind(this)} onDrop={this.handleJobListDrop.bind(this)} onDragEnter={this.handleDragEnterJobList.bind(this)} onDragLeave={this.handleDragLeaveJobList.bind(this)} onDragOver={this.handleDragOver.bind(this)}>
         <tbody>
         <tr>
         <th>View Route</th>

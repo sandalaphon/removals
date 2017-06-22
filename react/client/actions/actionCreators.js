@@ -27,6 +27,8 @@ export function deleteRouteToRender(){
   }
 }
 
+
+
 export function renderNewRoute(startlatlng, endlatlng, trip_id){
   return{
     type: 'ADD_LAT_LNG_TO_RENDERED_ROUTES',
