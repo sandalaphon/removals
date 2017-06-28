@@ -49,7 +49,8 @@ def trip_params
     :notes,
     :delivery_latlng,
     :collection_latlng,
-    :estimated_hours
+    :estimated_hours,
+    :google_directions
     ])
 end
 

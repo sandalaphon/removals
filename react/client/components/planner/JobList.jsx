@@ -1,5 +1,5 @@
 import React from 'react'
-import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName, renderNewRoute} from '../../actions/actionCreators'
+import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName, renderNewRoute, includeInVisibleJobList, excludeFromVisibleJobList} from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -14,18 +14,31 @@ class JobList extends React.Component{
     this.currentDropTargetId = null
   }
 
+  // componentDidMount(){
+    // this.props.actions.renderJobList()
+  // }
+
+  // componentWillMount(){
+  //   console.log('component will mount')
+  //   if(this.props.all_trips){
+  //     this.props.all_trips.forEach((job)=>{
+  //       if((job.client_name||'').toUpperCase().indexOf((this.props.searchString||'').toUpperCase())>=0){
+  //         this.props.actions.includeInVisibleJobList(job)
+  //       }else{
+  //         this.props.actions.excludeFromVisibleJobList(job)
+  //       }
+  //     })
+  //   }
+   
+   
+  // }
+
   drag(event){
   this.eventTarget = event.target
-
-
-    event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.trips.all_trips_reference[event.target.id], this.state.colours[event.target.id]]))
+    event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.all_trips_reference[event.target.id], this.state.colours[event.target.id]]))
     event.dataTransfer.dropEffect = "copy";
-    // event.target.parentNode.removeChild(event.target)
-    
-   
-    this.props.actions.setCurrentDragJob({colour: this.state.colours[event.target.id], estimated_hours: this.props.trips.all_trips_reference[event.target.id].estimated_hours})
 
-    
+    this.props.actions.setCurrentDragJob({colour: this.state.colours[event.target.id], estimated_hours: this.props.all_trips_reference[event.target.id].estimated_hours})
 
   }
 
@@ -35,43 +48,26 @@ class JobList extends React.Component{
 
   handleDragEnterJobList(event){
     event.preventDefault()
-    // this.props.actions.setInJobList
-    // console.log('entered in joblist')
-    // this.inOutCounter++
-    //   console.log('drag enter',this.inOutCounter)
     }
   
 
   handleDragLeaveJobList(event){
     event.preventDefault()
-    // console.log('left in joblist')
-    // console.log('before drag leave',this.inOutCounter)
-    // this.inOutCounter--
-    // console.log('drag leave',this.inOutCounter)
   }
 
 
   handleDragEnd(event){
-    // console.log('dragend 1', this.inOutCounter)
     event.preventDefault()
     this.props.actions.setHighlightedCells([])
+  }
 
-    // console.log('dragend', this.inOutCounter)
-
-    // var tableDataElement =document.getElementById(`${event.target.id}${this.state.colours[event.target.id]}`)
-    // if(event.dataTransfer.dropEffect==='none' && tableDataElement===){
-    // }
-
-    // console.log(this.props.trips.droppedCells.includes(this.props.trips.highlightedCells))
-
-    //if hightlight != dropped and none then 
-    // if(event.dataTransfer.dropEffect==='none' ){
-    //   this.props.actions.setHighlightedCells([])
-    //   tableDataElement.appendChild(event.target)
-    //   this.props.actions.deleteDroppedCells(this.state.colours[event.target.id])
-    // }
+  handleDragOver(event){
+    event.preventDefault() 
+    this.currentDropTargetId = event.target.id
 
   }
+
+
 
   handleClientNameSort(){
     if(this.state.order){
@@ -84,7 +80,7 @@ class JobList extends React.Component{
   }
 
   getTripById(tripId){
-    return this.props.trips.all_trips.find((job)=>{
+    return this.props.all_trips.find((job)=>{
       return job.id=== +tripId
     })
   }
@@ -109,23 +105,33 @@ class JobList extends React.Component{
 
   }
 
-  handleDragOver(event){
-    event.preventDefault() 
-    this.currentDropTargetId = event.target.id
-
-  }
-
-
-
+ 
   jobs(){
-    var tripIdOrder = this.props.trips.all_trips_reference.map((ajob)=>{return ajob.id})
-    return this.props.trips.all_trips.map((job,index)=>{
+    var tripIdOrder = this.props.all_trips_reference.map((ajob)=>{return ajob.id})
+
+    return this.props.all_trips.map((job,index)=>{
       var arrival_time = job.arrival_time
       var indexInAllTrips =  tripIdOrder.indexOf(job.id)
       var inlineStyleColor = {color: this.state.colours[indexInAllTrips]}
       var iconHome = `${indexInAllTrips}${this.state.colours[indexInAllTrips]}`
       var hoverHandStyle = {cursor: 'pointer'}
-      var collapseStyle = (job.client_name||'').toUpperCase().indexOf((this.props.trips.searchString||'').toUpperCase())>=0 ? {} : {display: 'none'}
+
+
+
+      // var collapseStyle = (job.client_name||'').toUpperCase().indexOf((this.props.searchString||'').toUpperCase())>=0 ? {} : {display: 'none'}
+
+      var collapseStyle = job.hidden_status ? {display: 'none'} : {}
+
+    
+        // if((job.client_name||'').toUpperCase().indexOf((this.props.searchString||'').toUpperCase())>=0){
+        //   this.props.actions.includeInVisibleJobList(job)
+        // }else{
+        //   this.props.actions.excludeFromVisibleJobList(job)
+        // }
+     
+
+
+
       var image = <i 
           draggable='true' 
           onDragEnd={this.handleDragEnd.bind(this)} 
@@ -154,9 +160,15 @@ class JobList extends React.Component{
 
   render(){ 
     var hoverHandStyle = {cursor: 'pointer'}
-    if(this.props.trips.all_trips){
+    if(this.props.all_trips){
       return(
-        <table className='grid-item-joblist' onDrag={this.handleOnDragJobList.bind(this)} onDrop={this.handleJobListDrop.bind(this)} onDragEnter={this.handleDragEnterJobList.bind(this)} onDragLeave={this.handleDragLeaveJobList.bind(this)} onDragOver={this.handleDragOver.bind(this)}>
+        <table 
+        className='grid-item-joblist' 
+        onDrag={this.handleOnDragJobList.bind(this)}
+        onDrop={this.handleJobListDrop.bind(this)} 
+        onDragEnter={this.handleDragEnterJobList.bind(this)} 
+        onDragLeave={this.handleDragLeaveJobList.bind(this)} 
+        onDragOver={this.handleDragOver.bind(this)}>
         <tbody>
         <tr>
         <th>View Route</th>
@@ -187,9 +199,9 @@ class JobList extends React.Component{
 
 
 const mapDispatchToProps=(dispatch)=>({
-  actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName, renderNewRoute}, dispatch)
+  actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName, renderNewRoute, excludeFromVisibleJobList, includeInVisibleJobList}, dispatch)
 })
-const mapStateToProps=(state)=>({trips: state.trips})
+const mapStateToProps=(state)=>({ all_trips: state.trips.all_trips, all_trips_reference: state.trips.all_trips_reference, searchString: state.trips.searchString})
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(JobList)

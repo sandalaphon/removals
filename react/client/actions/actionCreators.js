@@ -26,9 +26,13 @@ export function deleteRouteToRender(){
     
   }
 }
-
-
-
+///////////////////////
+export function renderJobList(){
+  return {
+    type: 'RENDER_JOB_LIST'
+  }
+}
+//////////////////////////////////////
 export function renderNewRoute(startlatlng, endlatlng, trip_id){
   return{
     type: 'ADD_LAT_LNG_TO_RENDERED_ROUTES',
@@ -36,10 +40,38 @@ export function renderNewRoute(startlatlng, endlatlng, trip_id){
   }
 }
 
+export function setHiddenStatus(job){
+  return {
+    type: 'SET_HIDDEN_STATUS',
+    payload: job
+  }
+}
+//
+export function setUnhiddenStatus(job){
+  return {
+    type: 'SET_UNHIDDEN_STATUS',
+    payload: job
+  }
+}
+
 export function loginEmail(email){
   return {
     type: 'LOGIN_EMAIL_CHANGE',
     email
+  }
+}
+//
+export function includeInVisibleJobList(job){
+  return{
+    type: 'INCLUDE_IN_VISIBLE_JOBLIST',
+    payload: job
+  }
+}
+
+export function excludeFromVisibleJobList(job){
+  return{
+    type: 'EXCLUDE_FROM_VISIBLE_JOBLIST',
+    payload: job
   }
 }
 

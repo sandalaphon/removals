@@ -22,3 +22,20 @@ directionsService.route(directionInput, function(response, status){
 }.bind(this))
 
 }
+
+export function drawRouteWithGoogleResponse(directionsServiceResponse, map){
+  var directionsDisplay = new google.maps.DirectionsRenderer({
+    draggable: true,
+    map
+  })
+  directionsDisplay.setDirections(directionsServiceResponse)
+}
+
+export function clearMap(map){
+  console.log("clearMap")
+  var directionsDisplay = new google.maps.DirectionsRenderer({
+    draggable: true,
+    map
+  })
+  directionsDisplay.setMap(null)
+}
