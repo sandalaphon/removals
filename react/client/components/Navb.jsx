@@ -2,7 +2,6 @@ import React from 'react'
 import {Link} from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap';
 
-
 class Navb extends React.Component {
   signOut(e){
     e.preventDefault()
@@ -18,8 +17,6 @@ class Navb extends React.Component {
      }
     
    }
-
-
 
  render(){
 
@@ -42,14 +39,15 @@ class Navb extends React.Component {
       <div className="csv-nav active">
        <Link  to="/update_data">Update Data</Link>
       </div>
+
+      <div className="account-nav">
+       <Link  to="/account_management">Account</Link>
+      </div>
   
       <div id="current-email">{this.props.displayEmail}</div>
-      <button id="button-sign-out"onClick={this.signOut.bind(this)}/>
+      <button id="button-sign-out"onClick={this.signOut.bind(this)}>Sign Out</button>
     </nav>
 
-
-    
-  
 
     )
  }

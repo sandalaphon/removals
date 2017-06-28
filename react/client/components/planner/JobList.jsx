@@ -28,15 +28,6 @@ class JobList extends React.Component{
     event.preventDefault()
   }
 
-  handleDragEnterJobList(event){
-    event.preventDefault()
-    }
-  
-
-  handleDragLeaveJobList(event){
-    event.preventDefault()
-  }
-
 
   handleDragEnd(event){
     event.preventDefault()
@@ -46,10 +37,7 @@ class JobList extends React.Component{
   handleDragOver(event){
     event.preventDefault() 
     this.currentDropTargetId = event.target.id
-
   }
-
-
 
   handleClientNameSort(){
     if(this.state.order){
@@ -79,7 +67,8 @@ class JobList extends React.Component{
   }
 
   handleJobListDrop(event){
-    var tableDataElement =document.getElementById(`${this.eventTarget.id}${this.state.colours[this.eventTarget.id]}`)
+    var tableDataElement = document.getElementById(`${this.eventTarget.id}${this.state.colours[this.eventTarget.id]}`)
+
     if(this.eventTarget.id === this.currentDropTargetId) return
  
     tableDataElement.appendChild(this.eventTarget)
@@ -89,15 +78,17 @@ class JobList extends React.Component{
 
  
   jobs(){
+    //create an immutable reference array of job.ids
     var tripIdOrder = this.props.all_trips_reference.map((ajob)=>{return ajob.id})
 
     return this.props.all_trips.map((job,index)=>{
-      var arrival_time = job.arrival_time
+      //use immutable reference array to set colour of job
       var indexInAllTrips =  tripIdOrder.indexOf(job.id)
       var inlineStyleColor = {color: this.state.colours[indexInAllTrips]}
       var iconHome = `${indexInAllTrips}${this.state.colours[indexInAllTrips]}`
-      var hoverHandStyle = {cursor: 'pointer'}
 
+      var arrival_time = job.arrival_time
+      var hoverHandStyle = {cursor: 'pointer'}
       var collapseStyle = job.hidden ? {display: 'none'} : {}
      
 
@@ -135,8 +126,6 @@ class JobList extends React.Component{
         className='grid-item-joblist' 
         onDrag={this.handleOnDragJobList.bind(this)}
         onDrop={this.handleJobListDrop.bind(this)} 
-        onDragEnter={this.handleDragEnterJobList.bind(this)} 
-        onDragLeave={this.handleDragLeaveJobList.bind(this)} 
         onDragOver={this.handleDragOver.bind(this)}>
         <tbody>
         <tr>
@@ -165,7 +154,6 @@ class JobList extends React.Component{
     }
   }
 }
-
 
 const mapDispatchToProps=(dispatch)=>({
   actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName, renderNewRoute, excludeFromVisibleJobList, includeInVisibleJobList}, dispatch)

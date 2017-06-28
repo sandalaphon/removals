@@ -48,13 +48,10 @@ class GMap extends React.Component {
 
 render() {
 
-
-
-
         if(this.props.all_trips){
-          this.mapObject.clearMap()
+          if(this.mapObject) this.mapObject.clearMap()
           this.props.all_trips.forEach((job)=>{
-            if(!job.hidden){
+            if(!job.hidden&&this.mapObject){
               this.mapObject.drawRouteWithGoogleResponse(job.google_directions)
             }
                     //if job.attribute hidden then...
