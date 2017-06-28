@@ -20,12 +20,6 @@ export function fetchUser(){
 }
 }
 
-export function deleteRouteToRender(){
-  return {
-    type: 'DELETE_ROUTE_TO_RENDER'
-    
-  }
-}
 ///////////////////////
 export function renderJobList(){
   return {
@@ -33,12 +27,7 @@ export function renderJobList(){
   }
 }
 //////////////////////////////////////
-export function renderNewRoute(startlatlng, endlatlng, trip_id){
-  return{
-    type: 'ADD_LAT_LNG_TO_RENDERED_ROUTES',
-      payload: {startlatlng, endlatlng, trip_id}
-  }
-}
+
 
 export function setHiddenStatus(job){
   return {
@@ -61,19 +50,6 @@ export function loginEmail(email){
   }
 }
 //
-export function includeInVisibleJobList(job){
-  return{
-    type: 'INCLUDE_IN_VISIBLE_JOBLIST',
-    payload: job
-  }
-}
-
-export function excludeFromVisibleJobList(job){
-  return{
-    type: 'EXCLUDE_FROM_VISIBLE_JOBLIST',
-    payload: job
-  }
-}
 
 export function setSearchQuery(searchString){
   return {

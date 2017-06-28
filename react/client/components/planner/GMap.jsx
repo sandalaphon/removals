@@ -5,6 +5,7 @@ import * as actionCreators from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {drawRoute, drawRouteWithGoogleResponse, clearMap} from '../../models/mapFunctions'
+import MapObject from '../../models/MapObject'
 
 class GMap extends React.Component {
 
@@ -20,9 +21,10 @@ class GMap extends React.Component {
   componentDidMount() {
     this.map = this.createMap()
     // drawRoute.call(this, "Castlebury Farmhouse, wareside, hertfordshire SG12 7SH", "81 East Claremont Street, Edinburgh EH7 4HU", this.map )
+    this.mapObject = new MapObject(this.map)
+
   }
 
-  
   componentDidUnMount() {
     google.maps.event.clearListeners(map, 'zoom_changed')
   }
@@ -42,46 +44,18 @@ class GMap extends React.Component {
       )
   }
 
-  deleteRenderRoute(){
-    this.props.actions.deleteRouteToRender()
-  }
 
-//   componentDidMount(){
-//     if(this.props.jobList){
-//         this.props.jobList.forEach((job)=>{
-//           drawRouteWithGoogleResponse.call(this, job.google_directions, this.map)
-//         })
-//   }
-// }
 
 render() {
 
 
-    // var routeToRender = this.props.trips.newRouteToRender
-    // if(routeToRender&&routeToRender!==this.props.trips.routeToRender){
-    //   drawRoute.call(this, routeToRender.startlatlng, routeToRender.endlatlng, this.map)
-    //   // this.deleteRenderRoute()
-    //   // this.props.actions.deleteRouteToRender()
 
-    // }
-    // if(this.props.jobList){
-    //     this.props.jobList.forEach((job)=>{
-    //       drawRoute.call(this, JSON.parse(job.collection_latlng), JSON.parse(job.delivery_latlng), this.map)
-    //     })
-    //   }
-
-      // if(this.props.jobList){
-      //     this.props.jobList.forEach((job)=>{
-      //       drawRouteWithGoogleResponse.call(this, job.google_directions, this.map)
-      //     })
-        // }
 
         if(this.props.all_trips){
-          console.log('of course we are here Joseph')
-          clearMap.call(this, this.map)
+          this.mapObject.clearMap()
           this.props.all_trips.forEach((job)=>{
-            if(job.hidden_status){
-              drawRouteWithGoogleResponse.call(this, job.google_directions, this.map)
+            if(!job.hidden){
+              this.mapObject.drawRouteWithGoogleResponse(job.google_directions)
             }
                     //if job.attribute hidden then...
                    

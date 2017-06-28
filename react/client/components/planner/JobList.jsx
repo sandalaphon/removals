@@ -14,24 +14,6 @@ class JobList extends React.Component{
     this.currentDropTargetId = null
   }
 
-  // componentDidMount(){
-    // this.props.actions.renderJobList()
-  // }
-
-  // componentWillMount(){
-  //   console.log('component will mount')
-  //   if(this.props.all_trips){
-  //     this.props.all_trips.forEach((job)=>{
-  //       if((job.client_name||'').toUpperCase().indexOf((this.props.searchString||'').toUpperCase())>=0){
-  //         this.props.actions.includeInVisibleJobList(job)
-  //       }else{
-  //         this.props.actions.excludeFromVisibleJobList(job)
-  //       }
-  //     })
-  //   }
-   
-   
-  // }
 
   drag(event){
   this.eventTarget = event.target
@@ -116,21 +98,8 @@ class JobList extends React.Component{
       var iconHome = `${indexInAllTrips}${this.state.colours[indexInAllTrips]}`
       var hoverHandStyle = {cursor: 'pointer'}
 
-
-
-      // var collapseStyle = (job.client_name||'').toUpperCase().indexOf((this.props.searchString||'').toUpperCase())>=0 ? {} : {display: 'none'}
-
-      var collapseStyle = job.hidden_status ? {display: 'none'} : {}
-
-    
-        // if((job.client_name||'').toUpperCase().indexOf((this.props.searchString||'').toUpperCase())>=0){
-        //   this.props.actions.includeInVisibleJobList(job)
-        // }else{
-        //   this.props.actions.excludeFromVisibleJobList(job)
-        // }
+      var collapseStyle = job.hidden ? {display: 'none'} : {}
      
-
-
 
       var image = <i 
           draggable='true' 
@@ -144,8 +113,8 @@ class JobList extends React.Component{
   return(<tr key={indexInAllTrips} style={collapseStyle}>
         <td ><button id={job.id} onClick={this.handleDrawRouteClick.bind(this)}>View Route</button></td>
         <td >{job.client_name}</td>
-        <td id={iconHome}>{image}</td>
-        <td >{job.collection_latlng}</td>
+        <td id={iconHome} style={hoverHandStyle}>{image}</td>
+        <td >{job.collection_postcode}</td>
         <td >{job.volume}</td>
         <td >{job.men_requested}</td>
         <td >{job.arrival_time}</td>
