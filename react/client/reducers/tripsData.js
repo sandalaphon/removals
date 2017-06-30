@@ -2,8 +2,7 @@ function handleData(state = {
     trips: null,
     droppedCells: [],
     highlightedCells: [],
-    renderedRoutes: [],
-    visible_jobList: []
+    renderedRoutes: []
 // all_trips:[],
 // all_trips_reference: []
 },action){

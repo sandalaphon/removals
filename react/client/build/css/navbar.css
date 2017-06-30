@@ -1,24 +1,70 @@
+html {
+  font:62.5%/1 "Droid Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+  background-color: hsla(0,0%,90%,1);  
+  background-image: linear-gradient(-45deg, hsla(0,0%,0%,0), hsla(0,0%,0%,.05) );
+  background-size: 5px;
+}
+
+
 .nav-bar{
-  border: solid 2px orange;
+
+  min-height:30px;
   display: grid;
   grid-area: nav;
   grid-template-areas:
-  "a b c d . . email signout";
-  grid-template-columns: repeat(8,1fr);
+  "a b c d e . . email signout";
+  grid-template-columns: repeat(9,1fr);
   grid-template-rows: 1fr;
   justify-items: center;
   align-items: center;
+
+  outline: none;
+  font: bold "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+  text-align: center;
+  color: hsla(0,0%,20%,1);
+  background-color: hsl(0,0%,90%);
+  box-shadow: inset hsla(0,0%,15%,  1) 0  0px 0px 4px, /* border */
+    inset hsla(0,0%,15%, .8) 0 -1px 5px 2px, /* soft SD */
+    inset hsla(0,0%,0%, .25) 0 -1px 0px 2px, /* bottom SD */
+    inset hsla(0,0%,100%,.7) 0  2px 1px 7px, /* top HL */
+    
+    hsla(0,0%, 0%,.15) 0 -5px 6px 4px, /* outer SD */
+    hsla(0,0%,100%,.5) 0  5px 6px 4px; /* outer HL  */
+  
+  transition: color .2s;
+
+    border-radius: 8px;
+    background-image: -webkit-radial-gradient(  50%   0%,  8% 50%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
+      -webkit-radial-gradient(  50% 100%, 12% 50%, hsla(0,0%,100%,.6) 0%, hsla(0,0%,100%,0) 100%),
+      -webkit-radial-gradient(   0%  50%, 50%  7%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
+      -webkit-radial-gradient( 100%  50%, 50%  5%, hsla(0,0%,100%,.5) 0%, hsla(0,0%,100%,0) 100%),
+      
+      -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   3%, hsla(0,0%,  0%,.1) 3.5%),
+      -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%,.1) 7.5%),
+      -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.2) 2.2%),
+      
+      -webkit-radial-gradient( 50% 50%, 200% 50%, hsla(0,0%,90%,1) 5%, hsla(0,0%,85%,1) 30%, hsla(0,0%,60%,1) 100%);
 }
 
+a:hover{color:red;}
 
-
-.nav-bar > *:hover{
- color: red;
- border: solid 3px orange;
+.nav-bar> *:hover{
+ /* text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;*/
 }
-.nav-bar > *.active{
+
+/*.nav-bar > *.active{
  color: yellow;
- border: solid 9px orange;
+ border-radius: 8px;
+ border: solid 3px orange;
+}*/
+
+
+
+a.active{
+ color: black;
+ text-decoration: underline;
+ border: solid 0px black;
+
 }
 
 
@@ -26,40 +72,43 @@
 .planner-nav{
   grid-area: c;
 }
-.planner-nav:hover{
-  background-color: yellow;
-  grid-area: c;
-}
+
 .today-nav{
   grid-area: b;
 }
 .home-nav{
   grid-area: a;
 }
-.planner2-nav{
+.account-nav{
   grid-area: d;
 }
 
-
-
+.csv-nav{
+  grid-area: e;
+}
 /*///////////////NAV/////////////////////////*/
 
 
-
-
-
  #current-email {
-  border: solid 2px green;
   grid-area: email;
-  display: grid;
-  justify-content: center;
-  align-content: center;
+/*  justify-content: center;
+  align-content: center;*/
 }
 #button-sign-out{
-  border: solid 2px pink;
+  border-radius: 8px;
+ font-size: .75em;
   grid-area: signout;
-  display: grid;
-  justify-content: center;
-  height: 100%;
+
+  background-image: -webkit-radial-gradient(  50%   0%, 10% 50%, hsla(0,0%,0%,.1) 0%, hsla(0,0%,0%,0) 100%),
+     -webkit-radial-gradient(  50% 100%, 10% 50%, hsla(0,0%,0%,.1) 0%, hsla(0,0%,0%,0) 100%),
+     -webkit-radial-gradient(   0%  50%, 50% 10%, hsla(0,0%,0%,.1) 0%, hsla(0,0%,0%,0) 100%),
+     -webkit-radial-gradient( 100%  50%, 50% 06%, hsla(0,0%,0%,.1) 0%, hsla(0,0%,0%,0) 100%);
 }
+
+#button-sign-out:hover{
+  background-color: red;
+  color: white;
+  border-radius: 8px;
+
+  }
 

@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 const  defaultState = {
     loginDetails: {}
-  // comments
+
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -4,7 +4,7 @@
 .grid-planner{
   display: grid;
 
-  border:5px solid black;
+  /*border:5px solid black;*/
 
   height: 100vh;
   grid-template-areas:
@@ -34,6 +34,7 @@
 }
 
 .grid-item-truck-day-view{
+  margin-top: 20px;
   display:inline-grid;
    border:1px solid red;
    grid-area: cal;

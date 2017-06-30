@@ -31,7 +31,7 @@ class TopComponent extends React.Component {
      
     return(
       <Provider store= {store}>
-      <Router history = {browserHistory}>
+      <Router history = {history}>
         <Route path="/" component= {Main}> 
           <IndexRoute component= {Home}></IndexRoute> 
           <Route path="home" component= {Home}></Route>
