@@ -49,7 +49,6 @@ html {
 a:hover{color:red;}
 
 .nav-bar> *:hover{
- /* text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;*/
 }
 
 /*.nav-bar > *.active{
@@ -63,8 +62,6 @@ a:hover{color:red;}
 a.active{
  color: black;
  text-decoration: underline;
- border: solid 0px black;
-
 }
 
 
