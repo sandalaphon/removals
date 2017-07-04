@@ -3,7 +3,7 @@
 
 .grid-planner{
   display: grid;
-  height: 100vh;
+  height: 95vh;
   grid-template-areas:
   "cal cal cal cal cal cal fli fli fli fli"
   "cal cal cal cal cal cal map map map map"

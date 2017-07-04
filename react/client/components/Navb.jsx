@@ -36,6 +36,10 @@ class Navb extends React.Component {
        <Link to="/today" activeClassName="active">Today</Link>
       </div> 
 
+      <div className="partload-nav">
+       <Link to="/partload" activeClassName="active">Partload</Link>
+      </div> 
+
       <div className="csv-nav">
        <Link  to="/update_data" activeClassName="active">Update Data</Link>
       </div>

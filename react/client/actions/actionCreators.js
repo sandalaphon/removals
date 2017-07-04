@@ -51,6 +51,13 @@ export function loginEmail(email){
 }
 //
 
+export function addMarkerToPartloadMarkerArray(coords){
+  return {
+    type: 'ADD_MARKER_TO_PARTLOAD_MARKER_ARRAY',
+    payload: coords
+  }
+}
+
 export function setSearchQuery(searchString){
   return {
     type: 'SET_SEARCH_STRING',
@@ -119,6 +126,20 @@ export function setHighlightedCells(cellIds){
   return {
     type: 'SET_HIGHLIGHTED_CELLS',
     payload: cellIds
+  }
+}
+
+export function setPartloadCollectionPostcode(postcode){
+  return {
+    type: 'SET_PARTLOAD_COLLECTION_POSTCODE',
+    payload: postcode
+  }
+}
+
+export function setPartloadDeliveryPostcode(postcode){
+  return {
+    type: 'SET_PARTLOAD_DELIVERY_POSTCODE',
+    payload: postcode
   }
 }
 

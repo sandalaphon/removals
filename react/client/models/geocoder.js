@@ -8,13 +8,17 @@ constructor(){
   
 
 }
-getLatLng(postcode){
+getLatLng(postcode, callback){
   this.geocoder.geocode({address: postcode}, (results, status)=>{
     if(status===google.maps.GeocoderStatus.OK){
-      console.log(results[0].geometry.location.lat(), results[0].geometry.location.lng())
+      // console.log(results[0].geometry.location.lat(), results[0].geometry.location.lng())
+      console.log({lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()})
+      callback( {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()})
+
       // this.latLng ={lat: results[0].geometry.location.lat(),lng: results[0].geometry.location.lng()}
       // setLatLngCallback()
     }else{
+      alert('postcode is not valid', status)
       console.log(status)
     }
   })

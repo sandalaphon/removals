@@ -25,7 +25,10 @@ function handleData(state = {
     trips: null,
     droppedCells: [],
     highlightedCells: [],
-    renderedRoutes: []
+    renderedRoutes: [],
+    partload_collection_postcode: '',
+    partload_delivery_postcode: '',
+    partload_marker_array: []
 // all_trips:[]
 },action){
 
@@ -81,9 +84,20 @@ function handleData(state = {
     return{...state, highlightedCells: action.payload}
     break;
 
-    // case 'SET_SEARCH_STRING':
-    // return{...state, searchString: action.payload}
-    // break;
+    case 'SET_PARTLOAD_COLLECTION_POSTCODE':
+    return{...state, partload_collection_postcode: action.payload}
+    break;
+
+    case 'SET_PARTLOAD_DELIVERY_POSTCODE':
+    return{...state, partload_delivery_postcode: action.payload}
+    break;
+
+    case 'ADD_MARKER_TO_PARTLOAD_MARKER_ARRAY':
+    var holder = state.partload_marker_array.slice()
+    holder.push(action.payload)
+    return{...state, partload_marker_array: holder}
+    break;
+
 
     case 'DELETE_DROPPED_CELLS':
     var newArray = state.droppedCells.slice()

@@ -6,6 +6,8 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {drawRoute, drawRouteWithGoogleResponse, clearMap} from '../../models/mapFunctions'
 import MapObject from '../../models/MapObject'
+import {withRouter} from 'react-router'
+
 
 class GMap extends React.Component {
 
@@ -16,7 +18,9 @@ class GMap extends React.Component {
       center: { lng: -3.1883 , lat: 55.9533 },
     };
 
+
   }
+
 
   componentDidMount() {
     this.map = this.createMap()
@@ -24,6 +28,8 @@ class GMap extends React.Component {
     this.mapObject = new MapObject(this.map)
 
   }
+
+
 
   componentDidUnMount() {
     google.maps.event.clearListeners(map, 'zoom_changed')
@@ -46,19 +52,58 @@ class GMap extends React.Component {
 
 
 
-render() {
+  render() {
 
-        if(this.props.all_trips){
-          if(this.mapObject) this.mapObject.clearMap()
-          this.props.all_trips.forEach((job)=>{
-            if(!job.hidden&&this.mapObject){
-              this.mapObject.drawRouteWithGoogleResponse(job.google_directions)
-            }
-                    //if job.attribute hidden then...
-                   
-                  })
+   console.log(this.props)
+
+        //if in partload start with empty array
+
+        switch (this.props.location.pathname){
+
+          case '/planner':
+
+          if(this.props.all_trips){
+            if(this.mapObject) this.mapObject.clearMap()
+              this.props.all_trips.forEach((job)=>{
+                if(!job.hidden&&this.mapObject){
+                  this.mapObject.drawRouteWithGoogleResponse(job.google_directions)
+                }
+                      //if job.attribute hidden then...
+
+                    })
+          }
+          break;
+
+          case '/today':
+          console.log('today')
+          break;
+
+          case '/partload':
+          console.log('in partload')
+          if(this.props.partload_routes){
+            if(this.mapObject) this.mapObject.clearMap()
+            this.props.partload_routes.forEach((job)=>{
+              if(!job.hidden&&this.mapObject){
+                this.mapObject.drawRouteWithGoogleResponse(job.google_directions)
+              }
+            })
+
+          }
+          console.log(this.props.partload_marker_array)
+          if(this.props.partload_marker_array.length){
+            console.log('in the if')
+            this.mapObject.displayMarkers(this.props.partload_marker_array)
+          }
+          break;
+
+
+
         }
+
         
+
+
+      
 
 
 
@@ -73,8 +118,12 @@ render() {
 
     }
 
+
+
     const mapDispatchToProps=(dispatch)=>({
       actions: bindActionCreators(actionCreators, dispatch)
     })
-    const mapStateToProps=(state)=>({all_trips: state.trips.all_trips})
-    export default connect(mapStateToProps, mapDispatchToProps)(GMap)
+    const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, partload_marker_array: state.trips.partload_marker_array })
+    export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GMap))
+
+   

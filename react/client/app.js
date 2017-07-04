@@ -9,7 +9,7 @@ import {sentry_url, logException} from './helpers/config'
 import LoginBox from './components/sign_in/LoginBox'
 import Main from './components/Main'
 import Layout from './components/Layout'
-
+import Partload from './components/partload/Partload'
 import Home from './components/home/Home'
 import Planner from './components/planner/Planner'
 import Today from './components/today/Today'
@@ -40,6 +40,7 @@ class TopComponent extends React.Component {
           <Route path="surveyors_diary" component= {Surveyor}></Route>
           <Route path="update_data" component= {UpdateDataSmart}></Route>
           <Route path="account_management" component= {AccountManagementSmart}></Route>
+          <Route path="partload" component= {Partload}></Route>
           <Route path="account_management/add_user" component= {AccountManagementSmart}></Route>
         </Route>
       </Router>

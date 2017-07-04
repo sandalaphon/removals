@@ -8,12 +8,12 @@ html {
 
 .nav-bar{
 
-  min-height:30px;
+  min-height:5vh;
   display: grid;
   grid-area: nav;
   grid-template-areas:
-  "a b c d e . . email signout";
-  grid-template-columns: repeat(9,1fr);
+  "a b c d e f . . email signout";
+  grid-template-columns: repeat(10,1fr);
   grid-template-rows: 1fr;
   justify-items: center;
   align-items: center;
@@ -66,23 +66,30 @@ a.active{
 
 
 /*///////////////NAV/////////////////////////*/
-.planner-nav{
-  grid-area: c;
+.home-nav{
+  grid-area: a;
 }
 
 .today-nav{
   grid-area: b;
 }
-.home-nav{
-  grid-area: a;
+
+.planner-nav{
+  grid-area: c;
 }
-.account-nav{
+
+.partload-nav{
   grid-area: d;
 }
 
-.csv-nav{
+.account-nav{
   grid-area: e;
 }
+
+.csv-nav{
+  grid-area: f;
+}
+
 /*///////////////NAV/////////////////////////*/
 
 
