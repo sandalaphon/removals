@@ -37,6 +37,7 @@ class UpdateData extends React.Component {
 
     })
     .on('done', ()=>{
+      // this.props.getAllTripsFromRails()
       console.log('end')
       window.alert('Thank you for the submission, the data is saved')
     })

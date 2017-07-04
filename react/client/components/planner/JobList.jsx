@@ -7,8 +7,6 @@ class JobList extends React.Component{
   constructor(props){
     super(props)
     this.state={
-      colours: [ '#0075DC', '#993F00', '#4C005C', '#191919', '#005C31' ,'#2BCE48' ,'#FFCC99' , '#808080' ,'#94FFB5', '#8F7C00', '#9DCC00' ,'#C20088', '#003380' , '#FFA405', '#FFA8BB', '#426600' , '#FF0010' ,'#5EF1F2' ,'#00998F'  ,'#E0FF66' , '#740AFF' ,'#990000', '#FFFF80', '#FFFF00', '#FF5005', '#F0A3FF' ],
-       // ['Black', 'Blue', 'DarkGreen', 'DarkMagenta',  'DimGrey', 'GoldenRod', 'Tomato', 'YellowGreen', 'SlateBlue', 'Sienna', 'Plum', 'HotPink'],
       order: true
     }
     this.eventTarget = null,
@@ -17,11 +15,19 @@ class JobList extends React.Component{
 
 
   drag(event){
-  this.eventTarget = event.target
-    event.dataTransfer.setData('text', JSON.stringify([event.target.id, this.props.all_trips_reference[event.target.id], this.state.colours[event.target.id]]))
-    event.dataTransfer.dropEffect = "copy";
 
-    this.props.actions.setCurrentDragJob({colour: this.state.colours[event.target.id], estimated_hours: this.props.all_trips_reference[event.target.id].estimated_hours})
+  this.eventTarget = event.target
+  let index2 = 0
+  this.props.all_trips.forEach((trip, index)=>{
+    if(trip.colour==event.target.id){
+
+      index2 = index}
+  })
+
+    event.dataTransfer.setData('text', event.target.id)
+    event.dataTransfer.dropEffect = "copy";
+    this.props.actions.setCurrentDragJob({colour: event.target.id, estimated_hours: this.props.all_trips[index2].estimated_hours})
+
 
   }
 
@@ -68,25 +74,28 @@ class JobList extends React.Component{
   }
 
   handleJobListDrop(event){
-    var tableDataElement = document.getElementById(`${this.eventTarget.id}${this.state.colours[this.eventTarget.id]}`)
+    var tripId
+    this.props.all_trips.forEach((trip)=>{
+      if(trip.colour==this.eventTarget.id){
+        tripId=trip.id
+      }
+    })
+
+    var tableDataElement = document.getElementById(`${tripId}${this.eventTarget.id}`)
 
     if(this.eventTarget.id === this.currentDropTargetId) return
  
     tableDataElement.appendChild(this.eventTarget)
-    this.props.actions.deleteDroppedCells(this.state.colours[this.eventTarget.id])
+    this.props.actions.deleteDroppedCells(this.eventTarget.id)
 
   }
 
  
   jobs(){
-    //create an immutable reference array of job.ids
-    var tripIdOrder = this.props.all_trips_reference.map((ajob)=>{return ajob.id})
 
     return this.props.all_trips.map((job,index)=>{
-      //use immutable reference array to set colour of job
-      var indexInAllTrips =  tripIdOrder.indexOf(job.id)
-      var inlineStyleColor = {color: this.state.colours[indexInAllTrips]}
-      var iconHome = `${indexInAllTrips}${this.state.colours[indexInAllTrips]}`
+      var inlineStyleColor = {color: job.colour}
+      var iconHome = `${job.id}${job.colour}`
 
       var arrival_time = job.arrival_time
       var hoverHandStyle = {cursor: 'pointer'}
@@ -99,11 +108,11 @@ class JobList extends React.Component{
           onDragStart={this.drag.bind(this)}  
           className="material-icons md-18 truckimage" 
           style={inlineStyleColor} 
-          id={indexInAllTrips}>local_shipping</i>
+          id={job.colour}>local_shipping</i>
           
      
-  return(<tr key={indexInAllTrips} style={collapseStyle}>
-        <td ><button id={job.id} onClick={this.handleDrawRouteClick.bind(this)}>View Route</button></td>
+  return(<tr key={job.id} style={collapseStyle}>
+        <td ><button  onClick={this.handleDrawRouteClick.bind(this)}>View Route</button></td>
         <td >{job.client_name}</td>
         <td id={iconHome} style={hoverHandStyle}>{image}</td>
         <td >{job.collection_postcode}</td>
@@ -159,7 +168,7 @@ class JobList extends React.Component{
 const mapDispatchToProps=(dispatch)=>({
   actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName, renderNewRoute, excludeFromVisibleJobList, includeInVisibleJobList}, dispatch)
 })
-const mapStateToProps=(state)=>({ all_trips: state.trips.all_trips, all_trips_reference: state.trips.all_trips_reference, searchString: state.trips.searchString})
+const mapStateToProps=(state)=>({ all_trips: state.trips.all_trips, searchString: state.trips.searchString})
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(JobList)

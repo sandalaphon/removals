@@ -33,7 +33,7 @@ class TruckFlicker extends React.Component {
       ellipsis
       boundaryLinks
       items={visibleJourneys}
-      maxButtons={8}
+      maxButtons={4}
       activePage={this.state.activePage}
       onSelect={this.handleSelect.bind(this)}
       />

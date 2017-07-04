@@ -35,7 +35,6 @@ class TruckDayView extends React.Component{
 
   handleDragOver(event){
     event.preventDefault() 
-    //console.log("dragover targget",event.target)
   }
 
   handleDragLeave(event){
@@ -53,12 +52,8 @@ class TruckDayView extends React.Component{
         })
         var data = event.dataTransfer.getData('text')
 
-    // var nodeCopy = document.getElementById(data).cloneNode(true);
-    //  nodeCopy.id = 'newId'; /* We cannot use the same ID */
-    //  ev.target.appendChild(nodeCopy);
 
-
-    event.target.appendChild(document.getElementById(JSON.parse(data)[0]))
+    event.target.appendChild(document.getElementById(data))
   }
 
 
