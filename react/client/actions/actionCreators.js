@@ -50,6 +50,11 @@ export function loginEmail(email){
   }
 }
 //
+export function clearPartloadMarkerArray(){
+  return {
+    type: 'CLEAR_PARTLOAD_MARKER_ARRAY'
+  }
+}
 
 export function addMarkerToPartloadMarkerArray(coords){
   return {

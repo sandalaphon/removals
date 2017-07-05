@@ -1,3 +1,5 @@
+
+
 class MapObject{
   constructor(map){
     this.map = map
@@ -29,7 +31,12 @@ class MapObject{
      // marker.setMap(this.map)
   }
 
+  clearAllMarkers(marker){
+    marker.setMap(null)
+  }
+
   displayMarkers(marker_array){
+
     console.log('in displayMarkers')
     marker_array.forEach((marker)=>{
       this.placeMarker(marker)
@@ -44,8 +51,5 @@ class MapObject{
     
   }
 }
-
-
-
 
 export default MapObject

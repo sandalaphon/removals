@@ -3,7 +3,7 @@ import * as actionCreators from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import Geocoder from '../../models/geocoder.js'
-// import {mapObject} from '../planner/Gmap'
+
 
 
 class Postcode extends React.Component{
@@ -19,15 +19,14 @@ class Postcode extends React.Component{
 
   handleCollectionSubmit(event){
     event.preventDefault()
-    var geocoder = new Geocoder()
 
+    // this.props.actions.clearPartloadMarkerArray()
+    var geocoder = new Geocoder()
     var partload_collection_coords = geocoder.getLatLng(this.props.trips.partload_collection_postcode, this.props.actions.addMarkerToPartloadMarkerArray)
     if(this.props.trips.partload_delivery_postcode){
       var partload_delivery_coords = geocoder.getLatLng(this.props.trips.partload_delivery_postcode, this.props.actions.addMarkerToPartloadMarkerArray)
     }
-    
-    console.log("eventvalue",event.target.value)
-    console.log("eventvalue",partload_collection_coords ,partload_delivery_coords)
+ 
   }
 
   handleCollectionChange(event){

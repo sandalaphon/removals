@@ -16,17 +16,17 @@ class GMap extends React.Component {
     this.state = { 
       zoom: 11,
       center: { lng: -3.1883 , lat: 55.9533 },
+      map: null
+      
     };
-
 
   }
 
 
   componentDidMount() {
-    this.map = this.createMap()
+    this.setState({map: this.createMap()})
     // drawRoute.call(this, "Castlebury Farmhouse, wareside, hertfordshire SG12 7SH", "81 East Claremont Street, Edinburgh EH7 4HU", this.map )
-    this.mapObject = new MapObject(this.map)
-
+    
   }
 
 
@@ -40,7 +40,9 @@ class GMap extends React.Component {
       zoom: this.state.zoom,
       center: this.mapCenter()
     }
-    return new google.maps.Map(this.refs.mapCanvas, mapOptions)
+    var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
+    this.setState({mapObject: new MapObject(map)})
+    return map
   }
 
   mapCenter() {
@@ -63,10 +65,10 @@ class GMap extends React.Component {
           case '/planner':
 
           if(this.props.all_trips){
-            if(this.mapObject) this.mapObject.clearMap()
+            if(this.state.mapObject) this.state.mapObject.clearMap()
               this.props.all_trips.forEach((job)=>{
-                if(!job.hidden&&this.mapObject){
-                  this.mapObject.drawRouteWithGoogleResponse(job.google_directions)
+                if(!job.hidden&&this.state.mapObject){
+                  this.state.mapObject.drawRouteWithGoogleResponse(job.google_directions)
                 }
                       //if job.attribute hidden then...
 
@@ -81,30 +83,21 @@ class GMap extends React.Component {
           case '/partload':
           console.log('in partload')
           if(this.props.partload_routes){
-            if(this.mapObject) this.mapObject.clearMap()
+            if(this.state.mapObject) this.state.mapObject.clearMap()
             this.props.partload_routes.forEach((job)=>{
-              if(!job.hidden&&this.mapObject){
-                this.mapObject.drawRouteWithGoogleResponse(job.google_directions)
+              if(!job.hidden&&this.state.mapObject){
+                this.state.mapObject.drawRouteWithGoogleResponse(job.google_directions)
               }
             })
 
           }
           console.log(this.props.partload_marker_array)
-          if(this.props.partload_marker_array.length){
+          if(this.props.partload_marker_array.length&&this.state.mapObject){
             console.log('in the if')
-            this.mapObject.displayMarkers(this.props.partload_marker_array)
+            this.state.mapObject.displayMarkers(this.props.partload_marker_array)
           }
           break;
-
-
-
-        }
-
-        
-
-
-      
-
+        };
 
 
         return (
@@ -116,7 +109,7 @@ class GMap extends React.Component {
       }
 
 
-    }
+    };
 
 
 

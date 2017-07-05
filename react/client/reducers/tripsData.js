@@ -57,6 +57,10 @@ function handleData(state = {
     return {...state,  getTripsError: action.payload}
     break;
     //
+    case 'CLEAR_PARTLOAD_MARKER_ARRAY':
+    return {...state,  partload_marker_array: []}
+    break;
+
     case 'SET_HIDDEN_STATUS':
     var holder = state.all_trips.slice()
     holder.forEach((job)=>{
