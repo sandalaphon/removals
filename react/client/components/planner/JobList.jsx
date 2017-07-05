@@ -1,5 +1,5 @@
 import React from 'react'
-import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName, renderNewRoute, includeInVisibleJobList, excludeFromVisibleJobList} from '../../actions/actionCreators'
+import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells,  renderNewRoute, includeInVisibleJobList, excludeFromVisibleJobList, sortByColumn} from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -7,7 +7,8 @@ class JobList extends React.Component{
   constructor(props){
     super(props)
     this.state={
-      order: true
+      order: {clientName: true, estimatedHours: true}
+      // order: true
     }
     this.eventTarget = null,
     this.currentDropTargetId = null
@@ -47,12 +48,22 @@ class JobList extends React.Component{
   }
 
   handleClientNameSort(){
-    if(this.state.order){
-      this.props.actions.sortByClientName('asc')
-      this.setState({order:false})
+    if(this.state.order.clientName){
+      this.props.actions.sortByColumn('client_name','asc')
+      this.setState({order:{clientName:false}})
     }else{
-      this.props.actions.sortByClientName('dec')
-      this.setState({order:true})
+      this.props.actions.sortByColumn('client_name', 'dec')
+      this.setState({order:{clientName:true}})
+    }
+  }
+/////////////////////////////////////////
+  handleEstHoursSort(){
+    if(this.state.order.estimatedHours){
+      this.props.actions.sortByColumn('estimated_hours','asc')
+      this.setState({order:{estimatedHours:false}})
+    }else{
+      this.props.actions.sortByColumn('estimated_hours','dec')
+      this.setState({order: {estimatedHours:true}})
     }
   }
 
@@ -147,7 +158,7 @@ class JobList extends React.Component{
         <th>Men Requested</th>
         <th>Start</th>
         <th>Notes</th>
-        <th>Estimated Hours</th> 
+        <th onClick={this.handleEstHoursSort.bind(this)}>Estimated Hours</th> 
         <th>Allocated Trucks</th>
         </tr>
 
@@ -166,7 +177,7 @@ class JobList extends React.Component{
 }
 
 const mapDispatchToProps=(dispatch)=>({
-  actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByClientName, renderNewRoute, excludeFromVisibleJobList, includeInVisibleJobList}, dispatch)
+  actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByColumn, renderNewRoute, excludeFromVisibleJobList, includeInVisibleJobList}, dispatch)
 })
 const mapStateToProps=(state)=>({ all_trips: state.trips.all_trips, searchString: state.trips.searchString})
 

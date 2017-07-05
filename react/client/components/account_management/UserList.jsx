@@ -36,6 +36,11 @@ class UserList extends React.Component {
   handleDeleteClick(e){
     e.preventDefault()
     var id = e.target.id
+    console.log('id' , id, this.props.users.currentUser.id)
+    if(id==this.props.users.currentUser.id){
+      alert('Current User cannot be deleted!')
+      return
+    }
     this.props.deleteUser(id)
   }
 

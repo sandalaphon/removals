@@ -20,6 +20,26 @@ function getUniqueColor(index){
 }
 }
 
+function sortJoblist(list, attribute, order){
+    var sorted
+    if(order === 'asc'){
+        sorted = list.sort(
+            (a,b)=>{
+                if (a[attribute] < b[attribute]) return -1
+                    if (b.attribute < a.attribute) return 1
+                        return 0
+                })
+    }else{
+        sorted = list.sort(
+            (a,b)=>{
+                if (a[attribute] < b[attribute]) return 1
+                    if (b[attribute] < a[attribute]) return -1
+                        return 0
+                })
+    }
+    return sorted
+}
+
 
 function handleData(state = {
     trips: null,
@@ -112,23 +132,25 @@ function handleData(state = {
     })
     return{...state, droppedCells: newArray}
     break;
-    case 'SORT_BY_CLIENT_NAME':
-    var sorted
-    if(action.payload === 'asc'){
-        sorted = state.all_trips.sort(
-            (a,b)=>{
-                if (a.client_name < b.client_name) return -1
-                    if (b.client_name < a.client_name) return 1
-                        return 0
-                })
-    }else{
-        sorted = state.all_trips.sort(
-            (a,b)=>{
-                if (a.client_name < b.client_name) return 1
-                    if (b.client_name < a.client_name) return -1
-                        return 0
-                })
-    }
+
+    case 'SORT_BY_COLUMN':
+    var sorted = sortJoblist(state.all_trips, action.attribute, action.order)
+    // var sorted
+    // if(action.payload === 'asc'){
+    //     sorted = state.all_trips.sort(
+    //         (a,b)=>{
+    //             if (a.client_name < b.client_name) return -1
+    //                 if (b.client_name < a.client_name) return 1
+    //                     return 0
+    //             })
+    // }else{
+    //     sorted = state.all_trips.sort(
+    //         (a,b)=>{
+    //             if (a.client_name < b.client_name) return 1
+    //                 if (b.client_name < a.client_name) return -1
+    //                     return 0
+    //             })
+    // }
     return{...state, all_trips: sorted}
 
 }

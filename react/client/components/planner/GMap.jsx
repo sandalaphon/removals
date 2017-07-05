@@ -9,27 +9,24 @@ import MapObject from '../../models/MapObject'
 import {withRouter} from 'react-router'
 
 
+
 class GMap extends React.Component {
 
   constructor(props){
     super(props)
     this.state = { 
-      zoom: 11,
+      zoom: 12,
       center: { lng: -3.1883 , lat: 55.9533 },
       map: null
       
     };
-
   }
 
 
   componentDidMount() {
     this.setState({map: this.createMap()})
     // drawRoute.call(this, "Castlebury Farmhouse, wareside, hertfordshire SG12 7SH", "81 East Claremont Street, Edinburgh EH7 4HU", this.map )
-    
   }
-
-
 
   componentDidUnMount() {
     google.maps.event.clearListeners(map, 'zoom_changed')
@@ -41,7 +38,8 @@ class GMap extends React.Component {
       center: this.mapCenter()
     }
     var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
-    this.setState({mapObject: new MapObject(map)})
+    window.mapObjectGlobalInstance = new MapObject(map)
+    this.setState({mapObject: mapObjectGlobalInstance})
     return map
   }
 
@@ -51,8 +49,6 @@ class GMap extends React.Component {
       this.state.center.lng
       )
   }
-
-
 
   render() {
 
@@ -81,7 +77,7 @@ class GMap extends React.Component {
           break;
 
           case '/partload':
-          console.log('in partload')
+ 
           if(this.props.partload_routes){
             if(this.state.mapObject) this.state.mapObject.clearMap()
             this.props.partload_routes.forEach((job)=>{
@@ -91,9 +87,9 @@ class GMap extends React.Component {
             })
 
           }
-          console.log(this.props.partload_marker_array)
+
           if(this.props.partload_marker_array.length&&this.state.mapObject){
-            console.log('in the if')
+
             this.state.mapObject.displayMarkers(this.props.partload_marker_array)
           }
           break;

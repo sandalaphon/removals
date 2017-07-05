@@ -77,10 +77,11 @@ export function loginPassword(password){
   }
 }
 
-export function sortByClientName(order){
+export function sortByColumn(attribute, order){
   return {
-    type: 'SORT_BY_CLIENT_NAME',
-    payload: order
+    type: 'SORT_BY_COLUMN',
+    attribute,
+    order
   }
 }
 

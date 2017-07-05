@@ -14,17 +14,11 @@ class AccountManagement extends React.Component {
   componentWillMount(){
 
     this.props.getUsers()
-    
-    
   }
 
   render(){
-    var {signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm, getUsers, deleteUser} = this.props
+    var {signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm, getUsers, deleteUser, currentUser} = this.props
    
-   
-     
-    
-    
     return(
       
       <div>

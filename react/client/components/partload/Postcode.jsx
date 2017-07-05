@@ -6,6 +6,7 @@ import Geocoder from '../../models/geocoder.js'
 
 
 
+
 class Postcode extends React.Component{
 
   constructor(props) {
@@ -19,8 +20,10 @@ class Postcode extends React.Component{
 
   handleCollectionSubmit(event){
     event.preventDefault()
-
-    // this.props.actions.clearPartloadMarkerArray()
+    console.log('mapObject', mapObjectGlobalInstance)
+      mapObjectGlobalInstance.clearMarkers()
+    
+    this.props.actions.clearPartloadMarkerArray()
     var geocoder = new Geocoder()
     var partload_collection_coords = geocoder.getLatLng(this.props.trips.partload_collection_postcode, this.props.actions.addMarkerToPartloadMarkerArray)
     if(this.props.trips.partload_delivery_postcode){

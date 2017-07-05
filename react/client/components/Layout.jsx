@@ -3,6 +3,9 @@ import Navb from './Navb'
 import {Link} from 'react-router'
 import LoginBox from './sign_in/LoginBox'
 import SignUp from './account_management/SignUp'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+import * as actionCreators from '../actions/actionCreators'
 
 class Layout extends React.Component {
 
@@ -54,5 +57,23 @@ class Layout extends React.Component {
 
 }
 
-export default Layout
+
+
+function mapStateToProps(state){
+  return {
+    // posts: state.posts,
+    // comments: state.comments,
+    // search: state.search
+    loginDetails: state.loginDetails,
+    trips: state.trips
+  }
+}
+
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(actionCreators, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout)
+
+
 

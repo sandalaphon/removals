@@ -8,7 +8,7 @@ class Partload extends React.Component{
 
 
 render(){
- 
+
   // console.log('hello', Gmap.mapObject)
   return(
  <div className='grid-partload' ref="mapCanvas">

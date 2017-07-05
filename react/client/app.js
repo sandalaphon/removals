@@ -7,7 +7,7 @@ import Raven from 'raven-js'
 import {sentry_url, logException} from './helpers/config'
 
 import LoginBox from './components/sign_in/LoginBox'
-import Main from './components/Main'
+// import Main from './components/Main'
 import Layout from './components/Layout'
 import Partload from './components/partload/Partload'
 import Home from './components/home/Home'
@@ -32,7 +32,7 @@ class TopComponent extends React.Component {
     return(
       <Provider store= {store}>
       <Router history = {history}>
-        <Route path="/" component= {Main}> 
+        <Route path="/" component= {Layout}> 
           <IndexRoute component= {Home}></IndexRoute> 
           <Route path="home" component= {Home}></Route>
           <Route path="planner" component= {Planner}></Route>
