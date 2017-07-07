@@ -64,7 +64,7 @@ class GMap extends React.Component {
             if(this.state.mapObject) this.state.mapObject.clearMap()
               this.props.all_trips.forEach((job)=>{
                 if(!job.hidden&&this.state.mapObject){
-                  this.state.mapObject.drawRouteWithGoogleResponse(job.google_directions)
+                  this.state.mapObject.drawRouteWithGoogleResponse(job)
                 }
                       //if job.attribute hidden then...
 
@@ -82,7 +82,7 @@ class GMap extends React.Component {
             if(this.state.mapObject) this.state.mapObject.clearMap()
             this.props.partload_routes.forEach((job)=>{
               if(!job.hidden&&this.state.mapObject){
-                this.state.mapObject.drawRouteWithGoogleResponse(job.google_directions)
+                this.state.mapObject.drawRouteWithGoogleResponse(job)
               }
             })
 
