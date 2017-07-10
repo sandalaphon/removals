@@ -1,13 +1,20 @@
-
+let mapObjectInstances = {'planner': null, 'partload': null}
 
 class MapObject{
-  constructor(map){
+  constructor(map, pathname){
+    
     this.map = map
     this.directionsService = new google.maps.DirectionsService()
     this.renderedRoutes = [],
     this.markers = [],
     this.bounds= new google.maps.LatLngBounds()
-    
+  
+    if(!mapObjectInstances.pathname){
+      console.log('made new mapObject', this)
+      mapObjectInstances[pathname]=this
+    }
+    // return mapObjectInstances
+    console.log('mapObjectInstances',mapObjectInstances)
 
   }
 
@@ -86,4 +93,4 @@ class MapObject{
   }
 }
 
-export default MapObject
+export {MapObject, mapObjectInstances}

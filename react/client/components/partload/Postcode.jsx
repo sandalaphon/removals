@@ -3,6 +3,7 @@ import * as actionCreators from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import Geocoder from '../../models/geocoder.js'
+import {MapObject, mapObjectInstances} from '../../models/mapObject'
 
 
 
@@ -16,12 +17,15 @@ class Postcode extends React.Component{
       //   deliveryValue: ''
       // };
       
+      
   }
 
   handleCollectionSubmit(event){
     event.preventDefault()
-    console.log('mapObject', mapObjectGlobalInstance)
-      mapObjectGlobalInstance.clearMarkers()
+    // var mapObject = new MapObject()
+    this.mapObject = mapObjectInstances.partload
+    console.log('mapObject', this.mapObject)
+      this.mapObject.clearMarkers()
     
     this.props.actions.clearPartloadMarkerArray()
     var geocoder = new Geocoder()

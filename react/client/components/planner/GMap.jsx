@@ -5,7 +5,7 @@ import * as actionCreators from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {drawRoute, drawRouteWithGoogleResponse, clearMap} from '../../models/mapFunctions'
-import MapObject from '../../models/MapObject'
+import {MapObject, mapObjectInstances} from '../../models/mapObject'
 import {withRouter} from 'react-router'
 
 
@@ -33,13 +33,17 @@ class GMap extends React.Component {
   }
 
   createMap() {
+    let pathname=this.props.location.pathname
+    pathname = pathname.slice(1)
+    console.log('pathname', pathname)
     let mapOptions = {
       zoom: this.state.zoom,
       center: this.mapCenter()
     }
     var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
-    window.mapObjectGlobalInstance = new MapObject(map)
-    this.setState({mapObject: mapObjectGlobalInstance})
+    var mapObject = new MapObject(map, pathname)
+    console.log('gmap mapObjectInstances.pathname', mapObjectInstances[pathname])
+    this.setState({mapObject: mapObjectInstances[pathname]})
     return map
   }
 
