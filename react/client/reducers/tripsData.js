@@ -48,7 +48,8 @@ function handleData(state = {
     renderedRoutes: [],
     partload_collection_postcode: '',
     partload_delivery_postcode: '',
-    partload_marker_array: []
+    partload_marker_array: [],
+    suggested_trips: []
 // all_trips:[]
 },action){
 

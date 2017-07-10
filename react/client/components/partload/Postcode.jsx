@@ -3,35 +3,31 @@ import * as actionCreators from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import Geocoder from '../../models/geocoder.js'
-import {MapObject, mapObjectInstances} from '../../models/mapObject'
-
-
+import { mapObjectInstances} from '../../models/mapObject'
 
 
 class Postcode extends React.Component{
 
-  constructor(props) {
+  constructor(props) { //may need this later
       super(props);
-      // this.state = {
-      //   collectionValue: '',
-      //   deliveryValue: ''
-      // };
-      
-      
   }
+
+  
 
   handleCollectionSubmit(event){
     event.preventDefault()
-    // var mapObject = new MapObject()
-    this.mapObject = mapObjectInstances.partload
-    console.log('mapObject', this.mapObject)
-      this.mapObject.clearMarkers()
-    
-    this.props.actions.clearPartloadMarkerArray()
     var geocoder = new Geocoder()
-    var partload_collection_coords = geocoder.getLatLng(this.props.trips.partload_collection_postcode, this.props.actions.addMarkerToPartloadMarkerArray)
-    if(this.props.trips.partload_delivery_postcode){
-      var partload_delivery_coords = geocoder.getLatLng(this.props.trips.partload_delivery_postcode, this.props.actions.addMarkerToPartloadMarkerArray)
+    //get the appropriate instance, declared here so that it has had time to be created on render of Gmap
+    this.mapObject = mapObjectInstances.partload 
+    this.mapObject.clearMarkers()
+    this.props.actions.clearPartloadMarkerArray()
+
+    var {partload_collection_postcode, partload_delivery_postcode} = this.props.trips
+    var {addMarkerToPartloadMarkerArray} = this.props.actions
+
+    var partload_collection_coords = geocoder.getLatLng(partload_collection_postcode, addMarkerToPartloadMarkerArray)
+    if(partload_delivery_postcode){
+      var partload_delivery_coords = geocoder.getLatLng(partload_delivery_postcode, addMarkerToPartloadMarkerArray)
     }
  
   }

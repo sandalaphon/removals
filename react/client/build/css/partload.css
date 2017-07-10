@@ -3,20 +3,15 @@
   height: 95vh;
   border: 3px solid hotpink;
   grid-template-areas:
-
-  /*"pos pos pos pos pos  fli fli fli fli fli"
-  "cal cal cal cal cal  map map map map map"
-  "cal cal cal cal cal  map map map map map"
-  "fil fil fil fil fil  map map map map map"
-  "job job job job job  map map map map map"
-  "job job job job job  map map map map map"
-  "job job job job job  map map map map map"
-  "job job job job job  map map map map map"
-  "job job job job job  map map map map map"
-  "job job job job job  map map map map map";*/
-  "pos map";
-/*  grid-template-rows: repeat(10,1fr);
-  grid-auto-columns: 10%;*/
+  "pos map"
+  "sup map"
+  "sug map"
+  "sug map"
+  "sug map"
+  "sug map"
+  ;
+  grid-template-rows: repeat(6,1fr);
+  grid-auto-columns: 10%;
   grid-template-columns: repeat(2,1fr);
 }
 
@@ -33,6 +28,11 @@
   grid-area: map;
   min-height: 1fr;
 }*/
+
+.grid-item-suggestion-list{
+  grid-area:sug;
+  display: inline-block;
+}
 
 .grid-item-postcode{
 grid-area:pos;

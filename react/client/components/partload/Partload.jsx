@@ -1,6 +1,7 @@
 import React from 'react'
 import Gmap from '../planner/Gmap'
 import Postcode from './Postcode'
+import SuggestionList from './SuggestionList'
 
 
 class Partload extends React.Component{
@@ -14,6 +15,7 @@ render(){
  <div className='grid-partload' ref="mapCanvas">
  <Postcode />
    <Gmap/>
+   <SuggestionList/>
  </div>
     )
 }

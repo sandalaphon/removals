@@ -81,7 +81,7 @@ class JobList extends React.Component{
   }
 
   handleDrawRouteClick(event){
-    this.renderTripById(event.target.id)
+    // this.renderTripById(event.target.id)
   }
 
   handleJobListDrop(event){
