@@ -7,7 +7,8 @@ class MapObject{
     this.directionsService = new google.maps.DirectionsService()
     this.renderedRoutes = [],
     this.markers = [],
-    this.bounds= new google.maps.LatLngBounds()
+    this.bounds= new google.maps.LatLngBounds(),
+    this.postcodeMarkers = []
   
     if(!mapObjectInstances.pathname){
       mapObjectInstances[pathname]=this
@@ -60,6 +61,19 @@ class MapObject{
 
   }
 
+  placePostcodeMarker(coords,colour){
+    this.bounds.extend(coords) 
+    var marker = new google.maps.Marker({
+      position: coords,
+      map: this.map,
+      icon: this.pinSymbol(colour),
+      animation: google.maps.Animation.DROP
+    })
+    this.postcodeMarkers.push(marker)
+    this.map.fitBounds(this.bounds)   
+
+  }
+
   clearMarkers(){
     while(this.markers.length){
       this.markers.forEach((marker)=>{
@@ -77,13 +91,36 @@ class MapObject{
     })
   }
 
-  clearMap(){
-    this.clearMarkers()
-    this.renderedRoutes.forEach((route)=>{
-      route.setMap(null)
+  displayPostcodeMarkers(marker_array){
+    marker_array.forEach((coords)=>{
+      this.placePostcodeMarker(coords,"red")
     })
+  }
+
+  clearPostcodeMarkers(){
+    while(this.postcodeMarkers.length){
+      this.postcodeMarkers.forEach((marker)=>{
+        marker = this.postcodeMarkers.pop()
+        // console.log('this.markers', this.markers)
+        marker.setMap(null)
+      })
+    }
+    this.bounds = new google.maps.LatLngBounds()
+  }
+
+  clearMap(){
+    this.clearPostcodeMarkers()
+    this.clearMarkers()
+    this.clearRoutes()
     
   }
+
+clearRoutes(){
+  this.renderedRoutes.forEach((route)=>{
+    route.setMap(null)
+  })
+}
+
 }
 
 export {MapObject, mapObjectInstances}

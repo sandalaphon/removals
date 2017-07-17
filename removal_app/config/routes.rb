@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   delete '/users/:id(.:format)' => 'users#delete'
   post '/api/trips/new' => 'trips#create'
   get '/api/trips' => 'trips#index'
+  post '/api/trips/partload_closest_pickup' => 'trips#partload_closest_pickup'
 
   get '/api/:company_id' => 'companies#index'
 

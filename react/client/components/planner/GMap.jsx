@@ -91,7 +91,7 @@ class GMap extends React.Component {
 
           if(this.props.partload_marker_array.length&&this.state.mapObject){
 
-            this.state.mapObject.displayMarkers(this.props.partload_marker_array)
+            this.state.mapObject.displayPostcodeMarkers(this.props.partload_marker_array)
           }
           break;
         };

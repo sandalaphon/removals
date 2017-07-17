@@ -49,7 +49,7 @@ function handleData(state = {
     partload_collection_postcode: '',
     partload_delivery_postcode: '',
     partload_marker_array: [],
-    suggested_trips: []
+    best_pick_up_jobs: []
 // all_trips:[]
 },action){
 
@@ -81,6 +81,26 @@ function handleData(state = {
     case 'CLEAR_PARTLOAD_MARKER_ARRAY':
     return {...state,  partload_marker_array: []}
     break;
+    //
+
+    case 'BEST_PICK_UP_JOBS_FULFILLED' :
+    console.log('action.payload', action.payload)
+    var newArray = action.payload.slice()
+    var anotherNewArray = newArray.map((trip, index)=>{
+        var google_directions= JSON.parse(trip.google_directions)
+        trip.google_directions = google_directions
+        trip.colour=getUniqueColor(index)
+        return trip
+    })
+    //
+    return {...state, best_pick_up_jobs: anotherNewArray, best_pick_up_jobs_error: null}
+    break;
+
+    case 'BEST_PICK_UP_JOBS_REJECTED' :
+    return {...state, best_pick_up_jobs: [], best_pick_up_jobs_error: action.payload}
+    break;
+
+
 
     case 'SET_HIDDEN_STATUS':
     var holder = state.all_trips.slice()

@@ -20,6 +20,8 @@ export function fetchUser(){
 }
 }
 
+
+
 ///////////////////////
 export function renderJobList(){
   return {
@@ -146,6 +148,30 @@ export function setPartloadDeliveryPostcode(postcode){
   return {
     type: 'SET_PARTLOAD_DELIVERY_POSTCODE',
     payload: postcode
+  }
+}
+
+export function getPickUpBestJobsFromRails(startLat, startLng){
+  return function(dispatch){
+    const url = 'http://localhost:5000/api/trips/partload_closest_pickup.json'
+    const data = {
+      startLat, startLng
+    }
+
+    axios.post(url, data, {withCredentials: true})
+    .then((response)=>{
+      console.log("response from rails", response.data)
+      dispatch({
+        type: 'BEST_PICK_UP_JOBS_FULFILLED',
+        payload: response.data
+      })
+    })
+    .catch((error)=>{
+      dispatch({
+        type: 'BEST_PICK_UP_JOBS_REJECTED',
+        payload: error
+      })
+    })
   }
 }
 

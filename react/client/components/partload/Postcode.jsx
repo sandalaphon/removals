@@ -20,6 +20,7 @@ class Postcode extends React.Component{
     //get the appropriate instance, declared here so that it has had time to be created on render of Gmap
     this.mapObject = mapObjectInstances.partload 
     this.mapObject.clearMarkers()
+    this.mapObject.clearPostcodeMarkers()
     this.props.actions.clearPartloadMarkerArray()
 
     var {partload_collection_postcode, partload_delivery_postcode} = this.props.trips

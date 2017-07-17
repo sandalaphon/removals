@@ -9,15 +9,31 @@ class SuggestionList extends React.Component{
     super(props)
   }
 
-  getSuggestions(){
-    this.findClosestToGivenLatLng()
-    this.suggestions = this.props.all_trips
-  }
+  // getSuggestions(){
+  //   // this.findClosestToGivenLatLng()
+  //   this.suggestions = this.props.all_trips
+  // }
 
   onClickNearestStart(event){
     event.preventDefault()
-    this.findClosestToGivenLatLng()
+    this.mapObject.clearRoutes()
+    this.mapObject.clearMarkers()
+    var startMarkerLat = this.props.partload_marker_array[0].lat
+    var startMarkerLng = this.props.partload_marker_array[0].lng
+    // this.findClosestToGivenLatLng()
+
+    //Note that date range must be added to args
+    //send lat lng to rails and get back best pickup routes
+    //Will need to ensure space on truck
+    this.props.actions.getPickUpBestJobsFromRails(startMarkerLat, startMarkerLng)
   }
+
+  // get5BestPickUpTrucks(arrayOfTripDistances){
+  //   var IndexOfBest5 = []
+  //   arrayOfTrips.forEach((distance, index)=>{
+  //     if(distance<IndexOfBest5[0])
+  //   })
+  // }
 
   findClosestToGivenLatLng(){
     var startMarkerLat = this.props.partload_marker_array[0].lat
@@ -41,6 +57,7 @@ class SuggestionList extends React.Component{
    shortest_distances.push(shortest_distance)
     })
     console.log('shortest_distances', shortest_distances)
+    // return (shortest_distances)
   }
 
 
@@ -48,14 +65,14 @@ class SuggestionList extends React.Component{
 
   jobs(){
     if(this.props.partload_marker_array&&this.props.partload_marker_array.length) {
-  this.getSuggestions()
+  // this.getSuggestions()
   var mapObjects = mapObjectInstances
   this.mapObject=mapObjects.partload
   console.log('mapObjectInstances in suggestions', this.mapObject)
-  this.suggestions.forEach((job)=>{
+  this.props.best_pick_up_jobs.forEach((job)=>{
     this.mapObject.drawRouteWithGoogleResponse(job)
   })
-  return this.suggestions.map((job, index)=>{
+  return this.props.best_pick_up_jobs.map((job, index)=>{
     var collapseStyle = job.hidden ? {display: 'none'} : {}
 
     return(<tr key={job.id} style={collapseStyle}>
@@ -106,5 +123,6 @@ render(){
 const mapDispatchToProps=(dispatch)=>({
   actions: bindActionCreators(actionCreators, dispatch)
 })
-const mapStateToProps=(state)=>({suggestedTrips: state.trips.suggested_trips, all_trips:state.trips.all_trips, partload_marker_array: state.trips.partload_marker_array , partload_collection_postcode: state.trips.partload_collection_postcode})
+const mapStateToProps=(state)=>({suggestedTrips: state.trips.suggested_trips, all_trips:state.trips.all_trips, partload_marker_array: state.trips.partload_marker_array , partload_collection_postcode: state.trips.partload_collection_postcode,
+best_pick_up_jobs: state.trips.best_pick_up_jobs})
 export default connect(mapStateToProps, mapDispatchToProps)(SuggestionList)
