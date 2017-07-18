@@ -21,6 +21,7 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^0.28.4",
     "eslint": "^2.9.0",
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-react": "^5.0.1",
@@ -30,10 +31,15 @@
     "webpack-hot-middleware": "^2.10.0"
   },
   "dependencies": {
+    "babel-runtime": "^6.23.0",
+    "classnames": "^2.2.5",
     "csvtojson": "^1.1.6",
     "latest-version": "^3.1.0",
-    "prop-types": "^15.5.8",
+    "prop-types": "^15.5.10",
     "raven-js": "^2.3.0",
+    "rc-slider": "^8.2.0",
+    "rc-tooltip": "^3.4.7",
+    "rc-util": "^4.0.4",
     "react": "^15.4.2",
     "react-bootstrap": "^0.31.0",
     "react-dom": "^15.4.2",
@@ -46,6 +52,9 @@
     "react-transform-hmr": "^1.0.4",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
-    "strip-bom": "^3.0.0"
+    "shallowequal": "^1.0.2",
+    "strip-bom": "^3.0.0",
+    "style-loader": "^0.18.2",
+    "warning": "^3.0.0"
   }
 }

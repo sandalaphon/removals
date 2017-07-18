@@ -16,8 +16,8 @@
   "todli map"
   "todli map"
   "todli map"
-  "todli map"
-  "todli cal"
+  "todli sli"
+  "todli sli"
   ;
   grid-template-rows: repeat(15,1fr);
   grid-auto-columns: 10%;
@@ -30,3 +30,12 @@
   border: 3px solid purple;
   /*grid-auto-rows:1fr;*/
 }
+
+.grid-item-slider-today{
+  /*display: inline-block;*/
+  grid-area:sli;
+  border: 3px solid purple;
+ 
+  /*grid-auto-rows:1fr;*/
+}
+

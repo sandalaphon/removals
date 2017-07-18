@@ -2,6 +2,7 @@ import React from 'react'
 import Gmap from '../Gmap'
 import Filter from '../planner/Filter'
 import ListToday from './ListToday'
+import SliderToday from './SliderToday'
 
 
 class Today extends React.Component {
@@ -10,6 +11,7 @@ class Today extends React.Component {
       <div className = 'grid-today'>
       <Gmap/>
       <ListToday />
+      <SliderToday />
       </div>
       )
   }

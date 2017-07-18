@@ -11,7 +11,7 @@ var config = {
   },
   devtool: 'source-map',
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx', '.css']
   },
   plugins: [
    // new webpack.HotModuleReplacementPlugin(),
@@ -29,11 +29,19 @@ var config = {
         test: /\.jsx?$/,
         exclude: /(node_modules)/,
         loader: 'babel-loader',
+    
         query: {
           presets: ['react', 'es2015','stage-0'],
           plugins: ['react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy']
         }
-      }
+      },
+      {
+              test: /\.css$/,
+              use: [
+                { loader: "style-loader" },
+                { loader: "css-loader" }
+              ]
+            }
     ]
   }
 };
