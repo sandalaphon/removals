@@ -1,0 +1,32 @@
+.grid-today{
+  display: grid;
+  height: 95vh;
+  border: 3px solid hotpink;
+  grid-template-areas:
+  "fil fli"
+  "fil map"
+  "fil map"
+  "todli map"
+  "todli map"
+  "todli map"
+  "todli map"
+  "todli map"
+  "todli map"
+  "todli map"
+  "todli map"
+  "todli map"
+  "todli map"
+  "todli map"
+  "todli cal"
+  ;
+  grid-template-rows: repeat(15,1fr);
+  grid-auto-columns: 10%;
+  grid-template-columns: repeat(2,1fr);
+}
+
+.grid-item-list-today{
+  /*display: inline-block;*/
+  grid-area:todli;
+  border: 3px solid purple;
+  /*grid-auto-rows:1fr;*/
+}

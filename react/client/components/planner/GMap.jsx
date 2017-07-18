@@ -35,6 +35,7 @@ class GMap extends React.Component {
   createMap() {
     let pathname=this.props.location.pathname
     pathname = pathname.slice(1)
+    console.log('pathname', pathname)
     let mapOptions = {
       zoom: this.state.zoom,
       center: this.mapCenter()
@@ -60,7 +61,7 @@ class GMap extends React.Component {
         switch (this.props.location.pathname){
 
           case '/planner':
-       
+
           if(this.props.all_trips){
             if(this.state.mapObject) this.state.mapObject.clearMap()
               this.props.all_trips.forEach((job)=>{
@@ -74,18 +75,27 @@ class GMap extends React.Component {
           break;
 
           case '/today':
+          // if(this.props.all_trips){//change to today's routes
+          //   if(this.state.mapObject) this.state.mapObject.clearMap()
+          //     this.props.all_trips.forEach((job)=>{
+          //       if(!job.hidden&&this.state.mapObject){
+          //         this.state.mapObject.drawRouteWithGoogleResponse(job)
+          //       }
+
+          //           })
+          // }
 
           break;
 
           case '/partload':
- 
-          if(this.props.partload_routes){
+
+          if(this.props.best_pick_up_jobs){
             if(this.state.mapObject) this.state.mapObject.clearMap()
-            this.props.partload_routes.forEach((job)=>{
-              if(!job.hidden&&this.state.mapObject){
-                this.state.mapObject.drawRouteWithGoogleResponse(job)
-              }
-            })
+              this.props.best_pick_up_jobs.forEach((job)=>{
+                if(!job.hidden&&this.state.mapObject){
+                  this.state.mapObject.drawRouteWithGoogleResponse(job)
+                }
+              })
 
           }
 
@@ -113,7 +123,7 @@ class GMap extends React.Component {
     const mapDispatchToProps=(dispatch)=>({
       actions: bindActionCreators(actionCreators, dispatch)
     })
-    const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, partload_marker_array: state.trips.partload_marker_array })
+    const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, partload_marker_array: state.trips.partload_marker_array, best_pick_up_jobs: state.trips.best_pick_up_jobs })
     export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GMap))
 
-   
+
