@@ -30,6 +30,7 @@ class GMap extends React.Component {
 
   componentDidUnMount() {
     google.maps.event.clearListeners(map, 'zoom_changed')
+    this.state.mapObject.clearMap()
   }
 
   createMap() {
@@ -114,8 +115,6 @@ class GMap extends React.Component {
           )
 
       }
-
-
     };
 
 
