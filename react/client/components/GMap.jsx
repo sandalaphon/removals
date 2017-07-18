@@ -24,7 +24,10 @@ class GMap extends React.Component {
 
 
   componentDidMount() {
-    this.setState({map: this.createMap()}) // map in state allow auto render when navigated back
+    this.setState({map: this.createMap()})
+    console.log('Gmap mounted')
+     // map in state allow auto render when 
+    // navigated back
     // drawRoute.call(this, "Castlebury Farmhouse, wareside, hertfordshire SG12 7SH", "81 East Claremont Street, Edinburgh EH7 4HU", this.map )
   }
 
@@ -56,6 +59,8 @@ class GMap extends React.Component {
   }
 
   render() {
+
+  
 
         //if in partload start with empty array
 

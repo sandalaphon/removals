@@ -97,6 +97,8 @@ class MapObject{
     })
   }
 
+  
+
   clearPostcodeMarkers(){
     while(this.postcodeMarkers.length){
       this.postcodeMarkers.forEach((marker)=>{

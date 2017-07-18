@@ -16,20 +16,21 @@ class TruckDayView extends React.Component{
     event.preventDefault()
     let cellId = event.target.id
     var newCellArray = []
-    let hours = this.props.trips.currentDragJob.estimated_hours
+    let {estimated_hours} = this.props.trips.currentDragJob
+    let{setHighlightedCells} = this.props.actions
 
-    for(let i = 0; i<hours; i++){
+    for(let i = 0; i<estimated_hours; i++){
       let startIndex=cellId.substring(event.target.id.length-2)
       let newStartIndex = +startIndex+i
       let newCellId=''
       if(newStartIndex<10){
-        newCellId=`${cellId.substring(0, event.target.id.length-2)}0${newStartIndex}`
+        newCellId=`${cellId.substring(0, cellId.length-2)}0${newStartIndex}`
       }else{
-        newCellId=`${cellId.substring(0, event.target.id.length-2)}${newStartIndex}`
+        newCellId=`${cellId.substring(0, cellId.length-2)}${newStartIndex}`
       }
       newCellArray.push(newCellId)
     }
-    this.props.actions.setHighlightedCells(newCellArray)
+    setHighlightedCells(newCellArray)
 
   }
 
@@ -44,11 +45,12 @@ class TruckDayView extends React.Component{
   }
 
   drop(event){
-    console.log('on drop scheduler_counter', this.props.trips.scheduler_counter)
-        this.props.actions.deleteDroppedCells(this.props.trips.currentDragJob.colour)
-        this.props.actions.setDroppedCells({
-          cells: this.props.trips.highlightedCells, 
-          colour: this.props.trips.currentDragJob.colour
+    var {setDroppedCells, deleteDroppedCells} = this.props.actions
+    var {highlightedCells, currentDragJob} = this.props.trips
+        deleteDroppedCells(currentDragJob.colour)
+        setDroppedCells({
+          cells: highlightedCells, 
+          colour: currentDragJob.colour
         })
         var data = event.dataTransfer.getData('text')
 
@@ -82,16 +84,18 @@ class TruckDayView extends React.Component{
           var inlineStyle = ''
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    if(this.props.trips.highlightedCells.includes(cellId)){
-      var inlineStyle = {border: `2px dashed ${this.props.trips.currentDragJob.colour}`}
+
+    let {highlightedCells, droppedCells, currentDragJob} = this.props.trips
+    if(highlightedCells.includes(cellId)){
+      var inlineStyle = {border: `2px dashed ${currentDragJob.colour}`}
 
     }else{inlineStyle={border: ''}}
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    if(this.props.trips.droppedCells.length){
-      this.props.trips.droppedCells.forEach((object)=>{
+    if(droppedCells.length){
+     droppedCells.forEach((object)=>{
         if(object.cells.includes(cellId)){
           inlineStyle = {backgroundColor: object.colour, opacity: 0.5}
 

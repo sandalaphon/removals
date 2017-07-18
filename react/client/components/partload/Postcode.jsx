@@ -12,7 +12,6 @@ class Postcode extends React.Component{
       super(props);
   }
 
-  
 
   handleCollectionSubmit(event){
     event.preventDefault()

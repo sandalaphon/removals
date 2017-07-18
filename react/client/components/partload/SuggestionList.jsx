@@ -9,18 +9,13 @@ class SuggestionList extends React.Component{
     super(props)
   }
 
-  // getSuggestions(){
-  //   // this.findClosestToGivenLatLng()
-  //   this.suggestions = this.props.all_trips
-  // }
 
   onClickNearestStart(event){
     event.preventDefault()
-    this.mapObject.clearRoutes()
+    // this.mapObject.clearRoutes()
     this.mapObject.clearMarkers()
     var startMarkerLat = this.props.partload_marker_array[0].lat
     var startMarkerLng = this.props.partload_marker_array[0].lng
-    // this.findClosestToGivenLatLng()
 
     //Note that date range must be added to args
     //send lat lng to rails and get back best pickup routes
@@ -65,10 +60,8 @@ class SuggestionList extends React.Component{
 
   jobs(){
     if(this.props.partload_marker_array&&this.props.partload_marker_array.length) {
-  // this.getSuggestions()
   var mapObjects = mapObjectInstances
   this.mapObject=mapObjects.partload
-  console.log('mapObjectInstances in suggestions', this.mapObject)
   this.props.best_pick_up_jobs.forEach((job)=>{
     this.mapObject.drawRouteWithGoogleResponse(job)
   })
