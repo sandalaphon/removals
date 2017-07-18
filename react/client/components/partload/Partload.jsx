@@ -1,5 +1,5 @@
 import React from 'react'
-import Gmap from '../planner/Gmap'
+import Gmap from '../Gmap'
 import Postcode from './Postcode'
 import SuggestionList from './SuggestionList'
 

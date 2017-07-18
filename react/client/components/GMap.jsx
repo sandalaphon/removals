@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import TruckFlicker from './TruckFlicker'
-import * as actionCreators from '../../actions/actionCreators'
+import * as actionCreators from '../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {drawRoute, drawRouteWithGoogleResponse, clearMap} from '../../models/mapFunctions'
-import {MapObject, mapObjectInstances} from '../../models/mapObject'
+import {drawRoute, drawRouteWithGoogleResponse, clearMap} from '../models/mapFunctions'
+import {MapObject, mapObjectInstances} from '../models/mapObject'
 import {withRouter} from 'react-router'
 
 

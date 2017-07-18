@@ -1,5 +1,5 @@
 import React from 'react'
-import Gmap from '../planner/Gmap'
+import Gmap from '../Gmap'
 import Filter from '../planner/Filter'
 import ListToday from './ListToday'
 
