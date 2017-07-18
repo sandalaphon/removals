@@ -8,44 +8,56 @@ class ListToday extends React.Component {
 
   constructor(props){
     super(props)
+    this.state = {
+      mapObject: null
+    }
   }
 
-  // componentDidMount(){
-  //   var mapObjects = mapObjectInstances
-  //   console.log("mapinstances", mapObjectInstances)
-  //   this.mapObject=mapObjects.today
-  // }
+
+
+  componentDidMount(){
+    this.setState ({mapObject:mapObjectInstances.today})
+  }
+
+  componentDidUpdate(){
+    if(!this.state.mapObject){
+      this.setState ({
+        mapObject:mapObjectInstances.today
+      })
+    }
+  
+  }
 
   jobs2(){
-    if(mapObjectInstances.today) {
-      this.mapObject = mapObjectInstances.today
+
+    if(this.state.mapObject&&this.props.trips.all_trips&&this.props.trips.all_trips.length){
       var toDisplay = this.getTable()
        return toDisplay
-    }else{
-      setTimeout(()=>{this.mapObject = mapObjectInstances.today; var toDisplay = this.getTable();return toDisplay}, 2000)
     }
+
   }
 
   getTable(){
 
-    console.log('mapObjectInstances in today', this.mapObject)
-    console.log('all_trips', this.props.trips.all_trips)
-    this.props.trips.all_trips.forEach((job)=>{
-      this.mapObject.drawRouteWithGoogleResponse(job)
-    })
+      this.props.trips.all_trips.forEach((job)=>{
+        this.state.mapObject.drawRouteWithGoogleResponse(job)
+      })
 
-    return this.props.trips.all_trips.map((job, index)=>{
-      var collapseStyle = job.hidden ? {display: 'none'} : {}
-      return(<tr key={job.id} style={collapseStyle}>
-        <td> {job.moveware_code}</td>
-        <td >{job.client_name}</td>
-        <td >Colour</td>
-        <td >Spare Capacity</td>
-        <td >{job.men_requested}</td>
-        <td >view notes click here?</td>
-        <td >Truck Type</td>
-        </tr>)
-    })
+      return this.props.trips.all_trips.map((job, index)=>{
+        var collapseStyle = job.hidden ? {display: 'none'} : {}
+        return(<tr key={job.id} style={collapseStyle}>
+          <td> {job.moveware_code}</td>
+          <td >{job.client_name}</td>
+          <td >Colour</td>
+          <td >Spare Capacity</td>
+          <td >{job.men_requested}</td>
+          <td >view notes click here?</td>
+          <td >Truck Type</td>
+          </tr>)
+      })
+
+
+    
   }
   
 
