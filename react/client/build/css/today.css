@@ -16,7 +16,7 @@
   "todli map"
   "todli map"
   "todli map"
-  "todli sli"
+  "todli map"
   "todli sli"
   ;
   grid-template-rows: repeat(15,1fr);
@@ -35,7 +35,18 @@
   /*display: inline-block;*/
   grid-area:sli;
   border: 3px solid purple;
- 
+  
+
   /*grid-auto-rows:1fr;*/
+}
+
+.slider-div{
+  /*border: 1px solid black;*/
+  
+  width: 1fr;
+  margin: 20px;
+  height:1fr;
+  /*text-align: center;*/
+  /*transform: translateY(50%);*/
 }
 
