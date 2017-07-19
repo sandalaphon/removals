@@ -30,7 +30,7 @@ class ListToday extends React.Component {
 
   jobs2(){
 
-    if(this.state.mapObject&&this.props.trips.all_trips&&this.props.trips.all_trips.length){
+    if(this.state.mapObject&&this.props.all_trips&&this.props.all_trips.length){
       var toDisplay = this.getTable()
        return toDisplay
     }
@@ -39,11 +39,11 @@ class ListToday extends React.Component {
 
   getTable(){
 
-      this.props.trips.all_trips.forEach((job)=>{
+      this.props.all_trips.forEach((job)=>{
         this.state.mapObject.drawRouteWithGoogleResponse(job)
       })
 
-      return this.props.trips.all_trips.map((job, index)=>{
+      return this.props.all_trips.map((job, index)=>{
         var collapseStyle = job.hidden ? {display: 'none'} : {}
         return(<tr key={job.id} style={collapseStyle}>
           <td> {job.moveware_code}</td>
@@ -91,5 +91,5 @@ class ListToday extends React.Component {
 const mapDispatchToProps=(dispatch)=>({
   actions: bindActionCreators(actionCreators, dispatch)
 })
-const mapStateToProps=(state)=>({trips: state.trips})
+const mapStateToProps=(state)=>({all_trips: state.trips.all_trips})
 export default connect(mapStateToProps, mapDispatchToProps)(ListToday)

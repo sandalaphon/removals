@@ -19,10 +19,67 @@ class SliderToday extends React.Component{
       }
   }
 
+  componentDidMount(){
+    this.setState({mapObject: mapObjectInstances.today})
+  }
+
   handleSliderChange(value){
-    console.log(value)
-    this.setState({tooltipValue: value})
-   
+    // console.log(value)
+    var secondsPassed = value*10*60
+    this.props.actions.setTodaySliderSecondsFromStart(secondsPassed)
+    // this.state.mapObject.placeMarker({ lng: -3.1883 , lat: 55.9533 },'blue')
+    // this.setState({tooltipValue: value})
+    this.placeMarkers(secondsPassed)
+  }
+
+  placeMarkers(sliderSecondsFromStart){
+
+    var todaysTrips = this.props.all_trips
+
+    var sliderMarkerCoordsandIndexArray = []
+
+    todaysTrips.forEach((trip, index)=>{
+
+      
+
+      if(!trip.hidden){
+        var steps =trip.google_directions.routes[0].legs[0].steps
+        var truckSecondsFromStart = 0
+        var stepCompleted = false
+
+        steps.forEach((step)=>{
+          if(stepCompleted) return
+          var currentStepDuration = step.duration.value
+           truckSecondsFromStart += currentStepDuration
+           if(truckSecondsFromStart>sliderSecondsFromStart){
+
+            var fractionOfStep = (  sliderSecondsFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
+            var indexOfStepPath = Math.floor(fractionOfStep*step.path.length)
+
+           // var indexOfStepPath = 0
+
+            console.log('step.path and indexOfStepPath', step.path, indexOfStepPath )
+            var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
+            sliderMarkerCoordsandIndexArray.push({markerCoords, index, colour: trip.colour})
+            stepCompleted = true
+
+           }
+        });
+      }
+    });
+
+    this.state.mapObject.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
+    //add each step duration
+
+    //when duration> TimeNowSeconds - StartTime then:
+
+    // get last step duration and accumulated seconds - laststep duration = beginning of step
+
+    // fraction of step =(TimeNowSecondsFromStart-beginning of step)/duration of step 
+
+    // path [fraction of step * path.length ceil] is lat lng needed 
+
+
   }
 
   sortTimeDisplay(v){
@@ -77,8 +134,9 @@ class SliderToday extends React.Component{
         step = {1}
         defaultValue = {24}
         included = {false}
+        onChange = {this.handleSliderChange.bind(this)}
         tipFormatter = {value=>`${this.sortTimeDisplay(value)}`}
-    
+      
         />
         
         </div>
@@ -90,8 +148,12 @@ class SliderToday extends React.Component{
  
   // <Range min={0} max={24} defaultValue = {[2]}/>
 
+  // trips: state.trips
+
+  // seconds_from_start: state.trips.today_seconds_from_start
+
   const mapDispatchToProps=(dispatch)=>({
     actions: bindActionCreators(actionCreators, dispatch)
   })
-  const mapStateToProps=(state)=>({trips: state.trips})
+  const mapStateToProps=(state)=>({all_trips: state.trips.all_trips})
   export default connect(mapStateToProps, mapDispatchToProps)(SliderToday)
