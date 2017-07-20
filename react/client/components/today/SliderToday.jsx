@@ -58,7 +58,7 @@ class SliderToday extends React.Component{
 
            // var indexOfStepPath = 0
 
-            console.log('step.path and indexOfStepPath', step.path, indexOfStepPath )
+            // console.log('step.path and indexOfStepPath', step.path, indexOfStepPath )
             var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
             sliderMarkerCoordsandIndexArray.push({markerCoords, index, colour: trip.colour})
             stepCompleted = true
@@ -83,7 +83,7 @@ class SliderToday extends React.Component{
   }
 
   sortTimeDisplay(v){
-    console.log(v)
+    // console.log(v)
     let startValue = 8 //8am
     // let endValue = 72 //8pm
     let minutesFromStartValue = v*10
