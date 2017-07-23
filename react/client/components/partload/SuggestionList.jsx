@@ -13,7 +13,7 @@ class SuggestionList extends React.Component{
   onClickNearestStart(event){
     event.preventDefault()
     // this.mapObject.clearRoutes()
-    this.mapObject.clearMarkers()
+    this.mapObject.clearMarkers(this.mapObject.markers)
     var startMarkerLat = this.props.partload_marker_array[0].lat
     var startMarkerLng = this.props.partload_marker_array[0].lng
 
