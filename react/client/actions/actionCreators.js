@@ -20,6 +20,8 @@ export function fetchUser(){
 }
 }
 
+
+
 export function setTodaySliderSecondsFromStart(secondsPassed){
   return {
     type: 'SET_TODAY_SLIDER_SECONDS_FROM_START',
@@ -34,6 +36,13 @@ export function renderJobList(){
   }
 }
 //////////////////////////////////////
+
+export function setFilterSearchString(searchString){
+  return {
+    type: 'SET_FILTER_SEARCH_STRING',
+    payload: searchString
+  }
+}
 
 
 export function setHiddenStatus(job){

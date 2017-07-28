@@ -49,7 +49,8 @@ function handleData(state = {
     partload_collection_postcode: '',
     partload_delivery_postcode: '',
     partload_marker_array: [],
-    best_pick_up_jobs: []
+    best_pick_up_jobs: [],
+    filter_search_string: ''
 // all_trips:[]
 },action){
 
@@ -85,6 +86,10 @@ function handleData(state = {
 
     case 'SET_TODAY_SLIDER_SECONDS_FROM_START':
     return { ...state, today_seconds_from_start: action.payload}
+    break;
+
+     case 'SET_FILTER_SEARCH_STRING':
+    return { ...state, filter_search_string: action.payload}
     break;
 
     case 'BEST_PICK_UP_JOBS_FULFILLED' :

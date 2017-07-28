@@ -23,13 +23,19 @@ class GMap extends React.Component {
   }
 
 
+
+
   componentDidMount() {
     this.setState({map: this.createMap()})
     console.log('Gmap mounted')
+
+ 
      // map in state allow auto render when 
     // navigated back
     // drawRoute.call(this, "Castlebury Farmhouse, wareside, hertfordshire SG12 7SH", "81 East Claremont Street, Edinburgh EH7 4HU", this.map )
   }
+
+
 
   componentDidUnMount() {
     google.maps.event.clearListeners(map, 'zoom_changed')
@@ -69,7 +75,14 @@ class GMap extends React.Component {
           case '/planner':
 
           if(this.props.all_trips){
-            if(this.state.mapObject) this.state.mapObject.clearMap()
+            if(this.state.mapObject) {
+              this.state.mapObject.clearMap()
+              if(!this.state.branchesButtonExists) {
+                this.state.mapObject.addBranchButtonToMap()
+               
+              }
+
+            }
               this.props.all_trips.forEach((job)=>{
                 if(!job.hidden&&this.state.mapObject){
                   this.state.mapObject.drawRouteWithGoogleResponse(job)
@@ -81,6 +94,11 @@ class GMap extends React.Component {
           break;
 
           case '/today':
+          if(this.state.mapObject&&!this.state.branchesButtonExists){
+              this.state.mapObject.addBranchButtonToMap()
+          
+          } 
+            
           // if(this.props.all_trips){//change to today's routes
           //   if(this.state.mapObject) this.state.mapObject.clearMap()
           //     this.props.all_trips.forEach((job)=>{
@@ -94,6 +112,11 @@ class GMap extends React.Component {
           break;
 
           case '/partload':
+
+          if(this.state.mapObject&&!this.state.branchesButtonExists) {
+            this.state.mapObject.addBranchButtonToMap()
+           
+          }
 
           if(this.props.best_pick_up_jobs){
             if(this.state.mapObject) this.state.mapObject.clearMap()
@@ -114,7 +137,7 @@ class GMap extends React.Component {
 
         return (
           <div className='grid-item-map' ref="mapCanvas">
-          this.map
+
           </div>
           )
 

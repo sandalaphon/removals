@@ -23,19 +23,15 @@ class SliderToday extends React.Component{
   }
 
   componentDidMount(){
-    // this.setState({mapObject: mapObjectInstances.today})
-      // console.log('didmount', this.state.mapObject)
+
     if(this.props.today_seconds_from_start){
       this.placeMarkers(this.props.today_seconds_from_start)
     }
   }
 
   handleSliderChange(value){
-  //   // console.log(value)
+
     var secondsPassed = value*10*60
-  //   // this.props.actions.setTodaySliderSecondsFromStart(secondsPassed)
-  //   // this.state.mapObject.placeMarker({ lng: -3.1883 , lat: 55.9533 },'blue')
-  //   // this.setState({tooltipValue: value})
     this.placeMarkers(secondsPassed)
     
   }
@@ -44,15 +40,12 @@ class SliderToday extends React.Component{
     this.setState({value,})  
     const secondsPassed = value * 60 * 10
     this.props.actions.setTodaySliderSecondsFromStart(secondsPassed)
-    // var secondsPassed = value*10*60
-  //   const secondsPassed = this.props.today_seconds_from_start
-    // this.placeMarkers(secondsPassed)
+
   }
 
   placeMarkers(sliderSecondsFromStart){
 
     var todaysTrips = this.props.all_trips
-
     var sliderMarkerCoordsandIndexArray = []
 
     todaysTrips.forEach((trip, index)=>{
@@ -85,7 +78,7 @@ class SliderToday extends React.Component{
       }
     });
     console.log('instances', mapObjectInstances)
-    // this.state.mapObject.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
+ 
     mapObjectInstances.today.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
     //add each step duration
 
@@ -116,25 +109,7 @@ class SliderToday extends React.Component{
 
   render(){
     const SliderWithTooltip = createSliderWithTooltip(Slider);
-    // if(this.state.mapObject && this.props.today_seconds_from_start){
-    //   this.placeMarkers(this.props.today_seconds_from_start)
-    // }
-    // const Slider = createSliderWithTooltip
-    // const Handle = Slider.Handle;
-    // const handle = (props) => {
-    //   const { value, dragging, index, ...restProps } = props;
-    //   return (
-    //     <Tooltip
-    //       prefixCls="rc-slider-tooltip"
-    //       overlay={value}
-    //       visible={dragging}
-    //       placement="top"
-    //       key={index}
-    //     >
-    //       <Handle value={value} {...restProps} />
-    //     </Tooltip>
-    //   );
-    // }; 
+
     const marks = {
       0:  '8:00',
       12: '10:00',
@@ -169,13 +144,7 @@ class SliderToday extends React.Component{
       )
   }
   }
-  // handle={handle}
- 
-  // <Range min={0} max={24} defaultValue = {[2]}/>
 
-  // trips: state.trips
-
-  // seconds_from_start: state.trips.today_seconds_from_start
 
   const mapDispatchToProps=(dispatch)=>({
     actions: bindActionCreators(actionCreators, dispatch)
@@ -183,4 +152,3 @@ class SliderToday extends React.Component{
   const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, today_seconds_from_start: state.trips.today_seconds_from_start})
   export default connect(mapStateToProps, mapDispatchToProps)(SliderToday)
 
-  // , today_seconds_from_start: state.trips.today_seconds_from_start
