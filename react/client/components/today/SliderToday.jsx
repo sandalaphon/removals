@@ -15,21 +15,38 @@ class SliderToday extends React.Component{
   constructor(props) { //may need this later
       super(props);
       this.state = {
-        tooltipValue: 0
+        tooltipValue: 0,
+        value:  (this.props.today_seconds_from_start/600) || 24
+       
       }
+    
   }
 
   componentDidMount(){
-    this.setState({mapObject: mapObjectInstances.today})
+    // this.setState({mapObject: mapObjectInstances.today})
+      // console.log('didmount', this.state.mapObject)
+    if(this.props.today_seconds_from_start){
+      this.placeMarkers(this.props.today_seconds_from_start)
+    }
   }
 
   handleSliderChange(value){
-    // console.log(value)
+  //   // console.log(value)
     var secondsPassed = value*10*60
-    this.props.actions.setTodaySliderSecondsFromStart(secondsPassed)
-    // this.state.mapObject.placeMarker({ lng: -3.1883 , lat: 55.9533 },'blue')
-    // this.setState({tooltipValue: value})
+  //   // this.props.actions.setTodaySliderSecondsFromStart(secondsPassed)
+  //   // this.state.mapObject.placeMarker({ lng: -3.1883 , lat: 55.9533 },'blue')
+  //   // this.setState({tooltipValue: value})
     this.placeMarkers(secondsPassed)
+    
+  }
+
+  onAfterChange(value){
+    this.setState({value,})  
+    const secondsPassed = value * 60 * 10
+    this.props.actions.setTodaySliderSecondsFromStart(secondsPassed)
+    // var secondsPassed = value*10*60
+  //   const secondsPassed = this.props.today_seconds_from_start
+    // this.placeMarkers(secondsPassed)
   }
 
   placeMarkers(sliderSecondsFromStart){
@@ -60,15 +77,16 @@ class SliderToday extends React.Component{
 
             // console.log('step.path and indexOfStepPath', step.path, indexOfStepPath )
             var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
-            sliderMarkerCoordsandIndexArray.push({markerCoords, index, colour: trip.colour})
+            sliderMarkerCoordsandIndexArray.push({markerCoords, index, colour: trip.colour, message: trip.client_name})
             stepCompleted = true
 
            }
         });
       }
     });
-
-    this.state.mapObject.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
+    console.log('instances', mapObjectInstances)
+    // this.state.mapObject.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
+    mapObjectInstances.today.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
     //add each step duration
 
     //when duration> TimeNowSeconds - StartTime then:
@@ -98,6 +116,9 @@ class SliderToday extends React.Component{
 
   render(){
     const SliderWithTooltip = createSliderWithTooltip(Slider);
+    // if(this.state.mapObject && this.props.today_seconds_from_start){
+    //   this.placeMarkers(this.props.today_seconds_from_start)
+    // }
     // const Slider = createSliderWithTooltip
     // const Handle = Slider.Handle;
     // const handle = (props) => {
@@ -123,6 +144,8 @@ class SliderToday extends React.Component{
       60: '18:00',
       72: '20:00',
     };
+
+    const sliderValue = this.props.today_seconds_from_start/600 || 24
    
     return(
         <div className='grid-item-slider-today'>
@@ -132,9 +155,11 @@ class SliderToday extends React.Component{
         max={72} 
         marks={marks} 
         step = {1}
-        defaultValue = {24}
+        defaultValue = {this.state.value}
+        // value = {this.state.value}
         included = {false}
         onChange = {this.handleSliderChange.bind(this)}
+        onAfterChange = {this.onAfterChange.bind(this)}
         tipFormatter = {value=>`${this.sortTimeDisplay(value)}`}
       
         />
@@ -155,5 +180,7 @@ class SliderToday extends React.Component{
   const mapDispatchToProps=(dispatch)=>({
     actions: bindActionCreators(actionCreators, dispatch)
   })
-  const mapStateToProps=(state)=>({all_trips: state.trips.all_trips})
+  const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, today_seconds_from_start: state.trips.today_seconds_from_start})
   export default connect(mapStateToProps, mapDispatchToProps)(SliderToday)
+
+  // , today_seconds_from_start: state.trips.today_seconds_from_start

@@ -19,6 +19,8 @@ class MapObject{
 
   }
 
+
+
   clearMap(){
     this.clearMarkers(this.markers)
     this.clearMarkers(this.sliderMarkers)
@@ -47,8 +49,7 @@ class MapObject{
     //sliderMarkerCoordsandIndexArray looks like this: [{markerCoords, index, colour}, ...] index references mother array
     this.clearMarkers(this.sliderMarkers)
     sliderMarkerCoordsandIndexArray.forEach((object)=>{
-      // this.placeMarker(object.markerCoords,  this.truckSymbol(object.colour), this.sliderMarkers, false, false)
-      this.placeMarker(object.markerCoords,  this.truckSymbol3(object.colour), this.sliderMarkers, false, false)
+      this.placeMarker(object.markerCoords,  this.truckSymbol3(object.colour), this.sliderMarkers, false, false, object.message)
     })
   }
 
@@ -66,7 +67,7 @@ class MapObject{
     this.renderedRoutes.push(directionsDisplay)
   }
 
-  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=true){
+  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=true, message=''){
       var marker = new google.maps.Marker({
         position: coords,
         map: this.map,
@@ -74,6 +75,7 @@ class MapObject{
         animation: drop ? google.maps.Animation.DROP : null,
         
       })
+      if(message) this.addInfoWindow(marker, message)
       instance_variable_marker_array.push(marker)
      if(setBounds){
       this.bounds.extend(coords) 
@@ -81,6 +83,18 @@ class MapObject{
      }    
 
   }
+
+    addInfoWindow(marker, message) {
+  // ensure listener is cleared 
+  // note we can create a div for info window
+                var infoWindow = new google.maps.InfoWindow({
+                    content: `${message}`
+                });
+
+                google.maps.event.addListener(marker, 'click', function () {
+                    infoWindow.open(this.map, marker);
+                });
+            }
 
 
 
