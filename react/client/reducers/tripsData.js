@@ -146,6 +146,12 @@ function handleData(state = {
     return{...state, partload_delivery_postcode: action.payload}
     break;
 
+       case 'SET_CURRENT_TRUCKFLICKER_JOB':
+    return{...state, current_truckflicker_job: action.payload}
+    break;
+
+    
+
     case 'ADD_MARKER_TO_PARTLOAD_MARKER_ARRAY':
     var holder = state.partload_marker_array.slice()
     holder.push(action.payload)

@@ -4,7 +4,7 @@ import TruckFlicker from './TruckFlicker'
 import * as actionCreators from '../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {drawRoute, drawRouteWithGoogleResponse, clearMap} from '../models/mapFunctions'
+// import {drawRoute, drawRouteWithGoogleResponse, clearMap} from '../models/mapFunctions'
 import {MapObject, mapObjectInstances} from '../models/mapObject'
 import {withRouter} from 'react-router'
 
@@ -38,7 +38,7 @@ class GMap extends React.Component {
 
 
   componentDidUnMount() {
-    google.maps.event.clearListeners(map, 'zoom_changed')
+    google.maps.event.clearListeners(this.state.map, 'zoom_changed')
     this.state.mapObject.clearMap()
   }
 

@@ -65,6 +65,7 @@ min-width:5vw;
   border:1px solid yellow;
   justify-self: center;
   align-self: center;
+  width: 1fr;
 
 }
 

@@ -40,7 +40,7 @@ class ListToday extends React.Component {
   getTable(){
 
       this.props.all_trips.forEach((job)=>{
-        this.state.mapObject.drawRouteWithGoogleResponse(job)
+        if(!job.hidden) this.state.mapObject.drawRouteWithGoogleResponse(job)
       })
 
       return this.props.all_trips.map((job, index)=>{

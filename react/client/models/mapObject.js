@@ -85,13 +85,15 @@ appendStuffToDiv(controlDiv, map){
   }
 
   clearMarkers(instance_variable_marker_array){
-    while(instance_variable_marker_array.length){
-      instance_variable_marker_array.forEach((marker)=>{
-        marker = instance_variable_marker_array.pop()
-        marker.setMap(null)
-      })
-    }
     this.bounds = new google.maps.LatLngBounds()
+    while(instance_variable_marker_array.length){
+      // instance_variable_marker_array.forEach((marker)=>{
+       var marker = instance_variable_marker_array.pop()
+        google.maps.event.clearListeners(marker, 'click');
+        marker.setMap(null)
+      // })
+    }
+    
   }
 
   handleSliderMarkerArray(sliderMarkerCoordsandIndexArray){
@@ -117,6 +119,11 @@ appendStuffToDiv(controlDiv, map){
   }
 
   placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=true, message=''){
+
+      if(setBounds){
+       this.bounds.extend(coords) 
+       this.map.fitBounds(this.bounds)  
+     }
       var marker = new google.maps.Marker({
         position: coords,
         map: this.map,
@@ -126,10 +133,8 @@ appendStuffToDiv(controlDiv, map){
       })
       if(message) this.addInfoWindow(marker, message)
       instance_variable_marker_array.push(marker)
-     if(setBounds){
-      this.bounds.extend(coords) 
-      this.map.fitBounds(this.bounds)  
-     }    
+    console.log(instance_variable_marker_array)
+        
 
   }
 

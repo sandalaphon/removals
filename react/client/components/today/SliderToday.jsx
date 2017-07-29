@@ -77,7 +77,7 @@ class SliderToday extends React.Component{
         });
       }
     });
-    console.log('instances', mapObjectInstances)
+    // console.log('instances', mapObjectInstances)
  
     mapObjectInstances.today.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
     //add each step duration

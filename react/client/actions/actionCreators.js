@@ -37,6 +37,13 @@ export function renderJobList(){
 }
 //////////////////////////////////////
 
+export function setCurrentTruckFlickerJob(job){
+  return {
+    type: 'SET_CURRENT_TRUCKFLICKER_JOB',
+    payload: job
+  }
+}
+
 export function setFilterSearchString(searchString){
   return {
     type: 'SET_FILTER_SEARCH_STRING',
