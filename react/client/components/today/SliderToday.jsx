@@ -23,7 +23,9 @@ class SliderToday extends React.Component{
   }
 
   componentDidMount(){
-
+    if(this.props.current_truckflicker_job){
+      mapObjectInstances.today.drawRouteWithGoogleResponse(this.props.current_truckflicker_job)
+    }
     if(this.props.today_seconds_from_start){
       this.placeMarkers(this.props.today_seconds_from_start)
     }
@@ -48,35 +50,60 @@ class SliderToday extends React.Component{
     var todaysTrips = this.props.all_trips
     var sliderMarkerCoordsandIndexArray = []
 
-    todaysTrips.forEach((trip, index)=>{
+    if(this.props.current_truckflicker_job){
+      var trip = this.props.current_truckflicker_job
+      var steps =trip.google_directions.routes[0].legs[0].steps
+      var truckSecondsFromStart = 0
+      var stepCompleted = false
 
-      
+      steps.forEach((step)=>{
+        if(stepCompleted) return
+        var currentStepDuration = step.duration.value
+         truckSecondsFromStart += currentStepDuration
+         if(truckSecondsFromStart>sliderSecondsFromStart){
 
-      if(!trip.hidden){
-        var steps =trip.google_directions.routes[0].legs[0].steps
-        var truckSecondsFromStart = 0
-        var stepCompleted = false
+          var fractionOfStep = (  sliderSecondsFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
+          var indexOfStepPath = Math.floor(fractionOfStep*step.path.length)
 
-        steps.forEach((step)=>{
-          if(stepCompleted) return
-          var currentStepDuration = step.duration.value
-           truckSecondsFromStart += currentStepDuration
-           if(truckSecondsFromStart>sliderSecondsFromStart){
+         // var indexOfStepPath = 0
 
-            var fractionOfStep = (  sliderSecondsFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
-            var indexOfStepPath = Math.floor(fractionOfStep*step.path.length)
+          // console.log('step.path and indexOfStepPath', step.path, indexOfStepPath )
+          var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
+          sliderMarkerCoordsandIndexArray.push({markerCoords, colour: trip.colour, message: trip.client_name})
+          stepCompleted = true
 
-           // var indexOfStepPath = 0
+         }
+      });
+    }else{
+      todaysTrips.forEach((trip, index)=>{
 
-            // console.log('step.path and indexOfStepPath', step.path, indexOfStepPath )
-            var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
-            sliderMarkerCoordsandIndexArray.push({markerCoords, index, colour: trip.colour, message: trip.client_name})
-            stepCompleted = true
+        if(!trip.hidden){
+          var steps =trip.google_directions.routes[0].legs[0].steps
+          var truckSecondsFromStart = 0
+          var stepCompleted = false
 
-           }
-        });
-      }
-    });
+          steps.forEach((step)=>{
+            if(stepCompleted) return
+            var currentStepDuration = step.duration.value
+             truckSecondsFromStart += currentStepDuration
+             if(truckSecondsFromStart>sliderSecondsFromStart){
+
+              var fractionOfStep = (  sliderSecondsFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
+              var indexOfStepPath = Math.floor(fractionOfStep*step.path.length)
+
+             // var indexOfStepPath = 0
+
+              // console.log('step.path and indexOfStepPath', step.path, indexOfStepPath )
+              var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
+              sliderMarkerCoordsandIndexArray.push({markerCoords, index, colour: trip.colour, message: trip.client_name})
+              stepCompleted = true
+
+             }
+          });
+        }
+      });
+    }
+    
     // console.log('instances', mapObjectInstances)
  
     mapObjectInstances.today.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
@@ -149,6 +176,6 @@ class SliderToday extends React.Component{
   const mapDispatchToProps=(dispatch)=>({
     actions: bindActionCreators(actionCreators, dispatch)
   })
-  const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, today_seconds_from_start: state.trips.today_seconds_from_start})
+  const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, today_seconds_from_start: state.trips.today_seconds_from_start, current_truckflicker_job: state.trips.current_truckflicker_job})
   export default connect(mapStateToProps, mapDispatchToProps)(SliderToday)
 

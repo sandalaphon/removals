@@ -34,7 +34,17 @@ class TruckFlicker extends React.Component {
      this.renderAppropriateRoute(relevantArray, false, 'today')
      // AND setState or store rendered route attribute and index
      //And then deal with highlighting in list
-     break
+     break;
+
+     case '/planner':
+
+     var relevantArray = this.props.trips.all_trips
+
+     this.renderAppropriateRoute(relevantArray, false, 'planner')
+     // AND setState or store rendered route attribute and index
+     //And then deal with highlighting in list
+     break;
+
 
 
    }
@@ -46,7 +56,15 @@ class TruckFlicker extends React.Component {
   var counter = this.indexOfRenderedRoute
   var increment = next ? 1 : -1 // +1 for next, -1 for previous
   var numberHiddenRoutes = 0 //to create guard for all hidden list
-
+  var mapObject
+  switch (pathname){
+    case 'today':
+    mapObject = mapObjectInstances.today
+    break;
+    case 'planner':
+    mapObject = mapObjectInstances.planner
+    break;
+  }
   while(true){ 
    
     counter = counter + increment
@@ -57,8 +75,8 @@ class TruckFlicker extends React.Component {
     
     if (!job.hidden){
      this.props.actions.setCurrentTruckFlickerJob(job)
-     mapObjectInstances.today.clearMap()
-     mapObjectInstances.today.drawRouteWithGoogleResponse(job)
+     mapObject.clearMap()
+     mapObject.drawRouteWithGoogleResponse(job)
      this.indexOfRenderedRoute = counter
 
      break
@@ -88,7 +106,22 @@ handleNextClick(event){
      // forEach if not hidden then render route 
      // AND setState or store rendered route attribute and index
      //And then deal with highlighting in list
-     break
+     break;
+
+     case '/planner':
+
+     var relevantArray = this.props.trips.all_trips
+
+     this.renderAppropriateRoute(relevantArray, true, 'planner')
+
+
+       // get appropriate array
+       // start at index 0
+       // forEach if not hidden then render route 
+       // AND setState or store rendered route attribute and index
+       //And then deal with highlighting in list
+       break;
+
    }
  }
 

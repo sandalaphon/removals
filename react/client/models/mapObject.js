@@ -118,12 +118,13 @@ appendStuffToDiv(controlDiv, map){
     this.renderedRoutes.push(directionsDisplay)
   }
 
-  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=true, message=''){
+  anotherPinSymbol(colour){
 
-      if(setBounds){
-       this.bounds.extend(coords) 
-       this.map.fitBounds(this.bounds)  
-     }
+  }
+
+  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message=''){
+
+   
       var marker = new google.maps.Marker({
         position: coords,
         map: this.map,
@@ -133,7 +134,11 @@ appendStuffToDiv(controlDiv, map){
       })
       if(message) this.addInfoWindow(marker, message)
       instance_variable_marker_array.push(marker)
-    // console.log(instance_variable_marker_array)
+    console.log('marker placed')
+     if(setBounds){
+      this.bounds.extend(coords) 
+      this.map.fitBounds(this.bounds)  
+    }
         
 
   }
@@ -154,9 +159,9 @@ appendStuffToDiv(controlDiv, map){
 
 displayMarkersFromStore(marker_array_from_store,  instance_variable_marker_array){
   marker_array_from_store.forEach((coords)=>{
-    this.placeMarker(coords, this.pinSymbol("red"), instance_variable_marker_array, false)
+    this.placeMarker(coords, this.pinSymbol("red"), instance_variable_marker_array, true, true)
   })
-  this.map.setZoom(10)
+  if(instance_variable_marker_array.length===1) this.map.setZoom(10)
 }
 
 
