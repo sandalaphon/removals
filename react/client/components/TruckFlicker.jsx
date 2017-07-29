@@ -74,7 +74,9 @@ class TruckFlicker extends React.Component {
       var job = relevantArray[counter]
     
     if (!job.hidden){
-     this.props.actions.setCurrentTruckFlickerJob(job)
+      // var key = `${pathname}`
+
+     this.props.actions.setCurrentTruckFlickerJob(job, pathname)
      mapObject.clearMap()
      mapObject.drawRouteWithGoogleResponse(job)
      this.indexOfRenderedRoute = counter

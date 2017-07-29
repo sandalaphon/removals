@@ -12,7 +12,8 @@ class MapObject{
     this.bounds= new google.maps.LatLngBounds(),
     this.postcodeMarkers = [],
     this.sliderMarkers = [],
-    this.branchesButtonExists = false
+    this.branchesButtonExists = false,
+    this.pathname = pathname
 
     if(!mapObjectInstances.pathname){
       mapObjectInstances[pathname]=this
@@ -82,6 +83,7 @@ appendStuffToDiv(controlDiv, map){
     this.renderedRoutes.forEach((route)=>{
       route.setMap(null)
     })
+    this.renderedRoutes = []
   }
 
   clearMarkers(instance_variable_marker_array){
@@ -93,6 +95,7 @@ appendStuffToDiv(controlDiv, map){
         marker.setMap(null)
       // })
     }
+    instance_variable_marker_array = []
     
   }
 
@@ -134,7 +137,7 @@ appendStuffToDiv(controlDiv, map){
       })
       if(message) this.addInfoWindow(marker, message)
       instance_variable_marker_array.push(marker)
-    console.log('marker placed')
+
      if(setBounds){
       this.bounds.extend(coords) 
       this.map.fitBounds(this.bounds)  

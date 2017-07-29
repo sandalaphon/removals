@@ -51,7 +51,8 @@ function handleData(state = {
     partload_marker_array: [],
     best_pick_up_jobs: [],
     filter_search_string: '',
-    current_truckflicker_job: ''
+    current_today_truckflicker_job: '',
+    current_planner_truckflicker_job: ''
 // all_trips:[]
 },action){
 
@@ -87,6 +88,10 @@ function handleData(state = {
 
     case 'SET_TODAY_SLIDER_SECONDS_FROM_START':
     return { ...state, today_seconds_from_start: action.payload}
+    break;
+
+    case 'SET_PLANNER_SLIDER_SECONDS_FROM_START':
+    return { ...state, planner_seconds_from_start: action.payload}
     break;
 
      case 'SET_FILTER_SEARCH_STRING':
@@ -147,9 +152,45 @@ function handleData(state = {
     return{...state, partload_delivery_postcode: action.payload}
     break;
 
+
+
+
+
+
+
        case 'SET_CURRENT_TRUCKFLICKER_JOB':
-    return{...state, current_truckflicker_job: action.payload}
+       switch (action.pathname){
+        case 'today':
+        return{...state, current_today_truckflicker_job: action.payload}
+        break;
+        case 'planner':
+        return{...state, current_planner_truckflicker_job: action.payload}
+        break;
+       }
+    
     break;
+
+       case 'CLEAR_CURRENT_TRUCKFLICKER_JOB':
+       switch (action.pathname){
+        case 'today':
+        return{...state, current_today_truckflicker_job: ''}
+        break;
+        case 'planner':
+        return{...state, current_planner_truckflicker_job: ''}
+        break;
+       }
+    
+    break;
+
+ 
+
+
+
+
+
+
+
+
 
 
 

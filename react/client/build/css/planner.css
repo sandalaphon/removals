@@ -8,16 +8,40 @@
   "cal cal cal cal cal cal fli fli fli fli"
   "cal cal cal cal cal cal map map map map"
   "cal cal cal cal cal cal map map map map"
+  "cal cal cal cal cal cal map map map map"
+  "cal cal cal cal cal cal map map map map"
   "fil fil fil fil fil fil map map map map"
   "job job job job job job map map map map"
   "job job job job job job map map map map"
   "job job job job job job map map map map"
   "job job job job job job map map map map"
   "job job job job job job map map map map"
-  "job job job job job job map map map map";
-  grid-template-rows: repeat(10,1fr);
+  "job job job job job job map map map map"
+  "job job job job job job map map map map"
+  "job job job job job job map map map map"
+  "job job job job job job slI slI slI slI";
+  grid-template-rows: repeat(15,1fr);
   grid-auto-columns: 10%;
   /*grid-template-columns: repeat(10,1fr);*/
+}
+
+.grid-item-slider-planner{
+  /*display: inline-block;*/
+  grid-area:slI;
+  border: 3px solid purple;
+  
+
+  /*grid-auto-rows:1fr;*/
+}
+
+.slider-div{
+  /*border: 1px solid black;*/
+  
+  width: 1fr;
+  margin: 20px;
+  height:1fr;
+  /*text-align: center;*/
+  /*transform: translateY(50%);*/
 }
 
 .grid-item-truck-day-view{

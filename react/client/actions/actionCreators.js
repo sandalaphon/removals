@@ -29,6 +29,13 @@ export function setTodaySliderSecondsFromStart(secondsPassed){
   }
 }
 
+export function setPlannerSliderSecondsFromStart(secondsPassed){
+  return {
+    type: 'SET_PLANNER_SLIDER_SECONDS_FROM_START',
+    payload: secondsPassed
+  }
+}
+
 ///////////////////////
 export function renderJobList(){
   return {
@@ -37,10 +44,18 @@ export function renderJobList(){
 }
 //////////////////////////////////////
 
-export function setCurrentTruckFlickerJob(job){
+export function setCurrentTruckFlickerJob(job, pathname){
   return {
     type: 'SET_CURRENT_TRUCKFLICKER_JOB',
-    payload: job
+    payload: job,
+    pathname
+  }
+}
+
+export function clearCurrentTruckFlickerJob(pathname){
+  return {
+    type: 'CLEAR_CURRENT_TRUCKFLICKER_JOB',
+    pathname
   }
 }
 

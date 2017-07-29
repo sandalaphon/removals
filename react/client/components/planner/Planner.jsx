@@ -3,6 +3,7 @@ import Gmap from '../Gmap'
 import Filter from './Filter'
 import TruckDayView from './TruckDayView'
 import TruckFlicker from '../TruckFlicker'
+import SliderPlanner from './SliderPlanner'
 import JobList from './JobList'
 import * as actionCreators from '../../actions/actionCreators'
 import {bindActionCreators} from 'redux'
@@ -22,6 +23,7 @@ class Planner extends React.Component {
             <TruckDayView />
             <Gmap />
             <TruckFlicker all_trips={this.props.state.trips.all_trips}/>
+            <SliderPlanner/>
       </div>
       )
   }

@@ -10,24 +10,24 @@ import 'rc-tooltip/assets/bootstrap.css';
 
 
 
-class SliderToday extends React.Component{
+class SliderPlanner extends React.Component{
 
   constructor(props) { //may need this later
       super(props);
       this.state = {
         tooltipValue: 0,
-        value:  (this.props.today_seconds_from_start/600) || 24
+        value:  (this.props.planner_seconds_from_start/600) || 24
        
       }
     
   }
 
   componentDidMount(){
-    if(this.props.current_today_truckflicker_job){
-      mapObjectInstances.today.drawRouteWithGoogleResponse(this.props.current_today_truckflicker_job)
+    if(this.props.current_planner_truckflicker_job){
+      mapObjectInstances.planner.drawRouteWithGoogleResponse(this.props.current_planner_truckflicker_job)
     }
-    if(this.props.today_seconds_from_start){
-      this.placeMarkers(this.props.today_seconds_from_start)
+    if(this.props.planner_seconds_from_start){
+      this.placeMarkers(this.props.planner_seconds_from_start)
     }
   }
 
@@ -41,17 +41,17 @@ class SliderToday extends React.Component{
   onAfterChange(value){
     this.setState({value,})  
     const secondsPassed = value * 60 * 10
-    this.props.actions.setTodaySliderSecondsFromStart(secondsPassed)
+    this.props.actions.setPlannerSliderSecondsFromStart(secondsPassed)
 
   }
 
   placeMarkers(sliderSecondsFromStart){
 
-    var todaysTrips = this.props.all_trips
+    var plannersTrips = this.props.all_trips
     var sliderMarkerCoordsandIndexArray = []
 
-    if(this.props.current_today_truckflicker_job){
-      var trip = this.props.current_today_truckflicker_job
+    if(this.props.current_planner_truckflicker_job){
+      var trip = this.props.current_planner_truckflicker_job
       var steps =trip.google_directions.routes[0].legs[0].steps
       var truckSecondsFromStart = 0
       var stepCompleted = false
@@ -72,7 +72,7 @@ class SliderToday extends React.Component{
          }
       });
     }else{
-      todaysTrips.forEach((trip, index)=>{
+      plannersTrips.forEach((trip, index)=>{
 
         if(!trip.hidden){
           var steps =trip.google_directions.routes[0].legs[0].steps
@@ -97,7 +97,7 @@ class SliderToday extends React.Component{
       });
     }
     
-    mapObjectInstances.today.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
+    mapObjectInstances.planner.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
 
 
 
@@ -130,10 +130,10 @@ class SliderToday extends React.Component{
       72: '20:00',
     };
 
-    const sliderValue = this.props.today_seconds_from_start/600 || 24
+    const sliderValue = this.props.planner_seconds_from_start/600 || 24
    
     return(
-        <div className='grid-item-slider-today'>
+        <div className='grid-item-slider-planner'>
         <div className = 'slider-div'>
         <SliderWithTooltip 
         min={0} 
@@ -159,6 +159,5 @@ class SliderToday extends React.Component{
   const mapDispatchToProps=(dispatch)=>({
     actions: bindActionCreators(actionCreators, dispatch)
   })
-  const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, today_seconds_from_start: state.trips.today_seconds_from_start, current_today_truckflicker_job: state.trips.current_today_truckflicker_job})
-  export default connect(mapStateToProps, mapDispatchToProps)(SliderToday)
-
+  const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, planner_seconds_from_start: state.trips.planner_seconds_from_start, current_planner_truckflicker_job: state.trips.current_planner_truckflicker_job})
+  export default connect(mapStateToProps, mapDispatchToProps)(SliderPlanner)

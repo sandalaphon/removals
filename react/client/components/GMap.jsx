@@ -74,23 +74,28 @@ class GMap extends React.Component {
 
           case '/planner':
 
-          if(this.props.all_trips){
-            if(this.state.mapObject) {
-              this.state.mapObject.clearMap()
-              if(!this.state.branchesButtonExists) {
-                this.state.mapObject.addBranchButtonToMap()
+          if(this.state.mapObject&&!this.state.branchesButtonExists){
+              this.state.mapObject.addBranchButtonToMap()
+          
+          } 
+
+          // if(this.props.all_trips){
+          //   if(this.state.mapObject) {
+          //     this.state.mapObject.clearMap()
+          //     if(!this.state.branchesButtonExists) {
+          //       this.state.mapObject.addBranchButtonToMap()
                
-              }
+          //     }
 
-            }
-              this.props.all_trips.forEach((job)=>{
-                if(!job.hidden&&this.state.mapObject){
-                  this.state.mapObject.drawRouteWithGoogleResponse(job)
-                }
-                      //if job.attribute hidden then...
+          //   }
+          //     this.props.all_trips.forEach((job)=>{
+          //       if(!job.hidden&&this.state.mapObject){
+          //         this.state.mapObject.drawRouteWithGoogleResponse(job)
+          //       }
+          //             //if job.attribute hidden then...
 
-                    })
-          }
+          //           })
+          // }
           break;
 
           case '/today':

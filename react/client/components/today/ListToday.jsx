@@ -40,7 +40,7 @@ class ListToday extends React.Component {
   getTable(){
      
       this.props.all_trips.forEach((job)=>{
-        if(!job.hidden&&!this.props.current_truckflicker_job) this.state.mapObject.drawRouteWithGoogleResponse(job)
+        if(!job.hidden&&!this.props.current_today_truckflicker_job) this.state.mapObject.drawRouteWithGoogleResponse(job)
           
           
       })
@@ -49,8 +49,8 @@ class ListToday extends React.Component {
       return this.props.all_trips.map((job, index)=>{
         var truckFlickerJob = ''
         var collapseStyle = job.hidden ? {display: 'none'} : {}
-        if(job.id === this.props.current_truckflicker_job.id){
-          console.log('if statement', job.id, this.props.current_truckflicker_job.id)
+        if(job.id === this.props.current_today_truckflicker_job.id){
+          console.log('if statement', job.id, this.props.current_today_truckflicker_job.id)
           truckFlickerJob = 'truckFlickerJob'
         }
         return(<tr key={job.id} style={collapseStyle} className = {truckFlickerJob}>
@@ -99,5 +99,5 @@ class ListToday extends React.Component {
 const mapDispatchToProps=(dispatch)=>({
   actions: bindActionCreators(actionCreators, dispatch)
 })
-const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, current_truckflicker_job: state.trips.current_truckflicker_job})
+const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, current_today_truckflicker_job: state.trips.current_today_truckflicker_job})
 export default connect(mapStateToProps, mapDispatchToProps)(ListToday)
