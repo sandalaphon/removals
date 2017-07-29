@@ -133,7 +133,7 @@ appendStuffToDiv(controlDiv, map){
       })
       if(message) this.addInfoWindow(marker, message)
       instance_variable_marker_array.push(marker)
-    console.log(instance_variable_marker_array)
+    // console.log(instance_variable_marker_array)
         
 
   }

@@ -50,7 +50,8 @@ function handleData(state = {
     partload_delivery_postcode: '',
     partload_marker_array: [],
     best_pick_up_jobs: [],
-    filter_search_string: ''
+    filter_search_string: '',
+    current_truckflicker_job: ''
 // all_trips:[]
 },action){
 
@@ -150,7 +151,7 @@ function handleData(state = {
     return{...state, current_truckflicker_job: action.payload}
     break;
 
-    
+
 
     case 'ADD_MARKER_TO_PARTLOAD_MARKER_ARRAY':
     var holder = state.partload_marker_array.slice()

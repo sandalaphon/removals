@@ -16,8 +16,7 @@ class TruckFlicker extends React.Component {
     this.state = {
 
     }
-    this.indexOfRenderedRoute = 0
-    this.isARouteRendered = false
+    this.indexOfRenderedRoute = -1
   }
 
 
@@ -49,24 +48,25 @@ class TruckFlicker extends React.Component {
   var numberHiddenRoutes = 0 //to create guard for all hidden list
 
   while(true){ 
-   if(this.isARouteRendered) counter = counter + increment
- 
+   
+    counter = counter + increment
     if(counter>=relevantArray.length || counter < 0) break
      
 
       var job = relevantArray[counter]
-
+    
     if (!job.hidden){
-      this.props.actions.setCurrentTruckFlickerJob(job)
+     this.props.actions.setCurrentTruckFlickerJob(job)
      mapObjectInstances.today.clearMap()
      mapObjectInstances.today.drawRouteWithGoogleResponse(job)
      this.indexOfRenderedRoute = counter
-     this.isARouteRendered=true
+
      break
    }else{
     numberHiddenRoutes = numberHiddenRoutes + 1
     if(numberHiddenRoutes>=relevantArray.length) break
    }
+ 
  }
 }
 
@@ -91,9 +91,6 @@ handleNextClick(event){
      break
    }
  }
-
-
-
 
 
  render(){
