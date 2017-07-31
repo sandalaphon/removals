@@ -3,14 +3,23 @@
   height: 95vh;
   border: 3px solid hotpink;
   grid-template-areas:
+  "pos fli"
   "pos map"
-  "sup map"
+  "pos map"
   "sug map"
   "sug map"
   "sug map"
   "sug map"
+  "sug map"
+  "sug map"
+  "sug map"
+  "sug map"
+  "sug map"
+  "sug map"
+  "sug map"
+  "sug sLI"
   ;
-  grid-template-rows: repeat(6,1fr);
+  grid-template-rows: repeat(15,1fr);
   grid-auto-columns: 10%;
   grid-template-columns: repeat(2,1fr);
 }
@@ -36,4 +45,8 @@
 
 .grid-item-postcode{
 grid-area:pos;
+}
+
+.grid-item-slider-partload{
+  grid-area:sLI;
 }

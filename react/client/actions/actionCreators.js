@@ -29,6 +29,13 @@ export function setTodaySliderSecondsFromStart(secondsPassed){
   }
 }
 
+export function setPartloadSliderSecondsFromStart(secondsPassed){
+  return {
+    type: 'SET_PARTLOAD_SLIDER_SECONDS_FROM_START',
+    payload: secondsPassed
+  }
+}
+
 export function setPlannerSliderSecondsFromStart(secondsPassed){
   return {
     type: 'SET_PLANNER_SLIDER_SECONDS_FROM_START',
@@ -184,6 +191,13 @@ export function setPartloadDeliveryPostcode(postcode){
   return {
     type: 'SET_PARTLOAD_DELIVERY_POSTCODE',
     payload: postcode
+  }
+}
+
+export function clearPickUpBestJobs(){
+  return {
+    type: 'CLEAR_BEST_PICK_UP_JOBS'
+  
   }
 }
 

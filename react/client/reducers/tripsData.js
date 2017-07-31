@@ -52,7 +52,9 @@ function handleData(state = {
     best_pick_up_jobs: [],
     filter_search_string: '',
     current_today_truckflicker_job: '',
-    current_planner_truckflicker_job: ''
+    current_partload_truckflicker_job: '',
+    current_planner_truckflicker_job: '',
+    partload_seconds_from_start: ''
 // all_trips:[]
 },action){
 
@@ -94,6 +96,10 @@ function handleData(state = {
     return { ...state, planner_seconds_from_start: action.payload}
     break;
 
+    case 'SET_PARTLOAD_SLIDER_SECONDS_FROM_START':
+    return { ...state, partload_seconds_from_start: action.payload}
+    break;
+
      case 'SET_FILTER_SEARCH_STRING':
     return { ...state, filter_search_string: action.payload}
     break;
@@ -113,6 +119,10 @@ function handleData(state = {
 
     case 'BEST_PICK_UP_JOBS_REJECTED' :
     return {...state, best_pick_up_jobs: [], best_pick_up_jobs_error: action.payload}
+    break;
+
+    case 'CLEAR_BEST_PICK_UP_JOBS' :
+    return {...state, best_pick_up_jobs: [], best_pick_up_jobs_error: ''}
     break;
 
 
@@ -166,6 +176,9 @@ function handleData(state = {
         case 'planner':
         return{...state, current_planner_truckflicker_job: action.payload}
         break;
+        case 'partload':
+        return{...state, current_partload_truckflicker_job: action.payload}
+        break;
        }
     
     break;
@@ -177,6 +190,9 @@ function handleData(state = {
         break;
         case 'planner':
         return{...state, current_planner_truckflicker_job: ''}
+        break;
+        case 'partload':
+        return{...state, current_partload_truckflicker_job: ''}
         break;
        }
     

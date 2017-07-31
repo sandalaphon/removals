@@ -2,7 +2,9 @@ import React from 'react'
 import Gmap from '../Gmap'
 import Postcode from './Postcode'
 import SuggestionList from './SuggestionList'
+import SliderPartload from './SliderPartload'
 import {mapObjectInstances} from '../../models/mapObject'
+import TruckFlicker from '../TruckFlicker'
 
 
 
@@ -30,6 +32,8 @@ render(){
  <Postcode />
    <Gmap/>
    <SuggestionList/>
+   <SliderPartload/>
+   <TruckFlicker/>
  </div>
     )
 }

@@ -8,10 +8,12 @@ class MapObject{
     this.map = map
     this.directionsService = new google.maps.DirectionsService()
     this.renderedRoutes = [],
-    this.markers = [],
     this.bounds= new google.maps.LatLngBounds(),
+
+    this.markers = [],
     this.postcodeMarkers = [],
     this.sliderMarkers = [],
+
     this.branchesButtonExists = false,
     this.pathname = pathname
 
@@ -76,7 +78,6 @@ appendStuffToDiv(controlDiv, map){
     this.clearMarkers(this.sliderMarkers)
     this.clearMarkers(this.postcodeMarkers)
     this.clearRoutes()
-
   }
 
   clearRoutes(){
@@ -121,9 +122,7 @@ appendStuffToDiv(controlDiv, map){
     this.renderedRoutes.push(directionsDisplay)
   }
 
-  anotherPinSymbol(colour){
 
-  }
 
   placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message=''){
 

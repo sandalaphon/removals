@@ -7,13 +7,30 @@ import {mapObjectInstances} from '../../models/mapObject'
 class SuggestionList extends React.Component{
   constructor(props){
     super(props)
+    this.state = {}
+  }
+
+  componentDidMount(){
+    this.setState({mapObject: mapObjectInstances.partload})
+    console.log(this.state.mapObject)
+  }
+
+  componentDidUpdate(){
+    if(!this.state.mapObject){
+     
+       this.setState({mapObject: mapObjectInstances.partload})
+    
+    }
+
   }
 
 
   onClickNearestStart(event){
     event.preventDefault()
-    // this.mapObject.clearRoutes()
-    this.mapObject.clearMarkers(this.mapObject.markers)
+    this.props.actions.clearCurrentTruckFlickerJob('partload')
+    this.props.actions.clearPickUpBestJobs()
+    // this.state.mapObject.clearRoutes()
+    this.state.mapObject.clearMarkers(this.state.mapObject.markers)
     var startMarkerLat = this.props.partload_marker_array[0].lat
     var startMarkerLng = this.props.partload_marker_array[0].lng
 
@@ -59,12 +76,31 @@ class SuggestionList extends React.Component{
   handleDrawRouteClick(){}
 
   jobs(){
-    if(this.props.partload_marker_array&&this.props.partload_marker_array.length) {
-  var mapObjects = mapObjectInstances
-  this.mapObject=mapObjects.partload
-  this.props.best_pick_up_jobs.forEach((job)=>{
-    this.mapObject.drawRouteWithGoogleResponse(job)
-  })
+    // if(this.props.partload_marker_array&&this.props.partload_marker_array.length) {
+  // var mapObjects = mapObjectInstances
+  // this.state.mapObject=mapObjects.partload
+
+  // if(this.props.best_pick_up_jobs){
+  //   if(this.state.mapObject) this.state.mapObject.clearMap()
+  //     this.props.best_pick_up_jobs.forEach((job)=>{
+  //       if(!job.hidden&&this.state.mapObject){
+  //         this.state.mapObject.drawRouteWithGoogleResponse(job)
+  //       }
+  //     })
+
+  // }
+
+  if(this.props.partload_marker_array.length&&this.state.mapObject){
+    this.state.mapObject.displayMarkersFromStore(this.props.partload_marker_array, this.state.mapObject.postcodeMarkers)
+  }
+
+
+  if(this.state.mapObject&&!this.props.current_partload_truckflicker_job){
+    console.log('shouldnt get here', this.props.current_partload_truckflicker_job )
+    this.props.best_pick_up_jobs.forEach((job)=>{
+      this.state.mapObject.drawRouteWithGoogleResponse(job)
+    })}
+
   return this.props.best_pick_up_jobs.map((job, index)=>{
     var collapseStyle = job.hidden ? {display: 'none'} : {}
 
@@ -81,7 +117,7 @@ class SuggestionList extends React.Component{
       </tr>)
   })
 
-}
+// }
 }
 
 
@@ -116,6 +152,5 @@ render(){
 const mapDispatchToProps=(dispatch)=>({
   actions: bindActionCreators(actionCreators, dispatch)
 })
-const mapStateToProps=(state)=>({suggestedTrips: state.trips.suggested_trips, all_trips:state.trips.all_trips, partload_marker_array: state.trips.partload_marker_array , partload_collection_postcode: state.trips.partload_collection_postcode,
-best_pick_up_jobs: state.trips.best_pick_up_jobs})
+const mapStateToProps=(state)=>({suggestedTrips: state.trips.suggested_trips, all_trips:state.trips.all_trips, partload_marker_array: state.trips.partload_marker_array , partload_collection_postcode: state.trips.partload_collection_postcode, best_pick_up_jobs: state.trips.best_pick_up_jobs, current_partload_truckflicker_job: state.trips.current_partload_truckflicker_job})
 export default connect(mapStateToProps, mapDispatchToProps)(SuggestionList)

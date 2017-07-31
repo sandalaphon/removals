@@ -45,15 +45,57 @@ class TruckFlicker extends React.Component {
      //And then deal with highlighting in list
      break;
 
+     case '/partload':
+
+     var relevantArray = this.props.trips.best_pick_up_jobs
+
+     this.renderAppropriateRoute(relevantArray, false, 'partload')
+     // AND setState or store rendered route attribute and index
+     //And then deal with highlighting in list
+     break;
+
 
 
    }
 
  }
 
- renderAppropriateRoute(relevantArray, next = true, pathname){
+ handleNextClick(event){
+   event.preventDefault()
+   console.log(this.props)
 
-  var counter = this.indexOfRenderedRoute
+   switch (this.props.location.pathname){
+    case '/today':
+
+    var relevantArray = this.props.trips.all_trips
+
+    this.renderAppropriateRoute(relevantArray, true, 'today')
+
+      break;
+
+      case '/planner':
+
+      var relevantArray = this.props.trips.all_trips
+
+      this.renderAppropriateRoute(relevantArray, true, 'planner')
+
+        break;
+
+
+        case '/partload':
+
+        var relevantArray = this.props.trips.best_pick_up_jobs
+
+        this.renderAppropriateRoute(relevantArray, true, 'partload')
+
+          break;
+
+      }
+    }
+
+    renderAppropriateRoute(relevantArray, next = true, pathname){
+
+      var counter = this.indexOfRenderedRoute
   var increment = next ? 1 : -1 // +1 for next, -1 for previous
   var numberHiddenRoutes = 0 //to create guard for all hidden list
   var mapObject
@@ -64,71 +106,42 @@ class TruckFlicker extends React.Component {
     case 'planner':
     mapObject = mapObjectInstances.planner
     break;
+    case 'partload':
+    mapObject = mapObjectInstances.partload
+    break;
   }
+
   while(true){ 
-   
+
+
     counter = counter + increment
     if(counter>=relevantArray.length || counter < 0) break
-     
+
 
       var job = relevantArray[counter]
     
     if (!job.hidden){
       // var key = `${pathname}`
 
-     this.props.actions.setCurrentTruckFlickerJob(job, pathname)
-     mapObject.clearMap()
-     mapObject.drawRouteWithGoogleResponse(job)
-     this.indexOfRenderedRoute = counter
+      this.props.actions.setCurrentTruckFlickerJob(job, pathname)
+      mapObject.clearMap()
+      mapObject.drawRouteWithGoogleResponse(job)
+      this.indexOfRenderedRoute = counter
 
-     break
-   }else{
-    numberHiddenRoutes = numberHiddenRoutes + 1
-    if(numberHiddenRoutes>=relevantArray.length) break
-   }
- 
- }
+      break
+    }else{
+      numberHiddenRoutes = numberHiddenRoutes + 1
+      if(numberHiddenRoutes>=relevantArray.length) break
+    }
+
+}
 }
 
 
-handleNextClick(event){
-  event.preventDefault()
-  console.log(this.props)
-
-  switch (this.props.location.pathname){
-   case '/today':
-
-   var relevantArray = this.props.trips.all_trips
-
-   this.renderAppropriateRoute(relevantArray, true, 'today')
 
 
-     // get appropriate array
-     // start at index 0
-     // forEach if not hidden then render route 
-     // AND setState or store rendered route attribute and index
-     //And then deal with highlighting in list
-     break;
 
-     case '/planner':
-
-     var relevantArray = this.props.trips.all_trips
-
-     this.renderAppropriateRoute(relevantArray, true, 'planner')
-
-
-       // get appropriate array
-       // start at index 0
-       // forEach if not hidden then render route 
-       // AND setState or store rendered route attribute and index
-       //And then deal with highlighting in list
-       break;
-
-   }
- }
-
-
- render(){
+render(){
 
 
   return (

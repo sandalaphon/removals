@@ -18,9 +18,10 @@ class Postcode extends React.Component{
     var geocoder = new Geocoder()
     //get the appropriate instance, declared here so that it has had time to be created on render of Gmap
     this.mapObject = mapObjectInstances.partload 
-    this.mapObject.clearMarkers(this.mapObject.postcodeMarkers)
-    this.mapObject.clearMarkers(this.mapObject.markers)
+   this.mapObject.clearMap()
     this.props.actions.clearPartloadMarkerArray()
+    this.props.actions.clearCurrentTruckFlickerJob('partload')
+    this.props.actions.clearPickUpBestJobs()
 
     var {partload_collection_postcode, partload_delivery_postcode} = this.props.trips
     var {addMarkerToPartloadMarkerArray} = this.props.actions

@@ -4,7 +4,6 @@ import TruckFlicker from './TruckFlicker'
 import * as actionCreators from '../actions/actionCreators'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-// import {drawRoute, drawRouteWithGoogleResponse, clearMap} from '../models/mapFunctions'
 import {MapObject, mapObjectInstances} from '../models/mapObject'
 import {withRouter} from 'react-router'
 
@@ -23,16 +22,8 @@ class GMap extends React.Component {
   }
 
 
-
-
   componentDidMount() {
     this.setState({map: this.createMap()})
-    console.log('Gmap mounted')
-
- 
-     // map in state allow auto render when 
-    // navigated back
-    // drawRoute.call(this, "Castlebury Farmhouse, wareside, hertfordshire SG12 7SH", "81 East Claremont Street, Edinburgh EH7 4HU", this.map )
   }
 
 
@@ -66,10 +57,6 @@ class GMap extends React.Component {
 
   render() {
 
-  
-
-        //if in partload start with empty array
-
         switch (this.props.location.pathname){
 
           case '/planner':
@@ -79,23 +66,6 @@ class GMap extends React.Component {
           
           } 
 
-          // if(this.props.all_trips){
-          //   if(this.state.mapObject) {
-          //     this.state.mapObject.clearMap()
-          //     if(!this.state.branchesButtonExists) {
-          //       this.state.mapObject.addBranchButtonToMap()
-               
-          //     }
-
-          //   }
-          //     this.props.all_trips.forEach((job)=>{
-          //       if(!job.hidden&&this.state.mapObject){
-          //         this.state.mapObject.drawRouteWithGoogleResponse(job)
-          //       }
-          //             //if job.attribute hidden then...
-
-          //           })
-          // }
           break;
 
           case '/today':
@@ -103,16 +73,6 @@ class GMap extends React.Component {
               this.state.mapObject.addBranchButtonToMap()
           
           } 
-            
-          // if(this.props.all_trips){//change to today's routes
-          //   if(this.state.mapObject) this.state.mapObject.clearMap()
-          //     this.props.all_trips.forEach((job)=>{
-          //       if(!job.hidden&&this.state.mapObject){
-          //         this.state.mapObject.drawRouteWithGoogleResponse(job)
-          //       }
-
-          //           })
-          // }
 
           break;
 
@@ -120,22 +80,8 @@ class GMap extends React.Component {
 
           if(this.state.mapObject&&!this.state.branchesButtonExists) {
             this.state.mapObject.addBranchButtonToMap()
-           
           }
 
-          if(this.props.best_pick_up_jobs){
-            if(this.state.mapObject) this.state.mapObject.clearMap()
-              this.props.best_pick_up_jobs.forEach((job)=>{
-                if(!job.hidden&&this.state.mapObject){
-                  this.state.mapObject.drawRouteWithGoogleResponse(job)
-                }
-              })
-
-          }
-
-          if(this.props.partload_marker_array.length&&this.state.mapObject){
-            this.state.mapObject.displayMarkersFromStore(this.props.partload_marker_array, this.state.mapObject.postcodeMarkers)
-          }
           break;
         };
 
