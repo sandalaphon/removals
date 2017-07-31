@@ -76,13 +76,13 @@ class GMap extends React.Component {
 
           break;
 
-          case '/partload':
+        //   case '/partload':
 
-          if(this.state.mapObject&&!this.state.branchesButtonExists) {
-            this.state.mapObject.addBranchButtonToMap()
-          }
+        //   if(this.state.mapObject&&!this.state.branchesButtonExists) {
+        //     this.state.mapObject.addBranchButtonToMap()
+        //   }
 
-          break;
+        //   break;
         };
 
 

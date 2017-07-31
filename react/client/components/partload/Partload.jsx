@@ -1,5 +1,6 @@
 import React from 'react'
-import Gmap from '../Gmap'
+// import Gmap from '../Gmap'
+import GmapPartLoad from './GmapPartLoad'
 import Postcode from './Postcode'
 import SuggestionList from './SuggestionList'
 import SliderPartload from './SliderPartload'
@@ -24,13 +25,11 @@ componentDidMount(){
 
 render(){
 
- 
 
-  // console.log('hello', Gmap.mapObject)
   return(
  <div className='grid-partload' ref="mapCanvas">
  <Postcode />
-   <Gmap/>
+   <GmapPartLoad/>
    <SuggestionList/>
    <SliderPartload/>
    <TruckFlicker/>

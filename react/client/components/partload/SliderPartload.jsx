@@ -23,12 +23,10 @@ class SliderPartload extends React.Component{
   }
 
   componentDidMount(){
-    if(this.props.current_partload_truckflicker_job){
-      mapObjectInstances.partload.drawRouteWithGoogleResponse(this.props.current_partload_truckflicker_job)
-    }
-    if(this.props.partload_seconds_from_start){
-      this.placeMarkers(this.props.partload_seconds_from_start)
-    }
+  if(this.props.partload_seconds_from_start){
+    this.placeMarkers(this.props.partload_seconds_from_start)
+  }
+
   }
 
   handleSliderChange(value){

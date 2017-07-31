@@ -43,6 +43,7 @@ function sortJoblist(list, attribute, order){
 
 function handleData(state = {
     trips: null,
+    // all_trips: [],
     droppedCells: [],
     highlightedCells: [],
     renderedRoutes: [],

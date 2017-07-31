@@ -120,23 +120,10 @@ handleDrawRouteClick(event){
   jobs(){
 //////////////////////////////////////////////////////////
 
-  if(this.state.mapObject&&this.props.all_trips&&this.props.all_trips.length){
-
-
-    if(!this.props.current_planner_truckflicker_job) {
- 
-      this.state.mapObject.clearMap()
-      this.props.all_trips.forEach((job)=>{
-        if(!job.hidden) {
-       
-       mapObjectInstances.planner.drawRouteWithGoogleResponse(job)
-        }
-
-
-
-      })
-    }
-  }
+if(!this.props.current_planner_truckflicker_job&&this.state.mapObject&&this.props.all_trips){
+    this.state.mapObject.clearMap()
+     mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips) 
+}
 
 
 

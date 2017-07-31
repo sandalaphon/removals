@@ -90,16 +90,16 @@ class SuggestionList extends React.Component{
 
   // }
 
-  if(this.props.partload_marker_array.length&&this.state.mapObject){
-    this.state.mapObject.displayMarkersFromStore(this.props.partload_marker_array, this.state.mapObject.postcodeMarkers)
-  }
+  // if(this.props.partload_marker_array.length&&this.state.mapObject){
+  //   this.state.mapObject.displayMarkersFromStore(this.props.partload_marker_array, this.state.mapObject.postcodeMarkers)
+  // }
 
 
-  if(this.state.mapObject&&!this.props.current_partload_truckflicker_job){
-    console.log('shouldnt get here', this.props.current_partload_truckflicker_job )
-    this.props.best_pick_up_jobs.forEach((job)=>{
-      this.state.mapObject.drawRouteWithGoogleResponse(job)
-    })}
+  // if(this.state.mapObject&&!this.props.current_partload_truckflicker_job){
+  //   console.log('shouldnt get here', this.props.current_partload_truckflicker_job )
+  //   this.props.best_pick_up_jobs.forEach((job)=>{
+  //     this.state.mapObject.drawRouteWithGoogleResponse(job)
+  //   })}
 
   return this.props.best_pick_up_jobs.map((job, index)=>{
     var collapseStyle = job.hidden ? {display: 'none'} : {}
