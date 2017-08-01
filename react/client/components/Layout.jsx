@@ -6,44 +6,48 @@ import SignUp from './account_management/SignUp'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as actionCreators from '../actions/actionCreators'
+import * as loginActions from '../actions/login_actions'
 
 class Layout extends React.Component {
 
   componentDidMount(){
-    this.props.fetchUser()
+    this.props.actions.loginActions.fetchUser()
   }
 
   render(){
 
-    var {loginEmail, loginPassword, signInClick, signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm,  signOut, addUser, getUsers, getAllTripsFromRails } = this.props
-    var {user_email, user_password} = this.props.loginDetails
-    var toDisplay ;
+    const {loginEmail, loginPassword, signInClick, signUploginEmail, signUploginPassword,signUpPasswordConfirm, signUpClick, signOut} =                                               this.props.actions.loginActions
+    const {getAllTripsFromRails, getUsers} =         this.props.actions.actionCreators
+    const {user_email, user_password, currentUser} = this.props.loginDetails
+    var toDisplay
       
-    if(this.props.loginDetails.currentUser){
+    // if theres are no trips, get them
+    if(currentUser){
       if(!this.props.trips.all_trips) getAllTripsFromRails()
       toDisplay = 
         <div>
           <Navb 
             signOut={signOut} 
-            displayEmail={this.props.loginDetails.currentUser.email}/>
+            displayEmail={currentUser.email}/>
           {this.props.children}
         </div>
     }
 
-    if(!this.props.loginDetails.currentUser){
+    //if there is no currentuser, show loginbox
+    if(!currentUser){
 
       toDisplay =
         <LoginBox 
-        signInClick={signInClick} 
-        loginEmail={loginEmail} 
-        user_email={user_email} 
-        user_password={user_password} 
-        loginPassword={loginPassword} 
-        signUpClick={signUpClick} 
-        signUploginEmail={signUploginEmail} 
-        signUpPasswordConfirm={signUpPasswordConfirm} 
-        signUploginPassword={signUploginPassword}
-        getUsers ={getUsers}
+        signInClick           = {signInClick} 
+        loginEmail            = {loginEmail} 
+        user_email            = {user_email} 
+        user_password         = {user_password} 
+        loginPassword         = {loginPassword} 
+        signUpClick           = {signUpClick} 
+        signUploginEmail      = {signUploginEmail} 
+        signUpPasswordConfirm = {signUpPasswordConfirm} 
+        signUploginPassword   = {signUploginPassword}
+        getUsers              = {getUsers}
         />
     }
 
@@ -57,23 +61,20 @@ class Layout extends React.Component {
 
 }
 
-
-
 function mapStateToProps(state){
   return {
-    // posts: state.posts,
-    // comments: state.comments,
-    // search: state.search
-    loginDetails: state.loginDetails,
+    loginDetails: state.login,
     trips: state.trips
   }
 }
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators(actionCreators, dispatch)
+  return { 
+    actions:{
+      actionCreators: bindActionCreators(actionCreators, dispatch),
+      loginActions: bindActionCreators(loginActions, dispatch)
+    }
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layout)
-
-
-

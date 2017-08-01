@@ -1,7 +1,7 @@
 import { applyMiddleware,createStore, compose } from 'redux'
 import { syncHistoryWithStore} from 'react-router-redux'
 import { browserHistory} from 'react-router'
-import rootReducer from './reducers/index'
+import rootReducer from './reducers/_combiner'
 // import comments from './data/comments'
 // import posts from './data/posts'
 import logger from 'redux-logger'
@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 
 
 const  defaultState = {
-    loginDetails: {}
+    // loginDetails: {}
 
 }
 

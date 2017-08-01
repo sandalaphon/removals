@@ -1,61 +1,16 @@
-function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}
 
-function getUniqueColor(index){
-  var colours = [ '#0075DC', '#993F00', '#4C005C', '#191919', '#005C31' ,'#2BCE48' ,'#FFCC99' ,'#808080' ,'#94FFB5', '#8F7C00', '#9DCC00' ,'#C20088', '#003380' , '#FFA405', '#FFA8BB', '#426600' , '#FF0010' ,'#5EF1F2' ,'#00998F'  ,'#E0FF66' , '#740AFF' ,'#990000', '#FFFF80', '#FFFF00', '#FF5005', '#F0A3FF']
-  if(index<24){
-    return colours[index]
-  }else{
-    var newColour =getRandomColor()
-      if(!colours.includes(newColour)){
-        colours.push(newColour)
-        return newColour
-      }
-  }
-}
+import * as helpers from './_helpers'
 
-function sortJoblist(list, attribute, order){
-  var sorted
-  if(order === 'asc'){
-    sorted = list.sort(
-      (a,b)=>{
-        if (a[attribute] < b[attribute]) return -1
-          if (b[attribute] < a[attribute]) return 1
-            return 0
-        })
-  }else{
-    sorted = list.sort(
-      (a,b)=>{
-        if (a[attribute] < b[attribute]) return 1
-          if (b[attribute] < a[attribute]) return -1
-            return 0
-        })
-  }
-  return sorted
-}
-
-
-function handleData(state = {
+function handleTripData(state = {
   trips: null,
-  // all_trips: [],
-  droppedCells: [],
-  highlightedCells: [],
   renderedRoutes: [],
-  partload_collection_postcode: '',
-  partload_delivery_postcode: '',
-  partload_marker_array: [],
+  
   best_pick_up_jobs: [],
   filter_search_string: '',
   current_today_truckflicker_job: '',
   current_partload_truckflicker_job: '',
-  current_planner_truckflicker_job: '',
-  partload_seconds_from_start: ''
+  current_planner_truckflicker_job: ''
+ 
 // all_trips:[]
 },action){
 
@@ -75,7 +30,7 @@ function handleData(state = {
     var anotherNewArray = newArray.map((trip, index)=>{
         var google_directions= JSON.parse(trip.google_directions)
         trip.google_directions = google_directions
-        trip.colour=getUniqueColor(index)
+        trip.colour=helpers.getUniqueColor(index)
         return trip
     })
     return {...state, all_trips: anotherNewArray, getTripsError: null}
@@ -85,21 +40,12 @@ function handleData(state = {
     return {...state,  getTripsError: action.payload}
     break;
     //
-    case 'CLEAR_PARTLOAD_MARKER_ARRAY':
-    return {...state,  partload_marker_array: []}
-    break;
-    //
     case 'SET_TODAY_SLIDER_SECONDS_FROM_START':
     return { ...state, today_seconds_from_start: action.payload}
     break;
     //
-    case 'SET_PLANNER_SLIDER_SECONDS_FROM_START':
-    return { ...state, planner_seconds_from_start: action.payload}
-    break;
-    //
-    case 'SET_PARTLOAD_SLIDER_SECONDS_FROM_START':
-    return { ...state, partload_seconds_from_start: action.payload}
-    break;
+    
+    
     //
     case 'SET_FILTER_SEARCH_STRING':
     return { ...state, filter_search_string: action.payload}
@@ -110,7 +56,7 @@ function handleData(state = {
       var anotherNewArray = newArray.map((trip, index)=>{
         var google_directions= JSON.parse(trip.google_directions)
         trip.google_directions = google_directions
-        trip.colour=getUniqueColor(index)
+        trip.colour=helpers.getUniqueColor(index)
         return trip
       })
     return {...state, best_pick_up_jobs: anotherNewArray, best_pick_up_jobs_error: null}
@@ -142,25 +88,8 @@ function handleData(state = {
     return {...state,  all_trips: holder}
     break;
     //
-    case 'SET_CURRENT_DRAG_JOB':
-    return{...state, currentDragJob: action.payload}
-    break;
-    //
-    case 'SET_DROPPED_CELLS':
-    return{...state, droppedCells: state.droppedCells.concat(action.payload)}
-    break;
-    //
-    case 'SET_HIGHLIGHTED_CELLS':
-    return{...state, highlightedCells: action.payload}
-    break;
-    //
-    case 'SET_PARTLOAD_COLLECTION_POSTCODE':
-    return{...state, partload_collection_postcode: action.payload}
-    break;
-    //
-    case 'SET_PARTLOAD_DELIVERY_POSTCODE':
-    return{...state, partload_delivery_postcode: action.payload}
-    break;
+    
+    
     //
     case 'SET_CURRENT_TRUCKFLICKER_JOB':
     switch (action.pathname){
@@ -189,29 +118,16 @@ function handleData(state = {
         break;
     }
     break;
+    
     //
-    case 'ADD_MARKER_TO_PARTLOAD_MARKER_ARRAY':
-      var holder = state.partload_marker_array.slice()
-      holder.push(action.payload)
-    return{...state, partload_marker_array: holder}
-    break;
-    //
-    case 'DELETE_DROPPED_CELLS':
-      var newArray = state.droppedCells.slice()
-      state.droppedCells.forEach((object, index)=>{
-        if(object.colour===action.payload) {
-          newArray.splice(index,1)
-      }
-    })
-    return{...state, droppedCells: newArray}
-    break;
+    
     //
     case 'SORT_BY_COLUMN':
-    var sorted = sortJoblist(state.all_trips, action.attribute, action.order)
+    var sorted = helpers.sortJoblist(state.all_trips, action.attribute, action.order)
     return{...state, all_trips: sorted}
     break;
   }
   return state
 }
 
-export default handleData
+export default handleTripData

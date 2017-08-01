@@ -57,16 +57,6 @@ class AccountManagement extends React.Component {
       </div>
       )
        }
-  }
-
+}
 
 export default AccountManagement
-
-// <SignUp 
- // signUpClick={signUpClick} 
- // signUploginEmail={signUploginEmail} 
- // signUploginPassword={signUploginPassword}
- // signUpPasswordConfirm={signUpPasswordConfirm}
- // getUsers={getUsers}/>
-
-

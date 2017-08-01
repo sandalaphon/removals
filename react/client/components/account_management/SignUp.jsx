@@ -24,8 +24,6 @@ class SignUp extends React.Component {
     this.props.signUploginEmail(event.target.value)
   }
 
-
-
   handleChangeSignUpPassword(event){
     event.preventDefault()
     this.props.signUploginPassword(event.target.value)
@@ -38,13 +36,10 @@ class SignUp extends React.Component {
 
   handleSignUpClick(event){
     event.preventDefault()
-
-    const {signup_email, signup_password,signup_password_confirm} = store.getState().loginDetails
-    
-      this.props.signUpClick(signup_email, signup_password,signup_password_confirm, this.props.getUsers.bind(this))
-      this.refs.commentForm.reset()
-  
-}
+    const {signup_email, signup_password,signup_password_confirm} = store.getState().login
+    this.props.signUpClick(signup_email, signup_password,signup_password_confirm, this.props.getUsers.bind(this))
+    this.refs.commentForm.reset() 
+  }
   
   render(){
     // const {signup_email, signup_password,signup_password_confirm} = store.getState().loginDetails
@@ -70,22 +65,37 @@ class SignUp extends React.Component {
   
     return(
       <div>
-      <h3>Please Enter New User Details </h3>
-      <form ref='commentForm'>
-      <input type = 'text' className="sign_in_email" placeholder = "email" onChange={this.handleChangeSignUpEmail.bind(this)}/>
-
-
-      <input type = 'text' className="sign_in_password" placeholder = "password" onChange={this.handleChangeSignUpPassword.bind(this)}/>
-
-      <input type = 'text' className="sign_in_password" placeholder = "confirm password" onChange={this.handleChangeSignUpPasswordConfirm.bind(this)}/>
-
-      <input type = 'submit' className="sign_in_button" value="Add User" onClick = {this.handleSignUpClick.bind(this)} />
-
-
-      </form>
+        <h3>Please Enter New User Details </h3>
+        <form ref='commentForm'>
+          <input 
+            type        = 'text' 
+            className   = "sign_in_email" 
+            placeholder = "email" 
+            onChange    = {this.handleChangeSignUpEmail.bind(this)}
+          />
+          <input
+            type        = 'text' 
+            className   = "sign_in_password" 
+            placeholder = "password" 
+            onChange    = {this.handleChangeSignUpPassword.bind(this)}
+          />
+          <input 
+            type        = 'text' 
+            className   = "sign_in_password" 
+            placeholder = "confirm password" 
+            onChange    = {this.handleChangeSignUpPasswordConfirm.bind(this)}
+            />
+          <input 
+            type        = 'submit' 
+            className   = "sign_in_button" 
+            value       = "Add User" 
+            onClick     = {this.handleSignUpClick.bind(this)} 
+          />
+        </form>
       </div>
       )
   }
+
 }
 
 export default SignUp
