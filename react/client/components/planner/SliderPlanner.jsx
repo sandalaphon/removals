@@ -1,5 +1,5 @@
 import React from 'react'
-import * as actionCreators from '../../actions/actionCreators'
+import * as plannerActions from '../../actions/planner_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import { mapObjectInstances} from '../../models/mapObject'
@@ -41,7 +41,7 @@ class SliderPlanner extends React.Component{
   onAfterChange(value){
     this.setState({value,})  
     const secondsPassed = value * 60 * 10
-    this.props.actions.setPlannerSliderSecondsFromStart(secondsPassed)
+    this.props.actions.planner_actions.setPlannerSliderSecondsFromStart(secondsPassed)
 
   }
 
@@ -99,8 +99,6 @@ class SliderPlanner extends React.Component{
     
     mapObjectInstances.planner.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
 
-
-
   }
 
   sortTimeDisplay(v){
@@ -114,8 +112,6 @@ class SliderPlanner extends React.Component{
     const time = `${startValue+hoursPassed}:${minutesLeft} `
     return time
   }
-
-
 
   render(){
     const SliderWithTooltip = createSliderWithTooltip(Slider);
@@ -151,13 +147,20 @@ class SliderPlanner extends React.Component{
         
         </div>
         </div>
-      )
-  }
+    )
   }
 
+}
 
-  const mapDispatchToProps=(dispatch)=>({
-    actions: bindActionCreators(actionCreators, dispatch)
-  })
-  const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, planner_seconds_from_start: state.trips.planner_seconds_from_start, current_planner_truckflicker_job: state.trips.current_planner_truckflicker_job})
-  export default connect(mapStateToProps, mapDispatchToProps)(SliderPlanner)
+const mapDispatchToProps=(dispatch)=>({
+  actions:{
+    planner_actions: bindActionCreators(plannerActions, dispatch)
+  } 
+})
+
+const mapStateToProps=(state)=>({
+  all_trips:                          state.common.all_trips, 
+  planner_seconds_from_start:         state.planner.planner_seconds_from_start, 
+  current_planner_truckflicker_job:   state.planner.current_planner_truckflicker_job})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SliderPlanner)

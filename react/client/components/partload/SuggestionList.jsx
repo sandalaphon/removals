@@ -1,5 +1,5 @@
 import React from 'react'
-import * as actionCreators from '../../actions/actionCreators'
+import * as partloadActions from '../../actions/partload_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {mapObjectInstances} from '../../models/mapObject'
@@ -17,18 +17,15 @@ class SuggestionList extends React.Component{
 
   componentDidUpdate(){
     if(!this.state.mapObject){
-     
        this.setState({mapObject: mapObjectInstances.partload})
-    
     }
-
   }
 
 
   onClickNearestStart(event){
     event.preventDefault()
-    this.props.actions.clearCurrentTruckFlickerJob('partload')
-    this.props.actions.clearPickUpBestJobs()
+    this.props.partload_actions.clearCurrentTruckFlickerJob('partload')
+    this.props.partload_actions.clearPickUpBestJobs()
     // this.state.mapObject.clearRoutes()
     this.state.mapObject.clearMarkers(this.state.mapObject.markers)
     var startMarkerLat = this.props.partload_marker_array[0].lat
@@ -37,7 +34,7 @@ class SuggestionList extends React.Component{
     //Note that date range must be added to args
     //send lat lng to rails and get back best pickup routes
     //Will need to ensure space on truck
-    this.props.actions.getPickUpBestJobsFromRails(startMarkerLat, startMarkerLng)
+    this.props.partload_actions.getPickUpBestJobsFromRails(startMarkerLat, startMarkerLng)
   }
 
   // get5BestPickUpTrucks(arrayOfTripDistances){
@@ -104,53 +101,69 @@ class SuggestionList extends React.Component{
   return this.props.best_pick_up_jobs.map((job, index)=>{
     var collapseStyle = job.hidden ? {display: 'none'} : {}
 
-    return(<tr key={job.id} style={collapseStyle}>
-      <td ><button  onClick={this.handleDrawRouteClick.bind(this)}>View Route</button></td>
-      <td> {job.moveware_code}</td>
-      <td >{job.client_name}</td>
-      <td >Colour</td>
-      <td >Spare Capacity</td>
-      <td >{job.men_requested}</td>
-      <td >{job.branch_id}</td>
-      <td >view notes click here?</td>
-      <td >Truck Type</td>
+    return(
+      <tr key={job.id} style={collapseStyle}>
+        <td >
+          <button  onClick={this.handleDrawRouteClick.bind(this)}>
+            View Route
+          </button></td>
+        <td> {job.moveware_code}</td>
+        <td >{job.client_name}</td>
+        <td >Colour</td>
+        <td >Spare Capacity</td>
+        <td >{job.men_requested}</td>
+        <td >{job.branch_id}</td>
+        <td >view notes click here?</td>
+        <td >Truck Type</td>
       </tr>)
   })
 
 // }
 }
 
-
-
 render(){
   return(
     <div className='grid-item-suggestion-list'>
-    <button onClick = {this.onClickNearestStart.bind(this)} >nearest start</button>
-    <button>nearest end</button>
-    <table >
-    <tbody>
-    <tr>
-    <th>View Route    </th>
-    <th>Moveware Code </th>
-    <th>Client Name.  </th>
-    <th>Colour        </th>
-    <th>Spare Capacity</th>
-    <th>Men Requested </th>
-    <th>Branch        </th>
-    <th>Notes</th> 
-    <th>Truck Type</th>
-    </tr>
-    {this.jobs()}
-
-    </tbody>
-    </table>
+      <button onClick = {this.onClickNearestStart.bind(this)} >
+        nearest start
+        </button>
+      <button>
+        nearest end
+      </button>
+      <table >
+        <tbody>
+          <tr>
+            <th>View Route    </th>
+            <th>Moveware Code </th>
+            <th>Client Name.  </th>
+            <th>Colour        </th>
+            <th>Spare Capacity</th>
+            <th>Men Requested </th>
+            <th>Branch        </th>
+            <th>Notes</th> 
+            <th>Truck Type</th>
+          </tr>
+          {this.jobs()}
+        </tbody>
+      </table>
     </div>
     )
 }
 }
 
 const mapDispatchToProps=(dispatch)=>({
-  actions: bindActionCreators(actionCreators, dispatch)
+  actions:{
+    partload_actions: bindActionCreators(partloadActions, dispatch)
+  }
 })
-const mapStateToProps=(state)=>({suggestedTrips: state.trips.suggested_trips, all_trips:state.trips.all_trips, partload_marker_array: state.trips.partload_marker_array , partload_collection_postcode: state.trips.partload_collection_postcode, best_pick_up_jobs: state.trips.best_pick_up_jobs, current_partload_truckflicker_job: state.trips.current_partload_truckflicker_job})
+
+const mapStateToProps=(state)=>({
+ // suggestedTrips:                     state.trips.suggested_trips, 
+  all_trips:                          state.common.all_trips, 
+  partload_marker_array:              state.partload.partload_marker_array,
+  partload_collection_postcode:       state.partload.partload_collection_postcode, 
+  best_pick_up_jobs:                  state.partload.best_pick_up_jobs, 
+  current_partload_truckflicker_job:  state.partload.current_partload_truckflicker_job
+})
+
 export default connect(mapStateToProps, mapDispatchToProps)(SuggestionList)

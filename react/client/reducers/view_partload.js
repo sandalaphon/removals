@@ -1,12 +1,11 @@
+import * as helpers from './_helpers'
+
 function handlePartloadData(state = {
 
   partload_collection_postcode: '',
   partload_delivery_postcode: '',
   partload_marker_array: [],
   best_pick_up_jobs: [],
-  current_today_truckflicker_job: '',
-  current_partload_truckflicker_job: '',
-  current_planner_truckflicker_job: '',
   partload_seconds_from_start: ''
 
 },action){
@@ -34,6 +33,26 @@ function handlePartloadData(state = {
     case 'SET_PARTLOAD_DELIVERY_POSTCODE':
     return{...state, partload_delivery_postcode: action.payload}
     break;
+    //
+    case 'BEST_PICK_UP_JOBS_FULFILLED' :
+      var newArray = action.payload.slice()
+      var anotherNewArray = newArray.map((trip, index)=>{
+        var google_directions= JSON.parse(trip.google_directions)
+        trip.google_directions = google_directions
+        trip.colour=helpers.getUniqueColor(index)
+        return trip
+      })
+    return {...state, best_pick_up_jobs: anotherNewArray, best_pick_up_jobs_error: null}
+    break;
+    //
+    case 'BEST_PICK_UP_JOBS_REJECTED' :
+    return {...state, best_pick_up_jobs: [], best_pick_up_jobs_error: action.payload}
+    break;
+    //
+    case 'CLEAR_BEST_PICK_UP_JOBS' :
+    return {...state, best_pick_up_jobs: [], best_pick_up_jobs_error: ''}
+    break;
+
   }
   return state
 }

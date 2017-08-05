@@ -1,6 +1,6 @@
 import React from 'react'
 import {Table, Button} from 'react-bootstrap'
-import * as actionCreators from '../../actions/actionCreators'
+import * as plannerActions from '../../actions/planner_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
@@ -17,7 +17,7 @@ class TruckDayView extends React.Component{
     let cellId = event.target.id
     var newCellArray = []
     let {estimated_hours} = this.props.trips.currentDragJob
-    let{setHighlightedCells} = this.props.actions
+    let{setHighlightedCells} = this.props.actions.planner_actions
 
     for(let i = 0; i<estimated_hours; i++){
       let startIndex=cellId.substring(event.target.id.length-2)
@@ -45,7 +45,7 @@ class TruckDayView extends React.Component{
   }
 
   drop(event){
-    var {setDroppedCells, deleteDroppedCells} = this.props.actions
+    var {setDroppedCells, deleteDroppedCells} = this.props.actions.planner_actions
     var {highlightedCells, currentDragJob} = this.props.trips
         deleteDroppedCells(currentDragJob.colour)
         setDroppedCells({
@@ -136,19 +136,25 @@ class TruckDayView extends React.Component{
 /////////////////////////////////////////////////////////////////////////////////////
 
 
-return(
-  <div className='grid-item-truck-day-view'>
-  {truckCalendar}
-  </div>
-  )
-}
+  return(
+    <div className='grid-item-truck-day-view'>
+    {truckCalendar}
+    </div>
+    )
+  }
 
 }
 
 const mapDispatchToProps=(dispatch)=>({
-  actions: bindActionCreators(actionCreators, dispatch)
+  actions: {
+    planner_actions: bindActionCreators(plannerActions, dispatch)
+  }
 })
-const mapStateToProps=(state)=>({trips: state.trips})
+
+const mapStateToProps=(state)=>({
+  trips: state.planner
+})
+
 export default connect(mapStateToProps, mapDispatchToProps)(TruckDayView)
 
 

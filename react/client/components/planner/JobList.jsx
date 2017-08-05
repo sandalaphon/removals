@@ -1,5 +1,5 @@
 import React from 'react'
-import { setCurrentDragJob, deleteDroppedCells, setHighlightedCells,  renderNewRoute, includeInVisibleJobList, excludeFromVisibleJobList, sortByColumn} from '../../actions/actionCreators'
+import * as plannerActions from '../../actions/planner_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {mapObjectInstances} from '../../models/mapObject'
@@ -54,7 +54,7 @@ class JobList extends React.Component{
 
   handleDragEnd(event){
     event.preventDefault()
-    this.props.actions.setHighlightedCells([])
+    this.props.actions.planner_actions.setHighlightedCells([])
   }
 
   handleDragOver(event){
@@ -64,20 +64,20 @@ class JobList extends React.Component{
 
   handleClientNameSort(){
     if(this.state.order.clientName){
-      this.props.actions.sortByColumn('client_name','asc')
+      this.props.actions.planner_actions.sortByColumn('client_name','asc')
       this.setState({order:{clientName:false}})
     }else{
-      this.props.actions.sortByColumn('client_name', 'dec')
+      this.props.actions.planner_actions.sortByColumn('client_name', 'dec')
       this.setState({order:{clientName:true}})
     }
   }
 /////////////////////////////////////////
 handleEstHoursSort(){
   if(this.state.order.estimatedHours){
-    this.props.actions.sortByColumn('estimated_hours','asc')
+    this.props.actions.planner_actions.sortByColumn('estimated_hours','asc')
     this.setState({order:{estimatedHours:false}})
   }else{
-    this.props.actions.sortByColumn('estimated_hours','dec')
+    this.props.actions.planner_actions.sortByColumn('estimated_hours','dec')
     this.setState({order: {estimatedHours:true}})
   }
 }
@@ -92,7 +92,7 @@ renderTripById(tripId){
   var trip = this.getTripById(tripId)
   let startLatLng = JSON.parse(trip.collection_latlng)
   let endLatLng = JSON.parse(trip.delivery_latlng)
-  this.props.actions.renderNewRoute(startLatLng, endLatLng, tripId)
+  this.props.actions.planner_actions.renderNewRoute(startLatLng, endLatLng, tripId)
 }
 
 handleDrawRouteClick(event){
@@ -112,7 +112,7 @@ handleDrawRouteClick(event){
     if(this.eventTarget.id === this.currentDropTargetId) return
 
       tableDataElement.appendChild(this.eventTarget)
-    this.props.actions.deleteDroppedCells(this.eventTarget.id)
+    this.props.actions.planner_actions.deleteDroppedCells(this.eventTarget.id)
 
   }
 
@@ -208,9 +208,15 @@ render(){
 }
 
 const mapDispatchToProps=(dispatch)=>({
-  actions: bindActionCreators( {setCurrentDragJob, deleteDroppedCells, setHighlightedCells, sortByColumn, renderNewRoute, excludeFromVisibleJobList, includeInVisibleJobList}, dispatch)
+  actions:{
+    planner_actions: bindActionCreators( plannerActions, dispatch)
+  } 
 })
-const mapStateToProps=(state)=>({ all_trips: state.trips.all_trips, searchString: state.trips.searchString, current_planner_truckflicker_job: state.trips.current_planner_truckflicker_job})
 
+const mapStateToProps=(state)=>({ 
+  all_trips: state.common.all_trips, 
+  searchString: state.planner.searchString, 
+  current_planner_truckflicker_job: state.planner.current_planner_truckflicker_job
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(JobList)

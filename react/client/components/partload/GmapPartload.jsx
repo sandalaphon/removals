@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import TruckFlicker from '../TruckFlicker'
-import * as actionCreators from '../../actions/actionCreators'
+import * as partloadActions from '../../actions/partload_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {MapObject, mapObjectInstances} from '../../models/mapObject'
@@ -56,7 +56,8 @@ class GmapPartload extends React.Component {
   }
 
   render() {
-// note placement of slider markers handled in slider
+
+  // note placement of slider markers handled in slider
     const {mapObject} = this.state
     const { 
       partload_marker_array, 
@@ -79,26 +80,24 @@ class GmapPartload extends React.Component {
     }
   
     return (
-      <div className='grid-item-map' ref="mapCanvas">
-
-      </div>
+      <div className='grid-item-map' ref="mapCanvas"></div>
     )
 
   };
 
 }
 
-
-
 const mapDispatchToProps=(dispatch)=>({
-  actions: bindActionCreators(actionCreators, dispatch)
+  actions:{
+    partload_actions: bindActionCreators(partloadActions, dispatch)
+  }
 })
 
 const mapStateToProps=(state)=>({
-  all_trips:                         state.trips.all_trips, 
-  partload_marker_array:             state.trips.partload_marker_array, 
-  best_pick_up_jobs:                 state.trips.best_pick_up_jobs, 
-  current_partload_truckflicker_job: state.trips.current_partload_truckflicker_job
+  all_trips:                         state.common.all_trips, 
+  partload_marker_array:             state.partload.partload_marker_array, 
+  best_pick_up_jobs:                 state.partload.best_pick_up_jobs, 
+  current_partload_truckflicker_job: state.partload.current_partload_truckflicker_job
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GmapPartload))

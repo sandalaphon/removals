@@ -1,5 +1,5 @@
 import React from 'react'
-import * as actionCreators from '../../actions/actionCreators'
+import * as todayActions from '../../actions/today_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {mapObjectInstances} from '../../models/mapObject'
@@ -13,8 +13,6 @@ class ListToday extends React.Component {
     }
   }
 
-
-
   componentDidMount(){
     this.setState ({mapObject:mapObjectInstances.today})
   }
@@ -25,7 +23,6 @@ class ListToday extends React.Component {
         mapObject:mapObjectInstances.today
       })
     }
-  
   }
 
   jobs2(){
@@ -39,21 +36,17 @@ class ListToday extends React.Component {
 
   getTable(){
      
-     
-        if(!this.props.current_today_truckflicker_job) this.state.mapObject.displayArrayOfJobRoutes(this.props.all_trips)
-          
-          
+    if(!this.props.current_today_truckflicker_job) this.state.mapObject.displayArrayOfJobRoutes(this.props.all_trips)
       
-     
-
-      return this.props.all_trips.map((job, index)=>{
-        var truckFlickerJob = ''
-        var collapseStyle = job.hidden ? {display: 'none'} : {}
-        if(job.id === this.props.current_today_truckflicker_job.id){
-          console.log('if statement', job.id, this.props.current_today_truckflicker_job.id)
-          truckFlickerJob = 'truckFlickerJob'
-        }
-        return(<tr key={job.id} style={collapseStyle} className = {truckFlickerJob}>
+    return this.props.all_trips.map((job, index)=>{
+      var truckFlickerJob = ''
+      var collapseStyle = job.hidden ? {display: 'none'} : {}
+      if(job.id === this.props.current_today_truckflicker_job.id){
+        console.log('if statement', job.id, this.props.current_today_truckflicker_job.id)
+        truckFlickerJob = 'truckFlickerJob'
+      }
+      return(
+        <tr key={job.id} style={collapseStyle} className = {truckFlickerJob}>
           <td> {job.moveware_code}</td>
           <td >{job.client_name}</td>
           <td >Colour</td>
@@ -61,32 +54,31 @@ class ListToday extends React.Component {
           <td >{job.men_requested}</td>
           <td >view notes click here?</td>
           <td >Truck Type</td>
-          </tr>)
-      })
+        </tr>
+      )
+    })
 
-
-    
   }
   
 
   render(){
-
+    console.log("today props",this.props)
     return (
       <div className='grid-item-list-today'>
-      <table >
-      <tbody>
-      <tr>
-      <th>Moveware Code </th>
-      <th>Client Name.  </th>
-      <th>Colour        </th>
-      <th>Spare Capacity</th>
-      <th>Men Requested </th>
-      <th>Notes</th> 
-      <th>Truck Type</th>
-      </tr>
-      {this.jobs2()}
-      </tbody>
-      </table>
+        <table >
+          <tbody>
+            <tr>
+              <th>Moveware Code </th>
+              <th>Client Name.  </th>
+              <th>Colour        </th>
+              <th>Spare Capacity</th>
+              <th>Men Requested </th>
+              <th>Notes</th> 
+              <th>Truck Type</th>
+            </tr>
+            {this.jobs2()}
+          </tbody>
+        </table>
       </div>
       )
   }
@@ -97,7 +89,14 @@ class ListToday extends React.Component {
 
 
 const mapDispatchToProps=(dispatch)=>({
-  actions: bindActionCreators(actionCreators, dispatch)
+  actions: {
+    today_actions:   bindActionCreators(todayActions, dispatch)
+  }
 })
-const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, current_today_truckflicker_job: state.trips.current_today_truckflicker_job})
+
+const mapStateToProps=(state)=>({
+  all_trips: state.common.all_trips, 
+  current_today_truckflicker_job: state.today.current_today_truckflicker_job
+})
+
 export default connect(mapStateToProps, mapDispatchToProps)(ListToday)

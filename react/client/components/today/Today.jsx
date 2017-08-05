@@ -7,16 +7,18 @@ import TruckFlicker from '../TruckFlicker'
 
 
 class Today extends React.Component {
+
   render(){
     return(
       <div className = 'grid-today'>
-      <TruckFlicker/>
-      <Gmap/>
-      <ListToday />
-      <SliderToday />
+        <TruckFlicker/>
+        <Gmap/>
+        <ListToday />
+        <SliderToday />
       </div>
       )
   }
+  
 }
 
 export default Today

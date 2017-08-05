@@ -1,5 +1,5 @@
 import React from 'react'
-import * as actionCreators from '../../actions/actionCreators'
+import * as todayActions from '../../actions/today_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import { mapObjectInstances} from '../../models/mapObject'
@@ -41,7 +41,7 @@ class SliderToday extends React.Component{
   onAfterChange(value){
     this.setState({value,})  
     const secondsPassed = value * 60 * 10
-    this.props.actions.setTodaySliderSecondsFromStart(secondsPassed)
+    this.props.actions.today_actions.setTodaySliderSecondsFromStart(secondsPassed)
 
   }
 
@@ -156,9 +156,17 @@ class SliderToday extends React.Component{
   }
 
 
-  const mapDispatchToProps=(dispatch)=>({
-    actions: bindActionCreators(actionCreators, dispatch)
-  })
-  const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, today_seconds_from_start: state.trips.today_seconds_from_start, current_today_truckflicker_job: state.trips.current_today_truckflicker_job})
-  export default connect(mapStateToProps, mapDispatchToProps)(SliderToday)
+const mapDispatchToProps=(dispatch)=>({
+  actions: {
+    today_actions: bindActionCreators(todayActions, dispatch)
+  }
+})
+
+const mapStateToProps=(state)=>({
+  all_trips: state.common.all_trips, 
+  today_seconds_from_start: state.today.today_seconds_from_start, 
+  current_today_truckflicker_job: state.today.current_today_truckflicker_job
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SliderToday)
 

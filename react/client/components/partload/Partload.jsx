@@ -7,8 +7,6 @@ import SliderPartload from './SliderPartload'
 import {mapObjectInstances} from '../../models/mapObject'
 import TruckFlicker from '../TruckFlicker'
 
-
-
 class Partload extends React.Component{
   constructor(props){
     super(props)
@@ -17,27 +15,24 @@ class Partload extends React.Component{
     }
   }
 
-componentDidMount(){
-  console.log('partload mount')
+  componentDidMount(){
+    console.log('partload mount')
     this.setState({mapObject:mapObjectInstances.partload})
-}
+  }
 
+  render(){
 
-render(){
-
-
-  return(
- <div className='grid-partload' ref="mapCanvas">
- <Postcode />
-   <GmapPartLoad/>
-   <SuggestionList/>
-   <SliderPartload/>
-   <TruckFlicker/>
- </div>
+    return(
+      <div className='grid-partload' ref="mapCanvas">
+        <Postcode />
+        <GmapPartLoad/>
+        <SuggestionList/>
+        <SliderPartload/>
+        <TruckFlicker/>
+      </div>
     )
-}
-}
+  }
 
-
+}
 
 export default Partload

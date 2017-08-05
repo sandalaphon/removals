@@ -1,5 +1,5 @@
 import React from 'react'
-import * as actionCreators from '../../actions/actionCreators'
+import * as partloadActions from '../../actions/partload_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import { mapObjectInstances} from '../../models/mapObject'
@@ -17,30 +17,24 @@ class SliderPartload extends React.Component{
       this.state = {
         tooltipValue: 0,
         value:  (this.props.partload_seconds_from_start/600) || 24
-       
       }
-    
   }
 
   componentDidMount(){
-  if(this.props.partload_seconds_from_start){
-    this.placeMarkers(this.props.partload_seconds_from_start)
-  }
-
+    if(this.props.partload_seconds_from_start){
+      this.placeMarkers(this.props.partload_seconds_from_start)
+    }
   }
 
   handleSliderChange(value){
-
     var secondsPassed = value*10*60
     this.placeMarkers(secondsPassed)
-    
   }
 
   onAfterChange(value){
     this.setState({value,})  
     const secondsPassed = value * 60 * 10
-    this.props.actions.setPartloadSliderSecondsFromStart(secondsPassed)
-
+    this.props.actions.partload_actions.setPartloadSliderSecondsFromStart(secondsPassed)
   }
 
   placeMarkers(sliderSecondsFromStart){
@@ -97,8 +91,6 @@ class SliderPartload extends React.Component{
     
     mapObjectInstances.partload.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
 
-
-
   }
 
   sortTimeDisplay(v){
@@ -154,8 +146,17 @@ class SliderPartload extends React.Component{
   }
 
 
-  const mapDispatchToProps=(dispatch)=>({
-    actions: bindActionCreators(actionCreators, dispatch)
-  })
-  const mapStateToProps=(state)=>({all_trips: state.trips.all_trips, partload_seconds_from_start: state.trips.partload_seconds_from_start, current_partload_truckflicker_job: state.trips.current_partload_truckflicker_job, best_pick_up_jobs: state.trips.best_pick_up_jobs})
-  export default connect(mapStateToProps, mapDispatchToProps)(SliderPartload)
+const mapDispatchToProps=(dispatch)=>({
+  actions:{
+    partload_actions: bindActionCreators(partloadActions, dispatch)
+  }
+})
+
+const mapStateToProps=(state)=>({
+  all_trips:                              state.common.all_trips, 
+  partload_seconds_from_start:            state.partload.partload_seconds_from_start, 
+  current_partload_truckflicker_job:      state.partload.current_partload_truckflicker_job, 
+  best_pick_up_jobs:                      state.partload.best_pick_up_jobs
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SliderPartload)

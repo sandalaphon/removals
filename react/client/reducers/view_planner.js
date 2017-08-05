@@ -1,3 +1,4 @@
+import * as helpers from './_helpers'
 
 function handlePlannerData(state = {
 
@@ -11,6 +12,11 @@ function handlePlannerData(state = {
 },action){
 
   switch(action.type) {
+
+    //
+    case 'SET_FILTER_SEARCH_STRING':
+    return { ...state, filter_search_string: action.payload}
+    break;
     //
     case 'SET_PLANNER_SLIDER_SECONDS_FROM_START':
     return { ...state, planner_seconds_from_start: action.payload}
@@ -27,7 +33,7 @@ function handlePlannerData(state = {
     case 'SET_HIGHLIGHTED_CELLS':
     return{...state, highlightedCells: action.payload}
     break;
-
+    //
     case 'DELETE_DROPPED_CELLS':
       var newArray = state.droppedCells.slice()
       state.droppedCells.forEach((object, index)=>{
@@ -36,6 +42,11 @@ function handlePlannerData(state = {
       }
     })
     return{...state, droppedCells: newArray}
+    break;
+    //
+    case 'SORT_BY_COLUMN':
+    var sorted = helpers.sortJoblist(state.all_trips, action.attribute, action.order)
+    return{...state, all_trips: sorted}
     break;
 
   }

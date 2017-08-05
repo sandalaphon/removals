@@ -36,17 +36,16 @@ class UserList extends React.Component {
   handleDeleteClick(e){
     e.preventDefault()
     var id = e.target.id
-    console.log('id' , id, this.props.users.currentUser.id)
-    if(id==this.props.users.currentUser.id){
+    console.log('id' , id, this.props.currentUser.id)
+    if(id==this.props.currentUser.id){
       alert('Current User cannot be deleted!')
       return
     }
     this.props.deleteUser(id)
   }
 
-
-
   render(){
+    console.log("userlist props",this.props)
     var list;
     var modalPopUp =
     <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)}>
@@ -65,13 +64,13 @@ class UserList extends React.Component {
               </Modal.Footer>
             </Modal>
 
-    if(this.props.users.users){
-      this.props.users.users.sort(function(a, b) { 
+    if(this.props.users){
+      this.props.users.sort(function(a, b) { 
 
           return (a.email < b.email) ? -1: 1;
       })
 
-     list = this.props.users.users.map((user, index)=>{
+     list = this.props.users.map((user, index)=>{
 
       return (
         <tr key={index}>

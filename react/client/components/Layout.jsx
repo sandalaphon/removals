@@ -5,7 +5,9 @@ import LoginBox from './sign_in/LoginBox'
 import SignUp from './account_management/SignUp'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import * as actionCreators from '../actions/actionCreators'
+import * as commonActions from '../actions/_common_actions'
+import * as accountManagementActions from '../actions/account_management_actions'
+import * as signupActions from '../actions/sign_up_actions'
 import * as loginActions from '../actions/login_actions'
 
 class Layout extends React.Component {
@@ -16,9 +18,11 @@ class Layout extends React.Component {
 
   render(){
 
-    const {loginEmail, loginPassword, signInClick, signUploginEmail, signUploginPassword,signUpPasswordConfirm, signUpClick, signOut} =                                               this.props.actions.loginActions
-    const {getAllTripsFromRails, getUsers} =         this.props.actions.actionCreators
-    const {user_email, user_password, currentUser} = this.props.loginDetails
+    const {loginEmail, loginPassword, signInClick, signOut} =                         this.props.actions.loginActions
+    const { getUsers} =                                                                 this.props.actions.accountManagementActions
+    const { signUploginEmail, signUploginPassword,signUpPasswordConfirm, signUpClick} = this.props.actions.signUpActions
+    const { getAllTripsFromRails } =                                                    this.props.actions.commonActions
+    const { user_email, user_password, currentUser} =                                   this.props.loginDetails
     var toDisplay
       
     // if theres are no trips, get them
@@ -61,20 +65,18 @@ class Layout extends React.Component {
 
 }
 
-function mapStateToProps(state){
-  return {
-    loginDetails: state.login,
-    trips: state.trips
+const mapStateToProps=(state)=>({
+  loginDetails: state.login,
+  trips: state.common
+})
+  
+const mapDispatchToProps=(dispatch)=>({
+  actions:{
+    commonActions:              bindActionCreators( commonActions, dispatch ),
+    accountManagementActions :  bindActionCreators( accountManagementActions, dispatch ),
+    loginActions:               bindActionCreators( loginActions, dispatch ),
+    signUpActions:              bindActionCreators( signupActions, dispatch )
   }
-}
-
-function mapDispatchToProps(dispatch){
-  return { 
-    actions:{
-      actionCreators: bindActionCreators(actionCreators, dispatch),
-      loginActions: bindActionCreators(loginActions, dispatch)
-    }
-  };
-}
+}) 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layout)

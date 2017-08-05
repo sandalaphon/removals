@@ -52,3 +52,11 @@ export function setHighlightedCells(cellIds){
     payload: cellIds
   }
 }
+
+export function sortByColumn(attribute, order){
+  return {
+    type: 'SORT_BY_COLUMN',
+    attribute,
+    order
+  }
+}

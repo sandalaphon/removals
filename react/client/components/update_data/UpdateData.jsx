@@ -2,6 +2,9 @@ import React from 'react'
 import {Form, Button, FormControl,form, FormGroup, ControlLabel, HelpBlock} from 'react-bootstrap'
 import {Converter} from 'csvtojson'
 import Geocoder from '../../models/geocoder'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+import * as updateDataActions from '../../actions/update_data_actions'
 
 class UpdateData extends React.Component {
 
@@ -32,7 +35,7 @@ class UpdateData extends React.Component {
 
       // var geocoder = new Geocoder
       // geocoder.setLatLngAndSendToRailsDb(json, this.props.sendSingleTripToRails.bind(this))
-      this.getGoogleDirectionsAndSendToRailsDb(json, this.props.sendSingleTripToRails.bind(this))
+      this.getGoogleDirectionsAndSendToRailsDb(json, this.props.actions.update_data_actions.sendSingleTripToRails.bind(this))
 
 
     })
@@ -82,7 +85,7 @@ class UpdateData extends React.Component {
         jsonForRails = json
         // console.log(stringifiedResponse, response)
         console.log('jsonForRails with response?', jsonForRails)
-        this.props.sendSingleTripToRails(jsonForRails)
+        this.props.actions.update_data_actions.sendSingleTripToRails(jsonForRails)
 
       }else{
         console.log(status)
@@ -103,7 +106,7 @@ class UpdateData extends React.Component {
   }
 
   render(){
-
+    console.log("update props",this.props)
     return(
       <div>
       <Form inline>
@@ -125,6 +128,18 @@ class UpdateData extends React.Component {
   }
 }
 
-export default UpdateData
+const mapStateToProps=(state)=>({
+  trips: state.trips
+})
+  
+const mapDispatchToProps=(dispatch)=>({
+  actions: {
+    update_data_actions: bindActionCreators(updateDataActions, dispatch)
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateData)
+
+
 
 

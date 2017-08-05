@@ -36,7 +36,7 @@ class SignUp extends React.Component {
 
   handleSignUpClick(event){
     event.preventDefault()
-    const {signup_email, signup_password,signup_password_confirm} = store.getState().login
+    const {signup_email, signup_password,signup_password_confirm} = store.getState().sign_up
     this.props.signUpClick(signup_email, signup_password,signup_password_confirm, this.props.getUsers.bind(this))
     this.refs.commentForm.reset() 
   }
