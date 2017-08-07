@@ -96,7 +96,7 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({
   all_trips: state.common.all_trips, 
-  current_today_truckflicker_job: state.today.current_today_truckflicker_job
+  current_today_truckflicker_job: state.common.current_today_truckflicker_job
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListToday)

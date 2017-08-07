@@ -161,6 +161,6 @@ const mapDispatchToProps=(dispatch)=>({
 const mapStateToProps=(state)=>({
   all_trips:                          state.common.all_trips, 
   planner_seconds_from_start:         state.planner.planner_seconds_from_start, 
-  current_planner_truckflicker_job:   state.planner.current_planner_truckflicker_job})
+  current_planner_truckflicker_job:   state.common.current_planner_truckflicker_job})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SliderPlanner)

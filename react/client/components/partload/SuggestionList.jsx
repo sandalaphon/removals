@@ -1,5 +1,6 @@
 import React from 'react'
 import * as partloadActions from '../../actions/partload_actions'
+import * as commonActions from '../../actions/_common_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {mapObjectInstances} from '../../models/mapObject'
@@ -21,11 +22,10 @@ class SuggestionList extends React.Component{
     }
   }
 
-
   onClickNearestStart(event){
     event.preventDefault()
-    this.props.partload_actions.clearCurrentTruckFlickerJob('partload')
-    this.props.partload_actions.clearPickUpBestJobs()
+    this.props.actions.common_actions.clearCurrentTruckFlickerJob('partload')
+    this.props.actions.partload_actions.clearPickUpBestJobs()
     // this.state.mapObject.clearRoutes()
     this.state.mapObject.clearMarkers(this.state.mapObject.markers)
     var startMarkerLat = this.props.partload_marker_array[0].lat
@@ -34,7 +34,7 @@ class SuggestionList extends React.Component{
     //Note that date range must be added to args
     //send lat lng to rails and get back best pickup routes
     //Will need to ensure space on truck
-    this.props.partload_actions.getPickUpBestJobsFromRails(startMarkerLat, startMarkerLng)
+    this.props.actions.partload_actions.getPickUpBestJobsFromRails(startMarkerLat, startMarkerLng)
   }
 
   // get5BestPickUpTrucks(arrayOfTripDistances){
@@ -153,7 +153,9 @@ render(){
 
 const mapDispatchToProps=(dispatch)=>({
   actions:{
-    partload_actions: bindActionCreators(partloadActions, dispatch)
+    partload_actions: bindActionCreators(partloadActions, dispatch),
+    common_actions: bindActionCreators(commonActions, dispatch)
+
   }
 })
 
@@ -163,7 +165,7 @@ const mapStateToProps=(state)=>({
   partload_marker_array:              state.partload.partload_marker_array,
   partload_collection_postcode:       state.partload.partload_collection_postcode, 
   best_pick_up_jobs:                  state.partload.best_pick_up_jobs, 
-  current_partload_truckflicker_job:  state.partload.current_partload_truckflicker_job
+  current_partload_truckflicker_job:  state.common.current_partload_truckflicker_job
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SuggestionList)
