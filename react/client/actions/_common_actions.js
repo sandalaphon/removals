@@ -60,6 +60,25 @@ export function getAllTripsFromRails(){
   }
 }
 
+export function getAllBranchesFromRails(){
+  return function(dispatch){
+    const url = 'http://localhost:5000/api/branches'
+    axios.get(url, {withCredentials:true})
+    .then((response)=>{
+      dispatch({
+        type: 'GET_BRANCHES_FULFILLED',
+        payload: response.data
+      })
+    })
+    .catch((error)=>{
+      dispatch({
+        type: 'GET_BRANCHES_REJECTED',
+        payload: error
+      })
+    })
+  }
+}
+
 
   
 

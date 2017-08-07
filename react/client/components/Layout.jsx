@@ -18,16 +18,17 @@ class Layout extends React.Component {
 
   render(){
 
-    const {loginEmail, loginPassword, signInClick, signOut} =                         this.props.actions.loginActions
+    const {loginEmail, loginPassword, signInClick, signOut} =                           this.props.actions.loginActions
     const { getUsers} =                                                                 this.props.actions.accountManagementActions
     const { signUploginEmail, signUploginPassword,signUpPasswordConfirm, signUpClick} = this.props.actions.signUpActions
-    const { getAllTripsFromRails } =                                                    this.props.actions.commonActions
+    const { getAllTripsFromRails, getAllBranchesFromRails } =                           this.props.actions.commonActions
     const { user_email, user_password, currentUser} =                                   this.props.loginDetails
     var toDisplay
       
     // if theres are no trips, get them
     if(currentUser){
       if(!this.props.trips.all_trips) getAllTripsFromRails()
+        if(!this.props.trips.all_branches) getAllBranchesFromRails()
       toDisplay = 
         <div>
           <Navb 

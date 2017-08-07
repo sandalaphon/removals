@@ -16,7 +16,7 @@ class TruckFlicker extends React.Component {
     this.state = {
 
     }
-    this.indexOfRenderedRoute = -1
+    this.indexOfRenderedRoute = -1 
   }
 
   handlePreviousClick(event){
@@ -24,13 +24,20 @@ class TruckFlicker extends React.Component {
     switch (this.props.location.pathname){
       case '/today':
         var relevantArray = this.props.trips.all_trips
+        if(this.props.trips.current_today_truckflicker_job){
+          this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_today_truckflicker_job)
+        }
         this.renderAppropriateRoute(relevantArray, false, 'today')
+
         // AND setState or store rendered route attribute and index
         //And then deal with highlighting in list
       break;
      //
       case '/planner':
         var relevantArray = this.props.trips.all_trips
+        if(this.props.trips.current_planner_truckflicker_job){
+          this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_planner_truckflicker_job)
+        }
         this.renderAppropriateRoute(relevantArray, false, 'planner')
         // AND setState or store rendered route attribute and index
         //And then deal with highlighting in list
@@ -38,6 +45,9 @@ class TruckFlicker extends React.Component {
       //
       case '/partload':
         var relevantArray = this.props.best_pick_up_jobs
+        if(this.props.trips.current_partload_truckflicker_job){
+          this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_partload_truckflicker_job)
+        }
         this.renderAppropriateRoute(relevantArray, false, 'partload')
         // AND setState or store rendered route attribute and index
         //And then deal with highlighting in list
@@ -53,16 +63,25 @@ class TruckFlicker extends React.Component {
   switch (this.props.location.pathname){
     case '/today':
       var relevantArray = this.props.trips.all_trips
+      if(this.props.trips.current_today_truckflicker_job){
+        this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_today_truckflicker_job)
+      }
      this.renderAppropriateRoute(relevantArray, true, 'today')
     break;
     //
     case '/planner':
       var relevantArray = this.props.trips.all_trips
+      if(this.props.trips.current_planner_truckflicker_job){
+        this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_planner_truckflicker_job)
+      }
      this.renderAppropriateRoute(relevantArray, true, 'planner')
     break;
     //
     case '/partload':
      var relevantArray = this.props.best_pick_up_jobs
+     if(this.props.trips.current_partload_truckflicker_job){
+       this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_partload_truckflicker_job)
+     }
      this.renderAppropriateRoute(relevantArray, true, 'partload')
     break;
     }
@@ -85,12 +104,20 @@ class TruckFlicker extends React.Component {
       break;
     }
 
+    if(next && this.indexOfRenderedRoute===relevantArray.length-1 ){
+      console.log('next and last one')
+      this.indexOfRenderedRoute = -1
+      counter = -1
+    }
+    if(!next && this.indexOfRenderedRoute===0){
+      this.indexOfRenderedRoute = counter = relevantArray.length
+    }
+
     while(true){ 
       counter = counter + increment
       if(counter>=relevantArray.length || counter < 0) break
       var job = relevantArray[counter]
       if (!job.hidden){
-        // var key = `${pathname}`
         this.props.actions.common_actions.setCurrentTruckFlickerJob(job, pathname)
         mapObject.clearMap()
         mapObject.drawRouteWithGoogleResponse(job)
@@ -100,6 +127,7 @@ class TruckFlicker extends React.Component {
         numberHiddenRoutes = numberHiddenRoutes + 1
         if(numberHiddenRoutes>=relevantArray.length) break
       }
+
     }
 
   }

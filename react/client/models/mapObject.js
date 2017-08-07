@@ -1,4 +1,5 @@
 // import pantech from '../build/images/pantech.png'
+import store from '../store.js'
 
 let mapObjectInstances = {}
 
@@ -13,6 +14,7 @@ class MapObject{
     this.markers = [],
     this.postcodeMarkers = [],
     this.sliderMarkers = [],
+    this.branchesMarkers = [],
 
     this.branchesButtonExists = false,
     this.pathname = pathname
@@ -27,6 +29,7 @@ class MapObject{
     this.clearMarkers(this.markers)
     this.clearMarkers(this.sliderMarkers)
     this.clearMarkers(this.postcodeMarkers)
+    this.clearMarkers(this.branchesMarkers)
     this.clearRoutes()
   }
 
@@ -178,8 +181,18 @@ styleBranchesButtonAndListenerFunction(controlDiv, map){
 
   // Setup the click event listeners: simply set the map to Chicago.
     var chicago = {lat: 41.85, lng: -87.65};
-    controlUI.addEventListener('click', function(){alert('branches')
-    });
+    controlUI.addEventListener('click', this.display_branches.bind(this));
+ }
+
+ display_branches(){
+  this.clearMap()
+  const branches = store.getState().common.all_branches
+  //get latlng from branch postcode
+  // placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='')
+  branches.forEach((branch)=>{
+    var latlng2 = JSON.parse(branch.latlng)
+    console.log( latlng2)
+    this.placeMarker(latlng2, this.pinSymbol(branch.colour), this.branchesMarkers, true, true, branch.address)})
  }
 
 

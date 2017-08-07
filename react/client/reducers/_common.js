@@ -26,11 +26,22 @@ function handleTripData(state = {
     case 'GET_TRIPS_REJECTED':
     return {...state,  getTripsError: action.payload}
     break;
+    //
+    case 'GET_BRANCHES_FULFILLED':
+    var newBranchesArray = action.payload.slice()
+    var anotherNewArray = newBranchesArray.map((branch, index)=>{
+        branch.colour=helpers.getUniqueColor(index)
+        return branch
+    })
+    return {...state, all_branches: anotherNewArray, getBranchesError: null}
+    break;
+    //
+    case 'GET_BRANCHES_REJECTED':
+    return {...state,  getBranchesError: action.payload}
+    break;
     
     
-    
-    
-   
+
     //
     case 'SET_HIDDEN_STATUS':
     var holder = state.all_trips.slice()
