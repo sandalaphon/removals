@@ -55,7 +55,7 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({ 
   all_trips: state.common.all_trips,  
-  filter_search_string: state.planner.filter_search_string
+  filter_search_string: state.common.filter_search_string
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter)

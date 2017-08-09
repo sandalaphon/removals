@@ -4,6 +4,7 @@ import {Converter} from 'csvtojson'
 import Geocoder from '../../models/geocoder'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
+import * as commonActions from '../../actions/_common_actions'
 import * as updateDataActions from '../../actions/update_data_actions'
 
 class UpdateData extends React.Component {
@@ -35,19 +36,19 @@ class UpdateData extends React.Component {
 
       // var geocoder = new Geocoder
       // geocoder.setLatLngAndSendToRailsDb(json, this.props.sendSingleTripToRails.bind(this))
-      this.getGoogleDirectionsAndSendToRailsDb(json, this.props.actions.update_data_actions.sendSingleTripToRails.bind(this))
+      this.getGoogleDirectionsAndSendToRailsDb(json)
 
 
     })
     .on('done', ()=>{
-      // this.props.getAllTripsFromRails()
+    
       console.log('end')
       window.alert('Thank you for the submission, the data is saved')
     })
 
   }
 
-  getGoogleDirectionsAndSendToRailsDb(json, callback){
+  getGoogleDirectionsAndSendToRailsDb(json){
     console.log(json)
     var jsonForRails = null
     var collectionString = ''
@@ -85,7 +86,7 @@ class UpdateData extends React.Component {
         jsonForRails = json
         // console.log(stringifiedResponse, response)
         console.log('jsonForRails with response?', jsonForRails)
-        this.props.actions.update_data_actions.sendSingleTripToRails(jsonForRails)
+        this.props.actions.update_data_actions.sendSingleTripToRails(jsonForRails, this.props.actions.commonActions.getAllTripsFromRails)
 
       }else{
         console.log(status)
@@ -94,16 +95,16 @@ class UpdateData extends React.Component {
 
     }.bind(this))
 
-    // callback(jsonForRails)
+   
  
   }
 
 
-  loaded(event){
-    var text = event.target.result
-    console.log(text)
-    this.convertToJson(text)
-  }
+  // loaded(event){
+  //   var text = event.target.result
+  //   console.log(text)
+  //   this.convertToJson(text)
+  // }
 
   render(){
     console.log("update props",this.props)
@@ -134,7 +135,9 @@ const mapStateToProps=(state)=>({
   
 const mapDispatchToProps=(dispatch)=>({
   actions: {
-    update_data_actions: bindActionCreators(updateDataActions, dispatch)
+    update_data_actions: bindActionCreators(updateDataActions, dispatch),
+    
+    commonActions: bindActionCreators( commonActions, dispatch )
   }
 })
 

@@ -130,16 +130,51 @@ displayMarkersFromStore(marker_array_from_store,  instance_variable_marker_array
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 
+getPixelFromLatLng(latLng) {
+    var projection = this.map.getProjection();
+    //refer to the google.maps.Projection object in the Maps API reference
+    var point = projection.fromLatLngToPoint(latLng);
+    return point;
+}
+
+getInfowindowOffset(marker){
+  var center = this.getPixelFromLatLng(this.map.getCenter())
+  var point = this.getPixelFromLatLng(marker.getPosition())
+  var offset = ''
+  var quadrant =''
+  quadrant += (point.y > center.y) ? "b" : "t";
+  quadrant += (point.x < center.x) ? "l" : "r";
+  if (quadrant == "tr") {
+      offset = new google.maps.Size(-70, 185);
+  } else if (quadrant == "tl") {
+      offset = new google.maps.Size(70, 185);
+  } else if (quadrant == "br") {
+      offset = new google.maps.Size(-70, 20);
+  } else if (quadrant == "bl") {
+      offset = new google.maps.Size(70, 20);
+  }
+  return offset
+}
+
   addInfoWindow(marker, message) {
   // ensure listener is cleared 
   // note we can create a div for info window
   var infoWindow = new google.maps.InfoWindow({
-    content: `${message}`
+    content: `${message}`,
+    maxWidth: 200,
+    disableAutoPan : true,
+    // pixelOffset: this.getInfowindowOffset(marker)
   });
 
-  google.maps.event.addListener(marker, 'click', function () {
+  marker.addListener( 'mouseover', function () {
     infoWindow.open(this.map, marker);
   });
+  // google.maps.event.addListener(marker,'click', function() {
+  //           infoWindow.open(this.map, marker);
+  //         });
+  marker.addListener('mouseout', function() {
+            infoWindow.close(this.map, marker);
+          });
 }
 
 

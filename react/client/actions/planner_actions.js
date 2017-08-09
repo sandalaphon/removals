@@ -7,12 +7,7 @@ export function setPlannerSliderSecondsFromStart(secondsPassed){
   }
 }
 
-export function setFilterSearchString(searchString){
-  return {
-    type: 'SET_FILTER_SEARCH_STRING',
-    payload: searchString
-  }
-}
+
 
 
 export function setSearchQuery(searchString){

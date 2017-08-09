@@ -1,5 +1,6 @@
 import React from 'react'
 import * as plannerActions from '../../actions/planner_actions'
+import * as commonActions from '../../actions/_common_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {mapObjectInstances} from '../../models/mapObject'
@@ -27,8 +28,6 @@ class JobList extends React.Component{
     }
 
   }
-  
-
 
   drag(event){
 
@@ -95,9 +94,19 @@ renderTripById(tripId){
   this.props.actions.planner_actions.renderNewRoute(startLatLng, endLatLng, tripId)
 }
 
-handleDrawRouteClick(event){
-    // this.renderTripById(event.target.id)
-  }
+// handleDrawRouteClick(event){
+//     // this.renderTripById(event.target.id)
+//   }
+
+  handleHideRouteClick(event){
+     var job = this.getTripById(event.target.id)
+     this.props.actions.common_actions.setUnhiddenStatus(job)
+     if(job.id===this.props.current_planner_truckflicker_job.id){
+      // this.props.actions.common_actions.clearCurrentTruckFlickerJob('planner')
+      mapObjectInstances.planner.clearMap()
+     }
+
+    }
 
   handleJobListDrop(event){
     var tripId
@@ -139,7 +148,7 @@ return this.props.all_trips.map((job,index)=>{
   var collapseStyle = job.hidden ? {display: 'none'} : {}
 
   if(job.id === this.props.current_planner_truckflicker_job.id){
-    console.log('if statement', job.id, this.props.current_planner_truckflicker_job.id)
+    // console.log('if statement', job.id, this.props.current_planner_truckflicker_job.id)
     truckFlickerJob = 'truckFlickerJob'
   }
 
@@ -154,7 +163,7 @@ return this.props.all_trips.map((job,index)=>{
 
 
   return(<tr key={job.id} style={collapseStyle} className = {truckFlickerJob}>
-    <td ><button  onClick={this.handleDrawRouteClick.bind(this)}>View Route</button></td>
+    <td ><button id={job.id} onClick={this.handleHideRouteClick.bind(this)}>Hide Route</button></td>
     <td >{job.client_name}</td>
     <td id={iconHome} style={hoverHandStyle}>{image}</td>
     <td >{job.collection_postcode}</td>
@@ -212,7 +221,9 @@ render(){
 
 const mapDispatchToProps=(dispatch)=>({
   actions:{
-    planner_actions: bindActionCreators( plannerActions, dispatch)
+    planner_actions: bindActionCreators( plannerActions, dispatch),
+    common_actions: bindActionCreators( commonActions, dispatch)
+      
   } 
 })
 

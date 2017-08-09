@@ -12,6 +12,14 @@ function handleTripData(state = {
 
   switch(action.type) {
 
+    case 'SET_FILTER_SEARCH_STRING':
+    return { ...state, filter_search_string: action.payload}
+    break;
+    //
+    case 'SET_PLANNER_SLIDER_SECONDS_FROM_START':
+    return { ...state, planner_seconds_from_start: action.payload}
+    break;
+
     case 'GET_TRIPS_FULFILLED':
     var newArray = action.payload.slice()
     var anotherNewArray = newArray.map((trip, index)=>{
@@ -45,6 +53,7 @@ function handleTripData(state = {
     //
     case 'SET_HIDDEN_STATUS':
     var holder = state.all_trips.slice()
+    console.log('id', action.payload.id)
     holder.forEach((job)=>{
         if(job.id===action.payload.id)
             {job.hidden = false}
