@@ -1,6 +1,5 @@
-
-table{
-  /*overflow: scroll;*/
+html{
+  background: #f0f0f0;
 }
 
 td, th{
@@ -12,6 +11,10 @@ min-width:5vw;
 /*pointer-events: none;*/
 }
 
+tr{
+  border: solid 8px yellow;
+  width: 1fr;
+}
 
 /*///SLIDER///*/
 

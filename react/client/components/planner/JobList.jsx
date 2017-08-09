@@ -175,11 +175,13 @@ render(){
   if(this.props.all_trips){
     return(
       <div className='grid-item-joblist' >
-      <table 
+      <table className='joblist-table'
       onDrag={this.handleOnDragJobList.bind(this)}
       onDrop={this.handleJobListDrop.bind(this)} 
       onDragOver={this.handleDragOver.bind(this)}>
+      
       <tbody>
+
       <tr>
       <th>View Route</th>
       <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>

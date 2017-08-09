@@ -2,6 +2,7 @@
 
 
 .grid-planner{
+  background: #f0f0f0;
   display: grid;
   padding: 15px;
   grid-gap: 15px;
@@ -37,11 +38,31 @@
    grid-template-columns: repeat(19,1fr);
 }
 
+
+
+/*///////////joblist///////////////////*/
+
 .grid-item-joblist{
-  display: inline-block;
+  display: grid;
+  justify-content:stretch;
+  align-items: center;
+
+
+  border: solid 3px purple;
+
   grid-area:job;
   grid-auto-rows:1fr;
 }
+
+.joblist-table{
+  display: inline-block;
+  border: solid 9px hotpink;
+
+  
+}
+
+
+
 
 
 
