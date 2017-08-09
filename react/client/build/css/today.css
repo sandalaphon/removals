@@ -1,7 +1,9 @@
 .grid-today{
   display: grid;
+  padding: 15px;
+  grid-gap: 15px;
   height: 95vh;
-  border: 3px solid hotpink;
+ 
   grid-template-areas:
   "fil fli"
   "fil map"
@@ -25,33 +27,16 @@
 }
 
 .grid-item-list-today{
-  /*display: inline-block;*/
   grid-area:todli;
-  border: 3px solid purple;
-  /*grid-auto-rows:1fr;*/
+  outline: 1px solid #ddd;
+  border-top: 1px solid #fff;
+  padding: 2px;
+  background: #f0f0f0;
+
 }
 
-.grid-item-slider-today{
-  /*display: inline-block;*/
-  grid-area:sli;
-  border: 3px solid purple;
-  
-
-  /*grid-auto-rows:1fr;*/
-}
-
-.slider-div{
-  /*border: 1px solid black;*/
-  
-  width: 1fr;
-  margin: 20px;
-  height:1fr;
-  /*text-align: center;*/
-  /*transform: translateY(50%);*/
-}
 
 .truckFlickerJob{
-  /*border: 2px solid purple ;*/
   color: red;
 }
 

@@ -3,6 +3,8 @@
 
 .grid-planner{
   display: grid;
+  padding: 15px;
+  grid-gap: 15px;
   height: 95vh;
   grid-template-areas:
   "cal cal cal cal cal cal fli fli fli fli"
@@ -19,85 +21,38 @@
   "job job job job job job map map map map"
   "job job job job job job map map map map"
   "job job job job job job map map map map"
-  "job job job job job job slI slI slI slI";
+  "job job job job job job sli sli sli sli";
   grid-template-rows: repeat(15,1fr);
   grid-auto-columns: 10%;
   /*grid-template-columns: repeat(10,1fr);*/
 }
 
-.grid-item-slider-planner{
-  /*display: inline-block;*/
-  grid-area:slI;
-  border: 3px solid purple;
-  
-
-  /*grid-auto-rows:1fr;*/
-}
-
-.slider-div{
-  /*border: 1px solid black;*/
-  
-  width: 1fr;
-  margin: 20px;
-  height:1fr;
-  /*text-align: center;*/
-  /*transform: translateY(50%);*/
-}
 
 .grid-item-truck-day-view{
-  margin-top: 20px;
+  /*margin-top: 20px;*/
   display:inline-grid;
-   border:1px solid red;
+
    grid-area: cal;
-   overflow: scroll;
+   /*overflow: scroll;*/
    grid-template-columns: repeat(19,1fr);
 }
 
 .grid-item-joblist{
   display: inline-block;
   grid-area:job;
-  border: 3px solid purple;
   grid-auto-rows:1fr;
 }
 
-.drop-target{
-  background-color: hotpink;
-}
-
-table{
-  overflow: scroll;
-}
-
-td, th{
-border: 1px solid black;
-vertical-align: middle;
-text-align: center;
-/*width: 10%;*/
-min-width:5vw;
-/*pointer-events: none;*/
-}
 
 
 .grid-item-filter{
   grid-area: fil;
-  border:1px solid blue;
-  overflow: scroll;
+  
+  /*overflow: scroll;*/
 }
 
-.grid-item-truck-flicker{
-  grid-area: fli;
-  border:1px solid yellow;
-  justify-self: center;
-  align-self: center;
-  width: 1fr;
 
-}
 
-.grid-item-map {
-  grid-area: map;
-  border: 3px solid green;
-  min-height: 1fr;
-}
 
 /*////////////////SCHEDULE////////////////////////////*/
 
@@ -152,6 +107,10 @@ min-width:5vw;
 
 
 
+
+.drop-target{
+  background-color: hotpink;
+}
 
 
 

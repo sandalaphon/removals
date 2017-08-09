@@ -1,1 +1,46 @@
 
+table{
+  /*overflow: scroll;*/
+}
+
+td, th{
+border: 1px solid black;
+vertical-align: middle;
+text-align: center;
+/*width: 10%;*/
+min-width:5vw;
+/*pointer-events: none;*/
+}
+
+
+/*///SLIDER///*/
+
+.grid-item-slider{
+  grid-area:sli;
+}
+
+.slider-div{
+  width: 1fr;
+  margin: 20px;
+  height:1fr;
+}
+
+
+
+.grid-item-map {
+  grid-area: map;
+
+  min-height: 1fr;
+  outline: 1px solid #ddd;
+  border-top: 1px solid #fff;
+}
+
+
+.grid-item-truck-flicker{
+  grid-area: fli;
+  
+  justify-self: center;
+  align-self: center;
+  width: 1fr;
+
+}

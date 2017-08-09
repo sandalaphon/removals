@@ -174,8 +174,8 @@ render(){
   var hoverHandStyle = {cursor: 'pointer'}
   if(this.props.all_trips){
     return(
+      <div className='grid-item-joblist' >
       <table 
-      className='grid-item-joblist' 
       onDrag={this.handleOnDragJobList.bind(this)}
       onDrop={this.handleJobListDrop.bind(this)} 
       onDragOver={this.handleDragOver.bind(this)}>
@@ -196,6 +196,7 @@ render(){
       {this.jobs()}
       </tbody>
       </table>
+      </div>
       )
   }else{
     return(
