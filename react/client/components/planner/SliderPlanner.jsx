@@ -51,7 +51,9 @@ class SliderPlanner extends React.Component{
     var sliderMarkerCoordsandIndexArray = []
 
     if(this.props.current_planner_truckflicker_job){
+
       var trip = this.props.current_planner_truckflicker_job
+      if(trip.hidden) return
       var steps =trip.google_directions.routes[0].legs[0].steps
       var truckSecondsFromStart = 0
       var stepCompleted = false

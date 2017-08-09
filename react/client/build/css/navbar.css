@@ -23,7 +23,7 @@ html {
   text-align: center;
   color: hsla(0,0%,20%,1);
   background-color: hsl(0,0%,90%);
-  box-shadow: inset hsla(0,0%,15%,  1) 0  0px 0px 4px, /* border */
+  box-shadow: inset hsla(0,0%,15%,  1) 0  0px 0px 1px, /* border */
     inset hsla(0,0%,15%, .8) 0 -1px 5px 2px, /* soft SD */
     inset hsla(0,0%,0%, .25) 0 -1px 0px 2px, /* bottom SD */
     inset hsla(0,0%,100%,.7) 0  2px 1px 7px, /* top HL */

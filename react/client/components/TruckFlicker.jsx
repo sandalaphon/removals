@@ -25,9 +25,13 @@ class TruckFlicker extends React.Component {
 
   handlePreviousClick(event){
     event.preventDefault()
+
     switch (this.props.location.pathname){
       case '/today':
         var relevantArray = this.props.trips.all_trips
+        if(this.indexOfRenderedRoute === -1 ){
+          this.indexOfRenderedRoute=relevantArray.length
+        }
         if(this.props.trips.current_today_truckflicker_job){
           this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_today_truckflicker_job)
         }
@@ -39,6 +43,9 @@ class TruckFlicker extends React.Component {
      //
       case '/planner':
         var relevantArray = this.props.trips.all_trips
+        if(this.indexOfRenderedRoute === -1 ){
+          this.indexOfRenderedRoute=relevantArray.length
+        }
         if(this.props.trips.current_planner_truckflicker_job){
           this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_planner_truckflicker_job)
         }
@@ -49,6 +56,9 @@ class TruckFlicker extends React.Component {
       //
       case '/partload':
         var relevantArray = this.props.best_pick_up_jobs
+        if(this.indexOfRenderedRoute === -1 ){
+          this.indexOfRenderedRoute=relevantArray.length
+        }
         if(this.props.trips.current_partload_truckflicker_job){
           this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_partload_truckflicker_job)
         }
