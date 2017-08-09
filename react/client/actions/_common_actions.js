@@ -8,6 +8,13 @@ export function renderJobList(){
 }
 //////////////////////////////////////
 
+export function setFilterSearchString(searchString){
+  return {
+    type: 'SET_FILTER_SEARCH_STRING',
+    payload: searchString
+  }
+}
+
 export function setCurrentTruckFlickerJob(job, pathname){
   return {
     type: 'SET_CURRENT_TRUCKFLICKER_JOB',
@@ -17,6 +24,7 @@ export function setCurrentTruckFlickerJob(job, pathname){
 }
 
 export function clearCurrentTruckFlickerJob(pathname){
+  console.log('pathname', pathname)
   return {
     type: 'CLEAR_CURRENT_TRUCKFLICKER_JOB',
     pathname

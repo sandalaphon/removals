@@ -1,4 +1,6 @@
 import * as helpers from './_helpers'
+import store from '../store.js'
+
 
 function handlePlannerData(state = {
 
@@ -14,13 +16,13 @@ function handlePlannerData(state = {
   switch(action.type) {
 
     //
-    case 'SET_FILTER_SEARCH_STRING':
-    return { ...state, filter_search_string: action.payload}
-    break;
-    //
-    case 'SET_PLANNER_SLIDER_SECONDS_FROM_START':
-    return { ...state, planner_seconds_from_start: action.payload}
-    break;
+    // case 'SET_FILTER_SEARCH_STRING':
+    // return { ...state, filter_search_string: action.payload}
+    // break;
+    // //
+    // case 'SET_PLANNER_SLIDER_SECONDS_FROM_START':
+    // return { ...state, planner_seconds_from_start: action.payload}
+    // break;
 
     case 'SET_CURRENT_DRAG_JOB':
     return{...state, currentDragJob: action.payload}
@@ -45,7 +47,8 @@ function handlePlannerData(state = {
     break;
     //
     case 'SORT_BY_COLUMN':
-    var sorted = helpers.sortJoblist(state.all_trips, action.attribute, action.order)
+    var new_all_trips = store.getState().common.all_trips
+    var sorted = helpers.sortJoblist(new_all_trips, action.attribute, action.order)
     return{...state, all_trips: sorted}
     break;
 

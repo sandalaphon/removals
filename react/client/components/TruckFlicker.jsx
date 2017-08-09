@@ -19,6 +19,10 @@ class TruckFlicker extends React.Component {
     this.indexOfRenderedRoute = -1 
   }
 
+  showAllRoutes(event){
+    event.preventDefault()
+  }
+
   handlePreviousClick(event){
     event.preventDefault()
     switch (this.props.location.pathname){
@@ -135,6 +139,7 @@ class TruckFlicker extends React.Component {
   render(){
     return (
       <div className = 'grid-item-truck-flicker'>
+        <button onClick={this.showAllRoutes.bind(this)}>Show All Routes</button>
         <button onClick={this.handlePreviousClick.bind(this)}>Previous</button>
         <button onClick={this.handleNextClick.bind(this)}>Next</button>
       </div>
