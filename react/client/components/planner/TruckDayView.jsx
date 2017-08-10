@@ -11,6 +11,14 @@ class TruckDayView extends React.Component{
     this.state = {trucks: [1,2,3,4,5,6,7]}
   }
 
+  componentDidMount(){
+  var {droppedCells} = this.props.trips
+  droppedCells.forEach((droppedCellsArray)=>{
+    var image = document.getElementById(droppedCellsArray.colour)
+    document.getElementById(droppedCellsArray.cells[0]).appendChild(image)
+  })
+  }
+
   handleDragEnter(event){
 
     event.preventDefault()
@@ -53,6 +61,7 @@ class TruckDayView extends React.Component{
           colour: currentDragJob.colour
         })
         var data = event.dataTransfer.getData('text')
+        console.log(data)
 
 
     event.target.appendChild(document.getElementById(data))
@@ -95,11 +104,12 @@ class TruckDayView extends React.Component{
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     if(droppedCells.length){
-     droppedCells.forEach((object)=>{
-        if(object.cells.includes(cellId)){
-          inlineStyle = {backgroundColor: object.colour, opacity: 0.5}
+     droppedCells.forEach((colourAndCellsObject)=>{
+        if(colourAndCellsObject.cells.includes(cellId)){
+          inlineStyle = {backgroundColor: colourAndCellsObject.colour, opacity: 0.5}
 
         }
+
       })
     }
 
@@ -128,8 +138,7 @@ class TruckDayView extends React.Component{
 
   truckCalendar.forEach((columnArray, index)=>{
     var timeString = `${index+5}:00`
-
-    return columnArray.props.children.unshift(<div className='cell'>{timeString}</div>)
+   columnArray.props.children.unshift(<div className='cell'>{timeString}</div>)
   })
 
 /////////////////////////////////////////////////////////////////////////////////////

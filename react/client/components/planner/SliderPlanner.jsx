@@ -46,7 +46,6 @@ class SliderPlanner extends React.Component{
   }
 
   placeMarkers(sliderSecondsFromStart){
-
     var plannersTrips = this.props.all_trips
     var sliderMarkerCoordsandIndexArray = []
 
@@ -104,7 +103,7 @@ class SliderPlanner extends React.Component{
   }
 
   sortTimeDisplay(v){
-    // console.log(v)
+
     let startValue = 8 //8am
     // let endValue = 72 //8pm
     let minutesFromStartValue = v*10

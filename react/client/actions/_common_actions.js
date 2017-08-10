@@ -8,6 +8,8 @@ export function renderJobList(){
 }
 //////////////////////////////////////
 
+
+
 export function setFilterSearchString(searchString){
   return {
     type: 'SET_FILTER_SEARCH_STRING',

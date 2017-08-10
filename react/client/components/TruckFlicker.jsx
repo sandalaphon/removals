@@ -6,8 +6,6 @@ import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
 
 
-
-
 class TruckFlicker extends React.Component {
 
 

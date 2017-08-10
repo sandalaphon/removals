@@ -14,15 +14,19 @@ function handlePlannerData(state = {
 },action){
 
   switch(action.type) {
-
-    //
+    
+   /////////////////////////////////////////////////////////////
+    // THIS IS NOW IN COMMON ACTIONS//////////////////////////
+    //////////////////////////////////////////////////////
     // case 'SET_FILTER_SEARCH_STRING':
     // return { ...state, filter_search_string: action.payload}
     // break;
-    // //
-    // case 'SET_PLANNER_SLIDER_SECONDS_FROM_START':
-    // return { ...state, planner_seconds_from_start: action.payload}
-    // break;
+    //////////////////////////////////////////////////////////
+
+
+    case 'SET_PLANNER_SLIDER_SECONDS_FROM_START':
+    return { ...state, planner_seconds_from_start: action.payload}
+    break;
 
     case 'SET_CURRENT_DRAG_JOB':
     return{...state, currentDragJob: action.payload}

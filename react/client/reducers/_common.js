@@ -6,11 +6,17 @@ function handleTripData(state = {
   renderedRoutes: [],
   current_today_truckflicker_job: '',
   current_partload_truckflicker_job: '',
-  current_planner_truckflicker_job: ''
+  current_planner_truckflicker_job: '',
+  // image_array: [],
+  all_trips: []
 },action){
 
 
   switch(action.type) {
+
+    // case 'ADD_DRAGGABLE_IMAGES_TO_IMAGE_ARRAY':
+    // return { ...state, image_array: action.payload}
+    // break;
 
     case 'SET_FILTER_SEARCH_STRING':
     return { ...state, filter_search_string: action.payload}

@@ -94,7 +94,7 @@ const mapDispatchToProps=(dispatch)=>({
 })
 
 const mapStateToProps=(state)=>({
-  all_trips:                         state.common.all_trips, 
+  // all_trips:                         state.common.all_trips, 
   partload_marker_array:             state.partload.partload_marker_array, 
   best_pick_up_jobs:                 state.partload.best_pick_up_jobs, 
   current_partload_truckflicker_job: state.partload.current_partload_truckflicker_job

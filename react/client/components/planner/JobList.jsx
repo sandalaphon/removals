@@ -26,8 +26,10 @@ class JobList extends React.Component{
         mapObject:mapObjectInstances.planner
       })
     }
-
   }
+
+  componentWillMount(){}
+   
 
   drag(event){
 
@@ -41,7 +43,7 @@ class JobList extends React.Component{
 
     event.dataTransfer.setData('text', event.target.id)
     event.dataTransfer.dropEffect = "copy";
-    this.props.actions.setCurrentDragJob({colour: event.target.id, estimated_hours: this.props.all_trips[index2].estimated_hours})
+    this.props.actions.planner_actions.setCurrentDragJob({colour: event.target.id, estimated_hours: this.props.all_trips[index2].estimated_hours})
 
 
   }
@@ -127,16 +129,15 @@ renderTripById(tripId){
 
 
   jobs(){
+
+    this.imageArray = []
 //////////////////////////////////////////////////////////
 
-if(!this.props.current_planner_truckflicker_job&&this.state.mapObject&&this.props.all_trips){
+// if(!this.props.current_planner_truckflicker_job&&this.state.mapObject&&this.props.all_trips)
+if(!this.props.current_planner_truckflicker_job&&this.state.mapObject){
     this.state.mapObject.clearMap()
      mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips) 
 }
-
-
-
-
 
 
 return this.props.all_trips.map((job,index)=>{
@@ -148,19 +149,18 @@ return this.props.all_trips.map((job,index)=>{
   var collapseStyle = job.hidden ? {display: 'none'} : {}
 
   if(job.id === this.props.current_planner_truckflicker_job.id){
-    // console.log('if statement', job.id, this.props.current_planner_truckflicker_job.id)
     truckFlickerJob = 'truckFlickerJob'
   }
 
 
-  var image = <i 
-  draggable='true' 
-  onDragEnd={this.handleDragEnd.bind(this)} 
-  onDragStart={this.drag.bind(this)}  
-  className="material-icons md-18 truckimage" 
-  style={inlineStyleColor} 
-  id={job.colour}>local_shipping</i>
-
+ 
+    var image = <i 
+    draggable='true' 
+    onDragEnd={this.handleDragEnd.bind(this)} 
+    onDragStart={this.drag.bind(this)}  
+    className="material-icons md-18 truckimage" 
+    style={inlineStyleColor} 
+    id={job.colour}>local_shipping</i>
 
   return(<tr key={job.id} style={collapseStyle} className = {truckFlickerJob}>
     <td ><button id={job.id} onClick={this.handleHideRouteClick.bind(this)}>Hide Route</button></td>
@@ -180,39 +180,66 @@ return this.props.all_trips.map((job,index)=>{
 }
 
 render(){ 
-  var hoverHandStyle = {cursor: 'pointer'}
-  if(this.props.all_trips){
-    return(
-      <table 
-      className='grid-item-joblist' 
-      onDrag={this.handleOnDragJobList.bind(this)}
-      onDrop={this.handleJobListDrop.bind(this)} 
-      onDragOver={this.handleDragOver.bind(this)}>
-      <tbody>
-      <tr>
-      <th>View Route</th>
-      <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
-      <th>Drag Icon</th>
-      <th>Colour</th>
-      <th>Volume</th>
-      <th>Men Requested</th>
-      <th>Start</th>
-      <th>Notes</th>
-      <th onClick={this.handleEstHoursSort.bind(this)}>Estimated Hours</th> 
-      <th>Allocated Trucks</th>
-      </tr>
 
-      {this.jobs()}
-      </tbody>
-      </table>
-      )
-  }else{
-    return(
-      <div className='grid-item-joblist'>
-      No Jobs Yet
-      </div>
-      )
-  }
+  var hoverHandStyle = {cursor: 'pointer'}
+  // if(this.props.all_trips){
+  //   return(
+  //     <table 
+  //     className='grid-item-joblist' 
+  //     onDrag={this.handleOnDragJobList.bind(this)}
+  //     onDrop={this.handleJobListDrop.bind(this)} 
+  //     onDragOver={this.handleDragOver.bind(this)}>
+  //     <tbody>
+  //     <tr>
+  //     <th>View Route</th>
+  //     <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
+  //     <th>Drag Icon</th>
+  //     <th>Colour</th>
+  //     <th>Volume</th>
+  //     <th>Men Requested</th>
+  //     <th>Start</th>
+  //     <th>Notes</th>
+  //     <th onClick={this.handleEstHoursSort.bind(this)}>Estimated Hours</th> 
+  //     <th>Allocated Trucks</th>
+  //     </tr>
+
+  //     {this.jobs()}
+  //     </tbody>
+  //     </table>
+  //     )
+  // }else{
+  //   return(
+  //     <div className='grid-item-joblist'>
+  //     No Jobs Yet
+  //     </div>
+  //     )
+  // }
+
+  return(
+       <table 
+       className='grid-item-joblist' 
+       onDrag={this.handleOnDragJobList.bind(this)}
+       onDrop={this.handleJobListDrop.bind(this)} 
+       onDragOver={this.handleDragOver.bind(this)}>
+       <tbody>
+       <tr>
+       <th>View Route</th>
+       <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
+       <th>Drag Icon</th>
+       <th>Colour</th>
+       <th>Volume</th>
+       <th>Men Requested</th>
+       <th>Start</th>
+       <th>Notes</th>
+       <th onClick={this.handleEstHoursSort.bind(this)}>Estimated Hours</th> 
+       <th>Allocated Trucks</th>
+       </tr>
+
+       {this.jobs()}
+       </tbody>
+       </table>
+       )
+
 }
 }
 
@@ -226,7 +253,8 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({ 
   all_trips: state.common.all_trips, 
-  searchString: state.planner.searchString, 
+  searchString: state.planner.searchString,
+  droppedCells: state.planner.droppedCells, 
   current_planner_truckflicker_job: state.common.current_planner_truckflicker_job
 })
 

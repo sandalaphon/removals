@@ -26,12 +26,11 @@ class ListToday extends React.Component {
   }
 
   jobs2(){
-
-    if(this.state.mapObject&&this.props.all_trips&&this.props.all_trips.length){
+    // if(this.state.mapObject&&this.props.all_trips&&this.props.all_trips.length)
+    if(this.state.mapObject){
       var toDisplay = this.getTable()
        return toDisplay
     }
-
   }
 
   getTable(){
@@ -42,7 +41,6 @@ class ListToday extends React.Component {
       var truckFlickerJob = ''
       var collapseStyle = job.hidden ? {display: 'none'} : {}
       if(job.id === this.props.current_today_truckflicker_job.id){
-        console.log('if statement', job.id, this.props.current_today_truckflicker_job.id)
         truckFlickerJob = 'truckFlickerJob'
       }
       return(
@@ -62,7 +60,6 @@ class ListToday extends React.Component {
   
 
   render(){
-    console.log("today props",this.props)
     return (
       <div className='grid-item-list-today'>
         <table >

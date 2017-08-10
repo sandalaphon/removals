@@ -27,8 +27,15 @@ class Layout extends React.Component {
       
     // if theres are no trips, get them
     if(currentUser){
-      if(!this.props.trips.all_trips) getAllTripsFromRails()
-        if(!this.props.trips.all_branches) getAllBranchesFromRails()
+      // if(!this.props.trips.all_trips) getAllTripsFromRails()
+
+    
+        if(!this.props.trips.all_branches) 
+         { 
+          getAllBranchesFromRails()
+          getAllTripsFromRails()
+        }
+        
       toDisplay = 
         <div>
           <Navb 
