@@ -15,9 +15,9 @@ class MapObject{
     this.postcodeMarkers = [],
     this.sliderMarkers = [],
     this.branchesMarkers = [],
-
     this.branchesButtonExists = false,
-    this.pathname = pathname
+    this.pathname = pathname,
+    this.branchesShowing = false
 
     if(!mapObjectInstances.pathname){
       mapObjectInstances[pathname]=this
@@ -31,6 +31,43 @@ class MapObject{
     this.clearMarkers(this.postcodeMarkers)
     this.clearMarkers(this.branchesMarkers)
     this.clearRoutes()
+  }
+
+  temporarilyClearMap(){
+    this.temporarilyClearMarkers(this.markers)
+    this.temporarilyClearMarkers(this.sliderMarkers)
+    this.temporarilyClearMarkers(this.postcodeMarkers)
+    this.temporarilyClearMarkers(this.branchesMarkers)
+    this.temporarilyClearRoutes()
+  }
+
+  temporarilyClearMarkers(instance_variable_marker_array){
+    for(var i = 0; i<instance_variable_marker_array.length; i++){
+      instance_variable_marker_array[i].setMap(null)
+    }
+  }
+
+  reinstateMap(){
+    console.log(this.renderedRoutes)
+    this.renderedRoutes.forEach((route)=>{
+   route.setMap(this.map)
+    })
+    this.makeMarkerVisible(this.markers)
+    this.makeMarkerVisible(this.sliderMarkers)
+    this.makeMarkerVisible(this.postcodeMarkers)
+    this.clearMarkers(this.branchesMarkers)
+  }
+
+  makeMarkerVisible(instance_variable_marker_array){
+    instance_variable_marker_array.forEach((marker)=>{
+      marker.setMap(this.map)
+    })
+  }
+
+  temporarilyClearRoutes(){
+    this.renderedRoutes.forEach((route)=>{
+      route.setMap(null)
+    })
   }
 
   clearRoutes(){
@@ -61,9 +98,6 @@ class MapObject{
       this.drawRouteWithGoogleResponse(job)
     })
   }
-
- 
-
 
   handleSliderMarkerArray(sliderMarkerCoordsandIndexArray){
     //sliderMarkerCoordsandIndexArray looks like this: [{markerCoords, index, colour}, ...] index references mother array
@@ -220,14 +254,19 @@ styleBranchesButtonAndListenerFunction(controlDiv, map){
  }
 
  display_branches(){
-  this.clearMap()
-  const branches = store.getState().common.all_branches
-  //get latlng from branch postcode
-  // placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='')
-  branches.forEach((branch)=>{
-    var latlng2 = JSON.parse(branch.latlng)
-    console.log( latlng2)
-    this.placeMarker(latlng2, this.pinSymbol(branch.colour), this.branchesMarkers, true, true, branch.address)})
+  if(this.branchesShowing){
+    this.reinstateMap()
+
+    this.branchesShowing = false
+  }else{
+    this.temporarilyClearMap()
+    this.branchesShowing = true
+    const branches = store.getState().common.all_branches
+    branches.forEach((branch)=>{
+      var latlng2 = JSON.parse(branch.latlng)
+      this.placeMarker(latlng2, this.pinSymbol(branch.colour), this.branchesMarkers, true, true, branch.address)})
+  }
+  
  }
 
 

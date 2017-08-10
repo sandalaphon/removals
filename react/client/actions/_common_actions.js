@@ -1,11 +1,11 @@
 import axios from 'axios'
 
 ///////////////////////
-export function renderJobList(){
-  return {
-    type: 'RENDER_JOB_LIST'
-  }
-}
+// export function renderJobList(){
+//   return {
+//     type: 'RENDER_JOB_LIST'
+//   }
+// }
 //////////////////////////////////////
 
 

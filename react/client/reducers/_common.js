@@ -3,7 +3,7 @@ import * as helpers from './_helpers'
 
 function handleTripData(state = {
   trips: null,
-  renderedRoutes: [],
+  // renderedRoutes: [],
   current_today_truckflicker_job: '',
   current_partload_truckflicker_job: '',
   current_planner_truckflicker_job: '',
@@ -54,8 +54,6 @@ function handleTripData(state = {
     return {...state,  getBranchesError: action.payload}
     break;
     
-    
-
     //
     case 'SET_HIDDEN_STATUS':
     var holder = state.all_trips.slice()
@@ -76,8 +74,6 @@ function handleTripData(state = {
     return {...state,  all_trips: holder}
     break;
     //
-    
-    
     //
     case 'SET_CURRENT_TRUCKFLICKER_JOB':
     switch (action.pathname){
