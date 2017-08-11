@@ -12,6 +12,11 @@ import * as loginActions from '../actions/login_actions'
 
 class Layout extends React.Component {
 
+  constructor(props){
+    super(props)
+    this.loadingAllTrips = false
+  }
+
   componentDidMount(){
     this.props.actions.loginActions.fetchUser()
   }
@@ -30,8 +35,8 @@ class Layout extends React.Component {
       // if(!this.props.trips.all_trips) getAllTripsFromRails()
 
     
-        if(!this.props.trips.all_branches) 
-         { 
+        if(!this.props.trips.all_branches&&!this.loadingAllTrips){ 
+          this.loadingAllTrips = true
           getAllBranchesFromRails()
           getAllTripsFromRails()
         }
