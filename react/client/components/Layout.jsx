@@ -35,9 +35,8 @@ class Layout extends React.Component {
       // if(!this.props.trips.all_trips) getAllTripsFromRails()
 
     
-        if(!this.props.trips.all_branches&&!this.loadingAllTrips) 
+        if(!this.props.trips.all_branches&&!this.loadingAllTrips){ 
           this.loadingAllTrips = true
-         { 
           getAllBranchesFromRails()
           getAllTripsFromRails()
         }
