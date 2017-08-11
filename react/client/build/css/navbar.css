@@ -8,12 +8,19 @@
 
 
   text-align: center;
+
+  color: #81A8B8;
+  /*color: black;*/
+
+  background: #DBE6EC;
+  /*background: #81A8B8;*/
+
+
+
   /*outline: 1px solid #ddd;*/
   /*border-top: 1px solid #fff;*/
   /*padding: 2px;*/
 
-
-  background: #408D84;
   /*grid-template-rows: 1fr;*/
   /*justify-items: center;
   align-items: center;*/
@@ -29,13 +36,14 @@
 }
 
 a:hover{
-  color:red;
+  color: #E8F3F8;
   /*box-shadow: 4px 0 2px -2px rgba(0,0,0,0.4);*/
 }
 
 a.active{
- background: #b9d3c2;
+ background: #E8F3F8;
  text-decoration: none;
+ color: #81A8B8;
  /*border-radius: 6px 6px 0px 0px;*/
  
  /*box-shadow: 0 0 5px 2px rgba(0,0,0,.35);*/
@@ -43,8 +51,10 @@ a.active{
  /*border-top: 1px solid silver;*/
 }
 
-.home-nav, .today-nav, .planner-nav,.partload-nav, .account-nav, .csv-nav, a:visited {
-  color: #0F2C3E;
+.home-nav, .today-nav, .planner-nav,.partload-nav, .account-nav, .csv-nav  {
+  /*color: black;*/
+  /*color: #DBE6EC;*/
+  /*color: yellow;*/
   border-right: 1px inset #b9d3c2;
   
   align-self: center; /* vertical center, visible with short widths */
@@ -81,13 +91,13 @@ a.active{
 
  #current-email {
   grid-area: email;
-  color: #0F2C3E;
+  color: #E8F3F8;
   /*justify-self: right;*/
 }
 
 #button-sign-out{
-  color: #0F2C3E;
-  font-size: .75em;
+  color: purple;
+  font-size: .6em;
   width: 58px;
   /*height: 15px;*/
   grid-area: signout;

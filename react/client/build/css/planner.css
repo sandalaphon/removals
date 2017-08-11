@@ -5,7 +5,7 @@
   display: grid;
 
 
-  background: #b9d3c2;
+  background: #E8F3F8;
 
   position: absolute;
   width: 97vw;
@@ -39,9 +39,9 @@
 .grid-item-truck-day-view{
   /*margin-top: 20px;*/
   /*border: solid 4px #0F2C3E;*/
- -webkit-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
+ /*-webkit-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
    -moz-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
-   box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
+   box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);*/
   display: grid;
    grid-area: cal;
   /* align-content: stretch;
@@ -87,20 +87,20 @@
 
 /*////////////////SCHEDULE////////////////////////////*/
 
-
+/*
 .truck-cell{
   display: inline-block;
 }
 .truck-day-time-cell{
   border: 1px solid black;
 }
-
+*/
 
 
 .cell{
   
-  border: 1px dotted #408D84;
-  color: #408D84;
+  border: 1px dotted #81A8B8;
+  color: #81A8B8;
   text-align:center;
   align-items: center;
   /*display:grid;*/

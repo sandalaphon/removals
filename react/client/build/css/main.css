@@ -2,9 +2,10 @@
 
 
 
+
 html{
   /*background: #93ABA1;*/
-  background: #b9d3c2;
+  background: #E8F3F8;
 }
 
 td, th{
@@ -27,18 +28,26 @@ tbody{
 }
 
 table{
-  -webkit-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
+  color: #81A8B8;
+ /* -webkit-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
     -moz-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
-    box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
+    box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);*/
 }
 
 table tr:nth-child(odd) td{
-  background: #93ABA1
+  background: #DBE6EC
+
 }
 table tr:nth-child(even) td{
-  background: #408D84
+  background: #E8F3F8
 }
 
+th{
+  background: #DBE6EC
+}
+button{
+  background: #DBE6EC
+}
 
 
 tr{
@@ -61,9 +70,9 @@ tr{
 }
 
 .grid-item-map {
-  -webkit-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
+  /*-webkit-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
   -moz-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
-  box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
+  box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);*/
   
   /*border: solid 4px #0F2C3E;*/
   grid-area: map;
