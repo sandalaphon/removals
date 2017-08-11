@@ -3,7 +3,17 @@
 
 .grid-planner{
   display: grid;
-  height: 95vh;
+
+
+  background: #b9d3c2;
+
+  position: absolute;
+  width: 97vw;
+  height: 94vh;
+
+  padding: 15px;
+  grid-gap: 30px;
+ 
   grid-template-areas:
   "cal cal cal cal cal cal fli fli fli fli"
   "cal cal cal cal cal cal map map map map"
@@ -19,85 +29,61 @@
   "job job job job job job map map map map"
   "job job job job job job map map map map"
   "job job job job job job map map map map"
-  "job job job job job job slI slI slI slI";
+  "job job job job job job sli sli sli sli";
   grid-template-rows: repeat(15,1fr);
-  grid-auto-columns: 10%;
+  grid-template-columns: repeat(10,1fr);
+  /*grid-auto-columns: 10%;*/
   /*grid-template-columns: repeat(10,1fr);*/
 }
 
-.grid-item-slider-planner{
-  /*display: inline-block;*/
-  grid-area:slI;
-  border: 3px solid purple;
+.grid-item-truck-day-view{
+  /*margin-top: 20px;*/
+  /*border: solid 4px #0F2C3E;*/
+ -webkit-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
+   -moz-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
+   box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
+  display: grid;
+   grid-area: cal;
+  /* align-content: stretch;
+   align-items: stretch;*/
+   /*overflow: scroll;*/
+   grid-template-columns: repeat(19,1fr);
+   /*grid-template-rows: repeat(8,1fr);*/
+}
+.grid-item-joblist{
   
+  /*display: grid;*/
+  justify-content:stretch;
+  /*align-items: center;*/
 
+  display: grid;
+  /*border: solid 3px purple;*/
+
+  grid-area:job;
   /*grid-auto-rows:1fr;*/
 }
 
-.slider-div{
-  /*border: 1px solid black;*/
-  
-  width: 1fr;
-  margin: 20px;
-  height:1fr;
-  /*text-align: center;*/
-  /*transform: translateY(50%);*/
-}
-
-.grid-item-truck-day-view{
-  margin-top: 20px;
-  display:inline-grid;
-   border:1px solid red;
-   grid-area: cal;
-   overflow: scroll;
-   grid-template-columns: repeat(19,1fr);
-}
-
-.grid-item-joblist{
+/*.grid-item-joblist{
   display: inline-block;
   grid-area:job;
   border: 3px solid purple;
   grid-auto-rows:1fr;
-}
+}*/
 
 .drop-target{
   background-color: hotpink;
 }
 
-table{
-  overflow: scroll;
-}
-
-td, th{
-border: 1px solid black;
-vertical-align: middle;
-text-align: center;
-/*width: 10%;*/
-min-width:5vw;
-/*pointer-events: none;*/
-}
 
 
 .grid-item-filter{
   grid-area: fil;
-  border:1px solid blue;
-  overflow: scroll;
-}
-
-.grid-item-truck-flicker{
-  grid-area: fli;
-  border:1px solid yellow;
-  justify-self: center;
-  align-self: center;
-  width: 1fr;
+  
 
 }
 
-.grid-item-map {
-  grid-area: map;
-  border: 3px solid green;
-  min-height: 1fr;
-}
+
+
 
 /*////////////////SCHEDULE////////////////////////////*/
 
@@ -112,10 +98,12 @@ min-width:5vw;
 
 
 .cell{
-  border: 1px solid black;
+  
+  border: 1px dotted #408D84;
+  color: #408D84;
   text-align:center;
   align-items: center;
-  display:grid;
+  /*display:grid;*/
 }
 
 
