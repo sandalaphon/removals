@@ -1,22 +1,26 @@
 
 .nav-bar{
-
-  /*height: 15px;*/
+  /*position: fixed;*/
   display: grid;
-  /*grid-area: nav;*/
   grid-template-areas:
   "a b c d e f . . . . email signout";
-  grid-template-columns: repeat(10,1fr);
+  grid-template-columns: repeat(12,1fr);
+
+
+  text-align: center;
+  /*outline: 1px solid #ddd;*/
+  /*border-top: 1px solid #fff;*/
+  /*padding: 2px;*/
+
+
+  background: #408D84;
   /*grid-template-rows: 1fr;*/
   /*justify-items: center;
   align-items: center;*/
   /*outline: none;*/
-  text-align: center;
   /*background-color: #C0C0C0;*/
-  outline: 1px solid #ddd;
-  border-top: 1px solid #fff;
-  padding: 2px;
-  background: #e8e8e8;
+  /*grid-area: nav;*/
+  /*height: 15px;*/
 }
 
 
@@ -24,23 +28,25 @@
   
 }
 
-a:hover{color:red;
+a:hover{
+  color:red;
   /*box-shadow: 4px 0 2px -2px rgba(0,0,0,0.4);*/
 }
 
 a.active{
- 
+ background: #b9d3c2;
  text-decoration: none;
- border-radius: 3px;
- box-shadow: 0 0 5px 2px rgba(0,0,0,.35);
+ /*border-radius: 6px 6px 0px 0px;*/
+ 
+ /*box-shadow: 0 0 5px 2px rgba(0,0,0,.35);*/
  /*border-bottom: 1px solid white;*/
  /*border-top: 1px solid silver;*/
 }
 
 .home-nav, .today-nav, .planner-nav,.partload-nav, .account-nav, .csv-nav, a:visited {
-  color: deepskyblue;
-  border-left: 1px solid #ddd;
-  margin-left: 1px;
+  color: #0F2C3E;
+  border-right: 1px inset #b9d3c2;
+  
   align-self: center; /* vertical center, visible with short widths */
   
 }
@@ -75,12 +81,12 @@ a.active{
 
  #current-email {
   grid-area: email;
-  color: deepskyblue;
+  color: #0F2C3E;
   /*justify-self: right;*/
 }
 
 #button-sign-out{
-  color: deepskyblue;
+  color: #0F2C3E;
   font-size: .75em;
   width: 58px;
   /*height: 15px;*/

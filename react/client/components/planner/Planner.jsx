@@ -14,11 +14,8 @@ class Planner extends React.Component {
     return(
       <div className = 'grid-planner'>
             <JobList/>
-            <Filter/>
             <TruckDayView />
             <Gmap />
-            <TruckFlicker/>
-            <SliderPlanner/>
       </div>
     )
   }
@@ -26,3 +23,6 @@ class Planner extends React.Component {
 }
 
 export default Planner
+            // <Filter/>
+            // <TruckFlicker/>
+            // <SliderPlanner/>
