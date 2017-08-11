@@ -94,8 +94,9 @@ class MapObject{
   }
 
   displayArrayOfJobRoutes(arrayOfJobs){
+    this.clearMap()
     arrayOfJobs.forEach((job)=>{
-      this.drawRouteWithGoogleResponse(job)
+        this.drawRouteWithGoogleResponse(job)      
     })
   }
 

@@ -1,14 +1,14 @@
+//////NOT IN USE YET !!!!!!!!!
 import React from 'react'
 import ReactDOM from 'react-dom'
 import TruckFlicker from '../TruckFlicker'
-// import * as partloadActions from '../../actions/partload_actions'
-// import * as commonActions from '../../actions/_common_actions'
+import * as plannerActions from '../../actions/planner_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {MapObject, mapObjectInstances} from '../../models/mapObject'
 import {withRouter} from 'react-router'
 
-class GmapPartload extends React.Component {
+class GmapPlanner extends React.Component {
 
   constructor(props){
     super(props)
@@ -58,22 +58,22 @@ class GmapPartload extends React.Component {
 
   render() {
 
-  // note placement of slider markers handled in slider, to prevent re-render
+  // note placement of slider markers handled in slider
     const {mapObject} = this.state
     const { 
-      partload_marker_array, 
-      current_partload_truckflicker_job, 
+      planner_marker_array, 
+      current_planner_truckflicker_job, 
       best_pick_up_jobs
     } = this.props
 
     if(mapObject){
 
-      if(partload_marker_array.length){
-        mapObject.displayMarkersFromStore(partload_marker_array, mapObject.postcodeMarkers)
-      }
+      // if(planner_marker_array.length){
+      //   mapObject.displayMarkersFromStore(planner_marker_array, mapObject.postcodeMarkers)
+      // }
 
-      if(current_partload_truckflicker_job){
-        mapObjectInstances.partload.drawRouteWithGoogleResponse(current_partload_truckflicker_job)
+      if(current_planner_truckflicker_job){
+        mapObjectInstances.planner.drawRouteWithGoogleResponse(current_planner_truckflicker_job)
       }else{
         mapObject.displayArrayOfJobRoutes(best_pick_up_jobs)
       }
@@ -88,20 +88,17 @@ class GmapPartload extends React.Component {
 
 }
 
-// const mapDispatchToProps=(dispatch)=>({
-//   actions:{
-//     partload_actions: bindActionCreators(partloadActions, dispatch),
-//     common_actions: bindActionCreators(commonActions, dispatch)
-//   }
-// })
-
-const mapStateToProps=(state)=>({
-  // all_trips:                         state.common.all_trips, 
-  partload_marker_array:             state.partload.partload_marker_array, 
-  best_pick_up_jobs:                 state.partload.best_pick_up_jobs, 
-  current_partload_truckflicker_job: state.common.current_partload_truckflicker_job
+const mapDispatchToProps=(dispatch)=>({
+  actions:{
+    planner_actions: bindActionCreators(plannerActions, dispatch)
+  }
 })
 
-export default withRouter(connect(mapStateToProps)(GmapPartload))
+const mapStateToProps=(state)=>({
+  all_trips:                         state.common.all_trips, 
+  current_planner_truckflicker_job: state.planner.current_planner_truckflicker_job
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GmapPlanner))
 
 

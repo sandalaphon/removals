@@ -254,7 +254,7 @@ const mapDispatchToProps=(dispatch)=>({
 const mapStateToProps=(state)=>({ 
   all_trips: state.common.all_trips, 
   searchString: state.planner.searchString,
-  droppedCells: state.planner.droppedCells, 
+  // droppedCells: state.planner.droppedCells, 
   current_planner_truckflicker_job: state.common.current_planner_truckflicker_job
 })
 

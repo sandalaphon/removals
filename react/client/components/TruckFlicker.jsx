@@ -125,6 +125,8 @@ class TruckFlicker extends React.Component {
       this.indexOfRenderedRoute = counter = relevantArray.length
     }
 
+    mapObject.branchesShowing=false
+
     while(true){ 
       counter = counter + increment
       if(counter>=relevantArray.length || counter < 0) break
