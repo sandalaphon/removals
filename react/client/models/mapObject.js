@@ -10,7 +10,6 @@ class MapObject{
     this.directionsService = new google.maps.DirectionsService()
     this.renderedRoutes = [],
     this.bounds= new google.maps.LatLngBounds(),
-
     this.markers = [],
     this.postcodeMarkers = [],
     this.sliderMarkers = [],
@@ -34,59 +33,43 @@ class MapObject{
   }
 
   temporarilyClearMap(){
-    this.temporarilyClearMarkers(this.markers)
-    this.temporarilyClearMarkers(this.sliderMarkers)
-    this.temporarilyClearMarkers(this.postcodeMarkers)
-    this.temporarilyClearMarkers(this.branchesMarkers)
-    this.temporarilyClearRoutes()
+    this.showOrHide(this.markers)
+    this.showOrHide(this.sliderMarkers)
+    this.showOrHide(this.postcodeMarkers)
+    this.showOrHide(this.renderedRoutes)
+    this.clearMarkers(this.branchesMarkers)
   }
 
-  temporarilyClearMarkers(instance_variable_marker_array){
-    for(var i = 0; i<instance_variable_marker_array.length; i++){
-      instance_variable_marker_array[i].setMap(null)
+
+  showOrHide(array, hide=true, removeListeners=false){ //takes array of routes or markers
+   var arg = hide ? null : this.map
+   array.forEach((markerOrRoute)=>{
+    markerOrRoute.setMap(arg)
+    if(removeListeners){
+      google.maps.event.clearInstanceListeners(markerOrRoute);
     }
+   })
   }
 
   reinstateMap(){
     console.log(this.renderedRoutes)
-    this.renderedRoutes.forEach((route)=>{
-   route.setMap(this.map)
-    })
-    this.makeMarkerVisible(this.markers)
-    this.makeMarkerVisible(this.sliderMarkers)
-    this.makeMarkerVisible(this.postcodeMarkers)
+    this.showOrHide(this.renderedRoutes, false)
+    this.showOrHide(this.markers, false)
+    this.showOrHide(this.sliderMarkers, false)
+    this.showOrHide(this.postcodeMarkers, false)
     this.clearMarkers(this.branchesMarkers)
   }
 
-  makeMarkerVisible(instance_variable_marker_array){
-    instance_variable_marker_array.forEach((marker)=>{
-      marker.setMap(this.map)
-    })
-  }
-
-  temporarilyClearRoutes(){
-    this.renderedRoutes.forEach((route)=>{
-      route.setMap(null)
-    })
-  }
 
   clearRoutes(){
-    this.renderedRoutes.forEach((route)=>{
-      route.setMap(null)
-    })
+    this.showOrHide(this.renderedRoutes, true)
     this.renderedRoutes = []
   }
 
-  clearMarkers(instance_variable_marker_array, resetBounds = false){
-    this.bounds = new google.maps.LatLngBounds()
-    while(instance_variable_marker_array.length){
-      // instance_variable_marker_array.forEach((marker)=>{
-       var marker = instance_variable_marker_array.pop()
-       google.maps.event.clearListeners(marker, 'click');
-       marker.setMap(null)
-      // })
-    }
-    instance_variable_marker_array = []
+  clearMarkers(instance_variable_marker_array){
+    this.resetBounds()
+    this.showOrHide(instance_variable_marker_array, true, true)
+    instance_variable_marker_array.length = 0 //clears array
   }
 
   resetBounds(){
@@ -94,7 +77,7 @@ class MapObject{
   }
 
   displayArrayOfJobRoutes(arrayOfJobs){
-    this.clearMap(this.map)
+    this.clearMap()
     arrayOfJobs.forEach((job)=>{
         this.drawRouteWithGoogleResponse(job)
     })
@@ -204,9 +187,9 @@ getInfowindowOffset(marker){
   marker.addListener( 'mouseover', function () {
     infoWindow.open(this.map, marker);
   });
-  // google.maps.event.addListener(marker,'click', function() {
-  //           infoWindow.open(this.map, marker);
-  //         });
+  google.maps.event.addListener(marker,'click', function() {
+            alert('clicked');
+          });
   marker.addListener('mouseout', function() {
             infoWindow.close(this.map, marker);
           });
@@ -256,10 +239,17 @@ styleBranchesButtonAndListenerFunction(controlDiv, map){
 
  display_branches(){
   if(this.branchesShowing){
-    this.reinstateMap()
+    console.log('this.markers', this.markers)
+    console.log('this.sliderMarkers', this.sliderMarkers)
+    console.log('this.branchesMarkers', this.branchesMarkers)
 
+    this.reinstateMap()
     this.branchesShowing = false
+    this.branchesMarkers=[]
   }else{
+    console.log('this.markers', this.markers)
+    console.log('this.sliderMarkers', this.sliderMarkers)
+    console.log('this.branchesMarkers', this.branchesMarkers)
     this.temporarilyClearMap()
     this.branchesShowing = true
     const branches = store.getState().common.all_branches

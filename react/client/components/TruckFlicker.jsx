@@ -12,9 +12,9 @@ class TruckFlicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
     }
-    this.indexOfRenderedRoute = -1 
+    // this.indexOfRenderedRoute = -1
+    
   }
 
   showAllRoutes(event){
@@ -23,128 +23,169 @@ class TruckFlicker extends React.Component {
 
   handlePreviousClick(event){
     event.preventDefault()
-
-    switch (this.props.location.pathname){
-      case '/today':
-        var relevantArray = this.props.trips.all_trips
-        if(this.indexOfRenderedRoute === -1 ){
-          this.indexOfRenderedRoute=relevantArray.length
-        }
-        if(this.props.trips.current_today_truckflicker_job){
-          this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_today_truckflicker_job)
-        }
-        this.renderAppropriateRoute(relevantArray, false, 'today')
-
-        // AND setState or store rendered route attribute and index
-        //And then deal with highlighting in list
-      break;
-     //
-      case '/planner':
-        var relevantArray = this.props.trips.all_trips
-        if(this.indexOfRenderedRoute === -1 ){
-          this.indexOfRenderedRoute=relevantArray.length
-        }
-        if(this.props.trips.current_planner_truckflicker_job){
-          this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_planner_truckflicker_job)
-        }
-        this.renderAppropriateRoute(relevantArray, false, 'planner')
-        // AND setState or store rendered route attribute and index
-        //And then deal with highlighting in list
-      break;
-      //
-      case '/partload':
-        var relevantArray = this.props.best_pick_up_jobs
-        if(this.indexOfRenderedRoute === -1 ){
-          this.indexOfRenderedRoute=relevantArray.length
-        }
-        if(this.props.trips.current_partload_truckflicker_job){
-          this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_partload_truckflicker_job)
-        }
-        this.renderAppropriateRoute(relevantArray, false, 'partload')
-        // AND setState or store rendered route attribute and index
-        //And then deal with highlighting in list
-      break;
-   }
-
+    this.renderAppropriateRoute(false)
  }
 
  handleNextClick(event){
    event.preventDefault()
-   console.log(this.props)
-
-  switch (this.props.location.pathname){
-    case '/today':
-      var relevantArray = this.props.trips.all_trips
-      if(this.props.trips.current_today_truckflicker_job){
-        this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_today_truckflicker_job)
-      }
-     this.renderAppropriateRoute(relevantArray, true, 'today')
-    break;
-    //
-    case '/planner':
-      var relevantArray = this.props.trips.all_trips
-      if(this.props.trips.current_planner_truckflicker_job){
-        this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_planner_truckflicker_job)
-      }
-     this.renderAppropriateRoute(relevantArray, true, 'planner')
-    break;
-    //
-    case '/partload':
-     var relevantArray = this.props.best_pick_up_jobs
-     if(this.props.trips.current_partload_truckflicker_job){
-       this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_partload_truckflicker_job)
-     }
-     this.renderAppropriateRoute(relevantArray, true, 'partload')
-    break;
-    }
+   this.renderAppropriateRoute(true)
   }
 
-  renderAppropriateRoute(relevantArray, next = true, pathname){
-    var counter = this.indexOfRenderedRoute
+  // renderAppropriateRoute(next = true){
+ 
+  //   var increment = next ? 1 : -1 // +1 for next, -1 for previous
+  //   var numberHiddenRoutes = 0 //to create guard for all hidden list
+  //   var mapObject
+  //   var relevantArray
+  //   var current_truckflicker_job
+  //   var pathname =this.props.router.location.pathname
+  //   switch (pathname){
+  //     case '/today':
+  //     current_truckflicker_job = this.props.trips.current_today_truckflicker_job
+  //     mapObject = mapObjectInstances.today
+  //     relevantArray = this.props.trips.all_trips
+  //     pathname='today'
+  //     break;
+  //     case '/planner':
+  //     current_truckflicker_job = this.props.trips.current_planner_truckflicker_job
+  //     mapObject = mapObjectInstances.planner
+  //     relevantArray = this.props.trips.all_trips
+  //     pathname='planner'
+  //     break;
+  //     case '/partload':
+  //     current_truckflicker_job = this.props.trips.current_partload_truckflicker_job
+  //     mapObject = mapObjectInstances.partload
+  //     relevantArray = this.props.best_pick_up_jobs
+  //     pathname='partload'
+  //     break;
+  //   }
+
+  //   var arrayOfUnhiddenIndexes = this.getIndexesOfUnhidden(relevantArray)
+
+  //   if(!next && this.indexOfRenderedRoute === -1 ){
+  //            this.indexOfRenderedRoute=relevantArray.length
+  //      }
+    
+  //   if(current_truckflicker_job){
+  //       this.indexOfRenderedRoute = relevantArray.indexOf(current_truckflicker_job)     
+  //   }
+  //  var counter = this.indexOfRenderedRoute
+
+  //   if(next && this.indexOfRenderedRoute===relevantArray.length-1 ){
+  //     console.log('next and last one')
+  //     this.indexOfRenderedRoute = -1
+  //     counter = -1
+  //   }
+  //   if(!next && this.indexOfRenderedRoute===0){
+  //     this.indexOfRenderedRoute = counter = relevantArray.length
+  //   }
+
+  //   mapObject.branchesShowing=false
+ 
+  //   while(true){ 
+  //     console.log('pathname', pathname)
+  //     counter = counter + increment
+  //     if(counter>=relevantArray.length || counter < 0) break
+  //     var job = relevantArray[counter]
+  //     if (!job.hidden){
+  //       this.props.actions.common_actions.setCurrentTruckFlickerJob(job, pathname)
+  //       mapObject.clearMap()
+  //       mapObject.drawRouteWithGoogleResponse(job)
+  //       this.indexOfRenderedRoute = counter
+  //       break
+  //     }else{
+  //       numberHiddenRoutes = numberHiddenRoutes + 1
+  //       if(numberHiddenRoutes>=relevantArray.length) break
+  //     }
+
+  //   }
+
+  // }
+
+  renderAppropriateRoute(next = true){
+  
     var increment = next ? 1 : -1 // +1 for next, -1 for previous
-    var numberHiddenRoutes = 0 //to create guard for all hidden list
+    // var numberHiddenRoutes = 0 //to create guard for all hidden list
     var mapObject
+    var relevantArray
+    var current_truckflicker_job
+    var pathname =this.props.router.location.pathname
     switch (pathname){
-      case 'today':
+      case '/today':
+      current_truckflicker_job = this.props.trips.current_today_truckflicker_job
       mapObject = mapObjectInstances.today
+      relevantArray = this.props.trips.all_trips
+      pathname='today'
       break;
-      case 'planner':
+      case '/planner':
+      current_truckflicker_job = this.props.trips.current_planner_truckflicker_job
       mapObject = mapObjectInstances.planner
+      relevantArray = this.props.trips.all_trips
+      pathname='planner'
       break;
-      case 'partload':
+      case '/partload':
+      current_truckflicker_job = this.props.trips.current_partload_truckflicker_job
       mapObject = mapObjectInstances.partload
+      relevantArray = this.props.best_pick_up_jobs
+      pathname='partload'
       break;
     }
 
-    if(next && this.indexOfRenderedRoute===relevantArray.length-1 ){
-      console.log('next and last one')
-      this.indexOfRenderedRoute = -1
-      counter = -1
-    }
-    if(!next && this.indexOfRenderedRoute===0){
-      this.indexOfRenderedRoute = counter = relevantArray.length
-    }
+    var arrayOfUnhiddenIndexes = this.getIndexesOfUnhidden(relevantArray)
+
+    
+
+   //  if(!next && this.indexOfRenderedRoute === -1 ){
+   //           this.indexOfRenderedRoute=relevantArray.length
+   //     }
+    
+   //  if(current_truckflicker_job){
+   //      this.indexOfRenderedRoute = relevantArray.indexOf(current_truckflicker_job)     
+   //  }
+   // var counter = this.indexOfRenderedRoute
+
+   //  if(next && this.indexOfRenderedRoute===relevantArray.length-1 ){
+   //    console.log('next and last one')
+   //    this.indexOfRenderedRoute = -1
+   //    counter = -1
+   //  }
+   //  if(!next && this.indexOfRenderedRoute===0){
+   //    this.indexOfRenderedRoute = counter = relevantArray.length
+   //  }
 
     mapObject.branchesShowing=false
+  
+    // while(true){ 
+    //   console.log('pathname', pathname)
+    //   counter = counter + increment
+    //   if(counter>=relevantArray.length || counter < 0) break
+    //   var job = relevantArray[counter]
+    //   if (!job.hidden){
+    //     this.props.actions.common_actions.setCurrentTruckFlickerJob(job, pathname)
+    //     mapObject.clearMap()
+    //     mapObject.drawRouteWithGoogleResponse(job)
+    //     this.indexOfRenderedRoute = counter
+    //     break
+    //   }else{
+    //     numberHiddenRoutes = numberHiddenRoutes + 1
+    //     if(numberHiddenRoutes>=relevantArray.length) break
+    //   }
 
-    while(true){ 
-      counter = counter + increment
-      if(counter>=relevantArray.length || counter < 0) break
-      var job = relevantArray[counter]
-      if (!job.hidden){
-        this.props.actions.common_actions.setCurrentTruckFlickerJob(job, pathname)
-        mapObject.clearMap()
-        mapObject.drawRouteWithGoogleResponse(job)
-        this.indexOfRenderedRoute = counter
-        break
-      }else{
-        numberHiddenRoutes = numberHiddenRoutes + 1
-        if(numberHiddenRoutes>=relevantArray.length) break
-      }
-
-    }
+    // }
 
   }
+
+  getIndexesOfUnhidden(relevantArray){
+    var arrayOfUnhiddenIndexes = []
+    relevantArray((job, index)=>{
+      if(!job.hidden){
+        arrayOfUnhiddenIndexes.push(index)
+      }
+    })
+  }
+
+
+
 
   render(){
     return (
