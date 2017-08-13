@@ -39,8 +39,7 @@ class GMap extends React.Component {
     console.log('pathname', pathname)
     let mapOptions = {
       zoom: this.state.zoom,
-      center: this.mapCenter(),
-      style: []
+      center: this.mapCenter()
     }
     var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
     var mapObject = new MapObject(map, pathname)

@@ -130,7 +130,7 @@ class SliderPlanner extends React.Component{
     const sliderValue = this.props.planner_seconds_from_start/600 || 24
    
     return(
-        <div className='grid-item-slider'>
+        <div className='grid-item-slider-planner'>
         <div className = 'slider-div'>
         <SliderWithTooltip 
         min={0} 

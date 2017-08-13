@@ -133,7 +133,7 @@ class SliderToday extends React.Component{
     const sliderValue = this.props.today_seconds_from_start/600 || 24
    
     return(
-        <div className='grid-item-slider'>
+        <div className='grid-item-slider-today'>
         <div className = 'slider-div'>
         <SliderWithTooltip 
         min={0} 
