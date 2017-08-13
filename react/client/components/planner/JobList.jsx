@@ -221,7 +221,7 @@ render(){
        onDrag={this.handleOnDragJobList.bind(this)}
        onDrop={this.handleJobListDrop.bind(this)} 
        onDragOver={this.handleDragOver.bind(this)}>
-       <tbody>
+       
        <tr>
        <th>View Route</th>
        <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
@@ -236,7 +236,7 @@ render(){
        </tr>
 
        {this.jobs()}
-       </tbody>
+       
        </table>
        )
 

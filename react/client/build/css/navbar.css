@@ -6,13 +6,13 @@
   "a b c d e f . . . . email signout";
   grid-template-columns: repeat(12,1fr);
 
-
+  /*font-family: 'Roboto';*/
   text-align: center;
 
-  color: #81A8B8;
   /*color: black;*/
-
-  background: #DBE6EC;
+  /*color: black;*/
+  color: white; /*only email*/
+  background: #1a1a1a;
   /*background: #81A8B8;*/
 
 
@@ -36,14 +36,14 @@
 }
 
 a:hover{
-  color: #E8F3F8;
+  color: silver;
   /*box-shadow: 4px 0 2px -2px rgba(0,0,0,0.4);*/
 }
 
 a.active{
- background: #E8F3F8;
+ background: white;
  text-decoration: none;
- color: #81A8B8;
+ color: #1a1a1a;
  /*border-radius: 6px 6px 0px 0px;*/
  
  /*box-shadow: 0 0 5px 2px rgba(0,0,0,.35);*/
@@ -54,9 +54,9 @@ a.active{
 .home-nav, .today-nav, .planner-nav,.partload-nav, .account-nav, .csv-nav  {
   /*color: black;*/
   /*color: #DBE6EC;*/
-  /*color: yellow;*/
-  border-right: 1px inset #b9d3c2;
-  
+  color: white;
+  /*border-right: 1px inset #b9d3c2;*/
+ 
   align-self: center; /* vertical center, visible with short widths */
   
 }
@@ -91,7 +91,7 @@ a.active{
 
  #current-email {
   grid-area: email;
-  color: #E8F3F8;
+  /*color: #E8F3F8;*/
   /*justify-self: right;*/
 }
 

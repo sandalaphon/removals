@@ -3,9 +3,11 @@
 
 
 
-html{
+body{
   /*background: #93ABA1;*/
-  background: #E8F3F8;
+  /*background: #E8F3F8;*/
+  /*font-family: Arial, Helvetica, sans-serif;*/
+  font-family: 'Roboto';
 }
 
 td, th{
@@ -20,53 +22,71 @@ text-align: center;
 
 tbody{
   
-  justify-items:stretch;
-  align-items: center;
+  /*justify-items:stretch;
+  align-items: center;*/
 
   /*border: 5px solid red;*/
   /*width: 100%;*/
 }
 
 table{
-  color: #81A8B8;
+  
  /* -webkit-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
     -moz-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
     box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);*/
 }
 
 table tr:nth-child(odd) td{
-  background: #DBE6EC
+  background: #f2f2f2
 
 }
 table tr:nth-child(even) td{
-  background: #E8F3F8
+  background: #ffffff
 }
 
 th{
-  background: #DBE6EC
+  color: white;
+  background: #1a1a1a;
 }
-button{
-  background: #DBE6EC
-}
+button:focus {outline:0;}
 
+button{
+  font-family: 'Roboto';
+
+  background: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  /*margin : 12px;*/
+
+
+}
 
 tr{
-  
- display:grid;
-  grid-template-columns: repeat(10,1fr);
 
-  /*border: 5px solid blue;*/
   
 }
+
+th, td{
+  text-align: center;
+
+  
+}
+
 
 .grid-item-slider{
   grid-area:sli;
+  background: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
 }
 
 .slider-div{
   width: 1fr;
   margin: 20px;
   height:1fr;
+
 }
 
 .grid-item-map {
@@ -82,4 +102,7 @@ tr{
 
 
 .grid-item-truck-flicker{
+  /*display: grid;*/
+  text-align:center;
+  /*justify-self: center;*/
   grid-area: fli;
