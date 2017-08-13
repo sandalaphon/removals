@@ -24,22 +24,13 @@ class MapObject{
 
   }
 
-  clearMap(){
-    this.clearMarkers(this.markers)
-    this.clearMarkers(this.sliderMarkers)
-    this.clearMarkers(this.postcodeMarkers)
-    this.clearMarkers(this.branchesMarkers)
-    this.clearRoutes()
+  clearMap(clearArrays=true){
+    this.clearMarkers(this.markers, clearArrays)
+    this.clearMarkers(this.sliderMarkers, clearArrays)
+    this.clearMarkers(this.postcodeMarkers, clearArrays)
+    this.clearMarkers(this.branchesMarkers, clearArrays)
+    this.clearRoutes(clearArrays)
   }
-
-  temporarilyClearMap(){
-    this.showOrHide(this.markers)
-    this.showOrHide(this.sliderMarkers)
-    this.showOrHide(this.postcodeMarkers)
-    this.showOrHide(this.renderedRoutes)
-    this.clearMarkers(this.branchesMarkers)
-  }
-
 
   showOrHide(array, hide=true, removeListeners=false){ //takes array of routes or markers
    var arg = hide ? null : this.map
@@ -61,16 +52,19 @@ class MapObject{
   }
 
 
-  clearRoutes(){
+  clearRoutes(clearArrays){
     this.showOrHide(this.renderedRoutes, true)
-    this.renderedRoutes = []
+    if(clearArrays) this.renderedRoutes.length = 0
   }
 
-  clearMarkers(instance_variable_marker_array){
+  clearMarkers(instance_variable_marker_array, clearArrays=true){
     this.resetBounds()
     this.showOrHide(instance_variable_marker_array, true, true)
-    instance_variable_marker_array.length = 0 //clears array
-  }
+    if(clearArrays){
+        instance_variable_marker_array.length = 0 //clears array
+      }
+    }
+  
 
   resetBounds(){
     this.bounds = new google.maps.LatLngBounds()
@@ -109,22 +103,18 @@ class MapObject{
 
 
   placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message=''){
-
-
     var marker = new google.maps.Marker({
       position: coords,
       map: this.map,
       icon: symbol,
       animation: drop ? google.maps.Animation.DROP : null,
-
     })
     if(message) this.addInfoWindow(marker, message)
-      instance_variable_marker_array.push(marker)
-
     if(setBounds){
       this.bounds.extend(coords) 
       this.map.fitBounds(this.bounds)  
     }
+    instance_variable_marker_array.push(marker)
   }
 
 
@@ -250,7 +240,7 @@ styleBranchesButtonAndListenerFunction(controlDiv, map){
     console.log('this.markers', this.markers)
     console.log('this.sliderMarkers', this.sliderMarkers)
     console.log('this.branchesMarkers', this.branchesMarkers)
-    this.temporarilyClearMap()
+    this.clearMap(false)
     this.branchesShowing = true
     const branches = store.getState().common.all_branches
     branches.forEach((branch)=>{
@@ -285,10 +275,7 @@ truckSymbol3(color){
     rotation: 180,
     // size: new google.maps.Size(800, 800), //size
     origin: new google.maps.Point(0, 0), //origin point
-    anchor: new google.maps.Point(1000, 1000) // offset point
-
-
-    
+    anchor: new google.maps.Point(1000, 1000) // offset point 
   }
 }
 
@@ -299,5 +286,12 @@ export {MapObject, mapObjectInstances}
 
 
 
+// temporarilyClearMap(){
+//   this.showOrHide(this.markers)
+//   this.showOrHide(this.sliderMarkers)
+//   this.showOrHide(this.postcodeMarkers)
+//   this.showOrHide(this.renderedRoutes)
+//   this.clearMarkers(this.branchesMarkers)
+// }
 
 
