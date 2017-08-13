@@ -38,6 +38,7 @@
 }
 
 .grid-item-truck-day-view{
+  font-size: 0.8vw;
   /*margin-top: 20px;*/
   /*border: solid 4px #0F2C3E;*/
  /*-webkit-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
@@ -55,6 +56,7 @@
    box-shadow: 0 2px 6px rgba(0,0,0,.3);
 }
 .grid-item-joblist{
+  font-size: 0.8vw;
   grid-area:job;
   width: 100%;
   height: 100%;
