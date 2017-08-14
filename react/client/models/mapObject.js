@@ -32,15 +32,18 @@ class MapObject{
     this.clearRoutes(clearArrays)
   }
 
-  showOrHide(array, hide=true, removeListeners=false){ //takes array of routes or markers
-   var arg = hide ? null : this.map
-   array.forEach((markerOrRoute)=>{
-    markerOrRoute.setMap(arg)
-    if(removeListeners){
-      google.maps.event.clearInstanceListeners(markerOrRoute);
-    }
-   })
+  clearRoutes(clearArrays){
+    this.showOrHide(this.renderedRoutes, true)
+    if(clearArrays) this.renderedRoutes.length = 0
   }
+
+  clearMarkers(instance_variable_marker_array, clearArrays=true){
+    this.resetBounds()
+    this.showOrHide(instance_variable_marker_array, true, clearArrays)
+    if(clearArrays){
+        instance_variable_marker_array.length = 0 //clears array
+      }
+    }
 
   reinstateMap(){
     console.log(this.renderedRoutes)
@@ -51,20 +54,15 @@ class MapObject{
     this.clearMarkers(this.branchesMarkers)
   }
 
-
-  clearRoutes(clearArrays){
-    this.showOrHide(this.renderedRoutes, true)
-    if(clearArrays) this.renderedRoutes.length = 0
-  }
-
-  clearMarkers(instance_variable_marker_array, clearArrays=true){
-    this.resetBounds()
-    this.showOrHide(instance_variable_marker_array, true, true)
-    if(clearArrays){
-        instance_variable_marker_array.length = 0 //clears array
-      }
+  showOrHide(array, hide=true, removeListeners=false){ //takes array of routes or markers
+   var mapOrNull = hide ? null : this.map
+   array.forEach((markerOrRoute)=>{
+    markerOrRoute.setMap(mapOrNull)
+    if(removeListeners){
+      google.maps.event.clearInstanceListeners(markerOrRoute);
     }
-  
+   })
+  }
 
   resetBounds(){
     this.bounds = new google.maps.LatLngBounds()
@@ -86,10 +84,10 @@ class MapObject{
   }
 
   drawRouteWithGoogleResponse(job){
-    if(job.hidden) return
+      if(job.hidden) return
     var {start_location, end_location} = job.google_directions.routes[ 0 ].legs[ 0 ]
-    this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers)
-    this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers)
+    this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this))
+    this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this))
 
     var directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
@@ -100,9 +98,7 @@ class MapObject{
     this.renderedRoutes.push(directionsDisplay)
   }
 
-
-
-  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message=''){
+  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction){
     var marker = new google.maps.Marker({
       position: coords,
       map: this.map,
@@ -114,17 +110,48 @@ class MapObject{
       this.bounds.extend(coords) 
       this.map.fitBounds(this.bounds)  
     }
+    if(clickfunction) marker.addListener('click', (coords)=>{clickfunction(coords)})
     instance_variable_marker_array.push(marker)
+
   }
 
-
-
-
-displayMarkersFromStore(marker_array_from_store,  instance_variable_marker_array, colour = 'red'){
+displayMarkersFromStore(marker_array_from_store,  instance_variable_marker_array, colour = 'red', clickfunction){
   marker_array_from_store.forEach((coords)=>{
-    this.placeMarker(coords, this.pinSymbol(colour), instance_variable_marker_array, true, true)
+    this.placeMarker(coords, this.pinSymbol(colour), instance_variable_marker_array, false, true, '', clickfunction)
   })
+  console.log('length', instance_variable_marker_array.length)
   if(instance_variable_marker_array.length===1) this.map.setZoom(10)
+}
+
+panToStreetView(coords){
+// console.log(coords.latLng)
+// this.map.setCenter(coords.latLng)
+// this.map.setZoom(24)
+// var streetView = this.map.getStreetView()
+// streetView.setPosition(coords.latLng)
+// setAddressControlOptions({
+//                position: google.maps.ControlPosition.BOTTOM_CENTER
+//              })
+// streetView.setLinksControl(false)
+// streetView.setPanControl(false)
+
+// streetView.setVisible(true)
+var streetView = new google.maps.StreetViewPanorama(
+            document.getElementById('map'), {
+              position: coords.latLng,
+              addressControlOptions: {
+                position: google.maps.ControlPosition.TOP_LEFT
+              },
+              linksControl: false,
+              panControl: true,
+              enableCloseButton: false
+        });
+this.createAMapButton(this.returnToMap.bind(this, streetView), 'LEFT_BOTTOM', 'Return To Map', streetView)
+}
+
+returnToMap(streetView){
+  streetView.setVisible(false)
+  
 }
 
 
@@ -185,47 +212,49 @@ getInfowindowOffset(marker){
           });
 }
 
-
-addBranchButtonToMap(){
-  if (this.branchesButtonExists) return
-    this.branchesButtonExists = true
-  var centerControlDiv = document.createElement('div');
-  this.styleBranchesButtonAndListenerFunction(centerControlDiv, this.map)     
-
-  centerControlDiv.index = 1;
-  this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
-
+createAMapButton(listenerFunction, positionInCapitals, nameString, streetView){//if isStreetView false the streetview
+  if(nameString=='BranchesS'){
+    if(this.branchesButtonExists) return
+      this.branchesButtonExists = true
+  }
+  var button = document.createElement('div');
+  this.styleButtonAndAddListener(button, this.map, listenerFunction, nameString, streetView)
+  button.index = 1
+  if(streetView){
+    streetView.controls[google.maps.ControlPosition[positionInCapitals]].push(button)
+    //push to streetviewcontrols
+  
+  }else{
+    this.map.controls[google.maps.ControlPosition[positionInCapitals]].push(button);
+  }
+  
 }
 
-styleBranchesButtonAndListenerFunction(controlDiv, map){
-// Set CSS for the control border.
+styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView){
+    var backColor = streetView ? 'rgb(25,25,25)' : '#fff'
+    var textColor = streetView ? '#fff' : 'rgb(25,25,25)'
     var controlUI = document.createElement('div');
-    controlUI.style.backgroundColor = '#fff';
-    controlUI.style.border = '2px solid #fff';
+    controlUI.style.backgroundColor = backColor;
+    controlUI.style.border =  `2px solid ${backColor}`;
     controlUI.style.borderRadius = '3px';
     controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
     controlUI.style.cursor = 'pointer';
     controlUI.style.margin = '12px';
     controlUI.style.textAlign = 'center';
-    controlUI.title = 'Click to recenter the map';
-    controlDiv.appendChild(controlUI);
-
+    // controlUI.title = 'Click to recenter the map';
+    button.appendChild(controlUI);
      // Set CSS for the control interior.
      var controlText = document.createElement('div');
-     controlText.style.color = 'rgb(25,25,25)';
+     controlText.style.color = textColor;
      controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
      controlText.style.fontSize = '10px';
      controlText.style.lineHeight = '24px';
      controlText.style.paddingLeft = '5px';
      controlText.style.paddingRight = '5px';
-
-     controlText.innerHTML = 'Branches';
+     controlText.innerHTML = nameString;
      controlUI.appendChild(controlText);
-
-  // Setup the click event listeners: simply set the map to Chicago.
-    var chicago = {lat: 41.85, lng: -87.65};
-    controlUI.addEventListener('click', this.display_branches.bind(this));
- }
+     controlUI.addEventListener('click', listenerFunction);
+}
 
  display_branches(){
   if(this.branchesShowing){
@@ -284,6 +313,45 @@ truckSymbol3(color){
 
 export {MapObject, mapObjectInstances}
 
+// addBranchButtonToMap(){
+
+//   if (this.branchesButtonExists) return
+//     this.branchesButtonExists = true
+//   var centerControlDiv = document.createElement('div');
+//   this.styleBranchesButtonAndListenerFunction(centerControlDiv, this.map)     
+
+//   centerControlDiv.index = 1;
+//   this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
+// }
+
+// styleBranchesButtonAndListenerFunction(controlDiv, map){
+// // Set CSS for the control border.
+//     var controlUI = document.createElement('div');
+//     controlUI.style.backgroundColor = '#fff';
+//     controlUI.style.border = '2px solid #fff';
+//     controlUI.style.borderRadius = '3px';
+//     controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+//     controlUI.style.cursor = 'pointer';
+//     controlUI.style.margin = '12px';
+//     controlUI.style.textAlign = 'center';
+//     controlUI.title = 'Click to recenter the map';
+//     controlDiv.appendChild(controlUI);
+
+//      // Set CSS for the control interior.
+//      var controlText = document.createElement('div');
+//      controlText.style.color = 'rgb(25,25,25)';
+//      controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+//      controlText.style.fontSize = '10px';
+//      controlText.style.lineHeight = '24px';
+//      controlText.style.paddingLeft = '5px';
+//      controlText.style.paddingRight = '5px';
+
+//      controlText.innerHTML = 'Branches';
+//      controlUI.appendChild(controlText);
+
+//   // Setup the click event listeners: simply set the map to Chicago.
+//     controlUI.addEventListener('click', this.display_branches.bind(this));
+//  }
 
 
 // temporarilyClearMap(){

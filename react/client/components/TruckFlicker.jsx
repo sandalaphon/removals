@@ -8,13 +8,11 @@ import {withRouter} from 'react-router'
 
 class TruckFlicker extends React.Component {
 
-
   constructor(props) {
     super(props);
     this.state = {
     }
     this.indexOfRenderedRoute = undefined
-    
   }
 
   showAllRoutes(event){
@@ -61,7 +59,6 @@ class TruckFlicker extends React.Component {
 
     var jobToDisplay = this.getNextJobToDisplay(next, relevantArray, current_truckflicker_job)
     mapObject.clearMap()
-  
     mapObject.branchesShowing=false
     if(jobToDisplay){
       mapObject.drawRouteWithGoogleResponse(jobToDisplay)
@@ -73,12 +70,10 @@ class TruckFlicker extends React.Component {
   getNextJobToDisplay(next, relevantArray, current_truckflicker_job){
 
     var arrayToUse = next ? relevantArray : relevantArray.slice().reverse()
-    var indexOfJob
     var jobToReturn
     var unfound=true
     if(!current_truckflicker_job){
       arrayToUse.forEach((job)=>{
-
         if(!job.hidden&&unfound){
           jobToReturn = job
           unfound=false
@@ -86,15 +81,12 @@ class TruckFlicker extends React.Component {
       })
     }else{
       let currentIndex = arrayToUse.indexOf(current_truckflicker_job)
-      console.log(currentIndex)
-     
       arrayToUse.forEach((job, index)=>{
         console.log(!job.hidden, index>currentIndex, unfound)
         if(!job.hidden&&index>currentIndex&&unfound){
           jobToReturn=job
           unfound=false
         }
-      
       })
       if(unfound){
         arrayToUse.forEach((job, index)=>{
@@ -105,11 +97,8 @@ class TruckFlicker extends React.Component {
         })
       }
     }
-
       return jobToReturn
-
     }
-
 
 
     render(){
@@ -121,7 +110,6 @@ class TruckFlicker extends React.Component {
         </div>
         );
     }
-
   }
 
   const mapDispatchToProps=(dispatch)=>({

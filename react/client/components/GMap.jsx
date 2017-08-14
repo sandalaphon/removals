@@ -39,7 +39,14 @@ class GMap extends React.Component {
     console.log('pathname', pathname)
     let mapOptions = {
       zoom: this.state.zoom,
-      center: this.mapCenter()
+      center: this.mapCenter(),
+
+      zoomControl: true,
+       mapTypeControl: true,
+       scaleControl: true,
+       streetViewControl: true,
+       rotateControl: true,
+       fullscreenControl: true
     }
     var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
     var mapObject = new MapObject(map, pathname)
@@ -55,22 +62,27 @@ class GMap extends React.Component {
       )
   }
 
+  toggleStreetView(){
+    // this.props.actions.common.setStreetViewVisiblitiy(false)
+  }
+
   render() {
 
         switch (this.props.location.pathname){
 
           case '/planner':
 
-          if(this.state.mapObject&&!this.state.branchesButtonExists){
-              this.state.mapObject.addBranchButtonToMap()
-          
+          if(this.state.mapObject&&!this.state.mapObject.branchesButtonExists){
+            this.state.mapObject.createAMapButton(this.state.mapObject.display_branches.bind(this.state.mapObject), 'TOP_RIGHT', 'BranchesS')
+         
           } 
 
           break;
 
           case '/today':
-          if(this.state.mapObject&&!this.state.branchesButtonExists){
+          if(this.state.mapObject&&!this.state.mapObject.branchesButtonExists){
               this.state.mapObject.addBranchButtonToMap()
+
           
           } 
 
@@ -87,9 +99,14 @@ class GMap extends React.Component {
 
 
         return (
-          <div className='grid-item-map' ref="mapCanvas">
-
-          </div>
+          
+            
+                <div id='map' className='grid-item-map' ref="mapCanvas">
+                
+                </div>
+          
+         
+       
           )
 
       }

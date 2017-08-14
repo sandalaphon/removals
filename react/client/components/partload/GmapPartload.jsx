@@ -76,7 +76,7 @@ class GmapPartload extends React.Component {
         mapObject.displayArrayOfJobRoutes(best_pick_up_jobs)
       }
       if(partload_marker_array.length){
-        mapObject.displayMarkersFromStore(partload_marker_array, mapObject.postcodeMarkers)
+        mapObject.displayMarkersFromStore(partload_marker_array, mapObject.postcodeMarkers,'red', mapObject.panToStreetView.bind(mapObject))
       }
 
     }
