@@ -65,7 +65,7 @@ class TruckFlicker extends React.Component {
   this.setInstanceVariables()
   var jobToDisplay = this.getNextJobToDisplay(next)
   this.mapObject.clearMap()
-  this.mapObject.branchesShowing=false
+  // this.mapObject.branchesShowing=false
   if(jobToDisplay){
     console.log('getting here pathname', this.pathname)
     this.mapObject.drawRouteWithGoogleResponse(jobToDisplay)

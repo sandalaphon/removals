@@ -28,7 +28,7 @@ class MapObject{
     this.clearMarkers(this.markers, clearArrays)
     this.clearMarkers(this.sliderMarkers, clearArrays)
     this.clearMarkers(this.postcodeMarkers, clearArrays)
-    this.clearMarkers(this.branchesMarkers, clearArrays)
+    // this.clearMarkers(this.branchesMarkers, clearArrays)
     this.clearRoutes(clearArrays)
   }
 
@@ -244,29 +244,49 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
      controlUI.addEventListener('click', listenerFunction);
 }
 
+ // display_branches(){
+ //  if(this.branchesShowing){
+ //    console.log('this.markers', this.markers)
+ //    console.log('this.sliderMarkers', this.sliderMarkers)
+ //    console.log('this.branchesMarkers', this.branchesMarkers)
+
+ //    this.reinstateMap()
+ //    this.branchesShowing = false
+ //    this.branchesMarkers=[]
+ //  }else{
+ //    console.log('this.markers', this.markers)
+ //    console.log('this.sliderMarkers', this.sliderMarkers)
+ //    console.log('this.branchesMarkers', this.branchesMarkers)
+ //    this.clearMap(false)
+ //    this.branchesShowing = true
+ //    const branches = store.getState().common.all_branches
+ //    branches.forEach((branch)=>{
+ //      var latlng2 = JSON.parse(branch.latlng)
+ //      this.placeMarker(latlng2, this.pinSymbol(branch.colour), this.branchesMarkers, true, true, branch.address)})
+ //  } 
+ // }
+
  display_branches(){
   if(this.branchesShowing){
     console.log('this.markers', this.markers)
     console.log('this.sliderMarkers', this.sliderMarkers)
     console.log('this.branchesMarkers', this.branchesMarkers)
-
-    this.reinstateMap()
+    this.clearMarkers(this.branchesMarkers, true)
+    // this.reinstateMap()
     this.branchesShowing = false
-    this.branchesMarkers=[]
+    // this.branchesMarkers=[]
   }else{
     console.log('this.markers', this.markers)
     console.log('this.sliderMarkers', this.sliderMarkers)
     console.log('this.branchesMarkers', this.branchesMarkers)
-    this.clearMap(false)
+    // this.clearMap(false)
     this.branchesShowing = true
     const branches = store.getState().common.all_branches
     branches.forEach((branch)=>{
       var latlng2 = JSON.parse(branch.latlng)
-      this.placeMarker(latlng2, this.pinSymbol(branch.colour), this.branchesMarkers, true, true, branch.address)})
-  }
-  
+      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address)})
+  } 
  }
-
 
 pinSymbol(color) {
   return {
@@ -277,6 +297,19 @@ pinSymbol(color) {
     strokeWeight: 2,
     scale: 1,
   };
+}
+
+branchSymbol(color='red'){
+  return{
+    path: "M25.595,38.425h6.69c1.02,0,1.85-0.83,1.85-1.86v-13.52l3.49-1.81l-13.64-11.66l-13.61,11.66     l3.49,1.81v13.52c0,1.03,0.83,1.86,1.86,1.86h6.68v-5.9599h3.19V38.425z",
+    fillColor: color,
+    fillOpacity: 1,
+    strokeColor: '#000',
+    strokeWeight: 2,
+    scale: .4,
+    origin: new google.maps.Point(0, 0), //origin point
+    anchor: new google.maps.Point(24, 24) // offset point 
+  }
 }
 
 
