@@ -15,8 +15,39 @@ class TruckFlicker extends React.Component {
     this.indexOfRenderedRoute = undefined
   }
 
+  componentDidMount(){
+    this.pathname = this.props.router.location.pathname.slice(1)
+  }
+
+
+  setInstanceVariables(){
+
+    switch (this.pathname){
+      case 'today':
+      this.current_truckflicker_job = this.props.trips.current_today_truckflicker_job
+      this.mapObject = mapObjectInstances.today
+      this.relevantArray = this.props.trips.all_trips
+      break;
+      case 'planner':
+      this.current_truckflicker_job = this.props.trips.current_planner_truckflicker_job
+      this.mapObject = mapObjectInstances.planner
+      this.relevantArray = this.props.trips.all_trips
+      break;
+      case 'partload':
+      this.current_truckflicker_job = this.props.trips.current_partload_truckflicker_job
+      this.mapObject = mapObjectInstances.partload
+      this.relevantArray = this.props.best_pick_up_jobs
+      break;
+    }
+  }
+
   showAllRoutes(event){
     event.preventDefault()
+    this.setInstanceVariables()
+    this.relevantArray.forEach((job)=>{
+      this.props.actions.common_actions.setHiddenStatus(job)
+    }) 
+    this.props.actions.common_actions.clearCurrentTruckFlickerJob(this.pathname)
   }
 
   handlePreviousClick(event){
@@ -30,49 +61,27 @@ class TruckFlicker extends React.Component {
  }
 
 
-  renderAppropriateRoute(next = true){
-
-    var mapObject
-    var relevantArray
-    var current_truckflicker_job
-    var pathname =this.props.router.location.pathname
-    switch (pathname){
-      case '/today':
-      current_truckflicker_job = this.props.trips.current_today_truckflicker_job
-      mapObject = mapObjectInstances.today
-      relevantArray = this.props.trips.all_trips
-      pathname='today'
-      break;
-      case '/planner':
-      current_truckflicker_job = this.props.trips.current_planner_truckflicker_job
-      mapObject = mapObjectInstances.planner
-      relevantArray = this.props.trips.all_trips
-      pathname='planner'
-      break;
-      case '/partload':
-      current_truckflicker_job = this.props.trips.current_partload_truckflicker_job
-      mapObject = mapObjectInstances.partload
-      relevantArray = this.props.best_pick_up_jobs
-      pathname='partload'
-      break;
+ renderAppropriateRoute(next = true){
+  this.setInstanceVariables()
+  var jobToDisplay = this.getNextJobToDisplay(next)
+  this.mapObject.clearMap()
+  this.mapObject.branchesShowing=false
+  if(jobToDisplay){
+    console.log('getting here pathname', this.pathname)
+    this.mapObject.drawRouteWithGoogleResponse(jobToDisplay)
+      // this.current_truckflicker_job = jobToDisplay
+      this.props.actions.common_actions.setCurrentTruckFlickerJob(jobToDisplay, this.pathname)
     }
 
-    var jobToDisplay = this.getNextJobToDisplay(next, relevantArray, current_truckflicker_job)
-    mapObject.clearMap()
-    mapObject.branchesShowing=false
-    if(jobToDisplay){
-      mapObject.drawRouteWithGoogleResponse(jobToDisplay)
-      this.props.actions.common_actions.setCurrentTruckFlickerJob(jobToDisplay, pathname)
-    }
-   
   }
 
-  getNextJobToDisplay(next, relevantArray, current_truckflicker_job){
+  getNextJobToDisplay(next){
 
-    var arrayToUse = next ? relevantArray : relevantArray.slice().reverse()
+    var arrayToUse = next ? this.relevantArray : this.relevantArray.slice().reverse()
     var jobToReturn
     var unfound=true
-    if(!current_truckflicker_job){
+    if(!this.current_truckflicker_job){
+      console.log('no current_truckflicker_job')
       arrayToUse.forEach((job)=>{
         if(!job.hidden&&unfound){
           jobToReturn = job
@@ -80,7 +89,8 @@ class TruckFlicker extends React.Component {
         } 
       })
     }else{
-      let currentIndex = arrayToUse.indexOf(current_truckflicker_job)
+      console.log('current f job', )
+      let currentIndex = arrayToUse.indexOf(this.current_truckflicker_job)
       arrayToUse.forEach((job, index)=>{
         console.log(!job.hidden, index>currentIndex, unfound)
         if(!job.hidden&&index>currentIndex&&unfound){
@@ -97,31 +107,31 @@ class TruckFlicker extends React.Component {
         })
       }
     }
-      return jobToReturn
-    }
-
-
-    render(){
-      return (
-        <div className = 'grid-item-truck-flicker'>
-        <button onClick={this.showAllRoutes.bind(this)}>Show All Routes</button>
-        <button onClick={this.handlePreviousClick.bind(this)}>Previous</button>
-        <button onClick={this.handleNextClick.bind(this)}>Next</button>
-        </div>
-        );
-    }
+    return jobToReturn
   }
 
-  const mapDispatchToProps=(dispatch)=>({
-    actions: {
-      common_actions: bindActionCreators(commonActions, dispatch)
-    }
-  })
 
-  const mapStateToProps=(state)=>({
-    trips: state.common,
-    best_pick_up_jobs: state.partload.best_pick_up_jobs
-  })
+  render(){
+    return (
+      <div className = 'grid-item-truck-flicker'>
+      <button onClick={this.showAllRoutes.bind(this)}>Show All Routes</button>
+      <button onClick={this.handlePreviousClick.bind(this)}>Previous</button>
+      <button onClick={this.handleNextClick.bind(this)}>Next</button>
+      </div>
+      );
+  }
+}
 
-  export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TruckFlicker))
+const mapDispatchToProps=(dispatch)=>({
+  actions: {
+    common_actions: bindActionCreators(commonActions, dispatch)
+  }
+})
+
+const mapStateToProps=(state)=>({
+  trips: state.common,
+  best_pick_up_jobs: state.partload.best_pick_up_jobs
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TruckFlicker))
 

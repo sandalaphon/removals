@@ -124,18 +124,6 @@ displayMarkersFromStore(marker_array_from_store,  instance_variable_marker_array
 }
 
 panToStreetView(coords){
-// console.log(coords.latLng)
-// this.map.setCenter(coords.latLng)
-// this.map.setZoom(24)
-// var streetView = this.map.getStreetView()
-// streetView.setPosition(coords.latLng)
-// setAddressControlOptions({
-//                position: google.maps.ControlPosition.BOTTOM_CENTER
-//              })
-// streetView.setLinksControl(false)
-// streetView.setPanControl(false)
-
-// streetView.setVisible(true)
 var streetView = new google.maps.StreetViewPanorama(
             document.getElementById('map'), {
               position: coords.latLng,
