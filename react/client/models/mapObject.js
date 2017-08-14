@@ -151,7 +151,7 @@ this.createAMapButton(this.returnToMap.bind(this, streetView), 'LEFT_BOTTOM', 'R
 
 returnToMap(streetView){
   streetView.setVisible(false)
-  
+
 }
 
 
@@ -212,8 +212,8 @@ getInfowindowOffset(marker){
           });
 }
 
-createAMapButton(listenerFunction, positionInCapitals, nameString, streetView){//if isStreetView false the streetview
-  if(nameString=='BranchesS'){
+createAMapButton(listenerFunction, positionInCapitals, nameString, streetView){//if no streetView then normal map
+  if(nameString=='Branches'){
     if(this.branchesButtonExists) return
       this.branchesButtonExists = true
   }

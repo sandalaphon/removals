@@ -26,7 +26,8 @@ class GmapPartload extends React.Component {
 
   componentDidUpdate(){
     if(!this.state.branchesButtonExists) {
-        this.state.mapObject.addBranchButtonToMap()
+        // this.state.mapObject.addBranchButtonToMap()
+        this.state.mapObject.createAMapButton(this.state.mapObject.display_branches.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
       }
   }
 
