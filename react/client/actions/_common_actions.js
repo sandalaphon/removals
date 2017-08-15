@@ -8,13 +8,7 @@ import axios from 'axios'
 // }
 //////////////////////////////////////
 
-export function setBranchDisplayStatus(pathname, showing){
-  return {
-    type: 'SET_BRANCH_DISPLAYED_STATUS',
-    showing,
-    pathname
-  }
-}
+
 
 export function setFilterSearchString(searchString){
   return {

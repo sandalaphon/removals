@@ -13,7 +13,7 @@ class GmapPartload extends React.Component {
   constructor(props){
     super(props)
     this.state = { 
-      zoom: 8,
+      zoom: 12,
       center: { lng: -3.1883 , lat: 55.9533 },
       map: null
       
@@ -25,10 +25,9 @@ class GmapPartload extends React.Component {
   }
 
   componentDidUpdate(){
-
-    if(!this.state.mapObject.branchesButtonExists) {
+    if(!this.state.branchesButtonExists) {
         // this.state.mapObject.addBranchButtonToMap()
-        this.state.mapObject.createAMapButton(this.state.mapObject.handleBranchesClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
+        this.state.mapObject.createAMapButton(this.state.mapObject.display_branches.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
       }
   }
 
@@ -71,7 +70,7 @@ class GmapPartload extends React.Component {
     if(mapObject){
 
    
-      mapObject.display_branches(this.props.branch_status_partload)
+
       if(current_partload_truckflicker_job){
         mapObjectInstances.partload.drawRouteWithGoogleResponse(current_partload_truckflicker_job)
       }else{
@@ -80,7 +79,6 @@ class GmapPartload extends React.Component {
       if(partload_marker_array.length){
         mapObject.displayMarkersFromStore(partload_marker_array, mapObject.postcodeMarkers,'red', mapObject.panToStreetView.bind(mapObject))
       }
-
 
     }
   
@@ -100,7 +98,7 @@ class GmapPartload extends React.Component {
 // })
 
 const mapStateToProps=(state)=>({
-  branch_status_partload:                         state.common.branch_status_partload, 
+  // all_trips:                         state.common.all_trips, 
   partload_marker_array:             state.partload.partload_marker_array, 
   best_pick_up_jobs:                 state.partload.best_pick_up_jobs, 
   current_partload_truckflicker_job: state.common.current_partload_truckflicker_job

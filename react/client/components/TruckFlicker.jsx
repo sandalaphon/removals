@@ -5,15 +5,17 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
 
+
 class TruckFlicker extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
     }
+    this.indexOfRenderedRoute = undefined
   }
 
-  componentWillMount(){
+  componentDidMount(){
     this.pathname = this.props.router.location.pathname.slice(1)
   }
 
@@ -25,7 +27,6 @@ class TruckFlicker extends React.Component {
       this.current_truckflicker_job = this.props.trips.current_today_truckflicker_job
       this.mapObject = mapObjectInstances.today
       this.relevantArray = this.props.trips.all_trips
-      this.branchStatus = this.props.trips.branches_status_today
       break;
       case 'planner':
       this.current_truckflicker_job = this.props.trips.current_planner_truckflicker_job
@@ -109,8 +110,8 @@ class TruckFlicker extends React.Component {
     return jobToReturn
   }
 
+
   render(){
-    // this.setInstanceVariables()
     return (
       <div className = 'grid-item-truck-flicker'>
       <button onClick={this.showAllRoutes.bind(this)}>Show All Routes</button>

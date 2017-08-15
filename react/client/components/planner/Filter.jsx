@@ -36,7 +36,7 @@ class Filter extends React.Component {
     if(this.props.filter_search_string) searchBoxText = this.props.filter_search_string
 
     return(
-      <div className={this.props.branch_status_planner==2 ? 'hidden' :'grid-item-filter'}>
+      <div className='grid-item-filter'>
     
         <input className='search-box' type="text" placeholder={searchPlaceHolder} value = {searchBoxText} onChange={this.doSearch.bind(this)}/>
      
@@ -54,8 +54,7 @@ const mapDispatchToProps=(dispatch)=>({
 })
 
 const mapStateToProps=(state)=>({ 
-  all_trips: state.common.all_trips, 
-  branch_status_planner: state.common.branch_status_planner, 
+  all_trips: state.common.all_trips,  
   filter_search_string: state.common.filter_search_string
 })
 
