@@ -4,7 +4,7 @@
 .grid-planner{
   display: grid;
 
-
+  
   /*background: #E8F3F8;*/
 
   position: absolute;
@@ -63,7 +63,7 @@
   border: 2px solid white;
   border-radius: 3px;
   box-shadow: 0 2px 6px rgba(0,0,0,.3);
-  color: #1a1a1a;
+  color: #865900;
   
 
 

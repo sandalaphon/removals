@@ -1,64 +1,39 @@
 
 .nav-bar{
-  /*position: fixed;*/
   display: grid;
   grid-template-areas:
   "a b c d e f . . . . email signout";
   grid-template-columns: repeat(12,1fr);
 
-  /*font-family: 'Roboto';*/
   text-align: center;
-
-  /*color: black;*/
-  /*color: black;*/
   color: white; /*only email*/
-  background: #1a1a1a;
-  /*background: #81A8B8;*/
+  background: #f2f2f2;
 
-
-
-  /*outline: 1px solid #ddd;*/
-  /*border-top: 1px solid #fff;*/
-  /*padding: 2px;*/
-
-  /*grid-template-rows: 1fr;*/
-  /*justify-items: center;
-  align-items: center;*/
-  /*outline: none;*/
-  /*background-color: #C0C0C0;*/
-  /*grid-area: nav;*/
-  /*height: 15px;*/
 }
 
-
-.nav-bar> *:hover{
-  
-}
 
 a:hover{
   color: silver;
-  /*box-shadow: 4px 0 2px -2px rgba(0,0,0,0.4);*/
+
 }
 
 a.active{
  background: white;
  text-decoration: none;
  color: #1a1a1a;
- /*border-radius: 6px 6px 0px 0px;*/
- 
- /*box-shadow: 0 0 5px 2px rgba(0,0,0,.35);*/
- /*border-bottom: 1px solid white;*/
- /*border-top: 1px solid silver;*/
+
 }
 
 .home-nav, .today-nav, .planner-nav,.partload-nav, .account-nav, .csv-nav  {
-  /*color: black;*/
-  /*color: #DBE6EC;*/
-  color: white;
-  /*border-right: 1px inset #b9d3c2;*/
+ 
+  color: black;
+  border-right: 1px inset white;
  
   align-self: center; /* vertical center, visible with short widths */
   
+}
+
+.nav-bar> *:hover{
 }
 /*///////////////NAV/////////////////////////*/
 .home-nav{
