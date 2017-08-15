@@ -92,12 +92,11 @@
 
 
 .cell{
-  /*max-height: 10px;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 1px solid #865900;
   color: #865900;
-  text-align:center;
-  align-items: center;
-  /*display:grid;*/
 }
 
 
