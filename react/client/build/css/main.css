@@ -27,10 +27,12 @@ table tr:nth-child(odd) td{
  background: #fff6e3;
   /*color: #eebd5b;*/
  color: #865900;
+ border-right: 1px inset white;
 }
 table tr:nth-child(even) td{
  color: #865900;
  /*color: #865900;*/
+ border-right: 1px inset #fff6e3;
   background: #ffffff;
 }
 
