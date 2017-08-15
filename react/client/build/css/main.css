@@ -35,6 +35,7 @@ table tr:nth-child(even) td{
 }
 
 th{
+  font-size: 0.7vw;
   color: #fff6e3;
   background: #c48811;
   /*border-right: 4px inset white;*/
