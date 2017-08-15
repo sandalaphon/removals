@@ -26,7 +26,8 @@ class GmapPartload extends React.Component {
 
   componentDidUpdate(){
     if(!this.state.branchesButtonExists) {
-        this.state.mapObject.addBranchButtonToMap()
+        // this.state.mapObject.addBranchButtonToMap()
+        this.state.mapObject.createAMapButton(this.state.mapObject.display_branches.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
       }
   }
 
@@ -68,14 +69,15 @@ class GmapPartload extends React.Component {
 
     if(mapObject){
 
-      if(partload_marker_array.length){
-        mapObject.displayMarkersFromStore(partload_marker_array, mapObject.postcodeMarkers)
-      }
+   
 
       if(current_partload_truckflicker_job){
         mapObjectInstances.partload.drawRouteWithGoogleResponse(current_partload_truckflicker_job)
       }else{
         mapObject.displayArrayOfJobRoutes(best_pick_up_jobs)
+      }
+      if(partload_marker_array.length){
+        mapObject.displayMarkersFromStore(partload_marker_array, mapObject.postcodeMarkers,'red', mapObject.panToStreetView.bind(mapObject))
       }
 
     }

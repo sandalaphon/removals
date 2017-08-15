@@ -39,16 +39,12 @@
 
 .grid-item-truck-day-view{
   font-size: 0.8vw;
-  /*margin-top: 20px;*/
-  /*border: solid 4px #0F2C3E;*/
- /*-webkit-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
-   -moz-box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);
-   box-shadow: 6px 6px 17px 9px rgba(15,44,62,0.6);*/
+  /*height: 200px;*/
   display: grid;
    grid-area: cal;
   /* align-content: stretch;
    align-items: stretch;*/
-   /*overflow: scroll;*/
+   overflow: auto;
    grid-template-columns: repeat(19,1fr);
    /*grid-template-rows: repeat(8,1fr);*/
    border: 2px solid #ffffff;
@@ -65,11 +61,6 @@
   box-shadow: 0 2px 6px rgba(0,0,0,.3);
   color: #865900;
   
-
-
- 
-  
- 
 }
 
 /*.grid-item-joblist{
@@ -83,16 +74,10 @@
   background-color: hotpink;
 }
 
-
-
 .grid-item-filter{
   grid-area: fil;
-  
 
 }
-
-
-
 
 /*////////////////SCHEDULE////////////////////////////*/
 
@@ -107,9 +92,9 @@
 
 
 .cell{
-  
-  border: 1px solid #1a1a1a;
-  color: #1a1a1a;
+  /*max-height: 10px;*/
+  border: 1px solid #865900;
+  color: #865900;
   text-align:center;
   align-items: center;
   /*display:grid;*/

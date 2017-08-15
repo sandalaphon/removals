@@ -43,7 +43,7 @@ class GMap extends React.Component {
             "elementType": "geometry",
             "stylers": [
               {
-                "color": "#f5f5f5"
+                "color": "#fff6e3"
               }
             ]
           },
@@ -59,7 +59,7 @@ class GMap extends React.Component {
             "elementType": "labels.text.fill",
             "stylers": [
               {
-                "color": "#616161"
+                "color": "#865900"
               }
             ]
           },
@@ -229,10 +229,17 @@ class GMap extends React.Component {
     let mapOptions = {
       zoom: this.state.zoom,
       center: this.mapCenter(),
+
       mapTypeControlOptions: {
         mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
                 'styled_map']
-      }
+      },
+      zoomControl: true,
+       mapTypeControl: true,
+       scaleControl: true,
+       streetViewControl: true,
+       rotateControl: true,
+       fullscreenControl: true
     }
     var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
     var mapObject = new MapObject(map, pathname)
@@ -251,22 +258,27 @@ class GMap extends React.Component {
       )
   }
 
+  toggleStreetView(){
+    // this.props.actions.common.setStreetViewVisiblitiy(false)
+  }
+
   render() {
 
         switch (this.props.location.pathname){
 
           case '/planner':
 
-          if(this.state.mapObject&&!this.state.branchesButtonExists){
-              this.state.mapObject.addBranchButtonToMap()
-          
+          if(this.state.mapObject&&!this.state.mapObject.branchesButtonExists){
+            this.state.mapObject.createAMapButton(this.state.mapObject.display_branches.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
+         
           } 
 
           break;
 
           case '/today':
-          if(this.state.mapObject&&!this.state.branchesButtonExists){
-              this.state.mapObject.addBranchButtonToMap()
+          if(this.state.mapObject&&!this.state.mapObject.branchesButtonExists){
+             this.state.mapObject.createAMapButton(this.state.mapObject.display_branches.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
+
           
           } 
 
@@ -283,9 +295,14 @@ class GMap extends React.Component {
 
 
         return (
-          <div className='grid-item-map' ref="mapCanvas">
-
-          </div>
+          
+            
+                <div id='map' className='grid-item-map' ref="mapCanvas">
+                
+                </div>
+          
+         
+       
           )
 
       }

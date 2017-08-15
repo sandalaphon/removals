@@ -8,160 +8,124 @@ import {withRouter} from 'react-router'
 
 class TruckFlicker extends React.Component {
 
-
   constructor(props) {
     super(props);
     this.state = {
-
     }
-    this.indexOfRenderedRoute = -1 
+    this.indexOfRenderedRoute = undefined
+  }
+
+  componentDidMount(){
+    this.pathname = this.props.router.location.pathname.slice(1)
+  }
+
+
+  setInstanceVariables(){
+
+    switch (this.pathname){
+      case 'today':
+      this.current_truckflicker_job = this.props.trips.current_today_truckflicker_job
+      this.mapObject = mapObjectInstances.today
+      this.relevantArray = this.props.trips.all_trips
+      break;
+      case 'planner':
+      this.current_truckflicker_job = this.props.trips.current_planner_truckflicker_job
+      this.mapObject = mapObjectInstances.planner
+      this.relevantArray = this.props.trips.all_trips
+      break;
+      case 'partload':
+      this.current_truckflicker_job = this.props.trips.current_partload_truckflicker_job
+      this.mapObject = mapObjectInstances.partload
+      this.relevantArray = this.props.best_pick_up_jobs
+      break;
+    }
   }
 
   showAllRoutes(event){
     event.preventDefault()
+    this.setInstanceVariables()
+    this.relevantArray.forEach((job)=>{
+      this.props.actions.common_actions.setHiddenStatus(job)
+    }) 
+    this.props.actions.common_actions.clearCurrentTruckFlickerJob(this.pathname)
   }
 
   handlePreviousClick(event){
     event.preventDefault()
+    this.renderAppropriateRoute(false)
+  }
 
-    switch (this.props.location.pathname){
-      case '/today':
-        var relevantArray = this.props.trips.all_trips
-        if(this.indexOfRenderedRoute === -1 ){
-          this.indexOfRenderedRoute=relevantArray.length
-        }
-        if(this.props.trips.current_today_truckflicker_job){
-          this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_today_truckflicker_job)
-        }
-        this.renderAppropriateRoute(relevantArray, false, 'today')
-
-        // AND setState or store rendered route attribute and index
-        //And then deal with highlighting in list
-      break;
-     //
-      case '/planner':
-        var relevantArray = this.props.trips.all_trips
-        if(this.indexOfRenderedRoute === -1 ){
-          this.indexOfRenderedRoute=relevantArray.length
-        }
-        if(this.props.trips.current_planner_truckflicker_job){
-          this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_planner_truckflicker_job)
-        }
-        this.renderAppropriateRoute(relevantArray, false, 'planner')
-        // AND setState or store rendered route attribute and index
-        //And then deal with highlighting in list
-      break;
-      //
-      case '/partload':
-        var relevantArray = this.props.best_pick_up_jobs
-        if(this.indexOfRenderedRoute === -1 ){
-          this.indexOfRenderedRoute=relevantArray.length
-        }
-        if(this.props.trips.current_partload_truckflicker_job){
-          this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_partload_truckflicker_job)
-        }
-        this.renderAppropriateRoute(relevantArray, false, 'partload')
-        // AND setState or store rendered route attribute and index
-        //And then deal with highlighting in list
-      break;
-   }
-
+  handleNextClick(event){
+   event.preventDefault()
+   this.renderAppropriateRoute(true)
  }
 
- handleNextClick(event){
-   event.preventDefault()
-   console.log(this.props)
 
-  switch (this.props.location.pathname){
-    case '/today':
-      var relevantArray = this.props.trips.all_trips
-      if(this.props.trips.current_today_truckflicker_job){
-        this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_today_truckflicker_job)
-      }
-     this.renderAppropriateRoute(relevantArray, true, 'today')
-    break;
-    //
-    case '/planner':
-      var relevantArray = this.props.trips.all_trips
-      if(this.props.trips.current_planner_truckflicker_job){
-        this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_planner_truckflicker_job)
-      }
-     this.renderAppropriateRoute(relevantArray, true, 'planner')
-    break;
-    //
-    case '/partload':
-     var relevantArray = this.props.best_pick_up_jobs
-     if(this.props.trips.current_partload_truckflicker_job){
-       this.indexOfRenderedRoute = relevantArray.indexOf(this.props.trips.current_partload_truckflicker_job)
-     }
-     this.renderAppropriateRoute(relevantArray, true, 'partload')
-    break;
-    }
-  }
-
-  renderAppropriateRoute(relevantArray, next = true, pathname){
-    var counter = this.indexOfRenderedRoute
-    var increment = next ? 1 : -1 // +1 for next, -1 for previous
-    var numberHiddenRoutes = 0 //to create guard for all hidden list
-    var mapObject
-    switch (pathname){
-      case 'today':
-      mapObject = mapObjectInstances.today
-      break;
-      case 'planner':
-      mapObject = mapObjectInstances.planner
-      break;
-      case 'partload':
-      mapObject = mapObjectInstances.partload
-      break;
-    }
-
-    if(next && this.indexOfRenderedRoute===relevantArray.length-1 ){
-      console.log('next and last one')
-      this.indexOfRenderedRoute = -1
-      counter = -1
-    }
-    if(!next && this.indexOfRenderedRoute===0){
-      this.indexOfRenderedRoute = counter = relevantArray.length
-    }
-
-    mapObject.branchesShowing=false
-
-    while(true){ 
-      counter = counter + increment
-      if(counter>=relevantArray.length || counter < 0) break
-      var job = relevantArray[counter]
-      if (!job.hidden){
-        this.props.actions.common_actions.setCurrentTruckFlickerJob(job, pathname)
-        mapObject.clearMap()
-        mapObject.drawRouteWithGoogleResponse(job)
-        this.indexOfRenderedRoute = counter
-        break
-      }else{
-        numberHiddenRoutes = numberHiddenRoutes + 1
-        if(numberHiddenRoutes>=relevantArray.length) break
-      }
-
+ renderAppropriateRoute(next = true){
+  this.setInstanceVariables()
+  var jobToDisplay = this.getNextJobToDisplay(next)
+  this.mapObject.clearMap()
+  // this.mapObject.branchesShowing=false
+  if(jobToDisplay){
+    console.log('getting here pathname', this.pathname)
+    this.mapObject.drawRouteWithGoogleResponse(jobToDisplay)
+      // this.current_truckflicker_job = jobToDisplay
+      this.props.actions.common_actions.setCurrentTruckFlickerJob(jobToDisplay, this.pathname)
     }
 
   }
+
+  getNextJobToDisplay(next){
+
+    var arrayToUse = next ? this.relevantArray : this.relevantArray.slice().reverse()
+    var jobToReturn
+    var unfound=true
+    if(!this.current_truckflicker_job){
+      console.log('no current_truckflicker_job')
+      arrayToUse.forEach((job)=>{
+        if(!job.hidden&&unfound){
+          jobToReturn = job
+          unfound=false
+        } 
+      })
+    }else{
+      console.log('current f job', )
+      let currentIndex = arrayToUse.indexOf(this.current_truckflicker_job)
+      arrayToUse.forEach((job, index)=>{
+        console.log(!job.hidden, index>currentIndex, unfound)
+        if(!job.hidden&&index>currentIndex&&unfound){
+          jobToReturn=job
+          unfound=false
+        }
+      })
+      if(unfound){
+        arrayToUse.forEach((job, index)=>{
+          if(!job.hidden&&index<currentIndex&&unfound){
+            jobToReturn=job
+            unfound=false
+          }
+        })
+      }
+    }
+    return jobToReturn
+  }
+
 
   render(){
     return (
       <div className = 'grid-item-truck-flicker'>
-        <button onClick={this.showAllRoutes.bind(this)}>Show All Routes</button>
-        <button onClick={this.handlePreviousClick.bind(this)}>Previous</button>
-        <button onClick={this.handleNextClick.bind(this)}>Next</button>
+      <button onClick={this.showAllRoutes.bind(this)}>Show All Routes</button>
+      <button onClick={this.handlePreviousClick.bind(this)}>Previous</button>
+      <button onClick={this.handleNextClick.bind(this)}>Next</button>
       </div>
-    );
+      );
   }
-
 }
 
 const mapDispatchToProps=(dispatch)=>({
   actions: {
-      common_actions: bindActionCreators(commonActions, dispatch)
-    }
+    common_actions: bindActionCreators(commonActions, dispatch)
+  }
 })
 
 const mapStateToProps=(state)=>({

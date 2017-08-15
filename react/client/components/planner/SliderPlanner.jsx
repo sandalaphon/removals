@@ -42,6 +42,7 @@ class SliderPlanner extends React.Component{
     this.setState({value,})  
     const secondsPassed = value * 60 * 10
     this.props.actions.planner_actions.setPlannerSliderSecondsFromStart(secondsPassed)
+    this.placeMarkers(secondsPassed)
 
   }
 
