@@ -138,6 +138,12 @@ class SliderPlanner extends React.Component{
         max={72} 
         marks={marks} 
         step = {1}
+        dotStyle={{ borderColor: 'orange' }}
+        activeDotStyle={{ borderColor: 'yellow' }}
+        railStyle={{ backgroundColor: '#eebd5b', height: 2 }}
+        handleStyle={{
+                  borderColor: 'orange'
+                }}
         defaultValue = {this.state.value}
         // value = {this.state.value}
         included = {false}
