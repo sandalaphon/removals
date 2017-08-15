@@ -13,6 +13,21 @@ function handleTripData(state = {
 
   switch(action.type) {
 
+    case 'SET_BRANCH_DISPLAYED_STATUS':
+        switch(action.pathname){
+            case 'partload':
+            return { ...state, branch_status_partload: action.showing}
+            break;
+            case 'today':
+            return { ...state, branch_status_today: action.showing}
+            break;
+            case 'planner':
+            return { ...state, branch_status_planner: action.showing}
+            break;
+        }
+    
+    break;
+
     case 'SET_FILTER_SEARCH_STRING':
     return { ...state, filter_search_string: action.payload}
     break;

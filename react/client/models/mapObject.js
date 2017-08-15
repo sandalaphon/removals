@@ -1,5 +1,7 @@
 // import pantech from '../build/images/pantech.png'
 import store from '../store.js'
+import { dispatch } from 'redux';
+import { setBranchDisplayStatus } from '../actions/_common_actions';
 
 let mapObjectInstances = {}
 
@@ -79,6 +81,7 @@ class MapObject{
     //sliderMarkerCoordsandIndexArray looks like this: [{markerCoords, index, colour}, ...] index references mother array
     this.clearMarkers(this.sliderMarkers)
     sliderMarkerCoordsandIndexArray.forEach((object)=>{
+      console.log('object', object)
       this.placeMarker(object.markerCoords,  this.truckSymbol3(object.colour), this.sliderMarkers, false, false, object.message)
     })
   }
@@ -98,7 +101,7 @@ class MapObject{
     this.renderedRoutes.push(directionsDisplay)
   }
 
-  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction){
+  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null){
     var marker = new google.maps.Marker({
       position: coords,
       map: this.map,
@@ -139,7 +142,6 @@ this.createAMapButton(this.returnToMap.bind(this, streetView), 'LEFT_BOTTOM', 'R
 
 returnToMap(streetView){
   streetView.setVisible(false)
-
 }
 
 
@@ -266,26 +268,45 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
  //  } 
  // }
 
- display_branches(){
-  if(this.branchesShowing){
-    console.log('this.markers', this.markers)
-    console.log('this.sliderMarkers', this.sliderMarkers)
-    console.log('this.branchesMarkers', this.branchesMarkers)
-    this.clearMarkers(this.branchesMarkers, true)
-    // this.reinstateMap()
-    this.branchesShowing = false
-    // this.branchesMarkers=[]
+ handleBranchesClick(){
+
+  switch(this.pathname){
+    case 'partload':
+    this.currentBranchStatus = store.getState().common.branch_status_partload
+    break;
+    case 'today':
+    this.currentBranchStatus = store.getState().common.branch_status_today
+    break;
+    case 'planner':
+    this.currentBranchStatus = store.getState().common.branch_status_planner
+    break;
+  }
+  if(!this.currentBranchStatus) {
+    this.currentBranchStatus = 1
   }else{
-    console.log('this.markers', this.markers)
-    console.log('this.sliderMarkers', this.sliderMarkers)
-    console.log('this.branchesMarkers', this.branchesMarkers)
-    // this.clearMap(false)
+    this.currentBranchStatus = this.currentBranchStatus===1 ? 2 : 0
+  }
+  console.log('this.pathname', this.pathname)
+  store.dispatch(setBranchDisplayStatus(this.pathname, this.currentBranchStatus))
+  this.display_branches(this.currentBranchStatus)
+ }
+
+ display_branches(branchStatus){
+  const branches = store.getState().common.all_branches
+  if(!branchStatus){
+    this.clearMarkers(this.branchesMarkers, true)
+    this.branchesShowing = false
+  }else if(branchStatus==1){
     this.branchesShowing = true
-    const branches = store.getState().common.all_branches
     branches.forEach((branch)=>{
       var latlng2 = JSON.parse(branch.latlng)
       this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address)})
-  } 
+  }else{
+    branches.forEach((branch)=>{
+      var latlng2 = JSON.parse(branch.latlng)
+      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, false, false, branch.address)})
+    this.branchesShowing = true
+  }
  }
 
 pinSymbol(color) {

@@ -182,42 +182,11 @@ return this.props.all_trips.map((job,index)=>{
 render(){ 
 
   var hoverHandStyle = {cursor: 'pointer'}
-  // if(this.props.all_trips){
-  //   return(
-  //     <table 
-  //     className='grid-item-joblist' 
-  //     onDrag={this.handleOnDragJobList.bind(this)}
-  //     onDrop={this.handleJobListDrop.bind(this)} 
-  //     onDragOver={this.handleDragOver.bind(this)}>
-  //     <tbody>
-  //     <tr>
-  //     <th>View Route</th>
-  //     <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
-  //     <th>Drag Icon</th>
-  //     <th>Colour</th>
-  //     <th>Volume</th>
-  //     <th>Men Requested</th>
-  //     <th>Start</th>
-  //     <th>Notes</th>
-  //     <th onClick={this.handleEstHoursSort.bind(this)}>Estimated Hours</th> 
-  //     <th>Allocated Trucks</th>
-  //     </tr>
 
-  //     {this.jobs()}
-  //     </tbody>
-  //     </table>
-  //     )
-  // }else{
-  //   return(
-  //     <div className='grid-item-joblist'>
-  //     No Jobs Yet
-  //     </div>
-  //     )
-  // }
 
   return(
        <table 
-       className='grid-item-joblist' 
+       className={this.props.branch_status_planner==2 ? 'hidden' :'grid-item-joblist'}
        onDrag={this.handleOnDragJobList.bind(this)}
        onDrop={this.handleJobListDrop.bind(this)} 
        onDragOver={this.handleDragOver.bind(this)}>
@@ -253,9 +222,43 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({ 
   all_trips: state.common.all_trips, 
+  branch_status_planner: state.common.branch_status_planner, 
   searchString: state.planner.searchString,
   // droppedCells: state.planner.droppedCells, 
   current_planner_truckflicker_job: state.common.current_planner_truckflicker_job
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(JobList)
+
+// if(this.props.all_trips){
+//   return(
+//     <table 
+//     className='grid-item-joblist' 
+//     onDrag={this.handleOnDragJobList.bind(this)}
+//     onDrop={this.handleJobListDrop.bind(this)} 
+//     onDragOver={this.handleDragOver.bind(this)}>
+//     <tbody>
+//     <tr>
+//     <th>View Route</th>
+//     <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
+//     <th>Drag Icon</th>
+//     <th>Colour</th>
+//     <th>Volume</th>
+//     <th>Men Requested</th>
+//     <th>Start</th>
+//     <th>Notes</th>
+//     <th onClick={this.handleEstHoursSort.bind(this)}>Estimated Hours</th> 
+//     <th>Allocated Trucks</th>
+//     </tr>
+
+//     {this.jobs()}
+//     </tbody>
+//     </table>
+//     )
+// }else{
+//   return(
+//     <div className='grid-item-joblist'>
+//     No Jobs Yet
+//     </div>
+//     )
+// }

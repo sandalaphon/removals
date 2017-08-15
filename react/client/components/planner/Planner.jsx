@@ -1,5 +1,4 @@
 import React from 'react'
-
 import JobList        from './JobList'
 import Gmap           from '../Gmap'
 import Filter         from './Filter'
