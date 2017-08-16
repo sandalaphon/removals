@@ -162,7 +162,9 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({
 
+
   trips: state.planner
+
 
 })
 
