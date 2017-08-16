@@ -130,6 +130,10 @@ renderTripById(tripId){
 
   jobs(){
 
+    this.imageArray = []
+//////////////////////////////////////////////////////////
+
+// if(!this.props.current_planner_truckflicker_job&&this.state.mapObject&&this.props.all_trips)
 if(!this.props.current_planner_truckflicker_job&&this.state.mapObject){
     this.state.mapObject.clearMap()
      mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips) 
@@ -182,7 +186,7 @@ render(){
 
   return(
        <table 
-       className='grid-item-joblist'
+       className={this.props.branch_status_planner==2 ? 'hidden' :'grid-item-joblist'}
        onDrag={this.handleOnDragJobList.bind(this)}
        onDrop={this.handleJobListDrop.bind(this)} 
        onDragOver={this.handleDragOver.bind(this)}>
@@ -218,6 +222,7 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({ 
   all_trips: state.common.all_trips, 
+
   searchString: state.planner.searchString,
   // droppedCells: state.planner.droppedCells, 
   current_planner_truckflicker_job: state.common.current_planner_truckflicker_job

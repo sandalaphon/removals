@@ -146,7 +146,7 @@ class TruckDayView extends React.Component{
 
 
   return(
-    <div className='grid-item-truck-day-view'>
+    <div className={this.props.branch_status_planner==2 ? 'hidden' :'grid-item-truck-day-view'}>
     {truckCalendar}
     </div>
     )
@@ -161,7 +161,12 @@ const mapDispatchToProps=(dispatch)=>({
 })
 
 const mapStateToProps=(state)=>({
+<<<<<<< HEAD
   trips: state.planner
+=======
+  trips: state.planner,
+  branch_status_planner: state.common.branch_status_planner
+>>>>>>> parent of 2eb5f74... branch buttons hide left handside on all views on 2nd click, done in mapObject
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TruckDayView)

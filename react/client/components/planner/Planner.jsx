@@ -12,10 +12,12 @@ class Planner extends React.Component {
 
     return(
       <div className = 'grid-planner'>
+
             <Gmap />
             <JobList/>
             <Filter/>
             <TruckDayView />
+
             <TruckFlicker/>
             <SliderPlanner/>
       </div>
