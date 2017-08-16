@@ -31,7 +31,7 @@ class Filter extends React.Component {
 
   render(){
 
-    var searchPlaceHolder = this.props.filter_search_string || 'Search'
+    var searchPlaceHolder = this.props.filter_search_string || 'Client Name'
     var searchBoxText = ''
     if(this.props.filter_search_string) searchBoxText = this.props.filter_search_string
 

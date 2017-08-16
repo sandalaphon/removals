@@ -76,6 +76,8 @@
 
 .grid-item-filter{
   grid-area: fil;
+  display: inline-block;
+  margin-right: 4px;
 
 }
 

@@ -1,7 +1,7 @@
 
 body{
   font-family: 'Roboto';
-
+ 
 }
 
 
@@ -45,14 +45,46 @@ th{
 
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-
-
-
+input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #865900;
+}
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #865900;
+   opacity:  1;
+}
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #865900;
+   opacity:  1;
+}
+input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #865900;
+}
+input::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #865900;
+}
+.search-box{
+  background-color: #fff6e3;
+  border: none;
+}
+#sort-button{
+  display: inline-block;
+  width:20px;
+  height:20px;
+  background-image: url(../images/sort.svg);
+  background-size: 15px;
+  background-repeat: no-repeat;
+        
+}
+#client-name-header{
+  /*display: flex;
+  align-content: center;*/
+}
 
 
 button:focus {outline:0;}
 
 button{
+
   font-family: 'Roboto';
   color: #865900;
   background: #ffffff;

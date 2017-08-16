@@ -1,4 +1,5 @@
 import React from 'react'
+import Filter         from './Filter'
 import * as plannerActions from '../../actions/planner_actions'
 import * as commonActions from '../../actions/_common_actions'
 import {bindActionCreators} from 'redux'
@@ -224,7 +225,10 @@ render(){
        <tbody>
        <tr>
          <th>View Route</th>
-         <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
+         <th >
+          <Filter/>
+          <button id='sort-button' onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}/>
+        </th>
          <th>Drag Icon</th>
          <th>Colour</th>
          <th>Volume</th>
