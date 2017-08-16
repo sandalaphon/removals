@@ -91,6 +91,7 @@ class MapObject{
   }
 
   drawRouteWithGoogleResponse(job){
+    console.log('drawing a route')
       if(job.hidden) return
     var {start_location, end_location} = job.google_directions.routes[ 0 ].legs[ 0 ]
     this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this))
