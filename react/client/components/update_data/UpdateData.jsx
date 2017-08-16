@@ -1,6 +1,6 @@
 import React from 'react'
 import {Form, Button, FormControl,form, FormGroup, ControlLabel, HelpBlock} from 'react-bootstrap'
-import {Converter} from 'csvtojson'
+//import {Converter} from 'csvtojson'
 import Geocoder from '../../models/geocoder'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
