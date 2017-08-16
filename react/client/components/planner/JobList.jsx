@@ -216,28 +216,29 @@ render(){
   // }
 
   return(
+      <div className='grid-item-joblist' >
        <table 
-       className='grid-item-joblist' 
-       onDrag={this.handleOnDragJobList.bind(this)}
-       onDrop={this.handleJobListDrop.bind(this)} 
-       onDragOver={this.handleDragOver.bind(this)}>
-       
+         onDrag={this.handleOnDragJobList.bind(this)}
+         onDrop={this.handleJobListDrop.bind(this)} 
+         onDragOver={this.handleDragOver.bind(this)}>
+       <tbody>
        <tr>
-       <th>View Route</th>
-       <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
-       <th>Drag Icon</th>
-       <th>Colour</th>
-       <th>Volume</th>
-       <th>Men Requested</th>
-       <th>Start</th>
-       <th>Notes</th>
-       <th onClick={this.handleEstHoursSort.bind(this)}>Estimated Hours</th> 
-       <th>Allocated Trucks</th>
+         <th>View Route</th>
+         <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
+         <th>Drag Icon</th>
+         <th>Colour</th>
+         <th>Volume</th>
+         <th className="column-short">Men Requested</th>
+         <th>Start</th>
+         <th>Notes</th>
+         <th className="column-short" onClick={this.handleEstHoursSort.bind(this)}>Estimated Hours</th> 
+         <th>Allocated Trucks</th>
        </tr>
 
-       {this.jobs()}
-       
+        {this.jobs()}
+       </tbody>
        </table>
+       </div>
        )
 
 }

@@ -141,9 +141,6 @@ class SliderPlanner extends React.Component{
         dotStyle={{ borderColor: 'orange' }}
         activeDotStyle={{ borderColor: 'yellow' }}
         railStyle={{ backgroundColor: '#eebd5b', height: 2 }}
-        handleStyle={{
-                  borderColor: 'orange'
-                }}
         defaultValue = {this.state.value}
         // value = {this.state.value}
         included = {false}

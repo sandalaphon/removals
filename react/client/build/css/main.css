@@ -4,44 +4,52 @@ body{
 
 }
 
-td, th{
 
-vertical-align: middle;
-text-align: center;
 
+/*////////////////TABLE////////////////////////////////////*/
+
+table{
+  width: 100%;
 }
 
 tbody{
   
 }
 
-table{
-
+tr{
+  border-bottom: 1px inset #865900; 
+  height: 39px;
+  
+}
+.column-short{
+  width: 20px;
+  text-align: center;
 }
 
-table tr:nth-child(odd) td{
- /*background: -moz-linear-gradient(top, rgba(255,255,255,0) 10%, rgba(187,174,120,0.4) 50%, rgba(142,122,32,0.14) 76%, rgba(242,242,242,0) 90%);
- background: -webkit-linear-gradient(top, rgba(255,255,255,0) 10%,rgba(187,174,120,0.4) 50%,rgba(142,122,32,0.14) 76%,rgba(242,242,242,0) 90%);
- background: linear-gradient(to bottom, rgba(255,255,255,0) 10%,rgba(187,174,120,0.4) 50%,rgba(142,122,32,0.14) 76%,rgba(242,242,242,0) 90%);
- filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00f2f2f2',GradientType=0 );*/
- background: #fff6e3;
-  /*color: #eebd5b;*/
- color: #865900;
- border-right: 1px inset white;
-}
-table tr:nth-child(even) td{
- color: #865900;
- /*color: #865900;*/
- border-right: 1px inset #fff6e3;
-  background: #ffffff;
+td, th{
+  border-right: 1px inset #fff6e3;
+  border-left: 1px inset #fff6e3;
+  vertical-align: middle;
+  text-align: center;
+
 }
 
 th{
   font-size: 0.7vw;
-  color: #fff6e3;
-  background: #c48811;
-  /*border-right: 4px inset white;*/
+  color: #865900;
+  background: #fff6e3;
+ 
 }
+
+
+
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+
+
+
+
 button:focus {outline:0;}
 
 button{
@@ -56,16 +64,6 @@ button{
 
 }
 
-tr{
-
-  
-}
-
-th, td{
-  text-align: center;
-
-  
-}
 
 
 .grid-item-slider{
