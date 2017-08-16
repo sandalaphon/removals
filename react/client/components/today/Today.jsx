@@ -11,8 +11,8 @@ class Today extends React.Component {
   render(){
     return(
       <div className = 'grid-today'>
-        <Gmap/>
         <TruckFlicker/>
+        <Gmap/>
         <ListToday />
         <SliderToday />
       </div>

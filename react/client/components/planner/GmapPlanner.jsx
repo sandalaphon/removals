@@ -95,7 +95,7 @@ const mapDispatchToProps=(dispatch)=>({
 })
 
 const mapStateToProps=(state)=>({
-  all_trips: state.common.all_trips, 
+  all_trips:                         state.common.all_trips, 
   current_planner_truckflicker_job: state.planner.current_planner_truckflicker_job
 })
 

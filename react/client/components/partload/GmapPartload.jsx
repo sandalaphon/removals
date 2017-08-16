@@ -100,8 +100,9 @@ class GmapPartload extends React.Component {
 // })
 
 const mapStateToProps=(state)=>({
-  partload_marker_array:  state.partload.partload_marker_array, 
-  best_pick_up_jobs:   state.partload.best_pick_up_jobs, 
+  branch_status_partload:                         state.common.branch_status_partload, 
+  partload_marker_array:             state.partload.partload_marker_array, 
+  best_pick_up_jobs:                 state.partload.best_pick_up_jobs, 
   current_partload_truckflicker_job: state.common.current_partload_truckflicker_job
 })
 

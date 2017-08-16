@@ -24,7 +24,6 @@ class GMap extends React.Component {
 
   componentDidMount() {
     this.setState({map: this.createMap()})
-
   }
 
 
@@ -41,6 +40,7 @@ class GMap extends React.Component {
     let mapOptions = {
       zoom: this.state.zoom,
       center: this.mapCenter(),
+
       zoomControl: true,
        mapTypeControl: true,
        scaleControl: true,
@@ -67,7 +67,6 @@ class GMap extends React.Component {
   }
 
   render() {
-
 
         switch (this.props.location.pathname){
 
