@@ -127,10 +127,24 @@ renderTripById(tripId){
     this.props.actions.planner_actions.deleteDroppedCells(this.eventTarget.id)
 
   }
-
+  zebraStyle(){
+    console.log("zebra called")
+    var table = document.getElementById("mytable");
+        var k = 0;
+        for (var j = 0, row; row = table.rows[j]; j++) {
+            if (!(row.style.display === "none")) {
+                if (k % 2) {
+                    row.style.backgroundColor = "rgba(242,252,244,0.4)";
+                } else {
+                    row.style.backgroundColor = "rgba(0,0,0,0.0)";
+                }
+                k++;
+            }
+        }
+  }
 
   jobs(){
-
+//this.zebraStyle()
     this.imageArray = []
 //////////////////////////////////////////////////////////
 
@@ -178,6 +192,9 @@ return this.props.all_trips.map((job,index)=>{
     </tr>)
 
 })
+
+
+
 }
 
 render(){ 
@@ -219,13 +236,14 @@ render(){
   return(
       <div className='grid-item-joblist' >
        <table 
+         id="mytable"
          onDrag={this.handleOnDragJobList.bind(this)}
          onDrop={this.handleJobListDrop.bind(this)} 
          onDragOver={this.handleDragOver.bind(this)}>
        <tbody>
        <tr>
          <th>View Route</th>
-         <th >
+         <th id='client-name-header'>
           <Filter/>
           <button id='sort-button' onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}/>
         </th>
