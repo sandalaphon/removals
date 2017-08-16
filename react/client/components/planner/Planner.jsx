@@ -18,6 +18,7 @@ class Planner extends React.Component {
             <Filter/>
             <TruckDayView />
 
+
             <TruckFlicker/>
             <SliderPlanner/>
       </div>
