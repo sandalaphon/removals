@@ -7,6 +7,9 @@ function handleTripData(state = {
   current_today_truckflicker_job: '',
   current_partload_truckflicker_job: '',
   current_planner_truckflicker_job: '',
+  branch_status_partload: 0,
+  branch_status_today: 0,
+  branch_status_planner:0 ,
   all_trips: []
 },action){
 
