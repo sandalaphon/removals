@@ -35,7 +35,7 @@
   "dependencies": {
     "babel-runtime": "^6.23.0",
     "classnames": "^2.2.5",
-    "csvtojson": "^1.1.6",
+    "csvtojson": "^1.1.5",
     "latest-version": "^3.1.0",
     "prop-types": "^15.5.10",
     "raven-js": "^2.3.0",
