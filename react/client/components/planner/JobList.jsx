@@ -10,7 +10,6 @@ class JobList extends React.Component{
     super(props)
     this.state={
       order: {clientName: true, estimatedHours: true}
-      // order: true
     }
     this.eventTarget = null,
     this.currentDropTargetId = null
@@ -18,6 +17,7 @@ class JobList extends React.Component{
 
   componentDidMount(){
     this.setState ({mapObject:mapObjectInstances.planner})
+
   }
 
   componentDidUpdate(){
@@ -130,10 +130,6 @@ renderTripById(tripId){
 
   jobs(){
 
-    this.imageArray = []
-//////////////////////////////////////////////////////////
-
-// if(!this.props.current_planner_truckflicker_job&&this.state.mapObject&&this.props.all_trips)
 if(!this.props.current_planner_truckflicker_job&&this.state.mapObject){
     this.state.mapObject.clearMap()
      mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips) 
@@ -186,7 +182,7 @@ render(){
 
   return(
        <table 
-       className={this.props.branch_status_planner==2 ? 'hidden' :'grid-item-joblist'}
+       className='grid-item-joblist'
        onDrag={this.handleOnDragJobList.bind(this)}
        onDrop={this.handleJobListDrop.bind(this)} 
        onDragOver={this.handleDragOver.bind(this)}>
@@ -211,6 +207,8 @@ render(){
 
 }
 }
+
+// className={this.props.branch_status_planner==2 ? 'hidden' :'grid-item-joblist'}
 
 const mapDispatchToProps=(dispatch)=>({
   actions:{

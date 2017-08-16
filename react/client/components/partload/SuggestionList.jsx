@@ -12,13 +12,14 @@ class SuggestionList extends React.Component{
   }
 
   componentDidMount(){
-    this.setState({mapObject: mapObjectInstances.partload})
+    if(!this.mapObject) this.mapObject = mapObjectInstances.partload
   }
 
   componentDidUpdate(){
-    if(!this.state.mapObject){
-       this.setState({mapObject: mapObjectInstances.partload})
-    }
+    if(!this.mapObject) this.mapObject = mapObjectInstances.partload
+    // if(!this.state.mapObject){
+    //    this.setState({mapObject: mapObjectInstances.partload})
+    // }
   }
 
   onClickNearestStart(event){
@@ -26,7 +27,7 @@ class SuggestionList extends React.Component{
     this.props.actions.common_actions.clearCurrentTruckFlickerJob('partload')
     this.props.actions.partload_actions.clearPickUpBestJobs()
     // this.state.mapObject.clearRoutes()
-    this.state.mapObject.clearMarkers(this.state.mapObject.markers)
+    this.mapObject.clearMarkers(this.mapObject.markers)
     var startMarkerLat = this.props.partload_marker_array[0].lat
     var startMarkerLng = this.props.partload_marker_array[0].lng
 

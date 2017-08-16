@@ -17,13 +17,17 @@ class MapObject{
     this.sliderMarkers = [],
     this.branchesMarkers = [],
     this.branchesButtonExists = false,
-    this.pathname = pathname,
-    this.branchesShowing = false
+    this.pathname = pathname
+
 
     if(!mapObjectInstances.pathname){
       mapObjectInstances[pathname]=this
     }
 
+  }
+
+  setZoom(zoom){
+    this.map.setZoom(zoom)
   }
 
   clearMap(clearArrays=true){
@@ -102,6 +106,7 @@ class MapObject{
   }
 
   placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null){
+    console.log(coords, message,instance_variable_marker_array)
     var marker = new google.maps.Marker({
       position: coords,
       map: this.map,
@@ -113,9 +118,13 @@ class MapObject{
       this.bounds.extend(coords) 
       this.map.fitBounds(this.bounds)  
     }
-    if(clickfunction) marker.addListener('click', (coords)=>{clickfunction(coords)})
+    if(clickfunction) marker.addListener('click', (e)=>{clickfunction(e)})
     instance_variable_marker_array.push(marker)
 
+  }
+  
+  testClickFunction(e){
+    console.log('e', e)
   }
 
 displayMarkersFromStore(marker_array_from_store,  instance_variable_marker_array, colour = 'red', clickfunction){
@@ -194,9 +203,9 @@ getInfowindowOffset(marker){
   marker.addListener( 'mouseover', function () {
     infoWindow.open(this.map, marker);
   });
-  google.maps.event.addListener(marker,'click', function() {
-            alert('clicked');
-          });
+  // google.maps.event.addListener(markhandleer,'click', function() {
+            // alert('clicked');
+          // });
   marker.addListener('mouseout', function() {
             infoWindow.close(this.map, marker);
           });
@@ -268,8 +277,7 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
  //  } 
  // }
 
- handleBranchesClick(){
-
+ setCurrentBranchStatus(incrementCurrentBranchesStatus=false){
   switch(this.pathname){
     case 'partload':
     this.currentBranchStatus = store.getState().common.branch_status_partload
@@ -281,33 +289,77 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
     this.currentBranchStatus = store.getState().common.branch_status_planner
     break;
   }
-  if(!this.currentBranchStatus) {
-    this.currentBranchStatus = 1
-  }else{
-    this.currentBranchStatus = this.currentBranchStatus===1 ? 2 : 0
+  if(incrementCurrentBranchesStatus){
+    this.currentBranchStatus++
+    if(this.currentBranchStatus===3) this.currentBranchStatus=0
   }
-  console.log('this.pathname', this.pathname)
+ }
+
+ handleBranchMarkerClick(branch){
+  console.log(branch)
+  this.setCurrentBranchStatus(false)
+  if(this.currentBranchStatus==1) this.currentBranchStatus++
+    store.dispatch(setBranchDisplayStatus(this.pathname, this.currentBranchStatus))
+  this.display_branches(this.currentBranchStatus)
+ }
+
+ handleBranchesClick(){
+
+  this.setCurrentBranchStatus(true)
   store.dispatch(setBranchDisplayStatus(this.pathname, this.currentBranchStatus))
   this.display_branches(this.currentBranchStatus)
  }
 
  display_branches(branchStatus){
   const branches = store.getState().common.all_branches
+
   if(!branchStatus){
+    this.hideOrShowElements(false)
     this.clearMarkers(this.branchesMarkers, true)
-    this.branchesShowing = false
   }else if(branchStatus==1){
+    this.hideOrShowElements(false)
     this.branchesShowing = true
     branches.forEach((branch)=>{
       var latlng2 = JSON.parse(branch.latlng)
-      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address)})
+      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+    })
   }else{
+    this.hideOrShowElements(true)
     branches.forEach((branch)=>{
       var latlng2 = JSON.parse(branch.latlng)
-      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, false, false, branch.address)})
-    this.branchesShowing = true
+      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, false, false, branch.address)
+    })
+
   }
  }
+
+ hideOrShowElements(hide=true){
+  var domElements = this.getElements()
+  console.log(domElements)
+    domElements.forEach((element)=>{
+      hide ? element.classList.add('hidden') : element.classList.remove('hidden')
+    })
+ }
+
+ getElements(){
+  switch(this.pathname){
+    case 'planner':
+      var jobListEl = document.querySelector('.grid-item-joblist')
+      var truckdayEl = document.querySelector('.grid-item-truck-day-view')
+      var filterEl = document.querySelector('.grid-item-filter')
+      return([jobListEl, truckdayEl, filterEl])
+    break;
+    case 'today':
+    var listTodayEl = document.querySelector('.grid-item-list-today')
+    return([listTodayEl])
+    break;
+    case 'partload':
+    var postcodeEl = document.querySelector('.grid-item-postcode')
+    var suggestionListEl = document.querySelector('.grid-item-suggestion-list')
+    return([postcodeEl, suggestionListEl])
+    break;
+ }
+}
 
 pinSymbol(color) {
   return {
@@ -332,7 +384,6 @@ branchSymbol(color='red'){
     anchor: new google.maps.Point(24, 24) // offset point 
   }
 }
-
 
 truckSymbol3(color){
   return {

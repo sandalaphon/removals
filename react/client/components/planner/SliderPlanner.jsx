@@ -17,7 +17,6 @@ class SliderPlanner extends React.Component{
       this.state = {
         tooltipValue: 0,
         value:  (this.props.planner_seconds_from_start/600) || 24
-       
       }
     
   }
