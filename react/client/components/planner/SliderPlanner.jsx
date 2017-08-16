@@ -163,7 +163,7 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({
   all_trips:                          state.common.all_trips, 
-  branch_status_planner:                          state.common.branch_status_planner, 
+  branch_status_planner:              state.common.branch_status_planner, 
   planner_seconds_from_start:         state.planner.planner_seconds_from_start, 
   current_planner_truckflicker_job:   state.common.current_planner_truckflicker_job})
 

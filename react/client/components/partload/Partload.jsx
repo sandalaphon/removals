@@ -24,8 +24,8 @@ class Partload extends React.Component{
 
     return(
       <div className='grid-partload' ref="mapCanvas">
+       <GmapPartLoad/>
         <Postcode />
-        <GmapPartLoad/>
         <SuggestionList/>
         <SliderPartload/>
         <TruckFlicker/>
