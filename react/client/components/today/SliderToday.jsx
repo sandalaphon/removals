@@ -23,12 +23,15 @@ class SliderToday extends React.Component{
   }
 
   componentDidMount(){
+    console.log('componentDidMount', this.props)
     if(this.props.current_today_truckflicker_job){
       mapObjectInstances.today.drawRouteWithGoogleResponse(this.props.current_today_truckflicker_job)
     }
     if(this.props.today_seconds_from_start){
+      console.log('today seconds from start')
       this.placeMarkers(this.props.today_seconds_from_start)
     }
+    mapObjectInstances.today.display_branches(this.props.branch_status_today) 
   }
 
   handleSliderChange(value){
@@ -51,6 +54,7 @@ class SliderToday extends React.Component{
     var sliderMarkerCoordsandIndexArray = []
 
     if(this.props.current_today_truckflicker_job){
+      console.log('current truck flicker job')
       var trip = this.props.current_today_truckflicker_job
       var steps =trip.google_directions.routes[0].legs[0].steps
       var truckSecondsFromStart = 0
@@ -72,6 +76,7 @@ class SliderToday extends React.Component{
          }
       });
     }else{
+      console.log('else and todaysTrips', todaysTrips)
       todaysTrips.forEach((trip, index)=>{
 
         if(!trip.hidden){
@@ -88,7 +93,7 @@ class SliderToday extends React.Component{
               var fractionOfStep = (  sliderSecondsFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
               var indexOfStepPath = Math.floor(fractionOfStep*step.path.length)
               var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
-              sliderMarkerCoordsandIndexArray.push({markerCoords, index, colour: trip.colour, message: trip.client_name})
+              sliderMarkerCoordsandIndexArray.push({markerCoords, colour: trip.colour, message: trip.client_name})
               stepCompleted = true
 
              }
@@ -165,7 +170,8 @@ const mapDispatchToProps=(dispatch)=>({
 const mapStateToProps=(state)=>({
   all_trips: state.common.all_trips, 
   today_seconds_from_start: state.today.today_seconds_from_start, 
-  current_today_truckflicker_job: state.common.current_today_truckflicker_job
+  current_today_truckflicker_job: state.common.current_today_truckflicker_job,
+  branch_status_today: state.common.branch_status_today,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SliderToday)

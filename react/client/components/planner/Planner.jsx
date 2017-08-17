@@ -1,5 +1,4 @@
 import React from 'react'
-
 import JobList        from './JobList'
 import Gmap           from '../Gmap'
 import Filter         from './Filter'
@@ -13,10 +12,10 @@ class Planner extends React.Component {
 
     return(
       <div className = 'grid-planner'>
+            <Gmap />
             <JobList/>
             <Filter/>
             <TruckDayView />
-            <Gmap />
             <TruckFlicker/>
             <SliderPlanner/>
       </div>

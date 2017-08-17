@@ -144,11 +144,12 @@ renderTripById(tripId){
   }
 
   jobs(){
-//this.zebraStyle()
+
     this.imageArray = []
 //////////////////////////////////////////////////////////
 
 // if(!this.props.current_planner_truckflicker_job&&this.state.mapObject&&this.props.all_trips)
+
 if(!this.props.current_planner_truckflicker_job&&this.state.mapObject){
     this.state.mapObject.clearMap()
      mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips) 
@@ -200,46 +201,17 @@ return this.props.all_trips.map((job,index)=>{
 render(){ 
 
   var hoverHandStyle = {cursor: 'pointer'}
-  // if(this.props.all_trips){
-  //   return(
-  //     <table 
-  //     className='grid-item-joblist' 
-  //     onDrag={this.handleOnDragJobList.bind(this)}
-  //     onDrop={this.handleJobListDrop.bind(this)} 
-  //     onDragOver={this.handleDragOver.bind(this)}>
-  //     <tbody>
-  //     <tr>
-  //     <th>View Route</th>
-  //     <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
-  //     <th>Drag Icon</th>
-  //     <th>Colour</th>
-  //     <th>Volume</th>
-  //     <th>Men Requested</th>
-  //     <th>Start</th>
-  //     <th>Notes</th>
-  //     <th onClick={this.handleEstHoursSort.bind(this)}>Estimated Hours</th> 
-  //     <th>Allocated Trucks</th>
-  //     </tr>
 
-  //     {this.jobs()}
-  //     </tbody>
-  //     </table>
-  //     )
-  // }else{
-  //   return(
-  //     <div className='grid-item-joblist'>
-  //     No Jobs Yet
-  //     </div>
-  //     )
-  // }
 
   return(
       <div className='grid-item-joblist' >
        <table 
+
          id="mytable"
          onDrag={this.handleOnDragJobList.bind(this)}
          onDrop={this.handleJobListDrop.bind(this)} 
          onDragOver={this.handleDragOver.bind(this)}>
+
        <tbody>
        <tr>
          <th>View Route</th>
@@ -282,3 +254,36 @@ const mapStateToProps=(state)=>({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(JobList)
+
+// if(this.props.all_trips){
+//   return(
+//     <table 
+//     className='grid-item-joblist' 
+//     onDrag={this.handleOnDragJobList.bind(this)}
+//     onDrop={this.handleJobListDrop.bind(this)} 
+//     onDragOver={this.handleDragOver.bind(this)}>
+//     <tbody>
+//     <tr>
+//     <th>View Route</th>
+//     <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
+//     <th>Drag Icon</th>
+//     <th>Colour</th>
+//     <th>Volume</th>
+//     <th>Men Requested</th>
+//     <th>Start</th>
+//     <th>Notes</th>
+//     <th onClick={this.handleEstHoursSort.bind(this)}>Estimated Hours</th> 
+//     <th>Allocated Trucks</th>
+//     </tr>
+
+//     {this.jobs()}
+//     </tbody>
+//     </table>
+//     )
+// }else{
+//   return(
+//     <div className='grid-item-joblist'>
+//     No Jobs Yet
+//     </div>
+//     )
+// }

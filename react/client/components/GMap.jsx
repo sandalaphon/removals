@@ -269,7 +269,7 @@ class GMap extends React.Component {
           case '/planner':
 
           if(this.state.mapObject&&!this.state.mapObject.branchesButtonExists){
-            this.state.mapObject.createAMapButton(this.state.mapObject.display_branches.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
+            this.state.mapObject.createAMapButton(this.state.mapObject.handleBranchesClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
          
           } 
 
@@ -277,7 +277,8 @@ class GMap extends React.Component {
 
           case '/today':
           if(this.state.mapObject&&!this.state.mapObject.branchesButtonExists){
-             this.state.mapObject.createAMapButton(this.state.mapObject.display_branches.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
+             this.state.mapObject.createAMapButton(this.state.mapObject.handleBranchesClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
+             
 
           
           } 

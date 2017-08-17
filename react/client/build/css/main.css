@@ -148,3 +148,8 @@ button{
           padding-left: 10px;
 }
 
+
+.hidden{
+     display: none;
+}
+

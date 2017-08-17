@@ -54,7 +54,7 @@ const mapDispatchToProps=(dispatch)=>({
 })
 
 const mapStateToProps=(state)=>({ 
-  all_trips: state.common.all_trips,  
+  all_trips: state.common.all_trips, 
   filter_search_string: state.common.filter_search_string
 })
 
