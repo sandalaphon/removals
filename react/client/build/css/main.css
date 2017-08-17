@@ -17,7 +17,7 @@ tbody{
 }
 
 tr{
-  border-bottom: 1px inset #865900; 
+  /*border-bottom: 1px inset #865900; */
   height: 39px;
   
 }
@@ -28,8 +28,8 @@ tr{
 
 td, th{
   
-  border-right: 1px inset #fff6e3;
-  border-left: 1px inset #fff6e3;
+ /* border-right: 1px inset #fff6e3;
+  border-left: 1px inset #fff6e3;*/
 
   vertical-align: middle;
   text-align: center;

@@ -27,6 +27,8 @@ class JobList extends React.Component{
         mapObject:mapObjectInstances.planner
       })
     }
+    console.log("did update")
+    this.zebraStyle()
   }
 
   componentWillMount(){}
@@ -130,17 +132,23 @@ renderTripById(tripId){
   zebraStyle(){
     console.log("zebra called")
     var table = document.getElementById("mytable");
-        var k = 0;
-        for (var j = 0, row; row = table.rows[j]; j++) {
-            if (!(row.style.display === "none")) {
-                if (k % 2) {
-                    row.style.backgroundColor = "rgba(242,252,244,0.4)";
-                } else {
-                    row.style.backgroundColor = "rgba(0,0,0,0.0)";
-                }
-                k++;
+      var k = 0;
+      for (var j = 0, row; row = table.rows[j]; j++) {
+        if (!(row.style.display === "none")) {
+          if (k % 2) {
+            row.style.backgroundColor = "#ffffff";
+            for ( var x = 0, cell; cell = row.cells[x]; x++){
+              cell.style.borderRight = "1px solid #fff6e3";
             }
+          } else {
+            row.style.backgroundColor = "#fff6e3";
+            for ( var x = 0, cell; cell = row.cells[x]; x++){
+              cell.style.borderRight = "1px solid #ffffff";
+            }
+          }
+          k++;
         }
+      }
   }
 
   jobs(){
