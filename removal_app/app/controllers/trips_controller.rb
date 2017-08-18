@@ -12,6 +12,8 @@ class TripsController < ApplicationController
 # end
 
 def create
+  
+  puts "--------------hhhhh3---------------"
   trip = Trip.create(trip_params)
   render json: Trip.all.to_json()
 end
@@ -78,6 +80,7 @@ def trip_params
     :date,
     :name,
     :branch_id,
+    :branch_code,
     :moveware_code,
     :kind,
     :client_name,
