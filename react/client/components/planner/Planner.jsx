@@ -5,23 +5,40 @@ import Filter         from './Filter'
 import TruckDayView   from './TruckDayView'
 import TruckFlicker   from '../TruckFlicker'
 import SliderPlanner  from './SliderPlanner'
+import BranchesInfo   from '../BranchesInfo'
 // import {connect} from 'react-redux'
 
 class Planner extends React.Component {
   
   render(){
+
+    var branchStyle={
+      gridArea:'lef',
+      border: '4px solid green',
+      height: '95vh',
+      width:'60vw',
+    }
    
     return(
 
       <div className = 'grid-planner'>
-
-
+            <div className='grid-item-planner-right'>
             <Gmap />
-            <JobList/>
-            <Filter/>
-            <TruckDayView />
             <TruckFlicker/>
             <SliderPlanner/>
+            </div>
+            
+            <div className='grid-item-planner-left'>
+            <JobList/>
+            <TruckDayView />
+            <Filter/>
+            <div 
+            className = 'branch-info-table-planner hidden' 
+            style={branchStyle}>
+              <BranchesInfo/>
+            </div>
+            </div>
+          
       </div>
 
     )

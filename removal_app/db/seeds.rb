@@ -5,6 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Employee.destroy_all
 Company.destroy_all
 Company.create({name: "Hello Joseph", head_office_postcode: "sfdadf"})
 Trip.destroy_all
@@ -96,7 +97,7 @@ branch_code: "PER",
 latlng: '{"lat": 56.378122, "lng": -3.427916}'
 
 })
-Branch.create({
+glasgow = Branch.create({
 name: "Glasgow Branch", 
 address: "
 Glasgow Branch,
@@ -112,7 +113,7 @@ latlng: '{"lat": 55.950538, "lng": -4.326597}'
 
 
 })
-Branch.create({
+inverness = Branch.create({
 name: "Inverness Branch", 
 address: "
 Inverness Branch
@@ -126,3 +127,65 @@ branch_code: "AVI",
 latlng: '{"lat": 57.487678, "lng": -4.214092}'
 
 })
+
+
+# glasgowBranch = Branch.find(:branch_code=>'GLA')
+
+# puts glasgowBranch
+# puts glasgowBranch[0]
+# puts glasgowBranch[0].id
+
+# scarlett = Employee.create({
+#   name: 'Scarlett Johansen',
+#   telephone: '0123456789',
+#   branch_manager: true,
+#   email: 'hot_lips@a.com'
+#   # , branch_id: glasgowBranch[0].id
+#   })
+
+inverness.employees.create({
+  name: 'Scarlett Johansen',
+  telephone: '0123456789',
+  branch_manager: true,
+  email: 'hot_lips@a.com'
+  # , branch_id: glasgowBranch[0].id
+  })
+glasgow.employees.create({
+  name: 'Robert Duval',
+  telephone: '0123456789',
+  branch_manager: false,
+  email: 'godfatherlaw@a.com',
+  photoUrl: 'https://cdn.pixabay.com/photo/2016/04/25/07/15/man-1351317__480.png'
+  # , branch_id: glasgowBranch[0].id
+  })
+glasgow.employees.create({
+  name: 'Ava Gardner',
+  telephone: '0123456789',
+  branch_manager: false,
+  email: 'very_hot_lips@a.com',
+  photoUrl:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1QOvG6ADrE6RVgInLnlJRXLH4dCyfjlsXB1AqOwQihxXaJcZ39g'
+  # , branch_id: glasgowBranch[0].id
+  })
+glasgow.employees.create({
+  name: 'Robert DeNiro',
+  telephone: '0123456789',
+  branch_manager: true,
+  email: 'taxi@a.com'
+  # , branch_id: glasgowBranch[0].id
+  })
+inverness.employees.create({
+  name: 'Al Pacino',
+  telephone: '0123456789',
+  branch_manager: true,
+  email: 'scarface@a.com'
+  # , branch_id: glasgowBranch[0].id
+  })
+inverness.employees.create({
+  name: 'Gene Hackman',
+  telephone: '0123456789',
+  branch_manager: true,
+  email: 'sadly_retired@a.com',
+  photoUrl: 'https://cdn.pixabay.com/photo/2016/04/25/07/15/man-1351317__480.png'
+  # , branch_id: glasgowBranch[0].id
+  })
+

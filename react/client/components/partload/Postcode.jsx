@@ -13,17 +13,32 @@ class Postcode extends React.Component{
       super(props);
   }
 
+  componentDidMount(){
+    if(!this.mapObject){
+      this.mapObject = mapObjectInstances.partload 
+    }
+  }
+
+  componentDidUpdate(){
+    if(!this.mapObject){
+      this.mapObject = mapObjectInstances.partload 
+    }
+  }
+
   handleCollectionSubmit(event){
     event.preventDefault()
+    var {partload_collection_postcode, partload_delivery_postcode} = this.props
+    if(!partload_collection_postcode){
+      alert('Please Enter a Collection Postcode')
+      return
+    }
     var geocoder = new Geocoder()
-    //get the appropriate instance, declared here so that it has had time to be created on render of Gmap
-    this.mapObject = mapObjectInstances.partload 
     this.mapObject.clearMap()
     this.props.actions.partload_actions.clearPartloadMarkerArray()
     this.props.actions.common_actions.clearCurrentTruckFlickerJob('partload')
     this.props.actions.partload_actions.clearPickUpBestJobs()
 
-    var {partload_collection_postcode, partload_delivery_postcode} = this.props
+    
     var {addMarkerToPartloadMarkerArray} = this.props.actions.partload_actions
 
     var partload_collection_coords = geocoder.getLatLng(partload_collection_postcode, addMarkerToPartloadMarkerArray)

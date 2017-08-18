@@ -17,7 +17,6 @@ class JobList extends React.Component{
 
   componentDidMount(){
     this.setState ({mapObject:mapObjectInstances.planner})
-
   }
 
   componentDidUpdate(){
@@ -131,7 +130,8 @@ renderTripById(tripId){
   jobs(){
 
 if(!this.props.current_planner_truckflicker_job&&this.state.mapObject){
-    this.state.mapObject.clearMap()
+    // this.state.mapObject.clearMap()
+    console.log('from JOBLIST')
      mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips) 
 }
 

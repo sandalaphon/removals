@@ -1,6 +1,7 @@
 import React from 'react'
 import SignUp from './SignUp'
 import UserList from './UserList'
+import AddEmployee from './AddEmployee'
 import {Button, Collapse, Well} from 'react-bootstrap'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -25,6 +26,23 @@ class AccountManagement extends React.Component {
     return(
       
       <div>
+      <Button bsSize="small" bsStyle="success" onClick={ ()=> this.setState({ open0: !this.state.open0 })}>
+        Click To Add/Edit Employee
+      </Button>
+      <Collapse in={this.state.open0}>
+        <div>
+          <Well>
+            <AddEmployee 
+              signUpClick=          {signUpClick} 
+              signUploginEmail=     {signUploginEmail} 
+              signUploginPassword=  {signUploginPassword}
+              signUpPasswordConfirm={signUpPasswordConfirm}
+              getUsers=             {getUsers}
+            />
+          </Well>
+        </div>
+      </Collapse>
+
       <Button bsSize="small" bsStyle="success" onClick={ ()=> this.setState({ open: !this.state.open })}>
         Click To Add A User
       </Button>

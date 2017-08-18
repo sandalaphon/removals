@@ -1,7 +1,7 @@
 /*////////////////LAYOUT//////////////////////////////*/
 
 
-.grid-planner{
+/*.grid-planner{
   display: grid;
   height: 95vh;
   grid-template-areas:
@@ -23,7 +23,79 @@
   grid-template-rows: repeat(15,1fr);
   grid-auto-columns: 10%;
   /*grid-template-columns: repeat(10,1fr);*/
+/*}*/
+
+.grid-planner{
+  display: grid;
+  height: 95vh;
+  grid-template-areas:
+ 'lef rig';
 }
+
+.grid-item-planner-right{
+  grid-area:rig;
+  display: grid;
+  height: 95vh;
+  width:40vw;
+  grid-template-areas:
+    " fli fli fli fli"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " slI slI slI slI";
+  grid-template-rows: repeat(15,1fr);
+  /*grid-auto-columns: 16.66%;*/
+}
+
+/*.branch-info-table{
+
+
+}
+
+.branch-info-table-planner{
+  grid-area:lef;
+  border: 4px solid green;
+  height: 95vh;
+  width:60vw;
+}*/
+
+
+.grid-item-planner-left{
+  grid-area:lef;
+  display: grid;
+  height: 95vh;
+  width:60vw;
+  grid-template-areas:
+  "cal cal cal cal cal cal    "
+  "cal cal cal cal cal cal    "
+  "cal cal cal cal cal cal    "
+  "cal cal cal cal cal cal    "
+  "cal cal cal cal cal cal    "
+  "fil fil fil fil fil fil    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    ";
+  grid-template-rows: repeat(15,1fr);
+  /*grid-auto-columns: 16.66%;*/
+}
+
+
 
 .grid-item-slider-planner{
   /*display: inline-block;*/
@@ -45,8 +117,8 @@
 }
 
 .grid-item-truck-day-view{
-  margin-top: 20px;
-  display:inline-grid;
+   margin-top: 20px;
+   display:inline-grid;
    border:1px solid red;
    grid-area: cal;
    overflow: scroll;
@@ -58,6 +130,7 @@
   grid-area:job;
   border: 3px solid purple;
   grid-auto-rows:1fr;
+  overflow: scroll;
 }
 
 .drop-target{
@@ -104,9 +177,11 @@ min-width:5vw;
 
 .truck-cell{
   display: inline-block;
+
 }
 .truck-day-time-cell{
   border: 1px solid black;
+ 
 }
 
 

@@ -1,4 +1,4 @@
-.grid-today{
+/*.grid-today{
   display: grid;
   height: 95vh;
   border: 3px solid hotpink;
@@ -22,7 +22,72 @@
   grid-template-rows: repeat(15,1fr);
   grid-auto-columns: 10%;
   grid-template-columns: repeat(2,1fr);
+}*/
+.grid-today{
+   display: grid;
+   height: 95vh;
+   grid-template-areas:
+  'lEF rIG';
 }
+
+
+.grid-item-today-right{
+  grid-area: rIG;
+  display: grid;
+  height: 95vh;
+  width: 50vw;
+  border: 3px solid green;
+  grid-template-areas:
+  " fli"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " sli"
+  ;
+  grid-template-rows: repeat(15,1fr);
+  /*grid-auto-columns: 10%;*/
+  /*grid-template-columns: repeat(1,1fr);*/
+}
+
+.grid-item-today-left{
+  grid-area: lEF;
+  display: grid;
+  height: 95vh;
+  width: 50vw;
+  border: 3px solid blue;
+  grid-template-areas:
+  "fil "
+  "fil "
+  "fil "
+  "todli "
+  "todli "
+  "todli "
+  "todli "
+  "todli "
+  "todli "
+  "todli "
+  "todli "
+  "todli "
+  "todli "
+  "todli "
+  "todli "
+  ;
+  grid-template-rows: repeat(15,1fr);
+  /*grid-auto-columns: 10%;*/
+  /*grid-template-columns: repeat(1,1fr);*/
+}
+
+
 
 .grid-item-list-today{
   /*display: inline-block;*/

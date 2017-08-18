@@ -7,9 +7,11 @@ Rails.application.routes.draw do
   post '/api/trips/new' => 'trips#create'
   get '/api/trips' => 'trips#index'
   get '/api/branches' => 'branches#index'
+  get '/api/employees' => 'employees#index'
   post '/api/trips/partload_closest_pickup' => 'trips#partload_closest_pickup'
 
   get '/api/:company_id' => 'companies#index'
+
 
   resources :users do
     collection {post :create_user, via: :options}

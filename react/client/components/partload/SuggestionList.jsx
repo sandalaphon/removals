@@ -99,12 +99,14 @@ class SuggestionList extends React.Component{
 render(){
   return(
     <div className='grid-item-suggestion-list'>
+    <div className='nearest-start-button-div'>
       <button onClick = {this.onClickNearestStart.bind(this)} >
         nearest start
         </button>
       <button>
         nearest end
       </button>
+      </div>
       <table >
         <tbody>
           <tr>
