@@ -97,6 +97,20 @@ class MapObject{
     this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this))
     this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this))
 
+    var path = job.google_directions.routes[0].overview_path
+    var path_length = path.length
+
+    for(let i = 0; i<path_length; i=i+10){
+     
+     let pointLat = path[i].lat
+     let pointLng = path[i].lng
+
+     this.placeMarker({lat: path[i].lat, lng:path[i].lng} , this.pinSymbol(job.colour), this.markers, true, false, '')
+
+    }
+
+
+
     var directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
       map: this.map,

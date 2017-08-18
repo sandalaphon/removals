@@ -94,6 +94,7 @@
 
 .grid-item-postcode{
   grid-area:pos;
+  display:inline-block;
 }
 
 .grid-item-slider-partload{

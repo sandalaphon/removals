@@ -155,6 +155,7 @@ min-width:5vw;
   grid-area: fil;
   border:1px solid blue;
   overflow: scroll;
+  display:inline-block;
 }
 
 .grid-item-truck-flicker{

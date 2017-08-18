@@ -53,7 +53,7 @@ class SuggestionList extends React.Component{
       let path = trip.google_directions.routes[0].overview_path
       var path_length = path.length
 
-     for(let i = 0; i<path_length; i=i+10){
+     for(let i = 0; i<path_length; i=i+10){//reduce to i=i+5 or i++ to increase accuracy if required
       var shortest_distance
       let pointLat = path[i].lat
       let pointLng = path[i].lng

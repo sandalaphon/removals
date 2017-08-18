@@ -31,7 +31,7 @@ class Partload extends React.Component{
     }
 
     return(
-      <div className='grid-partload' ref="mapCanvas">
+      <div className='grid-partload' >
       <div className='grid-item-partload-right'>
       <GmapPartLoad/>
       <TruckFlicker/>
