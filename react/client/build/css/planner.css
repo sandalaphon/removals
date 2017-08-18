@@ -1,99 +1,92 @@
 /*////////////////LAYOUT//////////////////////////////*/
 
-
 .grid-planner{
-  display: grid;
-
-  
-  /*background: #E8F3F8;*/
-
   position: absolute;
   width: 97vw;
-  height: 94vh;
+  height: 90vh;
 
-  padding: 15px;
+  display: grid;
   grid-gap: 30px;
- 
   grid-template-areas:
-  "cal cal cal cal cal cal fli fli fli fli"
-  "cal cal cal cal cal cal map map map map"
-  "cal cal cal cal cal cal map map map map"
-  "cal cal cal cal cal cal map map map map"
-  "cal cal cal cal cal cal map map map map"
-  "fil fil fil fil fil fil map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job sli sli sli sli";
+  'lef rig';
+  grid-template-columns: repeat(2,1fr);
+  grid-auto-rows: 100%;
+}
+
+.grid-item-planner-right{
+  grid-area:rig;
+  grid-gap: inherit;
+  display: grid;
+  grid-template-areas:
+    " fli fli fli fli"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " map map map map"
+    " sli sli sli sli";
   grid-template-rows: repeat(15,1fr);
-  grid-template-columns: repeat(10,1fr);
-  /*grid-template-columns: repeat(10,1fr);*/
-  /*grid-auto-columns: 10%;*/
-  /*grid-template-columns: repeat(10,1fr);*/
+}
+
+.grid-item-planner-left{
+  grid-area:lef;
+  display: grid;
+  grid-gap: inherit;
+  margin: 20px;
+  grid-template-areas:
+  "cal cal cal cal cal cal    "
+  "cal cal cal cal cal cal    "
+  "cal cal cal cal cal cal    "
+  "cal cal cal cal cal cal    "
+  "cal cal cal cal cal cal    "
+  "fil fil fil fil fil fil    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    "
+  "job job job job job job    ";
+  grid-template-rows: repeat(15,1fr);
 }
 
 .grid-item-truck-day-view{
-  font-size: 0.8vw;
-  /*height: 200px;*/
-  display: grid;
+   display:grid;
    grid-area: cal;
-  /* align-content: stretch;
-   align-items: stretch;*/
-   overflow: auto;
+   /*overflow: auto;*/
    grid-template-columns: repeat(19,1fr);
-   /*grid-template-rows: repeat(8,1fr);*/
+
    border: 2px solid #ffffff;
    border-radius: 3px;
    box-shadow: 0 2px 6px rgba(0,0,0,.3);
 }
+
 .grid-item-joblist{
-  font-size: 0.7vw;
   grid-area:job;
-  width: 100%;
-  height: 100%;
-  /*border: 2px solid white;
-  border-radius: 3px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.3);*/
-  color: #865900;
-  
 }
 
-/*.grid-item-joblist{
-  display: inline-block;
-  grid-area:job;
-  border: 3px solid purple;
-  grid-auto-rows:1fr;
-}*/
-
-.drop-target{
-  background-color: hotpink;
-}
 
 .grid-item-filter{
   grid-area: fil;
-  display: inline-block;
-  margin-right: 4px;
 
+  /*display: inline-block;*/
 }
 
-/*////////////////SCHEDULE////////////////////////////*/
 
-/*
-.truck-cell{
-  display: inline-block;
-}
-.truck-day-time-cell{
-  border: 1px solid black;
-}
-*/
 
 
 .cell{
+  font-size: 0.7vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -101,40 +94,16 @@
   color: #865900;
 }
 
-
 .timecolumn{
   display:grid; 
   grid-auto-rows:1fr;
 }
 
-.material-icons.md-18{
+
+
+.drop-target{
+  background-color: hotpink;
 }
-
-.truckimage{
-}
-
-
-
-
-/*////////////////FILTER//////////////////////////////*/
-
-
-
-/*////////////////TRUCK-FLICKER///////////////////////*/
-
-
-.truck-pagi{
-  border: solid 3px red;
-}
-
-/*////////////////MAP/////////////////////////////////*/
-
-
-/*////////////////TIMESCROLLER////////////////////////*/
-
-
-
-
 
 
 

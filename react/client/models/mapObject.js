@@ -17,8 +17,8 @@ class MapObject{
     this.sliderMarkers = [],
     this.branchesMarkers = [],
     this.branchesButtonExists = false,
-    this.pathname = pathname,
-    this.branchesShowing = false
+    this.pathname = pathname
+
 
     if(!mapObjectInstances.pathname){
       mapObjectInstances[pathname]=this
@@ -26,9 +26,13 @@ class MapObject{
 
   }
 
-  clearMap(clearArrays=true){
+  setZoom(zoom){
+    this.map.setZoom(zoom)
+  }
+
+  clearMap(clearArrays=true, clearSliderMarkers = true){
     this.clearMarkers(this.markers, clearArrays)
-    this.clearMarkers(this.sliderMarkers, clearArrays)
+    if(clearSliderMarkers) this.clearMarkers(this.sliderMarkers, clearArrays)
     this.clearMarkers(this.postcodeMarkers, clearArrays)
     // this.clearMarkers(this.branchesMarkers, clearArrays)
     this.clearRoutes(clearArrays)
@@ -71,7 +75,7 @@ class MapObject{
   }
 
   displayArrayOfJobRoutes(arrayOfJobs){
-    this.clearMap()
+    this.clearMap(true, false)
     arrayOfJobs.forEach((job)=>{
         this.drawRouteWithGoogleResponse(job)
     })
@@ -87,10 +91,25 @@ class MapObject{
   }
 
   drawRouteWithGoogleResponse(job){
+    console.log('drawing a route')
       if(job.hidden) return
     var {start_location, end_location} = job.google_directions.routes[ 0 ].legs[ 0 ]
     this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this))
     this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this))
+
+    // var path = job.google_directions.routes[0].overview_path
+    // var path_length = path.length
+
+    // for(let i = 0; i<path_length; i=i+10){
+     
+    //  let pointLat = path[i].lat
+    //  let pointLng = path[i].lng
+
+    //  this.placeMarker({lat: path[i].lat, lng:path[i].lng} , this.pinSymbol(job.colour), this.markers, true, false, '')
+
+    // }
+
+
 
     var directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
@@ -102,6 +121,7 @@ class MapObject{
   }
 
   placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null){
+    // console.log(coords, message,instance_variable_marker_array)
     var marker = new google.maps.Marker({
       position: coords,
       map: this.map,
@@ -113,9 +133,13 @@ class MapObject{
       this.bounds.extend(coords) 
       this.map.fitBounds(this.bounds)  
     }
-    if(clickfunction) marker.addListener('click', (coords)=>{clickfunction(coords)})
+    if(clickfunction) marker.addListener('click', (e)=>{clickfunction(e)})
     instance_variable_marker_array.push(marker)
 
+  }
+  
+  testClickFunction(e){
+    console.log('e', e)
   }
 
 displayMarkersFromStore(marker_array_from_store,  instance_variable_marker_array, colour = 'red', clickfunction){
@@ -194,9 +218,9 @@ getInfowindowOffset(marker){
   marker.addListener( 'mouseover', function () {
     infoWindow.open(this.map, marker);
   });
-  google.maps.event.addListener(marker,'click', function() {
-            alert('clicked');
-          });
+  // google.maps.event.addListener(markhandleer,'click', function() {
+            // alert('clicked');
+          // });
   marker.addListener('mouseout', function() {
             infoWindow.close(this.map, marker);
           });
@@ -246,30 +270,7 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
      controlUI.addEventListener('click', listenerFunction);
 }
 
- // display_branches(){
- //  if(this.branchesShowing){
- //    console.log('this.markers', this.markers)
- //    console.log('this.sliderMarkers', this.sliderMarkers)
- //    console.log('this.branchesMarkers', this.branchesMarkers)
-
- //    this.reinstateMap()
- //    this.branchesShowing = false
- //    this.branchesMarkers=[]
- //  }else{
- //    console.log('this.markers', this.markers)
- //    console.log('this.sliderMarkers', this.sliderMarkers)
- //    console.log('this.branchesMarkers', this.branchesMarkers)
- //    this.clearMap(false)
- //    this.branchesShowing = true
- //    const branches = store.getState().common.all_branches
- //    branches.forEach((branch)=>{
- //      var latlng2 = JSON.parse(branch.latlng)
- //      this.placeMarker(latlng2, this.pinSymbol(branch.colour), this.branchesMarkers, true, true, branch.address)})
- //  } 
- // }
-
- handleBranchesClick(){
-
+ setCurrentBranchStatus(incrementCurrentBranchesStatus=false){
   switch(this.pathname){
     case 'partload':
     this.currentBranchStatus = store.getState().common.branch_status_partload
@@ -281,33 +282,79 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
     this.currentBranchStatus = store.getState().common.branch_status_planner
     break;
   }
-  if(!this.currentBranchStatus) {
-    this.currentBranchStatus = 1
-  }else{
-    this.currentBranchStatus = this.currentBranchStatus===1 ? 2 : 0
+  if(incrementCurrentBranchesStatus){
+    this.currentBranchStatus++
+    if(this.currentBranchStatus===3) this.currentBranchStatus=0
   }
-  console.log('this.pathname', this.pathname)
+ }
+
+ handleBranchMarkerClick(event){
+  this.handleBranchesClick()
+ }
+
+ handleBranchesClick(){
+
+  this.setCurrentBranchStatus(true)
   store.dispatch(setBranchDisplayStatus(this.pathname, this.currentBranchStatus))
   this.display_branches(this.currentBranchStatus)
  }
 
  display_branches(branchStatus){
   const branches = store.getState().common.all_branches
+
   if(!branchStatus){
+    this.hideOrShowElements(false)
     this.clearMarkers(this.branchesMarkers, true)
-    this.branchesShowing = false
   }else if(branchStatus==1){
-    this.branchesShowing = true
+    this.hideOrShowElements(false)
     branches.forEach((branch)=>{
       var latlng2 = JSON.parse(branch.latlng)
-      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address)})
+      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+    })
   }else{
+    this.hideOrShowElements(true)
     branches.forEach((branch)=>{
       var latlng2 = JSON.parse(branch.latlng)
-      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, false, false, branch.address)})
-    this.branchesShowing = true
+      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, false, false, branch.address, this.handleBranchMarkerClick.bind(this))
+    })
+
   }
  }
+
+ hideOrShowElements(hide=true){
+
+  var domElements = this.getElements()
+  console.log(domElements, this.pathname)
+  domElements.forEach((element)=>{
+    hide ? element.classList.add('hidden') : element.classList.remove('hidden')
+  })
+ this.setBranchListVisibility(!hide)
+ }
+
+ setBranchListVisibility(hide){
+    var branchListDiv = document.querySelector(`.branch-info-table-${this.pathname}`)
+    hide ? branchListDiv.classList.add('hidden') : branchListDiv.classList.remove('hidden')
+ }
+
+ getElements(){
+  switch(this.pathname){
+    case 'planner':
+      var jobListEl = document.querySelector('.grid-item-joblist')
+      var truckdayEl = document.querySelector('.grid-item-truck-day-view')
+      var filterEl = document.querySelector('.grid-item-filter')
+      return([jobListEl, truckdayEl, filterEl])
+    break;
+    case 'today':
+    var listTodayEl = document.querySelector('.grid-item-list-today')
+    return([listTodayEl])
+    break;
+    case 'partload':
+    var postcodeEl = document.querySelector('.grid-item-postcode')
+    var suggestionListEl = document.querySelector('.grid-item-suggestion-list')
+    return([postcodeEl, suggestionListEl])
+    break;
+ }
+}
 
 pinSymbol(color) {
   return {
@@ -333,7 +380,6 @@ branchSymbol(color='red'){
   }
 }
 
-
 truckSymbol3(color){
   return {
 
@@ -355,53 +401,6 @@ truckSymbol3(color){
 
 export {MapObject, mapObjectInstances}
 
-// addBranchButtonToMap(){
 
-//   if (this.branchesButtonExists) return
-//     this.branchesButtonExists = true
-//   var centerControlDiv = document.createElement('div');
-//   this.styleBranchesButtonAndListenerFunction(centerControlDiv, this.map)     
-
-//   centerControlDiv.index = 1;
-//   this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
-// }
-
-// styleBranchesButtonAndListenerFunction(controlDiv, map){
-// // Set CSS for the control border.
-//     var controlUI = document.createElement('div');
-//     controlUI.style.backgroundColor = '#fff';
-//     controlUI.style.border = '2px solid #fff';
-//     controlUI.style.borderRadius = '3px';
-//     controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-//     controlUI.style.cursor = 'pointer';
-//     controlUI.style.margin = '12px';
-//     controlUI.style.textAlign = 'center';
-//     controlUI.title = 'Click to recenter the map';
-//     controlDiv.appendChild(controlUI);
-
-//      // Set CSS for the control interior.
-//      var controlText = document.createElement('div');
-//      controlText.style.color = 'rgb(25,25,25)';
-//      controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-//      controlText.style.fontSize = '10px';
-//      controlText.style.lineHeight = '24px';
-//      controlText.style.paddingLeft = '5px';
-//      controlText.style.paddingRight = '5px';
-
-//      controlText.innerHTML = 'Branches';
-//      controlUI.appendChild(controlText);
-
-//   // Setup the click event listeners: simply set the map to Chicago.
-//     controlUI.addEventListener('click', this.display_branches.bind(this));
-//  }
-
-
-// temporarilyClearMap(){
-//   this.showOrHide(this.markers)
-//   this.showOrHide(this.sliderMarkers)
-//   this.showOrHide(this.postcodeMarkers)
-//   this.showOrHide(this.renderedRoutes)
-//   this.clearMarkers(this.branchesMarkers)
-// }
 
 

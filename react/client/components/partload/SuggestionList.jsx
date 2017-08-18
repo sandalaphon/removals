@@ -12,13 +12,14 @@ class SuggestionList extends React.Component{
   }
 
   componentDidMount(){
-    this.setState({mapObject: mapObjectInstances.partload})
+    if(!this.mapObject) this.mapObject = mapObjectInstances.partload
   }
 
   componentDidUpdate(){
-    if(!this.state.mapObject){
-       this.setState({mapObject: mapObjectInstances.partload})
-    }
+    if(!this.mapObject) this.mapObject = mapObjectInstances.partload
+    // if(!this.state.mapObject){
+    //    this.setState({mapObject: mapObjectInstances.partload})
+    // }
   }
 
   onClickNearestStart(event){
@@ -26,7 +27,7 @@ class SuggestionList extends React.Component{
     this.props.actions.common_actions.clearCurrentTruckFlickerJob('partload')
     this.props.actions.partload_actions.clearPickUpBestJobs()
     // this.state.mapObject.clearRoutes()
-    this.state.mapObject.clearMarkers(this.state.mapObject.markers)
+    this.mapObject.clearMarkers(this.mapObject.markers)
     var startMarkerLat = this.props.partload_marker_array[0].lat
     var startMarkerLng = this.props.partload_marker_array[0].lng
 
@@ -52,7 +53,7 @@ class SuggestionList extends React.Component{
       let path = trip.google_directions.routes[0].overview_path
       var path_length = path.length
 
-     for(let i = 0; i<path_length; i=i+10){
+     for(let i = 0; i<path_length; i=i+10){//reduce to i=i+5 or i++ to increase accuracy if required
       var shortest_distance
       let pointLat = path[i].lat
       let pointLng = path[i].lng
@@ -98,12 +99,14 @@ class SuggestionList extends React.Component{
 render(){
   return(
     <div className='grid-item-suggestion-list'>
+    <div className='nearest-start-button-div'>
       <button onClick = {this.onClickNearestStart.bind(this)} >
         nearest start
         </button>
       <button>
         nearest end
       </button>
+      </div>
       <table >
         <tbody>
           <tr>

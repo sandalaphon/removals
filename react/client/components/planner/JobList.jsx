@@ -11,7 +11,6 @@ class JobList extends React.Component{
     super(props)
     this.state={
       order: {clientName: true, estimatedHours: true}
-      // order: true
     }
     this.eventTarget = null,
     this.currentDropTargetId = null
@@ -159,7 +158,8 @@ renderTripById(tripId){
 // if(!this.props.current_planner_truckflicker_job&&this.state.mapObject&&this.props.all_trips)
 
 if(!this.props.current_planner_truckflicker_job&&this.state.mapObject){
-    this.state.mapObject.clearMap()
+    // this.state.mapObject.clearMap()
+    console.log('from JOBLIST')
      mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips) 
 }
 
@@ -246,6 +246,8 @@ render(){
 }
 }
 
+// className={this.props.branch_status_planner==2 ? 'hidden' :'grid-item-joblist'}
+
 const mapDispatchToProps=(dispatch)=>({
   actions:{
     planner_actions: bindActionCreators( plannerActions, dispatch),
@@ -256,6 +258,7 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({ 
   all_trips: state.common.all_trips, 
+
   searchString: state.planner.searchString,
   // droppedCells: state.planner.droppedCells, 
   current_planner_truckflicker_job: state.common.current_planner_truckflicker_job

@@ -17,7 +17,6 @@ class TruckFlicker extends React.Component {
     this.pathname = this.props.router.location.pathname.slice(1)
   }
 
-
   setInstanceVariables(){
 
     switch (this.pathname){
@@ -43,6 +42,7 @@ class TruckFlicker extends React.Component {
   showAllRoutes(event){
     event.preventDefault()
     this.setInstanceVariables()
+    // this.mapObject.clearMap()
     this.relevantArray.forEach((job)=>{
       this.props.actions.common_actions.setHiddenStatus(job)
     }) 
@@ -80,7 +80,6 @@ class TruckFlicker extends React.Component {
     var jobToReturn
     var unfound=true
     if(!this.current_truckflicker_job){
-      console.log('no current_truckflicker_job')
       arrayToUse.forEach((job)=>{
         if(!job.hidden&&unfound){
           jobToReturn = job
@@ -88,10 +87,8 @@ class TruckFlicker extends React.Component {
         } 
       })
     }else{
-      console.log('current f job', )
       let currentIndex = arrayToUse.indexOf(this.current_truckflicker_job)
       arrayToUse.forEach((job, index)=>{
-        console.log(!job.hidden, index>currentIndex, unfound)
         if(!job.hidden&&index>currentIndex&&unfound){
           jobToReturn=job
           unfound=false
@@ -99,7 +96,7 @@ class TruckFlicker extends React.Component {
       })
       if(unfound){
         arrayToUse.forEach((job, index)=>{
-          if(!job.hidden&&index<currentIndex&&unfound){
+          if(!job.hidden&&index<=currentIndex&&unfound){
             jobToReturn=job
             unfound=false
           }

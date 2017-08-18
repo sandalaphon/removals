@@ -76,6 +76,25 @@ export function getAllTripsFromRails(){
   }
 }
 
+export function getAllEmployeesFromRails(){
+  return function(dispatch){
+    const url = 'http://localhost:5000/api/employees'
+    axios.get(url, {withCredentials:true})
+    .then((response)=>{
+      dispatch({
+        type: 'GET_EMPLOYEES_FULFILLED',
+        payload: response.data
+      })
+    })
+    .catch((error)=>{
+      dispatch({
+        type: 'GET_EMPLOYEES_REJECTED',
+        payload: error
+      })
+    }) 
+  }
+}
+
 export function getAllBranchesFromRails(){
   return function(dispatch){
     const url = 'http://localhost:5000/api/branches'
@@ -96,6 +115,6 @@ export function getAllBranchesFromRails(){
 }
 
 
-  
 
-  
+
+

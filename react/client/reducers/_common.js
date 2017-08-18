@@ -7,6 +7,9 @@ function handleTripData(state = {
   current_today_truckflicker_job: '',
   current_partload_truckflicker_job: '',
   current_planner_truckflicker_job: '',
+  branch_status_partload: 0,
+  branch_status_today: 0,
+  branch_status_planner:0 ,
   all_trips: []
 },action){
 
@@ -51,6 +54,14 @@ function handleTripData(state = {
     return {...state,  getTripsError: action.payload}
     break;
     //
+    case 'GET_EMPLOYEES_FULFILLED':
+    return {...state, all_employees: action.payload, getEmployeesError: null}
+    break;
+
+    case 'GET_EMPLOYEES_REJECTED':
+    return {...state, getEmployeesError: action.payload}
+    break;
+
     case 'GET_BRANCHES_FULFILLED':
     var newBranchesArray = action.payload.slice()
     var anotherNewArray = newBranchesArray.map((branch, index)=>{

@@ -1,4 +1,4 @@
-.grid-partload{
+/*.grid-partload{
   display: grid;
   height: 95vh;
   border: 3px solid hotpink;
@@ -22,6 +22,83 @@
   grid-template-rows: repeat(15,1fr);
   grid-auto-columns: 10%;
   grid-template-columns: repeat(2,1fr);
+  }*/
+
+  .grid-partload{
+   display: grid;
+   height: 95vh;
+   grid-template-areas:
+   'leF riG';
+ }
+
+ .grid-item-partload-right{
+  grid-area: riG;
+  display: grid;
+  height: 95vh;
+  width: 50vw;
+  border: 3px solid green;
+  grid-template-areas:
+  " fli"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " sLI"
+  ;
+  grid-template-rows: repeat(15,1fr);
+  /*grid-auto-columns: 10%;*/
+  /*grid-template-columns: repeat(2,1fr);*/
+}
+
+.grid-item-partload-left{
+  grid-area: leF;
+  display: grid;
+  height: 95vh;
+  width: 50vw;
+  border: 3px solid hotpink;
+  grid-template-areas:
+  "pos "
+  "pos "
+  "pos "
+  "pos "
+  "sug "
+  "sug "
+  "sug "
+  "sug "
+  "sug "
+  "sug "
+  "sug "
+  "sug "
+  "sug "
+  "sug "
+  "sug "
+  ;
+  grid-template-rows: repeat(15,1fr);
+  /*grid-auto-columns: 10%;*/
+  /*grid-template-columns: repeat(2,1fr);*/
+}
+
+.grid-item-suggestion-list{
+  grid-area:sug;
+  display: inline-block;
+}
+
+.grid-item-postcode{
+  grid-area:pos;
+  display:inline-block;
+}
+
+.grid-item-slider-partload{
+  grid-area:sLI;
 }
 
 /*.grid-item-truck-flicker{
@@ -36,17 +113,5 @@
 
   grid-area: map;
   min-height: 1fr;
-}*/
+  }*/
 
-.grid-item-suggestion-list{
-  grid-area:sug;
-  display: inline-block;
-}
-
-.grid-item-postcode{
-grid-area:pos;
-}
-
-.grid-item-slider-partload{
-  grid-area:sLI;
-}
