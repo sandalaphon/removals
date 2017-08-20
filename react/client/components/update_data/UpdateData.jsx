@@ -26,88 +26,75 @@ class UpdateData extends React.Component {
   convertToJson(event){
     var csv = new Converter()
     var text = event.target.result
-
-    const arr = []
+    // const arr = []
     csv
     .fromString(text)
     .on('json', (json) =>{ 
       console.log(json)
-
-
-      // var geocoder = new Geocoder
-      // geocoder.setLatLngAndSendToRailsDb(json, this.props.sendSingleTripToRails.bind(this))
-      this.getGoogleDirectionsAndSendToRailsDb(json)
-
-
+      this.getGoogleDirectionsAndSendToRailsDb(json )
     })
-    .on('done', ()=>{
-    
+    .on('done', ()=>{ 
       console.log('end')
       window.alert('Thank you for the submission, the data is saved')
     })
 
   }
 
-  getGoogleDirectionsAndSendToRailsDb(json){
-    console.log(json)
-    var jsonForRails = null
-    var collectionString = ''
-
-    if(json.collection_postcode){
-      collectionString = json.collection_postcode
-    }else{
-      collectionString = json.collection_address
-    }
-
-    var deliveryString = ''
-    if(json.delivery_postcode){
-      deliveryString = json.delivery_postcode
-    }else{
-      deliveryString = json.delivery_address
-    }
-
-    var directionsService = new google.maps.DirectionsService()
-    var directionInput = {
-      origin: collectionString,
-      destination: deliveryString,
-      waypoints: [],
-      travelMode: 'DRIVING',
-      avoidTolls: true
-    }
-
-    console.log(directionInput)
-
-    directionsService.route(directionInput, function(response, status){
-     
-      if(status==='OK'){
-    
-        var stringifiedResponse = JSON.stringify(response)
-        json['google_directions']= stringifiedResponse
-        jsonForRails = json
-        // console.log(stringifiedResponse, response)
-        console.log('jsonForRails with response?', jsonForRails)
-        this.props.actions.update_data_actions.sendSingleTripToRails(jsonForRails, this.props.actions.commonActions.getAllTripsFromRails)
-
-      }else{
-        console.log(status)
+  getHomeBranchOfJob(branchCode){
+    var branchToReturn
+    this.props.all_branches.forEach((branch)=>{
+      if(branch.branch_code===branchCode){
+        branchToReturn=branch
       }
-      
-
-    }.bind(this))
-
-   
- 
+    })
+    return branchToReturn
   }
 
 
-  // loaded(event){
-  //   var text = event.target.result
-  //   console.log(text)
-  //   this.convertToJson(text)
-  // }
+
+  getGoogleDirectionsAndSendToRailsDb(json){
+
+    var branch = this.getHomeBranchOfJob(json.branch_code)
+    var collectionString = json.collection_postcode ? json.collection_postcode : json.collection_address
+    var deliveryString = json.delivery_postcode ? json.delivery_postcode : json.delivery_address
+    var toCollection = this.getGoogleResponsePromise(branch.postcode, collectionString)
+    var carry        = this.getGoogleResponsePromise(collectionString, deliveryString)
+    var backToBase   = this.getGoogleResponsePromise(deliveryString, branch.postcode)
+
+    Promise.all([toCollection, carry, backToBase])
+    .then((values)=>{
+      json['google_directions_from_branch'] = JSON.stringify(values[0])
+      json['google_directions']             = JSON.stringify(values[1])
+      json['google_directions_to_branch']   = JSON.stringify(values[2])
+    })
+    .then((value)=>{this.props.actions.update_data_actions.sendSingleTripToRails(json)})
+  }
+
+
+
+  getGoogleResponsePromise(startString, finishString){
+    return new Promise((resolve, reject)=>{
+      var directionsService = new google.maps.DirectionsService()
+      var directionInput = {
+        origin: startString,
+        destination: finishString,
+        waypoints: [],
+        travelMode: 'DRIVING',
+        avoidTolls: true
+      }
+
+      directionsService.route(directionInput, function(response, status){
+        if(status==='OK'){
+            resolve(response)
+         
+        }else{
+          reject(console.log(status))
+        }
+      }     )
+    })
+  }
 
   render(){
-    console.log("update props",this.props)
     return(
       <div>
       <Form inline>
@@ -130,9 +117,9 @@ class UpdateData extends React.Component {
 }
 
 const mapStateToProps=(state)=>({
-  trips: state.trips
+  all_branches: state.common.all_branches
 })
-  
+
 const mapDispatchToProps=(dispatch)=>({
   actions: {
     update_data_actions: bindActionCreators(updateDataActions, dispatch),
@@ -142,6 +129,66 @@ const mapDispatchToProps=(dispatch)=>({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateData)
+
+
+
+
+// getGoogleResponseAndAppendJson(json, startString, finishString, appendToJsonName, counter = 0){
+//   console.log('before promise')
+//   var branch = this.getHomeBranchOfJob(json.branch_code)
+
+//   var directionsService = new google.maps.DirectionsService()
+//   var directionInput = {
+//     origin: startString,
+//     destination: finishString,
+//     waypoints: [],
+//     travelMode: 'DRIVING',
+//     avoidTolls: true
+//   }
+
+//   directionsService.route(directionInput, function(response, status){
+   
+//     if(status==='OK'){
+//       var stringifiedResponse = JSON.stringify(response)
+//       json[appendToJsonName]= stringifiedResponse
+//       if(counter==0){
+//         var collectionString = ''
+
+//         if(json.collection_postcode){
+//           collectionString = json.collection_postcode
+//         }else{
+//           collectionString = json.collection_address
+//         }
+//         this.getGoogleResponseAndAppendJson(json, branch.postcode, collectionString,  'google_directions_from_branch', 1)
+//       }
+//       if(counter==1){
+//         var deliveryString = ''
+//         if(json.delivery_postcode){
+//           deliveryString = json.delivery_postcode
+//         }else{
+//           deliveryString = json.delivery_address
+//         }
+//         this.getGoogleResponseAndAppendJson(json, deliveryString,  branch.postcode,  'google_directions_to_branch', 2)
+//       }
+//       if(counter==2){
+//         this.props.actions.update_data_actions.sendSingleTripToRails(json)
+//       }
+      
+
+//     }else{
+//       console.log(status)
+//     }
+    
+
+//   }.bind(this))
+
+
+  
+//   return json
+  
+  
+// }
+
 
 
 

@@ -15,9 +15,9 @@ class BranchesInfo extends React.Component{
     alert('get photo')
   }
 
-
   getEmployeeTable(){
     if(!this.props.all_employees) return
+    if(!this.props.all_branches) return
       var pictureOrButton
     var pictureSize = {
     height: 'auto', 

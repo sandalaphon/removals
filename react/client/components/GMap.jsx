@@ -37,7 +37,6 @@ class GMap extends React.Component {
   createMap() {
     let pathname=this.props.location.pathname
     pathname = pathname.slice(1)
-    console.log('pathname', pathname)
     let mapOptions = {
       zoom: this.state.zoom,
       center: this.mapCenter(),

@@ -27,8 +27,7 @@ class JobList extends React.Component{
     }
   }
 
-  componentWillMount(){}
-   
+
 
   drag(event){
 
@@ -219,11 +218,11 @@ const mapDispatchToProps=(dispatch)=>({
 })
 
 const mapStateToProps=(state)=>({ 
-  all_trips: state.common.all_trips, 
-
-  searchString: state.planner.searchString,
-  // droppedCells: state.planner.droppedCells, 
-  current_planner_truckflicker_job: state.common.current_planner_truckflicker_job
+  all_trips:                          state.common.all_trips, 
+  show_to_branch:                     state.common.show_to_branch, 
+  show_from_branch:                   state.common.show_from_branch, 
+  searchString:                       state.planner.searchString,
+  current_planner_truckflicker_job:   state.common.current_planner_truckflicker_job
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(JobList)

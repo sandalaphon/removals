@@ -48,59 +48,67 @@ class SliderPlanner extends React.Component{
 
   placeMarkers(sliderSecondsFromStart){
     var plannersTrips = this.props.all_trips
-    var sliderMarkerCoordsandIndexArray = []
+    var sliderMarkerObjectArray = []
 
     if(this.props.current_planner_truckflicker_job){
-
       var trip = this.props.current_planner_truckflicker_job
       if(trip.hidden) return
-      var steps =trip.google_directions.routes[0].legs[0].steps
-      var truckSecondsFromStart = 0
-      var stepCompleted = false
+       sliderMarkerObjectArray =  this.getSliderMarkerObject(trip, sliderSecondsFromStart) ?  [this.getSliderMarkerObject(trip, sliderSecondsFromStart)] : [] 
+       
+    }else{
+      plannersTrips.forEach((trip, index)=>{
+        if(trip.hidden) return
+          var sliderMarkerObject = this.getSliderMarkerObject(trip, sliderSecondsFromStart, index)
+           if(sliderMarkerObject) sliderMarkerObjectArray.push(sliderMarkerObject)
+      });
+    }
+    
+    mapObjectInstances.planner.handleSliderMarkerArray(sliderMarkerObjectArray)
 
+  }
+
+  getSliderMarkerObject(trip, secondFromStart, index=0){
+   
+      console.log('yes here')
+      var truckSecondsFromStart = 0
+      var from_branch_duration_seconds=trip.google_directions_from_branch.routes[0].legs[0].duration.value
+      var carry_duration_seconds=trip.google_directions.routes[0].legs[0].duration.value
+      var to_branch_duration_seconds=trip.google_directions_to_branch.routes[0].legs[0].duration.value
+
+      if(secondFromStart<=from_branch_duration_seconds){
+        var {steps} =trip.google_directions_from_branch.routes[0].legs[0]
+        var leg = 'from_branch'
+      }else if(secondFromStart<=carry_duration_seconds+from_branch_duration_seconds){
+        secondFromStart=secondFromStart-from_branch_duration_seconds
+        var {steps} =trip.google_directions.routes[0].legs[0]
+        var leg = 'carry'
+      }else{
+        secondFromStart=secondFromStart-from_branch_duration_seconds-carry_duration_seconds
+        var {steps} =trip.google_directions_to_branch.routes[0].legs[0]
+        var leg = 'to_branch'
+      }
+    
+      var sliderMarkerObject
+      // var {steps} =trip.google_directions.routes[0].legs[0]
+      // var truckSecondsFromStart = 0
+      var stepCompleted = false
       steps.forEach((step)=>{
         if(stepCompleted) return
         var currentStepDuration = step.duration.value
          truckSecondsFromStart += currentStepDuration
-         if(truckSecondsFromStart>sliderSecondsFromStart){
-
-          var fractionOfStep = (  sliderSecondsFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
+         if(truckSecondsFromStart>secondFromStart){
+          var fractionOfStep  = (  secondFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
           var indexOfStepPath = Math.floor(fractionOfStep*step.path.length)
 
           var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
-          sliderMarkerCoordsandIndexArray.push({markerCoords, colour: trip.colour, message: trip.client_name})
+          sliderMarkerObject = {markerCoords, colour: trip.colour, message: trip.client_name, index, leg}
           stepCompleted = true
-
          }
       });
-    }else{
-      plannersTrips.forEach((trip, index)=>{
-
-        if(!trip.hidden){
-          var steps =trip.google_directions.routes[0].legs[0].steps
-          var truckSecondsFromStart = 0
-          var stepCompleted = false
-
-          steps.forEach((step)=>{
-            if(stepCompleted) return
-            var currentStepDuration = step.duration.value
-             truckSecondsFromStart += currentStepDuration
-             if(truckSecondsFromStart>sliderSecondsFromStart){
-
-              var fractionOfStep = (  sliderSecondsFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
-              var indexOfStepPath = Math.floor(fractionOfStep*step.path.length)
-              var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
-              sliderMarkerCoordsandIndexArray.push({markerCoords, index, colour: trip.colour, message: trip.client_name})
-              stepCompleted = true
-
-             }
-          });
-        }
-      });
-    }
+      console.log('sliderMarkerObject', sliderMarkerObject)
+      return sliderMarkerObject
+ 
     
-    mapObjectInstances.planner.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
-
   }
 
   sortTimeDisplay(v){
@@ -162,6 +170,8 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({
   all_trips:                          state.common.all_trips, 
+  show_to_branch:                     state.common.show_to_branch, 
+  show_from_branch:                   state.common.show_from_branch, 
   branch_status_planner:              state.common.branch_status_planner, 
   planner_seconds_from_start:         state.planner.planner_seconds_from_start, 
   current_planner_truckflicker_job:   state.common.current_planner_truckflicker_job})

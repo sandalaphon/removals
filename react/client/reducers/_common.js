@@ -10,11 +10,21 @@ function handleTripData(state = {
   branch_status_partload: 0,
   branch_status_today: 0,
   branch_status_planner:0 ,
-  all_trips: []
+  all_trips: [],
+  show_to_branch: true,
+  show_from_branch: true
 },action){
 
 
   switch(action.type) {
+
+    case 'SET_SHOW_FROM_BRANCH':
+    return { ...state, show_from_branch: !state.show_from_branch}
+    break;
+
+    case 'SET_SHOW_TO_BRANCH':
+    return { ...state, show_to_branch: !state.show_to_branch}
+    break;
 
     case 'SET_BRANCH_DISPLAYED_STATUS':
         switch(action.pathname){
@@ -39,11 +49,18 @@ function handleTripData(state = {
     return { ...state, planner_seconds_from_start: action.payload}
     break;
 
+
+
     case 'GET_TRIPS_FULFILLED':
     var newArray = action.payload.slice()
     var anotherNewArray = newArray.map((trip, index)=>{
         var google_directions= JSON.parse(trip.google_directions)
         trip.google_directions = google_directions
+        var google_directions_to_branch= JSON.parse(trip.google_directions_to_branch)
+        trip.google_directions_to_branch = google_directions_to_branch
+        var google_directions_from_branch= JSON.parse(trip.google_directions_from_branch)
+        trip.google_directions_from_branch = google_directions_from_branch
+       
         trip.colour=helpers.getUniqueColor(index)
         return trip
     })

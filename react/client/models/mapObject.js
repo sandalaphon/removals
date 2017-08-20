@@ -17,7 +17,11 @@ class MapObject{
     this.sliderMarkers = [],
     this.branchesMarkers = [],
     this.branchesButtonExists = false,
-    this.pathname = pathname
+    this.pathname = pathname,
+    this.fromBranchesRoutes=[],
+    this.toBranchesRoutes=[],
+    this.toBranchesMarkers=[],
+    this.fromBranchesMarkers=[]
 
 
     if(!mapObjectInstances.pathname){
@@ -34,12 +38,15 @@ class MapObject{
     this.clearMarkers(this.markers, clearArrays)
     if(clearSliderMarkers) this.clearMarkers(this.sliderMarkers, clearArrays)
     this.clearMarkers(this.postcodeMarkers, clearArrays)
+
     // this.clearMarkers(this.branchesMarkers, clearArrays)
-    this.clearRoutes(clearArrays)
+    this.clearRoutes(this.renderedRoutes, clearArrays)
+    this.clearRoutes(this.toBranchesRoutes, clearArrays)
+    this.clearRoutes(this.fromBranchesRoutes, clearArrays)
   }
 
-  clearRoutes(clearArrays){
-    this.showOrHide(this.renderedRoutes, true)
+  clearRoutes(instance_variable_array, clearArrays=true){
+    this.showOrHide(instance_variable_array, true)
     if(clearArrays) this.renderedRoutes.length = 0
   }
 
@@ -85,49 +92,81 @@ class MapObject{
     //sliderMarkerCoordsandIndexArray looks like this: [{markerCoords, index, colour}, ...] index references mother array
     this.clearMarkers(this.sliderMarkers)
     sliderMarkerCoordsandIndexArray.forEach((object)=>{
-      console.log('object', object)
-      this.placeMarker(object.markerCoords,  this.truckSymbol3(object.colour), this.sliderMarkers, false, false, object.message)
+      this.placeMarker(object.markerCoords,  this.getTruckMarker(object.colour, object.leg), this.sliderMarkers, false, false, object.message)
+      // this.placeMarker(object.markerCoords,  this.truckSymbol3(object.colour), this.sliderMarkers, false, false, object.message)
     })
   }
 
-  drawRouteWithGoogleResponse(job){
-    console.log('drawing a route')
+  getBranchById(branchId){
+    var branchToReturn
+    var branches = store.getState().common.all_branches
+    branches.forEach((branch)=>{
+      if(branch.id==branchId){
+        branchToReturn = branch
+      }
+    })
+    return branchToReturn
+  }
+
+  drawRouteWithGoogleResponse(job, addStartFinishMarkers = true){
       if(job.hidden) return
     var {start_location, end_location} = job.google_directions.routes[ 0 ].legs[ 0 ]
-    this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this))
-    this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this))
 
-    var path = job.google_directions.routes[0].overview_path
-    var path_length = path.length
+  if(addStartFinishMarkers){
+    this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this), 'S')
+        this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this),'F')
+      }
 
-    for(let i = 0; i<path_length; i=i+10){
-     
-     let pointLat = path[i].lat
-     let pointLng = path[i].lng
+    this.drawRoute(job.google_directions)
+    this.drawToAndFromBranch(job)
+  }
 
-     this.placeMarker({lat: path[i].lat, lng:path[i].lng} , this.pinSymbol(job.colour), this.markers, true, false, '')
-
-    }
-
-
-
+  drawRoute(google_directions, polylineColour='#0088FF'){
     var directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
       map: this.map,
-      suppressMarkers: true
+      suppressMarkers: true,
+      polylineOptions: {
+            strokeColor: polylineColour,
+            strokeWeight: 4,
+            strokeOpacity: 0.6
+          }
     })
-    directionsDisplay.setDirections(job.google_directions)
+    directionsDisplay.setDirections(google_directions)
     this.renderedRoutes.push(directionsDisplay)
   }
 
-  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null){
+  drawToAndFromBranch(job){
+    var showToBranch = store.getState().common.show_to_branch
+    var showFromBranch = store.getState().common.show_from_branch
+    if(!showFromBranch&&!showToBranch) return
+      var branch = this.getBranchById(job.branch_id)
+    var branchLatLng = JSON.parse(branch.latlng)
+    if(showFromBranch){
+      this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address)
+      this.drawRoute(job.google_directions_from_branch, 'red')
+    }
+    if(showToBranch){
+      this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.toBranchesMarkers, true, false, branch.address)
+      this.drawRoute(job.google_directions_to_branch, 'green')
+    }
+
+  }
+
+  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null, labelText=null){
     // console.log(coords, message,instance_variable_marker_array)
     var marker = new google.maps.Marker({
       position: coords,
       map: this.map,
       icon: symbol,
-      animation: drop ? google.maps.Animation.DROP : null,
+      animation: drop ? google.maps.Animation.DROP : null
+      // label: {
+      //   text: labelText,
+      //   // color: 'blue',
+      // }
     })
+    if(labelText) marker.setLabel({text: labelText})
+
     if(message) this.addInfoWindow(marker, message)
     if(setBounds){
       this.bounds.extend(coords) 
@@ -137,10 +176,9 @@ class MapObject{
     instance_variable_marker_array.push(marker)
 
   }
-  
-  testClickFunction(e){
-    console.log('e', e)
-  }
+
+ 
+
 
 displayMarkersFromStore(marker_array_from_store,  instance_variable_marker_array, colour = 'red', clickfunction){
   marker_array_from_store.forEach((coords)=>{
@@ -324,7 +362,6 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
  hideOrShowElements(hide=true){
 
   var domElements = this.getElements()
-  console.log(domElements, this.pathname)
   domElements.forEach((element)=>{
     hide ? element.classList.add('hidden') : element.classList.remove('hidden')
   })
@@ -358,12 +395,14 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
 
 pinSymbol(color) {
   return {
-    path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
+    // path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
+    path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
     fillColor: color,
     fillOpacity: 1,
     strokeColor: '#000',
-    strokeWeight: 2,
+    strokeWeight: 1,
     scale: 1,
+    labelOrigin: new google.maps.Point(0,-29)
   };
 }
 
@@ -380,14 +419,33 @@ branchSymbol(color='red'){
   }
 }
 
-truckSymbol3(color){
+getTruckMarker(colour, leg){
+  switch(leg){
+    case 'from_branch':
+    return this.truckSymbol3('white', colour, .8, 1.5)
+    break;
+    case 'carry':
+    return this.truckSymbol3(colour, 'black', 1, .3)
+    break;
+    case 'to_branch':
+    return this.truckSymbol3(colour, colour, 0, 1.5)
+    break;
+  }
+}
+
+truckSymbol3(fillColour, strokeColour, fillOpacityy, strokeWeightt){
   return {
 
     path: "M0 1530 l0 -460 835 0 835 0 0 460 0 460 -835 0 -835 0 0 -460z M1765 1647 c-3 -6 -4 -194 -3 -417 l3 -405 70 -2 c69 -3 70 -2 90 29 11 18 39 46 63 62 37 26 54 31 117 34 94 5 153 -20 198 -85 l31 -43 88 0 c81 0 91 2 113 25 24 23 25 28 25 169 0 80 -5 157 -10 172 -6 15 -70 123 -142 240 -108 176 -136 215 -161 223 -45 16 -476 15 -482 -2z m419 -44 c34 -5 43 -14 76 -66 21 -33 57 -97 81 -142 63 -119 71 -115 -216 -115 -290 0 -270 -12 -270 70 0 93 4 131 14 143 11 14 35 17 145 17 72 0 148 -3 170 -7z m314 -625 c18 -18 15 -103 -4 -119 -25 -21 -49 1 -52 49 -5 65 24 102 56 70z M153 990 c-36 -14 -56 -55 -50 -97 7 -42 56 -98 64 -74 11 29 76 91 117 110 57 28 152 28 205 1 41 -20 111 -94 111 -117 0 -11 99 -13 535 -13 l535 0 0 100 0 100 -747 -1 c-412 0 -758 -4 -770 -9z M300 888 c-133 -68 -112 -261 33 -308 70 -22 159 16 190 83 25 51 22 127 -6 168 -26 39 -97 79 -142 79 -17 0 -51 -10 -75 -22z m123 -27 c87 -33 108 -155 36 -215 -84 -71 -209 -14 -209 94 0 90 90 152 173 121z M2045 896 c-17 -7 -45 -29 -62 -49 -80 -91 -34 -232 87 -268 78 -23 164 24 196 107 15 40 16 53 5 93 -27 103 -133 158 -226 117z m136 -49 c66 -45 76 -139 19 -196 -53 -53 -127 -53 -180 0 -107 108 35 281 161 196z",
-    fillColor: color,
-    fillOpacity: 1,
-    strokeColor: 'black',
-    strokeWeight: .3,
+    fillColor: fillColour,
+    // fillColor: 'white',
+    // fillOpacity: 1,
+    // fillOpacity: 0,
+    fillOpacity: fillOpacityy,
+    // strokeColor: 'black',
+    strokeColor: strokeColour,
+    // strokeWeight: .3,
+    strokeWeight: strokeWeightt,
     scale: 0.01,
     rotation: 180,
     // size: new google.maps.Size(800, 800), //size

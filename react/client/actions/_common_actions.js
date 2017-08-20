@@ -8,6 +8,18 @@ import axios from 'axios'
 // }
 //////////////////////////////////////
 
+export function setShowFromBranch(){
+  return {
+    type: 'SET_SHOW_FROM_BRANCH'
+  }
+}
+
+export function setShowToBranch(){
+  return {
+    type: 'SET_SHOW_TO_BRANCH'
+  }
+}
+
 export function setBranchDisplayStatus(pathname, showing){
   return {
     type: 'SET_BRANCH_DISPLAYED_STATUS',

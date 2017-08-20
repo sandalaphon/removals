@@ -66,7 +66,6 @@ class TruckFlicker extends React.Component {
   this.mapObject.clearMap()
   // this.mapObject.branchesShowing=false
   if(jobToDisplay){
-    console.log('getting here pathname', this.pathname)
     this.mapObject.drawRouteWithGoogleResponse(jobToDisplay)
       // this.current_truckflicker_job = jobToDisplay
       this.props.actions.common_actions.setCurrentTruckFlickerJob(jobToDisplay, this.pathname)
@@ -106,11 +105,23 @@ class TruckFlicker extends React.Component {
     return jobToReturn
   }
 
+  handleShowFromBranch(event){
+    event.preventDefault()
+    this.props.actions.common_actions.setShowFromBranch()
+  }
+
+  handleShowToBranch(event){
+    event.preventDefault()
+    this.props.actions.common_actions.setShowToBranch()
+  }
+
   render(){
     // this.setInstanceVariables()
     return (
       <div className = 'grid-item-truck-flicker'>
       <button onClick={this.showAllRoutes.bind(this)}>Show All Routes</button>
+      <button onClick={this.handleShowToBranch.bind(this)}>Show To Branch</button>
+      <button onClick={this.handleShowFromBranch.bind(this)}>Show From Branch</button>
       <button onClick={this.handlePreviousClick.bind(this)}>Previous</button>
       <button onClick={this.handleNextClick.bind(this)}>Next</button>
       </div>
