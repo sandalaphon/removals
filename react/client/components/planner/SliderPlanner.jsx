@@ -7,6 +7,7 @@ import Slider,  { Range, createSliderWithTooltip } from 'rc-slider'
 import Tooltip from 'rc-tooltip';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
+import {placeMarkers} from '../../models/sliderFunctions'
 
 
 
@@ -18,7 +19,6 @@ class SliderPlanner extends React.Component{
         tooltipValue: 0,
         value:  (this.props.planner_seconds_from_start/600) || 24
       }
-    
   }
 
   componentDidMount(){
@@ -26,89 +26,22 @@ class SliderPlanner extends React.Component{
       mapObjectInstances.planner.drawRouteWithGoogleResponse(this.props.current_planner_truckflicker_job)
     }
     if(this.props.planner_seconds_from_start){
-      this.placeMarkers(this.props.planner_seconds_from_start)
+      placeMarkers(this.props.planner_seconds_from_start, 'planner')
     } 
     mapObjectInstances.planner.display_branches(this.props.branch_status_planner)
   }
 
   handleSliderChange(value){
-
     var secondsPassed = value*10*60
-    this.placeMarkers(secondsPassed)
-    
+    placeMarkers(secondsPassed, 'planner')
   }
 
   onAfterChange(value){
     this.setState({value,})  
     const secondsPassed = value * 60 * 10
     this.props.actions.planner_actions.setPlannerSliderSecondsFromStart(secondsPassed)
-    this.placeMarkers(secondsPassed)
+    placeMarkers(secondsPassed, 'planner')
 
-  }
-
-  placeMarkers(sliderSecondsFromStart){
-    var plannersTrips = this.props.all_trips
-    var sliderMarkerObjectArray = []
-
-    if(this.props.current_planner_truckflicker_job){
-      var trip = this.props.current_planner_truckflicker_job
-      if(trip.hidden) return
-       sliderMarkerObjectArray =  this.getSliderMarkerObject(trip, sliderSecondsFromStart) ?  [this.getSliderMarkerObject(trip, sliderSecondsFromStart)] : [] 
-       
-    }else{
-      plannersTrips.forEach((trip, index)=>{
-        if(trip.hidden) return
-          var sliderMarkerObject = this.getSliderMarkerObject(trip, sliderSecondsFromStart, index)
-           if(sliderMarkerObject) sliderMarkerObjectArray.push(sliderMarkerObject)
-      });
-    }
-    
-    mapObjectInstances.planner.handleSliderMarkerArray(sliderMarkerObjectArray)
-
-  }
-
-  getSliderMarkerObject(trip, secondFromStart, index=0){
-   
-      console.log('yes here')
-      var truckSecondsFromStart = 0
-      var from_branch_duration_seconds=trip.google_directions_from_branch.routes[0].legs[0].duration.value
-      var carry_duration_seconds=trip.google_directions.routes[0].legs[0].duration.value
-      var to_branch_duration_seconds=trip.google_directions_to_branch.routes[0].legs[0].duration.value
-
-      if(secondFromStart<=from_branch_duration_seconds){
-        var {steps} =trip.google_directions_from_branch.routes[0].legs[0]
-        var leg = 'from_branch'
-      }else if(secondFromStart<=carry_duration_seconds+from_branch_duration_seconds){
-        secondFromStart=secondFromStart-from_branch_duration_seconds
-        var {steps} =trip.google_directions.routes[0].legs[0]
-        var leg = 'carry'
-      }else{
-        secondFromStart=secondFromStart-from_branch_duration_seconds-carry_duration_seconds
-        var {steps} =trip.google_directions_to_branch.routes[0].legs[0]
-        var leg = 'to_branch'
-      }
-    
-      var sliderMarkerObject
-      // var {steps} =trip.google_directions.routes[0].legs[0]
-      // var truckSecondsFromStart = 0
-      var stepCompleted = false
-      steps.forEach((step)=>{
-        if(stepCompleted) return
-        var currentStepDuration = step.duration.value
-         truckSecondsFromStart += currentStepDuration
-         if(truckSecondsFromStart>secondFromStart){
-          var fractionOfStep  = (  secondFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
-          var indexOfStepPath = Math.floor(fractionOfStep*step.path.length)
-
-          var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
-          sliderMarkerObject = {markerCoords, colour: trip.colour, message: trip.client_name, index, leg}
-          stepCompleted = true
-         }
-      });
-      console.log('sliderMarkerObject', sliderMarkerObject)
-      return sliderMarkerObject
- 
-    
   }
 
   sortTimeDisplay(v){

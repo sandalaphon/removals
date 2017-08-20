@@ -68,6 +68,7 @@ class UpdateData extends React.Component {
       json['google_directions_to_branch']   = JSON.stringify(values[2])
     })
     .then((value)=>{this.props.actions.update_data_actions.sendSingleTripToRails(json)})
+    .catch((err)=>{console.log('error updating data', err)})
   }
 
 
@@ -88,7 +89,7 @@ class UpdateData extends React.Component {
             resolve(response)
          
         }else{
-          reject(console.log(status))
+          reject(status)
         }
       }     )
     })

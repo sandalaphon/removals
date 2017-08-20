@@ -7,6 +7,7 @@ import Slider,  { Range, createSliderWithTooltip } from 'rc-slider'
 import Tooltip from 'rc-tooltip';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
+import {placeMarkers} from '../../models/sliderFunctions'
 
 
 
@@ -17,27 +18,22 @@ class SliderToday extends React.Component{
       this.state = {
         tooltipValue: 0,
         value:  (this.props.today_seconds_from_start/600) || 24
-       
-      }
-    
+      } 
   }
 
   componentDidMount(){
-    console.log('componentDidMount', this.props)
     if(this.props.current_today_truckflicker_job){
       mapObjectInstances.today.drawRouteWithGoogleResponse(this.props.current_today_truckflicker_job)
     }
     if(this.props.today_seconds_from_start){
-      console.log('today seconds from start')
-      this.placeMarkers(this.props.today_seconds_from_start)
+      placeMarkers(this.props.today_seconds_from_start, 'today')
     }
     mapObjectInstances.today.display_branches(this.props.branch_status_today) 
   }
 
   handleSliderChange(value){
-
     var secondsPassed = value*10*60
-    this.placeMarkers(secondsPassed)
+    placeMarkers(secondsPassed, 'today')
     
   }
 
@@ -48,65 +44,6 @@ class SliderToday extends React.Component{
 
   }
 
-  placeMarkers(sliderSecondsFromStart){
-
-    var todaysTrips = this.props.all_trips
-    var sliderMarkerCoordsandIndexArray = []
-
-    if(this.props.current_today_truckflicker_job){
-      console.log('current truck flicker job')
-      var trip = this.props.current_today_truckflicker_job
-      var steps =trip.google_directions.routes[0].legs[0].steps
-      var truckSecondsFromStart = 0
-      var stepCompleted = false
-
-      steps.forEach((step)=>{
-        if(stepCompleted) return
-        var currentStepDuration = step.duration.value
-         truckSecondsFromStart += currentStepDuration
-         if(truckSecondsFromStart>sliderSecondsFromStart){
-
-          var fractionOfStep = (  sliderSecondsFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
-          var indexOfStepPath = Math.floor(fractionOfStep*step.path.length)
-
-          var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
-          sliderMarkerCoordsandIndexArray.push({markerCoords, colour: trip.colour, message: trip.client_name})
-          stepCompleted = true
-
-         }
-      });
-    }else{
-      console.log('else and todaysTrips', todaysTrips)
-      todaysTrips.forEach((trip, index)=>{
-
-        if(!trip.hidden){
-          var steps =trip.google_directions.routes[0].legs[0].steps
-          var truckSecondsFromStart = 0
-          var stepCompleted = false
-
-          steps.forEach((step)=>{
-            if(stepCompleted) return
-            var currentStepDuration = step.duration.value
-             truckSecondsFromStart += currentStepDuration
-             if(truckSecondsFromStart>sliderSecondsFromStart){
-
-              var fractionOfStep = (  sliderSecondsFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
-              var indexOfStepPath = Math.floor(fractionOfStep*step.path.length)
-              var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
-              sliderMarkerCoordsandIndexArray.push({markerCoords, colour: trip.colour, message: trip.client_name})
-              stepCompleted = true
-
-             }
-          });
-        }
-      });
-    }
-    
-    mapObjectInstances.today.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
-
-
-
-  }
 
   sortTimeDisplay(v){
     // console.log(v)

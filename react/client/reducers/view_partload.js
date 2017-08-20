@@ -39,6 +39,10 @@ function handlePartloadData(state = {
       var anotherNewArray = newArray.map((trip, index)=>{
         var google_directions= JSON.parse(trip.google_directions)
         trip.google_directions = google_directions
+        var google_directions_to_branch= JSON.parse(trip.google_directions_to_branch)
+        trip.google_directions_to_branch = google_directions_to_branch
+        var google_directions_from_branch= JSON.parse(trip.google_directions_from_branch)
+        trip.google_directions_from_branch = google_directions_from_branch
         trip.colour=helpers.getUniqueColor(index)
         return trip
       })

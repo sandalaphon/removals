@@ -7,7 +7,7 @@ import Slider,  { Range, createSliderWithTooltip } from 'rc-slider'
 import Tooltip from 'rc-tooltip';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
-
+import {placeMarkers} from '../../models/sliderFunctions';
 
 
 class SliderPartload extends React.Component{
@@ -22,75 +22,20 @@ class SliderPartload extends React.Component{
 
   componentDidMount(){
     if(this.props.partload_seconds_from_start){
-      this.placeMarkers(this.props.partload_seconds_from_start)
+      placeMarkers(this.props.partload_seconds_from_start, 'partload')
     }
   }
 
   handleSliderChange(value){
     var secondsPassed = value*10*60
-    this.placeMarkers(secondsPassed)
+    placeMarkers(secondsPassed, 'partload')
   }
 
   onAfterChange(value){
-    this.setState({value,})  
+    this.setState({value})  
     const secondsPassed = value * 60 * 10
     this.props.actions.partload_actions.setPartloadSliderSecondsFromStart(secondsPassed)
-  }
-
-  placeMarkers(sliderSecondsFromStart){
-
-    var partloadsTrips = this.props.best_pick_up_jobs
-    var sliderMarkerCoordsandIndexArray = []
-
-    if(this.props.current_partload_truckflicker_job){
-      var trip = this.props.current_partload_truckflicker_job
-      var steps =trip.google_directions.routes[0].legs[0].steps
-      var truckSecondsFromStart = 0
-      var stepCompleted = false
-
-      steps.forEach((step)=>{
-        if(stepCompleted) return
-        var currentStepDuration = step.duration.value
-         truckSecondsFromStart += currentStepDuration
-         if(truckSecondsFromStart>sliderSecondsFromStart){
-
-          var fractionOfStep = (  sliderSecondsFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
-          var indexOfStepPath = Math.floor(fractionOfStep*step.path.length)
-
-          var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
-          sliderMarkerCoordsandIndexArray.push({markerCoords, colour: trip.colour, message: trip.client_name})
-          stepCompleted = true
-
-         }
-      });
-    }else{
-      partloadsTrips.forEach((trip, index)=>{
-
-        if(!trip.hidden){
-          var steps =trip.google_directions.routes[0].legs[0].steps
-          var truckSecondsFromStart = 0
-          var stepCompleted = false
-
-          steps.forEach((step)=>{
-            if(stepCompleted) return
-            var currentStepDuration = step.duration.value
-             truckSecondsFromStart += currentStepDuration
-             if(truckSecondsFromStart>sliderSecondsFromStart){
-
-              var fractionOfStep = (  sliderSecondsFromStart  -  (truckSecondsFromStart-currentStepDuration))/currentStepDuration
-              var indexOfStepPath = Math.floor(fractionOfStep*step.path.length)
-              var markerCoords = ({lat: step.path[indexOfStepPath].lat, lng: step.path[indexOfStepPath].lng})
-              sliderMarkerCoordsandIndexArray.push({markerCoords, index, colour: trip.colour, message: trip.client_name})
-              stepCompleted = true
-
-             }
-          });
-        }
-      });
-    }
-    
-    mapObjectInstances.partload.handleSliderMarkerArray(sliderMarkerCoordsandIndexArray)
-
+    placeMarkers(secondsPassed, 'partload')
   }
 
   sortTimeDisplay(v){
@@ -104,8 +49,6 @@ class SliderPartload extends React.Component{
     const time = `${startValue+hoursPassed}:${minutesLeft} `
     return time
   }
-
-
 
   render(){
     const SliderWithTooltip = createSliderWithTooltip(Slider);
