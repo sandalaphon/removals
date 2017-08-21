@@ -32,13 +32,13 @@ class Partload extends React.Component{
 
     return(
       <div className='grid-partload' >
-      <div className='grid-item-partload-right'>
+      <div className='grid-item-partload-right width50vw'>
       <GmapPartLoad/>
       <TruckFlicker/>
       <SliderPartload/>
       </div>
 
-      <div className='grid-item-partload-left'>
+      <div className='grid-item-partload-left width50vw'>
       <Postcode />
       <SuggestionList/>
       <div 

@@ -7,19 +7,71 @@ function handleTripData(state = {
   current_today_truckflicker_job: '',
   current_partload_truckflicker_job: '',
   current_planner_truckflicker_job: '',
-  branch_status_partload: 0,
-  branch_status_today: 0,
-  branch_status_planner:0 ,
+  // branch_status_partload: 0,
+  // branch_status_today: 0,
+  // branch_status_planner:0 ,
   all_trips: [],
   show_to_branch: true,
   show_from_branch: true,
   full_screen_map_today: false,
   full_screen_map_partload: false,
-  full_screen_map_planner: false
+  full_screen_map_planner: false,
+  branches_on_map_partload: false,
+  branches_on_map_today: false,
+  branches_on_map_planner: false,
+  branch_list_displayed_partload: false,
+  branch_list_displayed_planner: false,
+  branch_list_displayed_today: false,
+
 },action){
 
 
   switch(action.type) {
+
+    case 'TOGGLE_BRANCH_LIST_DISPLAYED':
+    switch(action.pathname){
+        case 'partload':
+        return { ...state, branch_list_displayed_partload: !state.branch_list_displayed_partload}
+        break;
+        case 'today':
+        return { ...state, branch_list_displayed_today: !state.branch_list_displayed_today}
+        break;
+        case 'planner':
+        return { ...state, branch_list_displayed_planner: !state.branch_list_displayed_planner}
+        break;
+    }
+    break;
+
+    case 'TOGGLE_BRANCHES_ON_MAP':
+    switch(action.pathname){
+        case 'partload':
+        return { ...state, branches_on_map_partload: !state.branches_on_map_partload}
+        break;
+        case 'today':
+        return { ...state, branches_on_map_today: !state.branches_on_map_today}
+        break;
+        case 'planner':
+        return { ...state, branches_on_map_planner: !state.branches_on_map_planner}
+        break;
+    }
+    break;
+
+    // case 'SET_BRANCH_DISPLAYED_STATUS':
+    //     switch(action.pathname){
+    //         case 'partload':
+    //         return { ...state, branch_status_partload: action.showing}
+    //         break;
+    //         case 'today':
+    //         return { ...state, branch_status_today: action.showing}
+    //         break;
+    //         case 'planner':
+    //         return { ...state, branch_status_planner: action.showing}
+    //         break;
+    //     }
+    
+    // break;
+
+
     case 'TOGGLE_FULL_SCREEN_MAP':
         switch(action.pathname){
             case 'partload':
@@ -44,20 +96,6 @@ function handleTripData(state = {
     return { ...state, show_to_branch: !state.show_to_branch}
     break;
 
-    case 'SET_BRANCH_DISPLAYED_STATUS':
-        switch(action.pathname){
-            case 'partload':
-            return { ...state, branch_status_partload: action.showing}
-            break;
-            case 'today':
-            return { ...state, branch_status_today: action.showing}
-            break;
-            case 'planner':
-            return { ...state, branch_status_planner: action.showing}
-            break;
-        }
-    
-    break;
 
     case 'SET_FILTER_SEARCH_STRING':
     return { ...state, filter_search_string: action.payload}

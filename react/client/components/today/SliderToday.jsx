@@ -28,8 +28,10 @@ class SliderToday extends React.Component{
     if(this.props.today_seconds_from_start){
       placeMarkers(this.props.today_seconds_from_start, 'today')
     }
-    mapObjectInstances.today.display_branches(this.props.branch_status_today) 
+    mapObjectInstances.today.display_branches() 
+    mapObjectInstances.today.displayOrHideBranchList()
   }
+
 
   handleSliderChange(value){
     var secondsPassed = value*10*60
@@ -107,8 +109,7 @@ const mapDispatchToProps=(dispatch)=>({
 const mapStateToProps=(state)=>({
   all_trips: state.common.all_trips, 
   today_seconds_from_start: state.today.today_seconds_from_start, 
-  current_today_truckflicker_job: state.common.current_today_truckflicker_job,
-  branch_status_today: state.common.branch_status_today,
+  current_today_truckflicker_job: state.common.current_today_truckflicker_job
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SliderToday)

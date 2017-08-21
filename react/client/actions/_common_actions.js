@@ -7,6 +7,35 @@ import axios from 'axios'
 //   }
 // }
 //////////////////////////////////////
+// export function setBranchDisplayStatus(pathname, showing){
+//   return {
+//     type: 'SET_BRANCH_DISPLAYED_STATUS',
+//     showing,
+//     pathname
+//   }
+// }
+
+export function toggleBranchListDisplayed(pathname){
+  return {
+    type: 'TOGGLE_BRANCH_LIST_DISPLAYED',
+    pathname
+  }
+}
+
+
+
+export function toggleBranchesOnMap(pathname){
+  return {
+    type: 'TOGGLE_BRANCHES_ON_MAP',
+    pathname
+  }
+}
+
+export function setShowToBranch(){
+  return {
+    type: 'SET_SHOW_TO_BRANCH'
+  }
+}
 
 export function setShowFromBranch(){
   return {
@@ -21,19 +50,7 @@ export function toggleFullScreenMap(pathname){
   }
 }
 
-export function setShowToBranch(){
-  return {
-    type: 'SET_SHOW_TO_BRANCH'
-  }
-}
 
-export function setBranchDisplayStatus(pathname, showing){
-  return {
-    type: 'SET_BRANCH_DISPLAYED_STATUS',
-    showing,
-    pathname
-  }
-}
 
 export function setFilterSearchString(searchString){
   return {

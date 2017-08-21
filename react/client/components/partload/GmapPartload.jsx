@@ -88,7 +88,8 @@ class GmapPartload extends React.Component {
     if(mapObject){
 
    
-      mapObject.display_branches(this.props.branch_status_partload)
+      mapObject.display_branches()
+      mapObject.displayOrHideBranchList(this.props.branch_list_displayed_partload)
       if(current_partload_truckflicker_job){
         mapObjectInstances.partload.drawRouteWithGoogleResponse(current_partload_truckflicker_job)
       }else{
@@ -120,6 +121,7 @@ const mapStateToProps=(state)=>({
   partload_marker_array:  state.partload.partload_marker_array, 
   best_pick_up_jobs:   state.partload.best_pick_up_jobs, 
   current_partload_truckflicker_job: state.common.current_partload_truckflicker_job
+  
 })
 
 export default withRouter(connect(mapStateToProps)(GmapPartload))

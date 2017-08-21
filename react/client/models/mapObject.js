@@ -1,7 +1,7 @@
 // import pantech from '../build/images/pantech.png'
 import store from '../store.js'
 import { dispatch } from 'redux';
-import { setBranchDisplayStatus, toggleFullScreenMap } from '../actions/_common_actions';
+import { toggleBranchesOnMap, toggleFullScreenMap, toggleBranchListDisplayed } from '../actions/_common_actions';
 
 let mapObjectInstances = {}
 
@@ -22,7 +22,9 @@ class MapObject{
     this.fromBranchesRoutes=[],
     this.toBranchesRoutes=[],
     this.toBranchesMarkers=[],
-    this.fromBranchesMarkers=[]
+    this.fromBranchesMarkers=[],
+    this.branchesVisible = undefined,
+    this.branchListVisible = false
 
 
     if(!mapObjectInstances.pathname){
@@ -280,14 +282,11 @@ createAMapButton(listenerFunction, positionInCapitals, nameString, streetView){/
   if(streetView){
     streetView.controls[google.maps.ControlPosition[positionInCapitals]].push(button)
     //push to streetviewcontrols
-  
   }else{
     this.map.controls[google.maps.ControlPosition[positionInCapitals]].push(button);
   }
   
 }
-
-
 
 styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView){
     var backColor = streetView ? 'rgb(25,25,25)' : '#fff'
@@ -315,32 +314,44 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
      controlUI.addEventListener('click', listenerFunction);
 }
 
- setCurrentBranchStatus(incrementCurrentBranchesStatus=false){
+ setBranchesVisible(){
   switch(this.pathname){
     case 'partload':
-    this.currentBranchStatus = store.getState().common.branch_status_partload
+    this.branchesVisible = store.getState().common.branches_on_map_partload
     break;
     case 'today':
-    this.currentBranchStatus = store.getState().common.branch_status_today
+    this.branchesVisible = store.getState().common.branches_on_map_today
     break;
     case 'planner':
-    this.currentBranchStatus = store.getState().common.branch_status_planner
+    this.branchesVisible = store.getState().common.branches_on_map_planner
     break;
-  }
-  if(incrementCurrentBranchesStatus){
-    this.currentBranchStatus++
-    if(this.currentBranchStatus===3) this.currentBranchStatus=0
   }
  }
 
+ setBranchListVisible(){
+  switch(this.pathname){
+    case 'partload':
+    this.branchListVisible = store.getState().common.branch_list_displayed_partload
+    break;
+    case 'today':
+    this.branchListVisible = store.getState().common.branch_list_displayed_today
+    break;
+    case 'planner':
+    this.branchListVisible = store.getState().common.branch_list_displayed_planner
+    break;
+ }
+}
+
  handleBranchMarkerClick(event){
-  this.handleBranchesClick()
+  
+ store.dispatch(toggleBranchListDisplayed(this.pathname))
+  this.setBranchListVisible()
+  this.displayOrHideBranchList(this.branchListVisible)
  }
 
 //////////////////////////////////////////////////////////////
  handleFullScreenMapClick(event){
 event.preventDefault()
-// alert('clicked')
 this.toggleLeftHandSideVisibility()
 store.dispatch(toggleFullScreenMap(this.pathname))
  }
@@ -348,41 +359,59 @@ store.dispatch(toggleFullScreenMap(this.pathname))
 
  handleBranchesClick(){
   event.preventDefault()
-
-  this.setCurrentBranchStatus(true)
-  store.dispatch(setBranchDisplayStatus(this.pathname, this.currentBranchStatus))
-  this.display_branches(this.currentBranchStatus)
+  store.dispatch(toggleBranchesOnMap(this.pathname))
+  this.setBranchesVisible()
+  this.display_branches()
  }
 
- display_branches(branchStatus){
+ display_branches(){
+  this.setBranchesVisible()
+  // if(this.branchesVisible==undefined) return
   const branches = store.getState().common.all_branches
-
-  if(!branchStatus){
-    this.hideOrShowElements(false)
+  if(!this.branchesVisible){
     this.clearMarkers(this.branchesMarkers, true)
-  }else if(branchStatus==1){
-    this.hideOrShowElements(false)
+  }else{
     branches.forEach((branch)=>{
       var latlng2 = JSON.parse(branch.latlng)
       this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
     })
-  }else{
-    this.hideOrShowElements(true)
-    branches.forEach((branch)=>{
-      var latlng2 = JSON.parse(branch.latlng)
-      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, false, false, branch.address, this.handleBranchMarkerClick.bind(this))
-    })
-
   }
  }
 
- hideOrShowElements(hide=true){
+ // display_branches(branchStatus){
+ //  const branches = store.getState().common.all_branches
 
+ //  if(!branchStatus){
+ //    this.hideOrShowElements(false)
+ //    this.clearMarkers(this.branchesMarkers, true)
+ //  }else if(branchStatus==1){
+ //    this.hideOrShowElements(false)
+ //    branches.forEach((branch)=>{
+ //      var latlng2 = JSON.parse(branch.latlng)
+ //      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+ //    })
+ //  }else{
+ //    this.hideOrShowElements(true)
+ //    branches.forEach((branch)=>{
+ //      var latlng2 = JSON.parse(branch.latlng)
+ //      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, false, false, branch.address, this.handleBranchMarkerClick.bind(this))
+ //    })
+
+ //  }
+ // }
+
+displayOrHideBranchList(){
+    this.setBranchListVisible()
+    this.hideOrShowElements(this.branchListVisible)
+    this.setBranchListVisibility(!this.branchListVisible) 
+}
+
+
+ hideOrShowElements(hide){
   var domElements = this.getElementsLeftHandSide()
   domElements.forEach((element)=>{
     hide ? element.classList.add('hidden') : element.classList.remove('hidden')
   })
- this.setBranchListVisibility(!hide)
  }
 
  setBranchListVisibility(hide){

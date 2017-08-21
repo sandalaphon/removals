@@ -28,7 +28,8 @@ class SliderPlanner extends React.Component{
     if(this.props.planner_seconds_from_start){
       placeMarkers(this.props.planner_seconds_from_start, 'planner')
     } 
-    mapObjectInstances.planner.display_branches(this.props.branch_status_planner)
+    mapObjectInstances.planner.display_branches()
+    mapObjectInstances.planner.displayOrHideBranchList()
   }
 
   handleSliderChange(value){
@@ -105,7 +106,8 @@ const mapStateToProps=(state)=>({
   all_trips:                          state.common.all_trips, 
   show_to_branch:                     state.common.show_to_branch, 
   show_from_branch:                   state.common.show_from_branch, 
-  branch_status_planner:              state.common.branch_status_planner, 
+  // branches_on_map_planner:            state.common.branches_on_map_planner, 
+  // branch_list_displayed_planner:      state.common.branch_list_displayed_planner, 
   planner_seconds_from_start:         state.planner.planner_seconds_from_start, 
   current_planner_truckflicker_job:   state.common.current_planner_truckflicker_job})
 
