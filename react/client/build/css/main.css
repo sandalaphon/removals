@@ -16,3 +16,21 @@
      display: none;
 }
 
+.width50vw{
+     width: 50vw;
+}
+
+.width100vw{
+     width: 100vw;
+}
+
+.width60vw{
+     width:60vw; 
+     /*grid item planner left*/
+}
+
+.width40vw{
+     width:40vw;
+     /*grid item planner right*/
+}
+

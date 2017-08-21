@@ -21,17 +21,23 @@ class GMap extends React.Component {
     };
   }
 
-
   componentDidMount() {
     this.setState({map: this.createMap()})
 
   }
 
-
-
   componentDidUnMount() {
     google.maps.event.clearListeners(this.state.map, 'zoom_changed')
     this.state.mapObject.clearMap()
+  }
+
+  componentDidUpdate(){
+
+    if(!this.state.mapObject.branchesButtonExists) {
+        // this.state.mapObject.addBranchButtonToMap()
+        this.state.mapObject.createAMapButton(this.state.mapObject.handleBranchesClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
+        this.state.mapObject.createAMapButton(this.state.mapObject.handleFullScreenMapClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Full Screen')
+      }
   }
 
   createMap() {
@@ -42,10 +48,14 @@ class GMap extends React.Component {
       center: this.mapCenter(),
       zoomControl: true,
        mapTypeControl: true,
+       mapTypeControlOptions: {
+             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+             mapTypeIds: ['roadmap', 'terrain']
+           },
        scaleControl: true,
        streetViewControl: true,
        rotateControl: true,
-       fullscreenControl: true
+       fullscreenControl: false
     }
     var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
     var mapObject = new MapObject(map, pathname)
@@ -61,55 +71,11 @@ class GMap extends React.Component {
       )
   }
 
-  toggleStreetView(){
-    // this.props.actions.common.setStreetViewVisiblitiy(false)
-  }
-
   render() {
-
-
-        switch (this.props.location.pathname){
-
-          case '/planner':
-
-          if(this.state.mapObject&&!this.state.mapObject.branchesButtonExists){
-            this.state.mapObject.createAMapButton(this.state.mapObject.handleBranchesClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
-         
-          } 
-
-          break;
-
-          case '/today':
-          if(this.state.mapObject&&!this.state.mapObject.branchesButtonExists){
-             this.state.mapObject.createAMapButton(this.state.mapObject.handleBranchesClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
-             
-
-          
-          } 
-
-          break;
-
-        //   case '/partload':
-
-        //   if(this.state.mapObject&&!this.state.branchesButtonExists) {
-        //     this.state.mapObject.addBranchButtonToMap()
-        //   }
-
-        //   break;
-        };
-
-
-        return (
-          
-            
-                <div id='map' className='grid-item-map' ref="mapCanvas">
-                
+        return (              
+                <div id='map' className='grid-item-map' ref="mapCanvas">  
                 </div>
-          
-         
-       
           )
-
       }
     };
 

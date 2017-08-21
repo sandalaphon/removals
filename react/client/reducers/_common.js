@@ -12,11 +12,29 @@ function handleTripData(state = {
   branch_status_planner:0 ,
   all_trips: [],
   show_to_branch: true,
-  show_from_branch: true
+  show_from_branch: true,
+  full_screen_map_today: false,
+  full_screen_map_partload: false,
+  full_screen_map_planner: false
 },action){
 
 
   switch(action.type) {
+    case 'TOGGLE_FULL_SCREEN_MAP':
+        switch(action.pathname){
+            case 'partload':
+            return { ...state, full_screen_map_partload: !state.full_screen_map_partload}
+            break;
+            case 'today':
+            return { ...state, full_screen_map_today: !state.full_screen_map_today}
+            break;
+            case 'planner':
+            return { ...state, full_screen_map_planner: !state.full_screen_map_planner}
+            break;
+        }
+
+    return { ...state, full_screen_map: !state.full_screen_map}
+    break;
 
     case 'SET_SHOW_FROM_BRANCH':
     return { ...state, show_from_branch: !state.show_from_branch}

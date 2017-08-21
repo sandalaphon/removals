@@ -1,7 +1,7 @@
 // import pantech from '../build/images/pantech.png'
 import store from '../store.js'
 import { dispatch } from 'redux';
-import { setBranchDisplayStatus } from '../actions/_common_actions';
+import { setBranchDisplayStatus, toggleFullScreenMap } from '../actions/_common_actions';
 
 let mapObjectInstances = {}
 
@@ -17,6 +17,7 @@ class MapObject{
     this.sliderMarkers = [],
     this.branchesMarkers = [],
     this.branchesButtonExists = false,
+    this.fullScreenButtonExists = false,
     this.pathname = pathname,
     this.fromBranchesRoutes=[],
     this.toBranchesRoutes=[],
@@ -269,6 +270,10 @@ createAMapButton(listenerFunction, positionInCapitals, nameString, streetView){/
     if(this.branchesButtonExists) return
       this.branchesButtonExists = true
   }
+  if(nameString=='Full Screen'){
+    if(this.fullScreenButtonExists) return
+      this.fullScreenButtonExists = true
+  }
   var button = document.createElement('div');
   this.styleButtonAndAddListener(button, this.map, listenerFunction, nameString, streetView)
   button.index = 1
@@ -281,6 +286,8 @@ createAMapButton(listenerFunction, positionInCapitals, nameString, streetView){/
   }
   
 }
+
+
 
 styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView){
     var backColor = streetView ? 'rgb(25,25,25)' : '#fff'
@@ -330,7 +337,17 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
   this.handleBranchesClick()
  }
 
+//////////////////////////////////////////////////////////////
+ handleFullScreenMapClick(event){
+event.preventDefault()
+// alert('clicked')
+this.toggleLeftHandSideVisibility()
+store.dispatch(toggleFullScreenMap(this.pathname))
+ }
+/////////////////////////////////////////////////////////////
+
  handleBranchesClick(){
+  event.preventDefault()
 
   this.setCurrentBranchStatus(true)
   store.dispatch(setBranchDisplayStatus(this.pathname, this.currentBranchStatus))
@@ -361,7 +378,7 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
 
  hideOrShowElements(hide=true){
 
-  var domElements = this.getElements()
+  var domElements = this.getElementsLeftHandSide()
   domElements.forEach((element)=>{
     hide ? element.classList.add('hidden') : element.classList.remove('hidden')
   })
@@ -373,7 +390,42 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
     hide ? branchListDiv.classList.add('hidden') : branchListDiv.classList.remove('hidden')
  }
 
- getElements(){
+ toggleLeftHandSideVisibility(){
+  var leftDiv
+  var rightDiv
+  var widthClassString = 'width50vw'
+  var centerMap = this.map.getCenter()
+   switch(this.pathname){
+     case 'planner':
+      leftDiv = document.querySelector('.grid-item-planner-left')
+      rightDiv = document.querySelector('.grid-item-planner-right')
+      widthClassString = 'width40vw'
+     break;
+     case 'today':
+    leftDiv = document.querySelector('.grid-item-today-left')
+    rightDiv = document.querySelector('.grid-item-today-right')
+
+     break;
+     case 'partload':
+    leftDiv = document.querySelector('.grid-item-partload-left')
+    rightDiv = document.querySelector('.grid-item-partload-right')
+     break;
+  }
+
+  leftDiv.classList.toggle('hidden')
+  if(leftDiv.classList.contains('hidden')){  
+    rightDiv.classList.remove(widthClassString)
+    rightDiv.classList.add('width100vw') 
+  }else{
+    centerMap = this.map.getCenter()
+    rightDiv.classList.remove('width100vw')
+    rightDiv.classList.add(widthClassString) 
+  }
+  google.maps.event.trigger(this.map, 'resize')
+  this.map.setCenter(centerMap)
+ }
+
+ getElementsLeftHandSide(){
   switch(this.pathname){
     case 'planner':
       var jobListEl = document.querySelector('.grid-item-joblist')
@@ -422,13 +474,13 @@ branchSymbol(color='red'){
 getTruckMarker(colour, leg='carry'){
   switch(leg){
     case 'from_branch':
-    return this.truckSymbol3('white', colour, .8, 1.5)
+    return this.truckSymbol3('black', colour, .2, 1.5)
     break;
     case 'carry':
     return this.truckSymbol3(colour, 'black', 1, .3)
     break;
     case 'to_branch':
-    return this.truckSymbol3(colour, colour, 0, 1.5)
+    return this.truckSymbol3('white', colour, .3, 1.5)
     break;
   }
 }

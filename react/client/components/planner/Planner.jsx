@@ -22,13 +22,13 @@ class Planner extends React.Component {
     return(
 
       <div className = 'grid-planner'>
-            <div className='grid-item-planner-right'>
+            <div className='grid-item-planner-right width40vw'>
             <Gmap />
             <TruckFlicker/>
             <SliderPlanner/>
             </div>
             
-            <div className='grid-item-planner-left'>
+            <div className='grid-item-planner-left width60vw'>
             <JobList/>
             <TruckDayView />
             <Filter/>

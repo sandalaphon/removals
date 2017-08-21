@@ -24,11 +24,18 @@ class GmapPartload extends React.Component {
     this.setState({map: this.createMap()})
   }
 
+  componentDidUnMount() {
+    google.maps.event.clearListeners(this.state.map, 'zoom_changed')
+    this.state.mapObject.clearMap()
+  }
+
+
   componentDidUpdate(){
 
     if(!this.state.mapObject.branchesButtonExists) {
         // this.state.mapObject.addBranchButtonToMap()
         this.state.mapObject.createAMapButton(this.state.mapObject.handleBranchesClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
+        this.state.mapObject.createAMapButton(this.state.mapObject.handleFullScreenMapClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Full Screen')
       }
   }
 
@@ -42,7 +49,17 @@ class GmapPartload extends React.Component {
     pathname = pathname.slice(1)
     let mapOptions = {
       zoom: this.state.zoom,
-      center: this.mapCenter()
+      center: this.mapCenter(),
+      zoomControl: true,
+       mapTypeControl: true,
+       mapTypeControlOptions: {
+             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+             mapTypeIds: ['roadmap', 'terrain']
+           },
+       scaleControl: true,
+       streetViewControl: true,
+       rotateControl: true,
+       fullscreenControl: false
     }
     var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
     var mapObject = new MapObject(map, pathname)

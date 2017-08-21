@@ -14,6 +14,13 @@ export function setShowFromBranch(){
   }
 }
 
+export function toggleFullScreenMap(pathname){
+  return {
+    type: 'TOGGLE_FULL_SCREEN_MAP',
+    pathname
+  }
+}
+
 export function setShowToBranch(){
   return {
     type: 'SET_SHOW_TO_BRANCH'

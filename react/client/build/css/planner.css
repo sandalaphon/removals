@@ -36,7 +36,7 @@
   grid-area:rig;
   display: grid;
   height: 95vh;
-  width:40vw;
+
   grid-template-areas:
     " fli fli fli fli"
     " map map map map"
@@ -74,7 +74,7 @@
   grid-area:lef;
   display: grid;
   height: 95vh;
-  width:60vw;
+/*class .width60vw*/
   grid-template-areas:
   "cal cal cal cal cal cal    "
   "cal cal cal cal cal cal    "
@@ -171,6 +171,7 @@ min-width:5vw;
   grid-area: map;
   border: 3px solid green;
   min-height: 1fr;
+  width: 1fr;
 }
 
 /*////////////////SCHEDULE////////////////////////////*/

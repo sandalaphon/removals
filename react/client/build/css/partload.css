@@ -35,7 +35,7 @@
   grid-area: riG;
   display: grid;
   height: 95vh;
-  width: 50vw;
+ /*width 50vw in main.css*/
   border: 3px solid green;
   grid-template-areas:
   " fli"
@@ -63,7 +63,7 @@
   grid-area: leF;
   display: grid;
   height: 95vh;
-  width: 50vw;
+ /*width 50vw in main.css*/
   border: 3px solid hotpink;
   grid-template-areas:
   "pos "
