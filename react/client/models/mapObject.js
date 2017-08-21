@@ -2,6 +2,7 @@
 import store from '../store.js'
 import { dispatch } from 'redux';
 import { toggleBranchesOnMap, toggleFullScreenMap, toggleBranchListDisplayed } from '../actions/_common_actions';
+import {getComplementaryColour} from '../reducers/_helpers';
 
 let mapObjectInstances = {}
 
@@ -25,7 +26,6 @@ class MapObject{
     this.fromBranchesMarkers=[],
     this.branchesVisible = undefined,
     this.branchListVisible = false
-
 
     if(!mapObjectInstances.pathname){
       mapObjectInstances[pathname]=this
@@ -116,11 +116,11 @@ class MapObject{
     var {start_location, end_location} = job.google_directions.routes[ 0 ].legs[ 0 ]
 
   if(addStartFinishMarkers){
-    this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this), 'S')
-        this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this),'F')
+    this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this), 'S', getComplementaryColour(job.colour))
+        this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this),'F', getComplementaryColour(job.colour))
       }
 
-    this.drawRoute(job.google_directions)
+    this.drawRoute(job.google_directions, getComplementaryColour(job.colour))
     this.drawToAndFromBranch(job)
   }
 
@@ -147,16 +147,16 @@ class MapObject{
     var branchLatLng = JSON.parse(branch.latlng)
     if(showFromBranch){
       this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
-      this.drawRoute(job.google_directions_from_branch, '#0088FF')
+      this.drawRoute(job.google_directions_from_branch, getComplementaryColour(job.colour))
     }
     if(showToBranch){
       this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.toBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
-      this.drawRoute(job.google_directions_to_branch, '#0088FF')
+      this.drawRoute(job.google_directions_to_branch, getComplementaryColour(job.colour))
     }
 
   }
 
-  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null, labelText=null){
+  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null, labelText=null, labelTextColour){
     // console.log(coords, message,instance_variable_marker_array)
     var marker = new google.maps.Marker({
       position: coords,
@@ -168,7 +168,7 @@ class MapObject{
       //   // color: 'blue',
       // }
     })
-    if(labelText) marker.setLabel({text: labelText})
+    if(labelText) marker.setLabel({text: labelText, color: labelTextColour})
 
     if(message) this.addInfoWindow(marker, message)
     if(setBounds){

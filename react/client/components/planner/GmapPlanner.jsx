@@ -8,6 +8,7 @@ import {connect} from 'react-redux'
 import {MapObject, mapObjectInstances} from '../../models/mapObject'
 import {withRouter} from 'react-router'
 
+
 class GmapPlanner extends React.Component {
 
   constructor(props){
