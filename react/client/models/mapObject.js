@@ -146,12 +146,12 @@ class MapObject{
       var branch = this.getBranchById(job.branch_id)
     var branchLatLng = JSON.parse(branch.latlng)
     if(showFromBranch){
-      this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address)
-      this.drawRoute(job.google_directions_from_branch, 'red')
+      this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+      this.drawRoute(job.google_directions_from_branch, '#0088FF')
     }
     if(showToBranch){
-      this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.toBranchesMarkers, true, false, branch.address)
-      this.drawRoute(job.google_directions_to_branch, 'green')
+      this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.toBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+      this.drawRoute(job.google_directions_to_branch, '#0088FF')
     }
 
   }
@@ -377,28 +377,6 @@ store.dispatch(toggleFullScreenMap(this.pathname))
     })
   }
  }
-
- // display_branches(branchStatus){
- //  const branches = store.getState().common.all_branches
-
- //  if(!branchStatus){
- //    this.hideOrShowElements(false)
- //    this.clearMarkers(this.branchesMarkers, true)
- //  }else if(branchStatus==1){
- //    this.hideOrShowElements(false)
- //    branches.forEach((branch)=>{
- //      var latlng2 = JSON.parse(branch.latlng)
- //      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
- //    })
- //  }else{
- //    this.hideOrShowElements(true)
- //    branches.forEach((branch)=>{
- //      var latlng2 = JSON.parse(branch.latlng)
- //      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, false, false, branch.address, this.handleBranchMarkerClick.bind(this))
- //    })
-
- //  }
- // }
 
 displayOrHideBranchList(){
     this.setBranchListVisible()
