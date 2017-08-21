@@ -12,8 +12,24 @@ class TripsController < ApplicationController
 # end
 
 def create
-  trip = Trip.create(trip_params)
+
+  # puts trip_params
+  # puts Branch.where(:branch_code => trip_params[:branch_code])
+  trip_branch = Branch.where(:branch_code => trip_params[:branch_code])[0]
+  puts "hello"
+  puts trip_branch
+  puts 'hellooo'
+
+  # puts trip_params
+  # trip_branch.trips.create(trip_params)
+  # @newtrip = Trip.create(trip_params)
+
+  trip_branch.trips.create(trip_params)
+  
   render json: Trip.all.to_json()
+
+
+
 end
 
 def index
@@ -96,7 +112,10 @@ def trip_params
     :delivery_latlng,
     :collection_latlng,
     :estimated_hours,
-    :google_directions
+    :google_directions,
+    :branch_code,
+    :google_directions_from_branch,
+    :google_directions_to_branch
     ])
 end
 
