@@ -24,9 +24,10 @@ def create
   # trip_branch.trips.create(trip_params)
   # @newtrip = Trip.create(trip_params)
 
-  trip_branch.trips.create(trip_params)
+  created_trip = trip_branch.trips.create(trip_params)
   
-  render json: Trip.all.to_json()
+  render json: created_trip
+  # render json: Trip.all.to_json()
 
 
 
