@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router'
+import {mapObjectInstances} from '../models/mapObject'
 // import { LinkContainer } from 'react-router-bootstrap';
 
 class Navb extends React.Component {
@@ -18,11 +19,34 @@ class Navb extends React.Component {
     
    }
 
+   getMapObject(pathname){
+    console.log(pathname)
+     var mapObjects = {
+       planner: mapObjectInstances.planner,
+       partload: mapObjectInstances.partload,
+       today: mapObjectInstances.today
+     }
+    return mapObjects[pathname]
+   }
+
+   toggleBranchList(e){
+    e.preventDefault()
+    var pathname = this._reactInternalInstance._context.router.getCurrentLocation().pathname.slice(1)
+    console.log(pathname)
+    if(!(pathname == 'partload'||pathname == 'today'||pathname == 'planner')) return
+    var mapObject = this.getMapObject(pathname)
+    console.log(mapObject)
+      mapObject.toggleBranchList.call(mapObject)
+
+   }
+
  render(){
 
   return(
 
     <nav  className="nav-bar">
+
+    <button id="button-branch-list-nav" onClick={this.toggleBranchList.bind(this)}>Branch List</button>
      
       <div className="home-nav">
        <Link to="/" >Home</Link>

@@ -29,6 +29,7 @@ class Planner extends React.Component {
             </div>
             
             <div className='grid-item-planner-left width60vw'>
+          
             <JobList/>
             <TruckDayView />
             <Filter/>
@@ -50,7 +51,7 @@ export default Planner
 
 
 // const mapStateToProps=(state)=>({ 
-//   branch_status_planner: state.common.branch_status_planner, 
+//   branch_status_planner: state.common.branch_list_displayed_planner, 
 
 // })
 

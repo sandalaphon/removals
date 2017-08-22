@@ -48,7 +48,17 @@ class BranchesInfo extends React.Component{
     return branchCode
   }
 
+  setMapObject(){
+    var mapObjects = {
+      planner: mapObjectInstances.planner,
+      partload: mapObjectInstances.partload,
+      today: mapObjectInstances.today
+    }
+    this.mapObject = mapObjects[this.props.location.pathname.slice(1)]
+  }
+
   render(){
+   
     return(
       <div className= 'branch-info-table' >
       <table >
@@ -76,7 +86,8 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({
   all_employees: state.common.all_employees, 
-  all_branches: state.common.all_branches, 
+  all_branches: state.common.all_branches
+  // all_branches: state.common.all_branches, 
  })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BranchesInfo))

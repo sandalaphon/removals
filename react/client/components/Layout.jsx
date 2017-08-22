@@ -26,7 +26,7 @@ class Layout extends React.Component {
     const {loginEmail, loginPassword, signInClick, signOut} =                           this.props.actions.loginActions
     const { getUsers} =                                                                 this.props.actions.accountManagementActions
     const { signUploginEmail, signUploginPassword,signUpPasswordConfirm, signUpClick} = this.props.actions.signUpActions
-    const { getAllTripsFromRails, getAllBranchesFromRails, getAllEmployeesFromRails } =                           this.props.actions.commonActions
+    const { getAllTripsFromRails, getAllBranchesFromRails, getAllEmployeesFromRails } = this.props.actions.commonActions
     const { user_email, user_password, currentUser} =                                   this.props.loginDetails
     var toDisplay
       

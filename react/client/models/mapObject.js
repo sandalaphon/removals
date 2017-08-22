@@ -344,9 +344,13 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
 
  handleBranchMarkerClick(event){
   
- store.dispatch(toggleBranchListDisplayed(this.pathname))
-  this.setBranchListVisible()
-  this.displayOrHideBranchList(this.branchListVisible)
+ this.toggleBranchList()
+ }
+
+ toggleBranchList(){
+  store.dispatch(toggleBranchListDisplayed(this.pathname))
+   this.setBranchListVisible()
+   this.displayOrHideBranchList(this.branchListVisible)
  }
 
 //////////////////////////////////////////////////////////////
@@ -393,6 +397,7 @@ displayOrHideBranchList(){
  }
 
  setBranchListVisibility(hide){
+
     var branchListDiv = document.querySelector(`.branch-info-table-${this.pathname}`)
     hide ? branchListDiv.classList.add('hidden') : branchListDiv.classList.remove('hidden')
  }

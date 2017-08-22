@@ -26,6 +26,8 @@ class JobList extends React.Component{
       this.setState ({
         mapObject:mapObjectInstances.planner
       })
+    }else if(!this.props.current_planner_truckflicker_job){
+         mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips) 
     }
   }
 
@@ -144,11 +146,11 @@ renderTripById(tripId){
 
   jobs(){
 
-    if(!this.props.current_planner_truckflicker_job&&this.state.mapObject){
-        // this.state.mapObject.clearMap()
-        console.log('from JOBLIST')
-         mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips) 
-    }
+    // if(!this.props.current_planner_truckflicker_job&&this.state.mapObject){
+    //     // this.state.mapObject.clearMap()
+    
+    //      mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips) 
+    // }
 
 
     return this.props.all_trips.map((job,index)=>{
