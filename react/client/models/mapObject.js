@@ -481,7 +481,8 @@ branchSymbol(color='red'){
 getTruckMarker(colour, leg='carry'){
   switch(leg){
     case 'from_branch':
-    return this.truckSymbol3('black', colour, .2, 1.5)
+    return this.truckSymbol3(getComplementaryColour(colour), colour, 1, 1.5)
+    // return this.truckSymbol3('black', colour, .2, 1.5)
     break;
     case 'carry':
     return this.truckSymbol3(colour, 'black', 1, .3)

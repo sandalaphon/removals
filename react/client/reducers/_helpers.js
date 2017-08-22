@@ -23,12 +23,12 @@ export function getUniqueColor(index){
 export function getComplementaryColour(hexString){
   var complementaryColours={
     '#0075DC': '#dc5100',
-    '#993F00': '#003699',
+    '#993F00': '#949596',
     '#4C005C': '#ccc12b',
     '#005C31': '#d6a298',
     '#2BCE48': '#ce332b',
     '#FFCC99': '#9999ff',
-    '#808080': '#f27474',
+    '#808080': '#ff0303',
     '#94FFB5': '#ab4537',
     '#8F7C00': '#69008f',
     '#9DCC00': '#cc009c',

@@ -29,6 +29,7 @@ function handleTripData(state = {
   switch(action.type) {
 
     case 'TOGGLE_BRANCH_LIST_DISPLAYED':
+
     switch(action.pathname){
         case 'partload':
         return { ...state, branch_list_displayed_partload: !state.branch_list_displayed_partload}
@@ -41,6 +42,19 @@ function handleTripData(state = {
         break;
     }
     break;
+
+    // case 'TOGGLE_BRANCH_LIST_DISPLAYED':
+
+    //     var branch_list_displayed = 
+    //     {
+    //         partload: 'branch_list_displayed_partload', 
+    //         today: 'branch_list_displayed_today', 
+    //         planner: 'branch_list_displayed_planner'
+    //     }
+    //     console.log(branch_list_displayed[action.pathname])
+    //     return { ...state, [branch_list_displayed[action.pathname]]: !state[branch_list_displayed[action.pathname]]}
+    //     break;
+    
 
     case 'TOGGLE_BRANCHES_ON_MAP':
     switch(action.pathname){
@@ -55,22 +69,6 @@ function handleTripData(state = {
         break;
     }
     break;
-
-    // case 'SET_BRANCH_DISPLAYED_STATUS':
-    //     switch(action.pathname){
-    //         case 'partload':
-    //         return { ...state, branch_status_partload: action.showing}
-    //         break;
-    //         case 'today':
-    //         return { ...state, branch_status_today: action.showing}
-    //         break;
-    //         case 'planner':
-    //         return { ...state, branch_status_planner: action.showing}
-    //         break;
-    //     }
-    
-    // break;
-
 
     case 'TOGGLE_FULL_SCREEN_MAP':
         switch(action.pathname){
