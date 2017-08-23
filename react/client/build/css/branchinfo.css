@@ -1,10 +1,10 @@
-div.employee-panel {
+.employee-panel {
     padding: 0 18px;
     display: none;
     background-color: white;
 }
 
-button.branch-accordion {
+.branch-accordion {
     background-color: #eee;
     color: #444;
     cursor: pointer;
@@ -17,6 +17,6 @@ button.branch-accordion {
     transition: 0.4s;
 }
 
-button.branch-accordion.active, button.branch-accordion:hover {
+.branch-accordion.active, .branch-accordion:hover {
     background-color: #ddd; 
 }
