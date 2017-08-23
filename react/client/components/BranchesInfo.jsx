@@ -9,14 +9,28 @@ class BranchesInfo extends React.Component{
   constructor(props){
     super(props)
   }
+ 
+  setMapObject(){
+    var mapObjects = {
+      planner: mapObjectInstances.planner,
+      partload: mapObjectInstances.partload,
+      today: mapObjectInstances.today
+    }
+    this.mapObject = mapObjects[this.props.location.pathname.slice(1)]
+  }
 
   handleImageClick(event){
     event.preventDefault()
     alert('get photo')
   }
-  conmponentDidUpdate(){
-    //handleBranchClick()
-  }
+ 
+  // getEmployeeBranch(branch_id){
+  //   var branchCode 
+  //   this.props.all_branches.forEach((branch)=>{
+  //       if(branch.id==branch_id) branchCode=branch.branch_code
+  //   })
+  //   return branchCode
+  // }
 
   getEmployeeTable(branchId){
     if(!this.props.all_employees) return
@@ -35,7 +49,7 @@ class BranchesInfo extends React.Component{
         
         return(
          
-          <tr key={employee.id}>
+          <tr  key={employee.id}>
             
             <td>{pictureOrButton}</td>
             <td>{employee.name}</td>
@@ -47,79 +61,57 @@ class BranchesInfo extends React.Component{
 
   }
 
-  getEmployeeBranch(branch_id){
-    var branchCode 
-    this.props.all_branches.forEach((branch)=>{
-        if(branch.id==branch_id) branchCode=branch.branch_code
-    })
-    return branchCode
-  }
 
-  setMapObject(){
-    var mapObjects = {
-      planner: mapObjectInstances.planner,
-      partload: mapObjectInstances.partload,
-      today: mapObjectInstances.today
-    }
-    this.mapObject = mapObjects[this.props.location.pathname.slice(1)]
-  }
 
   branchlist() {
     if(!this.props.all_branches) return
-    console.log("all the branches",this.props.all_branches)
-      return this.props.all_branches.map((branch)=>{
-        return (
-          <div>
-            <button onClick={this.handleBranchClick} className="branch-accordion" id={branch.id}>{branch.name}</button>
-            <div className="employee-panel">
-              {this.getEmployeeTable(branch.id)}
-            </div>
-          </div>
 
-        )
-      })
+    return this.props.all_branches.map((branch)=>{
+      return (
+        <div>
+          <button className="branch-accordion" id={branch.id}>{branch.name}</button>
+          <div className="employee-panel">
+            {this.getEmployeeTable(branch.id)}
+          </div>
+        </div>
+
+      )
+    })
       
-    
   }
-  handleBranchClick(){
-    console.log("branch clicked")
+
+  accordion(){
     var acc = document.getElementsByClassName("branch-accordion");
     var i;
     console.log(acc)
     for (i = 0; i < acc.length; i++) {
-        acc[i].onclick = function(){
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-            if (panel.style.display === "block") {
-                panel.style.display = "none";
-            } else {
-                panel.style.display = "block";
-            }
+      acc[i].onclick = function(){
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+          panel.style.display = "none";
+        } else {
+          panel.style.display = "block";
         }
+      }
     }
   }
-  // {this.getEmployeeTable.call(this)}
-
+ 
   render(){
-    
-
-
-
-
-
-
+    this.accordion()
     return(
       <div className= 'branch-info-table' >
         <table >
         <tbody>
           <tr>
-         
-          <td>Photo</td>
-          <td>Name</td>
-          <td>email</td>
-          <td>Phone No.</td>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>email</th>
+            <th>Phone No.</th>
           </tr>
+          
            {this.branchlist.call(this)}
+
         </tbody>
         </table>
       </div>
