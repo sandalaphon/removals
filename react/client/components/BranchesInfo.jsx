@@ -9,7 +9,9 @@ class BranchesInfo extends React.Component{
   constructor(props){
     super(props)
   }
- 
+  componentDidUpdate(){
+    this.handleAccordionClick()
+  }
   setMapObject(){
     var mapObjects = {
       planner: mapObjectInstances.planner,
@@ -24,7 +26,10 @@ class BranchesInfo extends React.Component{
     alert('get photo')
   }
  
-  accordion(){
+
+
+ 
+  handleAccordionClick(){
     var acc = document.getElementsByClassName("branch-accordion");
     var i;
     console.log(acc)
@@ -83,7 +88,7 @@ class BranchesInfo extends React.Component{
     return this.props.all_branches.map((branch)=>{
       return (
         <div key={branch.id} className="branch-row">
-          <button className="branch-accordion" id={branch.id}>{branch.name}</button>
+          <button onClick={this.handleAccordionClick.bind(this)} className="branch-accordion" id={branch.id}>{branch.name}</button>
           <div className="employee-panel">
             {this.getEmployeeTable(branch.id)}
           </div>
@@ -96,7 +101,7 @@ class BranchesInfo extends React.Component{
 
  
   render(){
-    this.accordion()
+    
     return(
       <div className= 'branch-info-table' >
           <div className="branch-header-row">
@@ -105,9 +110,9 @@ class BranchesInfo extends React.Component{
             <div className="branch-header-cell">email</div>
             <div className="branch-header-cell">Phone No.</div>
           </div>
-          
+          <div className="branch-body">
            {this.branchlist.call(this)}
-
+          </div>
       </div>
       )
   }
