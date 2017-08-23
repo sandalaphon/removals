@@ -14,30 +14,37 @@ class BranchesInfo extends React.Component{
     event.preventDefault()
     alert('get photo')
   }
+  conmponentDidUpdate(){
+    //handleBranchClick()
+  }
 
-  getEmployeeTable(){
+  getEmployeeTable(branchId){
     if(!this.props.all_employees) return
     if(!this.props.all_branches) return
       var pictureOrButton
-    var pictureSize = {
-    height: 'auto', 
-    width: 'auto', 
-    maxWidth: '70px', 
-    maxHeight: '70px',
-}
+      var pictureSize = {
+        height: 'auto', 
+        width: 'auto', 
+        maxWidth: '70px', 
+        maxHeight: '70px',
+      }
+
     return this.props.all_employees.map((employee, index)=>{
-      
-     pictureOrButton = employee.photoUrl ? <img style={pictureSize} src={employee.photoUrl}></img> : <button id={employee.id} onClick={this.handleImageClick.bind(this)}>Upload Picture</button>
-      return(
-       
-        <tr key={employee.id}>
-        <td>{this.getEmployeeBranch(employee.branch_id)}</td>
-        <td>{pictureOrButton}</td>
-        <td>{employee.name}</td>
-        <td>{employee.email}</td>
-        <td>{employee.telephone}</td>
-        </tr>)
+      if (employee.branch_id==branchId){
+        pictureOrButton = employee.photoUrl ? <img style={pictureSize} src={employee.photoUrl}></img> : <button id={employee.id} onClick={this.handleImageClick.bind(this)}>Upload Picture</button>
+        
+        return(
+         
+          <tr key={employee.id}>
+            
+            <td>{pictureOrButton}</td>
+            <td>{employee.name}</td>
+            <td>{employee.email}</td>
+            <td>{employee.telephone}</td>
+          </tr>)
+      }  
     })
+
   }
 
   getEmployeeBranch(branch_id){
@@ -57,22 +64,64 @@ class BranchesInfo extends React.Component{
     this.mapObject = mapObjects[this.props.location.pathname.slice(1)]
   }
 
+  branchlist() {
+    if(!this.props.all_branches) return
+    console.log("all the branches",this.props.all_branches)
+      return this.props.all_branches.map((branch)=>{
+        return (
+          <div>
+            <button onClick={this.handleBranchClick} className="branch-accordion" id={branch.id}>{branch.name}</button>
+            <div className="employee-panel">
+              {this.getEmployeeTable(branch.id)}
+            </div>
+          </div>
+
+        )
+      })
+      
+    
+  }
+  handleBranchClick(){
+    console.log("branch clicked")
+    var acc = document.getElementsByClassName("branch-accordion");
+    var i;
+    console.log(acc)
+    for (i = 0; i < acc.length; i++) {
+        acc[i].onclick = function(){
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        }
+    }
+  }
+  // {this.getEmployeeTable.call(this)}
+
   render(){
-   
+    
+
+
+
+
+
+
     return(
       <div className= 'branch-info-table' >
-      <table >
-      <tbody>
-      <tr>
-      <td>Branch</td>
-      <td>Photo</td>
-      <td>Name</td>
-      <td>email</td>
-      <td>Phone No.</td>
-      </tr>
-    {this.getEmployeeTable.call(this)}
-    </tbody>
-    </table>
+        <table >
+        <tbody>
+          <tr>
+         
+          <td>Photo</td>
+          <td>Name</td>
+          <td>email</td>
+          <td>Phone No.</td>
+          </tr>
+           {this.branchlist.call(this)}
+        </tbody>
+        </table>
       </div>
       )
   }
