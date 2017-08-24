@@ -28,22 +28,22 @@ class BranchesInfo extends React.Component{
 
 
 
-  handleAccordionClick(e){
-    var acc = document.getElementsByClassName("branch-accordion");
-    var i;
-    console.log(acc)
-    for (i = 0; i < acc.length; i++) {
-      acc[i].onclick = function(){
-        this.classList.toggle("active");
-        var panel = this.nextElementSibling;
-        if (panel.style.display === "block") {
-          panel.style.display = "none";
-        } else {
-          panel.style.display = "block";
-        }
-      }
-    }
-  }
+  // handleAccordionClick(e){
+  //   var acc = document.getElementsByClassName("branch-accordion");
+  //   var i;
+  //   console.log(acc)
+  //   for (i = 0; i < acc.length; i++) {
+  //     acc[i].onclick = function(){
+  //       this.classList.toggle("active");
+  //       var panel = this.nextElementSibling;
+  //       if (panel.style.display === "block") {
+  //         panel.style.display = "none";
+  //       } else {
+  //         panel.style.display = "block";
+  //       }
+  //     }
+  //   }
+  // }
   // getEmployeeBranch(branch_id){
   //   var branchCode 
   //   this.props.all_branches.forEach((branch)=>{
@@ -92,9 +92,9 @@ class BranchesInfo extends React.Component{
     return this.props.all_branches.map((branch)=>{
       return (
 
-        <BranchSection title="BranchSection Title One">   
+        <BranchSection title={branch.name}>   
             {this.getEmployeeTable(branch.id)}
-                </BranchSection>
+        </BranchSection>
 
 
 
