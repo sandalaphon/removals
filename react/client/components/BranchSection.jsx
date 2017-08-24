@@ -27,7 +27,7 @@ class BranchSection extends React.Component{
   render() {
     return (
       <div className={this.state.class}>
-        <button>toggle</button>
+        <button id="toggle-button">toggle</button>
         <div className="sectionhead" onClick={this.handleClick.bind(this)}>{this.props.title}</div>
         <div className="articlewrap">
           <div className="article">
