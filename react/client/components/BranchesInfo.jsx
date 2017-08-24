@@ -25,33 +25,6 @@ class BranchesInfo extends React.Component{
     alert('get photo')
   }
  
-
-
-
-  // handleAccordionClick(e){
-  //   var acc = document.getElementsByClassName("branch-accordion");
-  //   var i;
-  //   console.log(acc)
-  //   for (i = 0; i < acc.length; i++) {
-  //     acc[i].onclick = function(){
-  //       this.classList.toggle("active");
-  //       var panel = this.nextElementSibling;
-  //       if (panel.style.display === "block") {
-  //         panel.style.display = "none";
-  //       } else {
-  //         panel.style.display = "block";
-  //       }
-  //     }
-  //   }
-  // }
-  // getEmployeeBranch(branch_id){
-  //   var branchCode 
-  //   this.props.all_branches.forEach((branch)=>{
-  //       if(branch.id==branch_id) branchCode=branch.branch_code
-  //   })
-  //   return branchCode
-  // }
-
   getEmployeeTable(branchId){
     if(!this.props.all_employees) return
     if(!this.props.all_branches) return
@@ -79,30 +52,14 @@ class BranchesInfo extends React.Component{
 
   }
 
-        // <div key={branch.id} className="branch-row">
-        //   <button onClick={this.handleAccordionClick.bind(this,event)} className="branch-accordion" id={branch.id}>{branch.name}</button>
-        //   <div className="employee-panel">
-        //   </div>
-        // </div>
-
-
   branchlist() {
     if(!this.props.all_branches) return
       //////////////////////////////////
     return this.props.all_branches.map((branch)=>{
       return (
-
-        <BranchSection title={branch.name}>   
+        <BranchSection title={branch.name} id={branch.id}>   
             {this.getEmployeeTable(branch.id)}
         </BranchSection>
-
-
-
-
-
-
-
-
       )
     })
       

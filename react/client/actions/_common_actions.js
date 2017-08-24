@@ -22,6 +22,19 @@ export function toggleBranchListDisplayed(pathname){
   }
 }
 
+export function setBranchIconClickedId(id){
+  return {
+    type: 'SET_BRANCH_ICON_CLICKED_ID',
+    id
+  }
+}
+
+export function toggleBranchListItem(){
+  return {
+    type: 'TOGGLE_BRANCH_LIST_ITEM'
+  }
+}
+
 
 
 export function toggleBranchesOnMap(pathname){

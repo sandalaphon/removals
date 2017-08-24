@@ -22,6 +22,11 @@ function handleTripData(state = {
   branch_list_displayed_partload: false,
   branch_list_displayed_planner: false,
   branch_list_displayed_today: false,
+  clicked_branch_id: 35,
+  branch_list_item_open:{
+    open: false,
+    class: "section"
+  }
 
 },action){
 
@@ -54,6 +59,29 @@ function handleTripData(state = {
         return { ...state, branches_on_map_planner: !state.branches_on_map_planner}
         break;
     }
+    break;
+
+    case 'TOGGLE_BRANCH_LIST_ITEM':
+      let toggle
+      if (state.branch_list_item_open.open==true){
+        toggle= {
+          open: false,
+          class: "section"
+        }
+      }else{
+        toggle = {
+          open: true,
+          class: "section open"
+        }
+      }
+
+    return {...state, branch_list_item_open: toggle}
+    break;
+
+
+
+    case 'SET_BRANCH_ICON_CLICKED_ID':
+    return {...state, clicked_branch_id: action.id}
     break;
 
     // case 'SET_BRANCH_DISPLAYED_STATUS':

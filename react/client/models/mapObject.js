@@ -1,7 +1,7 @@
 // import pantech from '../build/images/pantech.png'
 import store from '../store.js'
 import { dispatch } from 'redux';
-import { toggleBranchesOnMap, toggleFullScreenMap, toggleBranchListDisplayed } from '../actions/_common_actions';
+import { toggleBranchesOnMap, toggleFullScreenMap, toggleBranchListDisplayed, setBranchIconClickedId } from '../actions/_common_actions';
 import {getComplementaryColour} from '../reducers/_helpers';
 
 let mapObjectInstances = {}
@@ -146,11 +146,11 @@ class MapObject{
       var branch = this.getBranchById(job.branch_id)
     var branchLatLng = JSON.parse(branch.latlng)
     if(showFromBranch){
-      this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+      this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this,event,branch.id))
       this.drawRoute(job.google_directions_from_branch, getComplementaryColour(job.colour))
     }
     if(showToBranch){
-      this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.toBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+      this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.toBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this,event,branch.id))
       this.drawRoute(job.google_directions_to_branch, getComplementaryColour(job.colour))
     }
 
@@ -342,9 +342,10 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
  }
 }
 
- handleBranchMarkerClick(event){
-  
- this.toggleBranchList()
+ handleBranchMarkerClick(event,branchId){
+  console.log(branchId)
+  store.dispatch(setBranchIconClickedId(branchId))
+ //this.toggleBranchList()
  }
 
  toggleBranchList(){
@@ -377,7 +378,7 @@ store.dispatch(toggleFullScreenMap(this.pathname))
   }else{
     branches.forEach((branch)=>{
       var latlng2 = JSON.parse(branch.latlng)
-      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this,event,branch.id))
     })
   }
  }
