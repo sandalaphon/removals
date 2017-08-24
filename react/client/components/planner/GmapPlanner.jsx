@@ -14,15 +14,16 @@ class GmapPlanner extends React.Component {
   constructor(props){
     super(props)
     this.state = { 
-      zoom: 12,
-      center: { lng: -3.1883 , lat: 55.9533 },
-      map: null
+      // zoom: 12,
+      // center: { lng: -3.1883 , lat: 55.9533 },
+      // map: null
       
     };
   }
 
   componentDidMount() {
-    this.setState({map: this.createMap()})
+    // this.setState({map: this.createMap()})
+    this.mapObject = new MapObject(this.props.location.pathname.slice(1))
   }
 
   componentDidUpdate(){
@@ -31,24 +32,24 @@ class GmapPlanner extends React.Component {
       }
   }
 
-  componentDidUnMount() {
-    google.maps.event.clearListeners(this.state.map, 'zoom_changed')
-    this.state.mapObject.clearMap()
-  }
+  // componentDidUnMount() {
+  //   google.maps.event.clearListeners(this.state.map, 'zoom_changed')
+  //   this.state.mapObject.clearMap()
+  // }
 
-  createMap() {
-    let pathname=this.props.location.pathname
-    pathname = pathname.slice(1)
-    let mapOptions = {
-      zoom: this.state.zoom,
-      center: this.mapCenter()
-    }
-    var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
-    var mapObject = new MapObject(map, pathname)
+  // createMap() {
+  //   let pathname=this.props.location.pathname
+  //   pathname = pathname.slice(1)
+  //   let mapOptions = {
+  //     zoom: this.state.zoom,
+  //     center: this.mapCenter()
+  //   }
+  //   var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
+  //   var mapObject = new MapObject(map, pathname)
 
-    this.setState({mapObject: mapObjectInstances[pathname]})
-    return map
-  }
+  //   this.setState({mapObject: mapObjectInstances[pathname]})
+  //   return map
+  // }
 
   mapCenter() {
     return new google.maps.LatLng(

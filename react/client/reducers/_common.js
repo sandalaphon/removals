@@ -10,6 +10,7 @@ function handleTripData(state = {
   // branch_status_partload: 0,
   // branch_status_today: 0,
   // branch_status_planner:0 ,
+  zoom_and_center: {},
   all_trips: [],
   show_to_branch: true,
   show_from_branch: true,
@@ -27,6 +28,27 @@ function handleTripData(state = {
 
 
   switch(action.type) {
+
+    case 'SET_MAP_ZOOM_AND_CENTER':
+
+    switch(action.pathname){
+    
+        case 'partload':
+        var zAndC = {zoom: action.zoom, center: action.center}
+        return { ...state, zoom_and_center_partload: zAndC}
+        break;
+        case 'today':
+        var zAndC = {zoom: action.zoom, center: action.center}
+        return { ...state, zoom_and_center_today: zAndC}
+        break;
+        case 'planner':
+        var zAndC = {zoom: action.zoom, center: action.center}
+        return { ...state, zoom_and_center_planner: zAndC}
+        break;
+    }
+
+    
+    break;
 
     case 'TOGGLE_BRANCH_LIST_DISPLAYED':
     switch(action.pathname){

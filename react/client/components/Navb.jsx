@@ -32,10 +32,8 @@ class Navb extends React.Component {
    toggleBranchList(e){
     e.preventDefault()
     var pathname = this._reactInternalInstance._context.router.getCurrentLocation().pathname.slice(1)
-    console.log(pathname)
     if(!(pathname == 'partload'||pathname == 'today'||pathname == 'planner')) return
     var mapObject = this.getMapObject(pathname)
-    console.log(mapObject)
       mapObject.toggleBranchList.call(mapObject)
 
    }

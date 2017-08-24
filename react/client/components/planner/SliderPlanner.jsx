@@ -30,6 +30,11 @@ class SliderPlanner extends React.Component{
     } 
     mapObjectInstances.planner.display_branches()
     mapObjectInstances.planner.displayOrHideBranchList()
+    if(this.props.zoom_and_center_planner){
+      mapObjectInstances.planner.setZoomAndCenter(this.props.zoom_and_center_planner.zoom, this.props.zoom_and_center_planner.center)
+    }
+    
+
   }
 
   handleSliderChange(value){
@@ -104,6 +109,7 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({
   all_trips:                          state.common.all_trips, 
+  zoom_and_center_planner:            state.common.zoom_and_center_planner, 
   show_to_branch:                     state.common.show_to_branch, 
   show_from_branch:                   state.common.show_from_branch, 
   planner_seconds_from_start:         state.planner.planner_seconds_from_start, 

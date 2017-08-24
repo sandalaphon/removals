@@ -15,6 +15,15 @@ import axios from 'axios'
 //   }
 // }
 
+export function setMapZoomAndCenter(pathname, zoom, center){
+  return {
+    type: 'SET_MAP_ZOOM_AND_CENTER',
+    pathname,
+    zoom,
+    center
+  }
+}
+
 export function toggleBranchListDisplayed(pathname){
   return {
     type: 'TOGGLE_BRANCH_LIST_DISPLAYED',

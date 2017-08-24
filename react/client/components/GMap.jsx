@@ -21,55 +21,87 @@ class GMap extends React.Component {
     };
   }
 
+  componentWillUnmount(){
+    // this.state.mapObject.saveCurrentMapState()
+    console.log('unmount', this.state.map)
+    var zoom = this.mapObject.map.getZoom()
+    var getCenter = this.mapObject.map.getCenter()
+    var center = {lat: getCenter.lat(), lng: getCenter.lng()}
+    console.log(center, 'center')
+    this.props.actions.common_actions.setMapZoomAndCenter(this.pathname, zoom, center)
+  }
+
   componentDidMount() {
-    this.setState({map: this.createMap()})
+    var pathname = this.props.location.pathname.slice(1)
+    // console.log(pathname)
+    // if( mapObjectInstances[pathname]){
+    //   console.log('mapObjectInstances1', mapObjectInstances[pathname].map.__gm.R)
+    //   console.log('mapObjectInstances2', mapObjectInstances[pathname].map.setOptions)
+    //   mapObjectInstances[pathname].map.setMap(mapObjectInstances[pathname].map)
+    // }
+    // this.setState({map: this.createMap()})
+    this.mapObject = new MapObject(pathname)
+
+
+   
+
 
   }
 
-  componentDidUnMount() {
-    google.maps.event.clearListeners(this.state.map, 'zoom_changed')
-    this.state.mapObject.clearMap()
-  }
+  // componentDidUnMount() {
+  //   google.maps.event.clearListeners(this.state.map, 'zoom_changed')
+  //   this.state.mapObject.clearMap()
+  // }
 
   componentDidUpdate(){
 
-    if(!this.state.mapObject.branchesButtonExists) {
+    if(!this.mapObject.branchesButtonExists) {
         // this.state.mapObject.addBranchButtonToMap()
-        this.state.mapObject.createAMapButton(this.state.mapObject.handleBranchesClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
-        this.state.mapObject.createAMapButton(this.state.mapObject.handleFullScreenMapClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Full Screen')
-      }
+        this.mapObject.createAMapButton(this.mapObject.handleBranchesClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
+        this.mapObject.createAMapButton(this.mapObject.handleFullScreenMapClick.bind(this.mapObject), 'TOP_RIGHT', 'Full Screen')
+      } 
   }
 
-  createMap() {
-    let pathname=this.props.location.pathname
-    pathname = pathname.slice(1)
-    let mapOptions = {
-      zoom: this.state.zoom,
-      center: this.mapCenter(),
-      zoomControl: true,
-       mapTypeControl: true,
-       mapTypeControlOptions: {
-             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-             mapTypeIds: ['roadmap', 'terrain']
-           },
-       scaleControl: true,
-       streetViewControl: true,
-       rotateControl: true,
-       fullscreenControl: false
-    }
-    var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
-    var mapObject = new MapObject(map, pathname)
+  // createMap() {
+  //   let pathname=this.props.location.pathname
+  //   this.pathname = pathname.slice(1)
 
-    this.setState({mapObject: mapObjectInstances[pathname]})
-    return map
-  }
+  //   let mapOptions = {
+  //     zoom: this.state.zoom,
+  //     center: this.state.center,
+  //     zoomControl: true,
+  //      mapTypeControl: true,
+  //      mapTypeControlOptions: {
+  //            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+  //            mapTypeIds: ['roadmap', 'terrain']
+  //          },
+  //      scaleControl: true,
+  //      streetViewControl: true,
+  //      rotateControl: true,
+  //      fullscreenControl: false
+  //   }
+  //   if(mapObjectInstances[this.pathname]){
+  //     console.log('we are here')
+  //     var map = mapObjectInstances[this.pathname].map
+  //     console.log(map)
+      
 
-  mapCenter() {
-    return new google.maps.LatLng(
-      this.state.center.lat,
-      this.state.center.lng
-      )
-  }
+  //   }else{
+  //     var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
+  //     var mapObject = new MapObject(map, this.pathname)
+  //   }
+   
+
+  //   this.setState({mapObject: mapObjectInstances[this.pathname]})
+  //   return map
+  // }
+
+  // mapCenter() {
+  //   return new google.maps.LatLng(
+  //     this.state.center.lat,
+  //     this.state.center.lng
+  //     )
+  // }
 
   render() {
         return (              

@@ -32,7 +32,6 @@ class BranchesInfo extends React.Component{
   handleAccordionClick(){
     var acc = document.getElementsByClassName("branch-accordion");
     var i;
-    console.log(acc)
     for (i = 0; i < acc.length; i++) {
       acc[i].onclick = function(){
         this.classList.toggle("active");

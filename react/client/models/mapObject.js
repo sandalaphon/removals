@@ -7,10 +7,11 @@ import {getComplementaryColour} from '../reducers/_helpers';
 let mapObjectInstances = {}
 
 class MapObject{
-  constructor(map, pathname){
+  constructor(pathname){
 
-    this.map = map
-    this.directionsService = new google.maps.DirectionsService()
+    // this.map = map,
+    this.map = this.createMap(),
+    this.directionsService = new google.maps.DirectionsService(),
     this.renderedRoutes = [],
     this.bounds= new google.maps.LatLngBounds(),
     this.markers = [],
@@ -25,22 +26,88 @@ class MapObject{
     this.toBranchesMarkers=[],
     this.fromBranchesMarkers=[],
     this.branchesVisible = undefined,
-    this.branchListVisible = false
+    this.branchListVisible = false,
+    this.zoom=12,
+    this.center = { lng: -3.1883 , lat: 55.9533 },
+    this.routesRendered = 0
+
 
     if(!mapObjectInstances.pathname){
       mapObjectInstances[pathname]=this
     }
 
+    return mapObjectInstances[pathname]
+
   }
 
-  setZoom(zoom){
-    this.map.setZoom(zoom)
+  createMap() {
+
+    let mapOptions = {
+      zoom: this.zoom,
+      center: this.center,
+      zoomControl: true,
+       mapTypeControl: true,
+       mapTypeControlOptions: {
+             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+             mapTypeIds: ['roadmap', 'terrain']
+           },
+       scaleControl: true,
+       streetViewControl: true,
+       rotateControl: true,
+       fullscreenControl: false
+    }
+
+    let domElement = document.querySelector('.grid-item-map')
+    
+      var map = new google.maps.Map(domElement, mapOptions)
+      
+    
+   
+
+  
+    return map
   }
+
+  // setZoom(zoom){
+  //   this.map.setZoom(zoom)
+  // }
+
+  // saveCurrentMapState(){
+  //  console.log('saving zoom etc')
+  //  var zoom = this.map.getZoom()
+  //  var center = this.map.getCenter()
+
+  //   this.currentMapState={
+  //     zoom ,
+  //     center 
+  //   }
+  //   console.log(this.currentMapState)
+  // }
+
+  // getSavedZoomAndCenter(){
+  //   return this.currentMapState
+  // }
+
+  setZoomAndCenter(zoom, center){
+   console.log('setting zoom and center')
+       // google.maps.event.addListenerOnce(map, 'bounds_changed', function(event){ 
+       // var listener = google.maps.event.addListenerOnce(map, "idle", function()
+       // {
+           this.map.setZoom(zoom)
+               this.map.setCenter(center)
+         
+       // });   
+    
+  // })
+
+}
 
   clearMap(clearArrays=true, clearSliderMarkers = true){
     this.clearMarkers(this.markers, clearArrays)
     if(clearSliderMarkers) this.clearMarkers(this.sliderMarkers, clearArrays)
     this.clearMarkers(this.postcodeMarkers, clearArrays)
+    this.clearMarkers(this.fromBranchesMarkers, clearArrays)
+    this.clearMarkers(this.toBranchesMarkers, clearArrays)
 
     // this.clearMarkers(this.branchesMarkers, clearArrays)
     this.clearRoutes(this.renderedRoutes, clearArrays)
@@ -89,6 +156,7 @@ class MapObject{
     arrayOfJobs.forEach((job)=>{
         this.drawRouteWithGoogleResponse(job)
     })
+  
   }
 
   handleSliderMarkerArray(sliderMarkerCoordsandIndexArray){
@@ -113,6 +181,7 @@ class MapObject{
 
   drawRouteWithGoogleResponse(job, addStartFinishMarkers = true){
       if(job.hidden) return
+        this.routesRendered++
     var {start_location, end_location} = job.google_directions.routes[ 0 ].legs[ 0 ]
 
   if(addStartFinishMarkers){
@@ -137,6 +206,7 @@ class MapObject{
     })
     directionsDisplay.setDirections(google_directions)
     this.renderedRoutes.push(directionsDisplay)
+    console.log('drawing route')
   }
 
   drawToAndFromBranch(job){
@@ -157,7 +227,7 @@ class MapObject{
   }
 
   placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null, labelText=null, labelTextColour){
-    // console.log(coords, message,instance_variable_marker_array)
+    
     var marker = new google.maps.Marker({
       position: coords,
       map: this.map,
@@ -176,8 +246,9 @@ class MapObject{
       this.map.fitBounds(this.bounds)  
     }
     if(clickfunction) marker.addListener('click', (e)=>{clickfunction(e)})
+      console.log(marker)
     instance_variable_marker_array.push(marker)
-
+console.log('placing marker')
   }
 
  
@@ -343,7 +414,7 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
 }
 
  handleBranchMarkerClick(event){
-  
+  console.log(event)
  this.toggleBranchList()
  }
 
@@ -368,18 +439,20 @@ store.dispatch(toggleFullScreenMap(this.pathname))
   this.display_branches()
  }
 
+ 
  display_branches(){
   this.setBranchesVisible()
-  // if(this.branchesVisible==undefined) return
-  const branches = store.getState().common.all_branches
-  if(!this.branchesVisible){
-    this.clearMarkers(this.branchesMarkers, true)
-  }else{
-    branches.forEach((branch)=>{
-      var latlng2 = JSON.parse(branch.latlng)
-      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
-    })
-  }
+var branches = store.getState().common.all_branches
+
+if(!this.branchesVisible){
+  this.clearMarkers(this.branchesMarkers, true)
+}else{
+  branches.forEach((branch)=>{
+    var latlng2 = JSON.parse(branch.latlng)
+    this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+  })
+}
+
  }
 
 displayOrHideBranchList(){
@@ -407,6 +480,7 @@ displayOrHideBranchList(){
   var rightDiv
   var widthClassString = 'width50vw'
   var centerMap = this.map.getCenter()
+  var zoom = this.map.getZoom()
    switch(this.pathname){
      case 'planner':
       leftDiv = document.querySelector('.grid-item-planner-left')
@@ -435,6 +509,7 @@ displayOrHideBranchList(){
   }
   google.maps.event.trigger(this.map, 'resize')
   this.map.setCenter(centerMap)
+  this.map.setZoom(zoom)
  }
 
  getElementsLeftHandSide(){
@@ -486,7 +561,7 @@ branchSymbol(color='red'){
 getTruckMarker(colour, leg='carry'){
   switch(leg){
     case 'from_branch':
-    return this.truckSymbol3('black', colour, .2, 1.5)
+    return this.truckSymbol3(getComplementaryColour(colour), colour, .7, 1.5)
     break;
     case 'carry':
     return this.truckSymbol3(colour, 'black', 1, .3)

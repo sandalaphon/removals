@@ -28,6 +28,11 @@ class JobList extends React.Component{
       })
     }else if(!this.props.current_planner_truckflicker_job){
          mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips) 
+         if(this.props.zoom_and_center_planner){
+          console.log('set zoom')
+          setImmediate(mapObjectInstances.planner.setZoomAndCenter(this.props.zoom_and_center_planner.zoom, this.props.zoom_and_center_planner.center))
+          
+         } 
     }
   }
 
@@ -256,6 +261,7 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({ 
   all_trips:                          state.common.all_trips, 
+  zoom_and_center_planner:            state.common.zoom_and_center_planner, 
   show_to_branch:                     state.common.show_to_branch, 
   show_from_branch:                   state.common.show_from_branch, 
   searchString:                       state.planner.searchString,
