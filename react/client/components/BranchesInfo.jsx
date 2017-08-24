@@ -3,15 +3,14 @@ import * as commonActions from '../actions/_common_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {MapObject, mapObjectInstances} from '../models/mapObject'
+import BranchSection from './BranchSection.jsx'
 import {withRouter} from 'react-router'
 
 class BranchesInfo extends React.Component{
   constructor(props){
     super(props)
   }
-  componentDidUpdate(){
-    this.handleAccordionClick()
-  }
+  
   setMapObject(){
     var mapObjects = {
       planner: mapObjectInstances.planner,
@@ -28,8 +27,8 @@ class BranchesInfo extends React.Component{
  
 
 
- 
-  handleAccordionClick(){
+
+  handleAccordionClick(e){
     var acc = document.getElementsByClassName("branch-accordion");
     var i;
     console.log(acc)
@@ -80,6 +79,11 @@ class BranchesInfo extends React.Component{
 
   }
 
+        // <div key={branch.id} className="branch-row">
+        //   <button onClick={this.handleAccordionClick.bind(this,event)} className="branch-accordion" id={branch.id}>{branch.name}</button>
+        //   <div className="employee-panel">
+        //   </div>
+        // </div>
 
 
   branchlist() {
@@ -87,12 +91,17 @@ class BranchesInfo extends React.Component{
       //////////////////////////////////
     return this.props.all_branches.map((branch)=>{
       return (
-        <div key={branch.id} className="branch-row">
-          <button onClick={this.handleAccordionClick.bind(this)} className="branch-accordion" id={branch.id}>{branch.name}</button>
-          <div className="employee-panel">
+
+        <BranchSection title="BranchSection Title One">   
             {this.getEmployeeTable(branch.id)}
-          </div>
-        </div>
+                </BranchSection>
+
+
+
+
+
+
+
 
       )
     })
