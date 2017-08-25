@@ -26,7 +26,6 @@ class ListToday extends React.Component {
   }
 
   jobs2(){
-    // if(this.state.mapObject&&this.props.all_trips&&this.props.all_trips.length)
     if(this.state.mapObject){
       var toDisplay = this.getTable()
        return toDisplay
@@ -34,10 +33,12 @@ class ListToday extends React.Component {
   }
 
   getTable(){
-     
-    if(!this.props.current_today_truckflicker_job) this.state.mapObject.displayArrayOfJobRoutes(this.props.all_trips)
-      
+
     return this.props.all_trips.map((job, index)=>{
+     if(!mapObjectInstances.today.initialRoutesRendered){
+            mapObjectInstances.today.drawRouteWithGoogleResponse(job)
+            if(index==this.props.all_trips.length-1) mapObjectInstances.today.initialRoutesRendered=true
+          }
       var truckFlickerJob = ''
       var collapseStyle = job.hidden ? {display: 'none'} : {}
       if(job.id === this.props.current_today_truckflicker_job.id){
@@ -58,7 +59,6 @@ class ListToday extends React.Component {
 
   }
   
-
   render(){
     return (
       <div className='grid-item-list-today'>
@@ -81,8 +81,6 @@ class ListToday extends React.Component {
   }
 
 }
-
-
 
 
 const mapDispatchToProps=(dispatch)=>({

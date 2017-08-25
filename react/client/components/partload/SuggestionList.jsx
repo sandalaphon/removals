@@ -17,9 +17,6 @@ class SuggestionList extends React.Component{
 
   componentDidUpdate(){
     if(!this.mapObject) this.mapObject = mapObjectInstances.partload
-    // if(!this.state.mapObject){
-    //    this.setState({mapObject: mapObjectInstances.partload})
-    // }
   }
 
   onClickNearestStart(event){
@@ -93,7 +90,7 @@ class SuggestionList extends React.Component{
       </tr>)
   })
 
-// }
+
 }
 
 render(){
@@ -147,30 +144,3 @@ const mapStateToProps=(state)=>({
 
 export default connect(mapStateToProps, mapDispatchToProps)(SuggestionList)
 
-////////////////////////////////////////////////////////////////////////////
-/////////// from jobs before dedicate Gmap component in partload ////////
-/////////////////////////////////////////////////////////////////////////////////
-  // if(this.props.partload_marker_array&&this.props.partload_marker_array.length) {
-// var mapObjects = mapObjectInstances
-// this.state.mapObject=mapObjects.partload
-
-// if(this.props.best_pick_up_jobs){
-//   if(this.state.mapObject) this.state.mapObject.clearMap()
-//     this.props.best_pick_up_jobs.forEach((job)=>{
-//       if(!job.hidden&&this.state.mapObject){
-//         this.state.mapObject.drawRouteWithGoogleResponse(job)
-//       }
-//     })
-
-// }
-
-// if(this.props.partload_marker_array.length&&this.state.mapObject){
-//   this.state.mapObject.displayMarkersFromStore(this.props.partload_marker_array, this.state.mapObject.postcodeMarkers)
-// }
-
-
-// if(this.state.mapObject&&!this.props.current_partload_truckflicker_job){
-//   console.log('shouldnt get here', this.props.current_partload_truckflicker_job )
-//   this.props.best_pick_up_jobs.forEach((job)=>{
-//     this.state.mapObject.drawRouteWithGoogleResponse(job)
-//   })}

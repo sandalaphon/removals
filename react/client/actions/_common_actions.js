@@ -15,6 +15,21 @@ import axios from 'axios'
 //   }
 // }
 
+export function setSliderSecondsFromStart(secondsPassed, pathname){
+  return {
+    type: 'SET_SLIDER_SECONDS_FROM_START',
+    secondsPassed,
+    pathname
+  }
+}
+
+export function toggleAnimationRunning(){
+  return {
+    type: 'TOGGLE_ANIMATION_RUNNING'
+  }
+}
+
+
 export function toggleBranchListDisplayed(pathname){
   return {
     type: 'TOGGLE_BRANCH_LIST_DISPLAYED',

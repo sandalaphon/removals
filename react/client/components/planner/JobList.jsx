@@ -4,6 +4,7 @@ import * as commonActions from '../../actions/_common_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {mapObjectInstances} from '../../models/mapObject'
+import BranchesInfo from '../BranchesInfo'
 
 class JobList extends React.Component{
   constructor(props){
@@ -13,10 +14,12 @@ class JobList extends React.Component{
     }
     this.eventTarget = null,
     this.currentDropTargetId = null
+   
   }
 
   componentDidMount(){
     this.setState ({mapObject:mapObjectInstances.planner})
+    document.getElementById("defaultOpen").click() // shows joblist tab on default
   }
 
   componentDidUpdate(){
@@ -26,8 +29,6 @@ class JobList extends React.Component{
       })
     }
   }
-
-
 
   drag(event){
 
@@ -125,54 +126,71 @@ renderTripById(tripId){
 
   }
 
-
-  jobs(){
-
-if(!this.props.current_planner_truckflicker_job&&this.state.mapObject){
-    // this.state.mapObject.clearMap()
-    console.log('from JOBLIST')
-     mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips) 
-}
-
-
-return this.props.all_trips.map((job,index)=>{
-  var inlineStyleColor = {color: job.colour}
-  var iconHome = `${job.id}${job.colour}`
-  var truckFlickerJob = ''
-  var arrival_time = job.arrival_time
-  var hoverHandStyle = {cursor: 'pointer'}
-  var collapseStyle = job.hidden ? {display: 'none'} : {}
-
-  if(job.id === this.props.current_planner_truckflicker_job.id){
-    truckFlickerJob = 'truckFlickerJob'
+  openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+   
   }
 
+  jobs(){
+    if(this.state.mapObject)
+      var toDisplay = this.getTable()
+    return toDisplay
 
- 
+  }
+
+  getTable(){
+    return this.props.all_trips.map((job,index)=>{
+      if(!mapObjectInstances.planner.initialRoutesRendered){
+        mapObjectInstances.planner.drawRouteWithGoogleResponse(job)
+        if(index==this.props.all_trips.length-1) mapObjectInstances.planner.initialRoutesRendered=true
+      }
+      var inlineStyleColor = {color: job.colour}
+      var iconHome = `${job.id}${job.colour}`
+      var truckFlickerJob = ''
+      var arrival_time = job.arrival_time
+      var hoverHandStyle = {cursor: 'pointer'}
+      var collapseStyle = job.hidden ? {display: 'none'} : {}
+
+    if(job.id === this.props.current_planner_truckflicker_job.id){
+      truckFlickerJob = 'truckFlickerJob'
+    }
+
     var image = <i 
-    draggable='true' 
-    onDragEnd={this.handleDragEnd.bind(this)} 
-    onDragStart={this.drag.bind(this)}  
-    className="material-icons md-18 truckimage" 
-    style={inlineStyleColor} 
-    id={job.colour}>local_shipping</i>
+      draggable='true' 
+      onDragEnd={this.handleDragEnd.bind(this)} 
+      onDragStart={this.drag.bind(this)}  
+      className="material-icons md-18 truckimage" 
+      style={inlineStyleColor} 
+      id={job.colour}>local_shipping</i>
 
-  return(<tr key={job.id} style={collapseStyle} className = {truckFlickerJob}>
-    <td ><button id={job.id} onClick={this.handleHideRouteClick.bind(this)}>Hide Route</button></td>
-    <td >{job.client_name}</td>
-    <td id={iconHome} style={hoverHandStyle}>{image}</td>
-    <td >{job.collection_postcode}</td>
-    <td >{job.volume}</td>
-    <td >{job.men_requested}</td>
-    <td >{job.arrival_time}</td>
-    <td >{job.id}</td>
-    <td> {job.estimated_hours}</td>
+    return(<tr key={job.id} style={collapseStyle} className = {truckFlickerJob}>
+      <td ><button id={job.id} onClick={this.handleHideRouteClick.bind(this)}>Hide Route</button></td>
+      <td >{job.client_name}</td>
+      <td id={iconHome} style={hoverHandStyle}>{image}</td>
+      <td >{job.collection_postcode}</td>
+      <td >{job.volume}</td>
+      <td >{job.men_requested}</td>
+      <td >{job.arrival_time}</td>
+      <td >{job.id}</td>
+      <td> {job.estimated_hours}</td>
 
-    <td >'programatic registation numberSSSS</td>
-    </tr>)
+      <td >'programatic registation numberSSSS</td>
+      </tr>)
 
-})
+  })
 }
+
+//onClick={this.openCity(event, 'Paris').bind(this)}
 
 render(){ 
 
@@ -180,29 +198,48 @@ render(){
 
 
   return(
-       <table 
-       className='grid-item-joblist'
-       onDrag={this.handleOnDragJobList.bind(this)}
-       onDrop={this.handleJobListDrop.bind(this)} 
-       onDragOver={this.handleDragOver.bind(this)}>
-       <tbody>
-       <tr>
-       <th>View Route</th>
-       <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
-       <th>Drag Icon</th>
-       <th>Colour</th>
-       <th>Volume</th>
-       <th>Men Requested</th>
-       <th>Start</th>
-       <th>Notes</th>
-       <th onClick={this.handleEstHoursSort.bind(this)}>Estimated Hours</th> 
-       <th>Allocated Trucks</th>
-       </tr>
+    <div className='grid-item-joblist'>
 
-       {this.jobs()}
-       </tbody>
-       </table>
-       )
+      <div className="tab">
+        <button className="tablinks" onClick={this.openTab.bind(this,event,'jobs')} id="defaultOpen">Jobs</button>
+        <button className="tablinks" onClick={this.openTab.bind(this,event,'branches')} >BranchInfo</button>
+       
+      </div>
+
+      <div id="jobs" className="tabcontent">
+
+       
+        <table   
+           onDrag={this.handleOnDragJobList.bind(this)}
+           onDrop={this.handleJobListDrop.bind(this)} 
+           onDragOver={this.handleDragOver.bind(this)}>
+           <tbody>
+             <tr>
+               <th>View Route</th>
+               <th onClick={this.handleClientNameSort.bind(this)} style={hoverHandStyle}>Client Name</th>
+               <th>Drag Icon</th>
+               <th>Colour</th>
+               <th>Volume</th>
+               <th>Men Requested</th>
+               <th>Start</th>
+               <th>Notes</th>
+               <th onClick={this.handleEstHoursSort.bind(this)}>Estimated Hours</th> 
+               <th>Allocated Trucks</th>
+             </tr>
+
+            {this.jobs()}
+           </tbody>
+         </table>
+      </div>
+
+      <div id="branches" className="tabcontent">
+        <BranchesInfo/>
+      </div>
+
+      
+    </div>
+  )
+
 
 }
 }
@@ -219,6 +256,7 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({ 
   all_trips:                          state.common.all_trips, 
+  zoom_and_center_planner:            state.common.zoom_and_center_planner, 
   show_to_branch:                     state.common.show_to_branch, 
   show_from_branch:                   state.common.show_from_branch, 
   searchString:                       state.planner.searchString,

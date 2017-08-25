@@ -1,8 +1,9 @@
 // import pantech from '../build/images/pantech.png'
 import store from '../store.js'
 import { dispatch } from 'redux';
-import { toggleBranchesOnMap, toggleFullScreenMap, toggleBranchListDisplayed } from '../actions/_common_actions';
+import { toggleBranchesOnMap, toggleFullScreenMap, toggleBranchListDisplayed, setSliderSecondsFromStart } from '../actions/_common_actions';
 import {getComplementaryColour} from '../reducers/_helpers';
+import {placeMarkers} from './sliderFunctions'
 
 let mapObjectInstances = {}
 
@@ -25,7 +26,9 @@ class MapObject{
     this.toBranchesMarkers=[],
     this.fromBranchesMarkers=[],
     this.branchesVisible = undefined,
-    this.branchListVisible = false
+    this.branchListVisible = false,
+    this.initialRoutesRendered = false,
+    this.animeFrames =[]
 
     if(!mapObjectInstances.pathname){
       mapObjectInstances[pathname]=this
@@ -512,6 +515,43 @@ truckSymbol3(fillColour, strokeColour='black', fillOpacityy=1, strokeWeightt=.3)
     origin: new google.maps.Point(0, 0), //origin point
     anchor: new google.maps.Point(1000, 1000) // offset point 
   }
+}
+
+animateRoute(pathname){
+  console.log('animate route', pathname)
+  var counter = 0
+  var sliderSecondsFromStart= this.getSliderSecondsFromStart()
+for(var i=sliderSecondsFromStart; i<43200; i=i+600){
+  counter = (i-sliderSecondsFromStart)/4
+  console.log('counter', counter)
+  var timeout = window.setTimeout(this.callPlaceMarker.bind(placeMarkers, i, pathname) , counter)
+  this.animeFrames.push(timeout)
+}
+}
+
+pauseAnime(){
+  this.animeFrames.forEach((timeout)=>{
+  clearTimeout(timeout)
+  })
+}
+
+callPlaceMarker(secondsFromStart, pathname){
+  store.dispatch(setSliderSecondsFromStart(secondsFromStart, pathname))
+  placeMarkers(secondsFromStart, pathname)
+}
+
+getSliderSecondsFromStart(){
+switch(this.pathname){
+  case('today'):
+  return store.getState().common.today_seconds_from_start
+  break;
+  case('planner'):
+  return store.getState().common.planner_seconds_from_start
+  break;
+  case('partload'):
+  return store.getState().common.partload_seconds_from_start
+  break;
+ }
 }
 
 

@@ -61,7 +61,7 @@ class TruckDayView extends React.Component{
           colour: currentDragJob.colour
         })
         var data = event.dataTransfer.getData('text')
-        console.log(data)
+
 
 
     event.target.appendChild(document.getElementById(data))

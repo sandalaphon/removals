@@ -22,11 +22,31 @@ function handleTripData(state = {
   branch_list_displayed_partload: false,
   branch_list_displayed_planner: false,
   branch_list_displayed_today: false,
+  planner_seconds_from_start: 14400,
+  partload_seconds_from_start: 14400,
+  today_seconds_from_start: 14400,
+  animation_running: false
+
 
 },action){
 
 
   switch(action.type) {
+
+    case 'SET_SLIDER_SECONDS_FROM_START':
+    switch(action.pathname){
+        case 'partload':
+        return { ...state, partload_seconds_from_start: action.secondsPassed}
+        break;
+        case 'today':
+        return { ...state, today_seconds_from_start: action.secondsPassed}
+        break;
+        case 'planner':
+        return { ...state, planner_seconds_from_start: action.secondsPassed}
+        break;
+    }
+
+    break;
 
     case 'TOGGLE_BRANCH_LIST_DISPLAYED':
 
@@ -88,6 +108,10 @@ function handleTripData(state = {
 
     case 'SET_SHOW_FROM_BRANCH':
     return { ...state, show_from_branch: !state.show_from_branch}
+    break;
+
+    case 'TOGGLE_ANIMATION_RUNNING':
+    return { ...state, animation_running: !state.animation_running}
     break;
 
     case 'SET_SHOW_TO_BRANCH':

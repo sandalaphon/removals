@@ -1,29 +1,6 @@
 /*////////////////LAYOUT//////////////////////////////*/
 
 
-/*.grid-planner{
-  display: grid;
-  height: 95vh;
-  grid-template-areas:
-  "cal cal cal cal cal cal fli fli fli fli"
-  "cal cal cal cal cal cal map map map map"
-  "cal cal cal cal cal cal map map map map"
-  "cal cal cal cal cal cal map map map map"
-  "cal cal cal cal cal cal map map map map"
-  "fil fil fil fil fil fil map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job map map map map"
-  "job job job job job job slI slI slI slI";
-  grid-template-rows: repeat(15,1fr);
-  grid-auto-columns: 10%;
-  /*grid-template-columns: repeat(10,1fr);*/
-/*}*/
 
 .grid-planner{
   display: grid;
@@ -56,18 +33,6 @@
   grid-template-rows: repeat(15,1fr);
   /*grid-auto-columns: 16.66%;*/
 }
-
-/*.branch-info-table{
-
-
-}
-
-.branch-info-table-planner{
-  grid-area:lef;
-  border: 4px solid green;
-  height: 95vh;
-  width:60vw;
-}*/
 
 
 .grid-item-planner-left{
@@ -168,8 +133,15 @@ min-width:5vw;
 }
 
 .grid-item-map {
-  grid-area: map;
+  /*grid-area: map;*/
   border: 3px solid green;
+  min-height: 1fr;
+  width: 1fr;
+}
+
+.gmap-map-outer{
+  grid-area: map;
+  display:grid;
   min-height: 1fr;
   width: 1fr;
 }

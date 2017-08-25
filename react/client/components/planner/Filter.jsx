@@ -22,10 +22,12 @@ class Filter extends React.Component {
           clientName.indexOf(searchString)>=0
           ){
           this.props.actions.common_actions.setHiddenStatus(job)
+
         }else{
           this.props.actions.common_actions.setUnhiddenStatus(job)
         }
       })
+      mapObjectInstances.planner.displayArrayOfJobRoutes(this.props.all_trips)
 
     }
 

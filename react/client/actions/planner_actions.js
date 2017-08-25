@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-export function setPlannerSliderSecondsFromStart(secondsPassed){
-  return {
-    type: 'SET_PLANNER_SLIDER_SECONDS_FROM_START',
-    payload: secondsPassed
-  }
-}
+// export function setPlannerSliderSecondsFromStart(secondsPassed){
+//   return {
+//     type: 'SET_PLANNER_SLIDER_SECONDS_FROM_START',
+//     payload: secondsPassed
+//   }
+// }
 
 
 

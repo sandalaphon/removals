@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-export function setPartloadSliderSecondsFromStart(secondsPassed){
-  return {
-    type: 'SET_PARTLOAD_SLIDER_SECONDS_FROM_START',
-    payload: secondsPassed
-  }
-}
+// export function setPartloadSliderSecondsFromStart(secondsPassed){
+//   return {
+//     type: 'SET_PARTLOAD_SLIDER_SECONDS_FROM_START',
+//     payload: secondsPassed
+//   }
+// }
 
 export function clearPartloadMarkerArray(){
   return {

@@ -12,10 +12,10 @@ function handlePartloadData(state = {
 
   switch(action.type) {
     //
-    case 'SET_PARTLOAD_SLIDER_SECONDS_FROM_START':
-    return { ...state, partload_seconds_from_start: action.payload}
-    break;
-    //
+    // case 'SET_PARTLOAD_SLIDER_SECONDS_FROM_START':
+    // return { ...state, partload_seconds_from_start: action.payload}
+    // break;
+    // //
     case 'ADD_MARKER_TO_PARTLOAD_MARKER_ARRAY':
       var holder = state.partload_marker_array.slice()
       holder.push(action.payload)

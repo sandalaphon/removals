@@ -1,5 +1,6 @@
 import React from 'react'
 import * as plannerActions from '../../actions/planner_actions'
+import * as commonActions from '../../actions/_common_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import { mapObjectInstances} from '../../models/mapObject'
@@ -16,18 +17,12 @@ class SliderPlanner extends React.Component{
   constructor(props) { //may need this later
       super(props);
       this.state = {
-        tooltipValue: 0,
-        value:  (this.props.planner_seconds_from_start/600) || 24
+        tooltipValue: 0
       }
+
   }
 
   componentDidMount(){
-    if(this.props.current_planner_truckflicker_job){
-      mapObjectInstances.planner.drawRouteWithGoogleResponse(this.props.current_planner_truckflicker_job)
-    }
-    if(this.props.planner_seconds_from_start){
-      placeMarkers(this.props.planner_seconds_from_start, 'planner')
-    } 
     mapObjectInstances.planner.display_branches()
     mapObjectInstances.planner.displayOrHideBranchList()
   }
@@ -38,11 +33,19 @@ class SliderPlanner extends React.Component{
   }
 
   onAfterChange(value){
-    this.setState({value,})  
+    // this.setState({value,})  
     const secondsPassed = value * 60 * 10
-    this.props.actions.planner_actions.setPlannerSliderSecondsFromStart(secondsPassed)
+   
+    this.props.actions.common_actions.setSliderSecondsFromStart(secondsPassed, 'planner')
     placeMarkers(secondsPassed, 'planner')
+    if(this.props.animation_running){
+      this.props.actions.common_actions.toggleAnimationRunning()
+    }
 
+  }
+
+  onBeforeChange(value){
+    mapObjectInstances.planner.pauseAnime()
   }
 
   sortTimeDisplay(v){
@@ -70,7 +73,7 @@ class SliderPlanner extends React.Component{
       72: '20:00',
     };
 
-    const sliderValue = this.props.planner_seconds_from_start/600 || 24
+    // const sliderValue = this.props.planner_seconds_from_start/600 || 24
    
     return(
         <div className='grid-item-slider-planner'>
@@ -80,13 +83,14 @@ class SliderPlanner extends React.Component{
         max={72} 
         marks={marks} 
         step = {1}
-        defaultValue = {this.state.value}
+        defaultValue = {this.props.planner_seconds_from_start/600}
+        // defaultValue = {this.state.value}
         // value = {this.state.value}
         included = {false}
         onChange = {this.handleSliderChange.bind(this)}
         onAfterChange = {this.onAfterChange.bind(this)}
-        tipFormatter = {value=>`${this.sortTimeDisplay(value)}`}
-      
+        onBeforeChange = {this.onBeforeChange.bind(this)}
+        tipFormatter = {value=>`${this.sortTimeDisplay(value)}`}    
         />
         
         </div>
@@ -98,15 +102,18 @@ class SliderPlanner extends React.Component{
 
 const mapDispatchToProps=(dispatch)=>({
   actions:{
-    planner_actions: bindActionCreators(plannerActions, dispatch)
+    planner_actions: bindActionCreators( plannerActions, dispatch),
+    common_actions: bindActionCreators( commonActions, dispatch)
+      
   } 
 })
 
 const mapStateToProps=(state)=>({
   all_trips:                          state.common.all_trips, 
+  animation_running:                  state.common.animation_running, 
+  planner_seconds_from_start:         state.common.planner_seconds_from_start, 
   show_to_branch:                     state.common.show_to_branch, 
   show_from_branch:                   state.common.show_from_branch, 
-  planner_seconds_from_start:         state.planner.planner_seconds_from_start, 
   current_planner_truckflicker_job:   state.common.current_planner_truckflicker_job})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SliderPlanner)

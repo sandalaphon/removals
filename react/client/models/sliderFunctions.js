@@ -4,7 +4,6 @@ import {mapObjectInstances} from './mapObject'
 
 
 export function placeMarkers(sliderSecondsFromStart, pathname){
-
     var {arrayOfTrips, currentTruckFlickerJob, mapObject} = getArrayAndTruckflickerJob(pathname)
     var sliderMarkerObjectArray = []
 

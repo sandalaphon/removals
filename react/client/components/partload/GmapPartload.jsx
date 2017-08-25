@@ -24,11 +24,6 @@ class GmapPartload extends React.Component {
     this.setState({map: this.createMap()})
   }
 
-  componentDidUnMount() {
-    google.maps.event.clearListeners(this.state.map, 'zoom_changed')
-    this.state.mapObject.clearMap()
-  }
-
 
   componentDidUpdate(){
 
@@ -39,14 +34,19 @@ class GmapPartload extends React.Component {
       }
   }
 
-  componentDidUnMount() {
-    google.maps.event.clearListeners(this.state.map, 'zoom_changed')
-    this.state.mapObject.clearMap()
-  }
 
   createMap() {
     let pathname=this.props.location.pathname
     pathname = pathname.slice(1)
+    if(mapObjectInstances[pathname]){
+     var map=mapObjectInstances[pathname].map
+     var el = document.querySelector('.partload-map-outer')
+     var innerEl = document.querySelector('.grid-item-map-partload')
+     innerEl.parentNode.removeChild(innerEl);
+     el.appendChild(map.getDiv('.grid-item-map-partload'))
+     this.setState({mapObject: mapObjectInstances[pathname]})
+     return map
+    }
     let mapOptions = {
       zoom: this.state.zoom,
       center: this.mapCenter(),
@@ -103,19 +103,15 @@ class GmapPartload extends React.Component {
     }
   
     return (
-      <div className='grid-item-map' ref="mapCanvas"></div>
+      <div className='partload-map-outer'>
+      <div className='grid-item-map-partload' ref="mapCanvas"></div>
+      </div>
     )
 
   };
 
 }
 
-// const mapDispatchToProps=(dispatch)=>({
-//   actions:{
-//     partload_actions: bindActionCreators(partloadActions, dispatch),
-//     common_actions: bindActionCreators(commonActions, dispatch)
-//   }
-// })
 
 const mapStateToProps=(state)=>({
   partload_marker_array:  state.partload.partload_marker_array, 

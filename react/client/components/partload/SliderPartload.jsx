@@ -1,5 +1,6 @@
 import React from 'react'
 import * as partloadActions from '../../actions/partload_actions'
+import * as commonActions from '../../actions/_common_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import { mapObjectInstances} from '../../models/mapObject'
@@ -15,8 +16,7 @@ class SliderPartload extends React.Component{
   constructor(props) { //may need this later
       super(props);
       this.state = {
-        tooltipValue: 0,
-        value:  (this.props.partload_seconds_from_start/600) || 24
+        tooltipValue: 0
       }
   }
 
@@ -32,14 +32,20 @@ class SliderPartload extends React.Component{
   }
 
   onAfterChange(value){
-    this.setState({value})  
+    // this.setState({value})  
     const secondsPassed = value * 60 * 10
-    this.props.actions.partload_actions.setPartloadSliderSecondsFromStart(secondsPassed)
+    this.props.actions.common_actions.setSliderSecondsFromStart(secondsPassed, 'partload')
     placeMarkers(secondsPassed, 'partload')
+    if(this.props.animation_running){
+      this.props.actions.common_actions.toggleAnimationRunning()
+    }
+  }
+
+  onBeforeChange(value){
+    mapObjectInstances.partload.pauseAnime()
   }
 
   sortTimeDisplay(v){
-    // console.log(v)
     let startValue = 8 //8am
     // let endValue = 72 //8pm
     let minutesFromStartValue = v*10
@@ -63,7 +69,7 @@ class SliderPartload extends React.Component{
       72: '20:00',
     };
 
-    const sliderValue = this.props.partload_seconds_from_start/600 || 24
+    // const sliderValue = this.props.partload_seconds_from_start/600 || 24
    
     return(
         <div className='grid-item-slider-partload'>
@@ -73,11 +79,12 @@ class SliderPartload extends React.Component{
         max={72} 
         marks={marks} 
         step = {1}
-        defaultValue = {this.state.value}
+        defaultValue = {this.props.partload_seconds_from_start/600}
         // value = {this.state.value}
         included = {false}
         onChange = {this.handleSliderChange.bind(this)}
         onAfterChange = {this.onAfterChange.bind(this)}
+        onBeforeChange = {this.onBeforeChange.bind(this)}
         tipFormatter = {value=>`${this.sortTimeDisplay(value)}`}
       
         />
@@ -91,13 +98,16 @@ class SliderPartload extends React.Component{
 
 const mapDispatchToProps=(dispatch)=>({
   actions:{
-    partload_actions: bindActionCreators(partloadActions, dispatch)
+    partload_actions: bindActionCreators(partloadActions, dispatch),
+    common_actions: bindActionCreators( commonActions, dispatch)
   }
 })
 
 const mapStateToProps=(state)=>({
   // all_trips:                              state.common.all_trips, 
-  partload_seconds_from_start:            state.partload.partload_seconds_from_start, 
+  // partload_seconds_from_start:            state.partload.partload_seconds_from_start, 
+  partload_seconds_from_start:            state.common.partload_seconds_from_start, 
+  animation_running:                      state.common.animation_running, 
   current_partload_truckflicker_job:      state.common.current_partload_truckflicker_job, 
   best_pick_up_jobs:                      state.partload.best_pick_up_jobs
 })

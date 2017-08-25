@@ -24,9 +24,9 @@ function handlePlannerData(state = {
     //////////////////////////////////////////////////////////
 
 
-    case 'SET_PLANNER_SLIDER_SECONDS_FROM_START':
-    return { ...state, planner_seconds_from_start: action.payload}
-    break;
+    // case 'SET_PLANNER_SLIDER_SECONDS_FROM_START':
+    // return { ...state, planner_seconds_from_start: action.payload}
+    // break;
 
     case 'SET_CURRENT_DRAG_JOB':
     return{...state, currentDragJob: action.payload}

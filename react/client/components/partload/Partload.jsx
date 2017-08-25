@@ -17,7 +17,6 @@ class Partload extends React.Component{
   }
 
   componentDidMount(){
-    console.log('partload mount')
     this.setState({mapObject:mapObjectInstances.partload})
   }
 

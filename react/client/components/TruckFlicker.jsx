@@ -17,6 +17,13 @@ class TruckFlicker extends React.Component {
     this.pathname = this.props.router.location.pathname.slice(1)
   }
 
+  componentWillUnmount(){
+    if(this.props.trips.animation_running){
+      mapObjectInstances[this.pathname].pauseAnime()
+      this.props.actions.common_actions.toggleAnimationRunning()
+    }
+  }
+
   setInstanceVariables(){
 
     switch (this.pathname){
@@ -40,13 +47,14 @@ class TruckFlicker extends React.Component {
   }
 
   showAllRoutes(event){
-    event.preventDefault()
+    if(event) event.preventDefault()
     this.setInstanceVariables()
-    // this.mapObject.clearMap()
+    this.mapObject.clearMap()
     this.relevantArray.forEach((job)=>{
       this.props.actions.common_actions.setHiddenStatus(job)
     }) 
     this.props.actions.common_actions.clearCurrentTruckFlickerJob(this.pathname)
+    this.mapObject.displayArrayOfJobRoutes(this.relevantArray)
   }
 
   handlePreviousClick(event){
@@ -105,14 +113,33 @@ class TruckFlicker extends React.Component {
     return jobToReturn
   }
 
-  handleShowFromBranch(event){
+  toFromBranch(event){
     event.preventDefault()
     this.props.actions.common_actions.setShowFromBranch()
+    this.props.actions.common_actions.setShowToBranch()
+    this.showAllRoutes()
   }
 
-  handleShowToBranch(event){
+  // handleShowFromBranch(event){
+  //   event.preventDefault()
+  //   this.props.actions.common_actions.setShowFromBranch()
+  // }
+
+  // handleShowToBranch(event){
+  //   event.preventDefault()
+  //   this.props.actions.common_actions.setShowToBranch()
+  // }
+
+  handleAnimateClick(event){
     event.preventDefault()
-    this.props.actions.common_actions.setShowToBranch()
+    this.setInstanceVariables()
+    if(this.props.trips.animation_running){
+      this.mapObject.pauseAnime()
+    }else{
+      this.mapObject.animateRoute(this.pathname)
+    }
+    this.props.actions.common_actions.toggleAnimationRunning()
+   
   }
 
   render(){
@@ -120,8 +147,8 @@ class TruckFlicker extends React.Component {
     return (
       <div className = 'grid-item-truck-flicker'>
       <button onClick={this.showAllRoutes.bind(this)}>Show All Routes</button>
-      <button onClick={this.handleShowToBranch.bind(this)}>Show To Branch</button>
-      <button onClick={this.handleShowFromBranch.bind(this)}>Show From Branch</button>
+      <button onClick={this.handleAnimateClick.bind(this)}>Animate</button>
+      <button onClick={this.toFromBranch.bind(this)}>To From Branch</button>
       <button onClick={this.handlePreviousClick.bind(this)}>Previous</button>
       <button onClick={this.handleNextClick.bind(this)}>Next</button>
       </div>

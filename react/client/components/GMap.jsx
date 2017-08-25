@@ -23,45 +23,45 @@ class GMap extends React.Component {
 
   componentDidMount() {
     this.setState({map: this.createMap()})
-
   }
 
-  componentDidUnMount() {
-    google.maps.event.clearListeners(this.state.map, 'zoom_changed')
-    this.state.mapObject.clearMap()
-  }
-
-  componentDidUpdate(){
-
-    if(!this.state.mapObject.branchesButtonExists) {
-        // this.state.mapObject.addBranchButtonToMap()
-        this.state.mapObject.createAMapButton(this.state.mapObject.handleBranchesClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Branches')
-        this.state.mapObject.createAMapButton(this.state.mapObject.handleFullScreenMapClick.bind(this.state.mapObject), 'TOP_RIGHT', 'Full Screen')
-      }
-  }
 
   createMap() {
     let pathname=this.props.location.pathname
     pathname = pathname.slice(1)
-    let mapOptions = {
-      zoom: this.state.zoom,
-      center: this.mapCenter(),
-      zoomControl: true,
-       mapTypeControl: true,
-       mapTypeControlOptions: {
-             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-             mapTypeIds: ['roadmap', 'terrain']
-           },
-       scaleControl: true,
-       streetViewControl: true,
-       rotateControl: true,
-       fullscreenControl: false
-    }
-    var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
-    var mapObject = new MapObject(map, pathname)
+    if (mapObjectInstances[pathname]){
+      var map = mapObjectInstances[pathname].map
+      var el = document.querySelector('.gmap-map-outer')
+      var innerEl = document.querySelector('.grid-item-map')
+      innerEl.parentNode.removeChild(innerEl);
+      el.appendChild(map.getDiv())
+      this.setState({mapObject: mapObjectInstances[pathname]})
+      return map
+    }else{
+      let mapOptions = {
+        zoom: this.state.zoom,
+        center: this.mapCenter(),
+        zoomControl: true,
+         mapTypeControl: true,
+         mapTypeControlOptions: {
+               style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+               mapTypeIds: ['roadmap', 'terrain']
+             },
+         scaleControl: true,
+         streetViewControl: true,
+         rotateControl: true,
+         fullscreenControl: false
+      }
 
-    this.setState({mapObject: mapObjectInstances[pathname]})
-    return map
+      var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
+      var mapObject = new MapObject(map, pathname)
+      mapObject.createAMapButton(mapObject.handleBranchesClick.bind(mapObject), 'TOP_RIGHT', 'Branches')
+      mapObject.createAMapButton(mapObject.handleFullScreenMapClick.bind(mapObject), 'TOP_RIGHT', 'Full Screen')
+
+      this.setState({mapObject: mapObjectInstances[pathname]})
+      return map
+    }
+    
   }
 
   mapCenter() {
@@ -72,8 +72,10 @@ class GMap extends React.Component {
   }
 
   render() {
-        return (              
+        return (  
+        <div className='gmap-map-outer'>            
                 <div id='map' className='grid-item-map' ref="mapCanvas">  
+                </div>
                 </div>
           )
       }
