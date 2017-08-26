@@ -69,19 +69,31 @@ function handleTripData(state = {
           class: "section"
         }
       }else{
+        console.log("in else?")
         toggle = {
           open: true,
           class: "section open"
         }
       }
-
+      console.log("toggle",state.branch_list_item_open)
     return {...state, branch_list_item_open: toggle}
     break;
 
 
 
     case 'SET_BRANCH_ICON_CLICKED_ID':
-    return {...state, clicked_branch_id: action.id}
+    let icon_toggle
+    if (state.clicked_branch_id == action.id){
+      console.log("sameclicked")
+      icon_toggle = {open: false, class: "section"}
+    }
+    else{
+      icon_toggle = {open: true, class: "section open"}
+    }
+
+
+
+    return {...state, clicked_branch_id: action.id, branch_list_item_open: icon_toggle}
     break;
 
     // case 'SET_BRANCH_DISPLAYED_STATUS':

@@ -7,12 +7,22 @@ import {connect} from 'react-redux'
 class BranchSection extends React.Component{
   constructor(props){
     super(props)
+    this.state = {
+      open: this.props.branch_list_item_open.open,
+      class: this.props.branch_list_item_open.class
+    }
   }
 
-    
+  componentDidUpdate(){
+
+  }
   
   handleClick(){
+
     this.props.actions.common_actions.toggleBranchListItem()
+    this.setState((prevState, props) => ({
+      class: prevState.class = props.branch_list_item_open.class
+    }));
   }
  
 
@@ -21,13 +31,16 @@ class BranchSection extends React.Component{
 
   render() {
     //console.log("here",store.getState().common)
-    let shown = "section"
-      if (this.props.id == this.props.clicked_branch_id){
-        shown = "section open"
-      }
+    let shown
+      // if (this.props.id == this.props.clicked_branch_id){
+      //   shown = "section open"
+      // }else{
+        shown = this.state.class
+      // }
     
     
     console.log("props id", this.props.id)
+    console.log("props id", this.state.class)
 
     return (
       <div className={shown}>
