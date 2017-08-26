@@ -9,14 +9,6 @@ class Navb extends React.Component {
     this.props.signOut()
   }
 
-  handleSelect(eventKey) {
-     event.preventDefault();
-     if(eventKey){
-      alert(`selected ${eventKey}`);
-      // this.props.addUser()
-     }
-    
-   }
 
  render(){
 
@@ -30,6 +22,10 @@ class Navb extends React.Component {
 
       <div className="planner-nav">
        <Link to="/planner" activeClassName="active">Planner</Link>
+      </div> 
+
+      <div className="surveyor-nav">
+       <Link to="/surveyor" activeClassName="active">Surveyor's Diary</Link>
       </div> 
 
       <div className="today-nav">

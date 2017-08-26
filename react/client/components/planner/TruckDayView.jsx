@@ -14,10 +14,12 @@ class TruckDayView extends React.Component{
   componentDidMount(){
   var {droppedCells} = this.props.trips
   droppedCells.forEach((droppedCellsArray)=>{
-    var image = document.getElementById(droppedCellsArray.colour)
-    document.getElementById(droppedCellsArray.cells[0]).appendChild(image)
+    setImmediate(()=>{
+      var image = document.getElementById(droppedCellsArray.colour); document.getElementById(droppedCellsArray.cells[0]).appendChild(image)
+    })
   })
   }
+
 
   handleDragEnter(event){
 

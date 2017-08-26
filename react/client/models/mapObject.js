@@ -420,6 +420,10 @@ displayOrHideBranchList(){
     leftDiv = document.querySelector('.grid-item-partload-left')
     rightDiv = document.querySelector('.grid-item-partload-right')
      break;
+     case 'surveyor':
+    leftDiv = document.querySelector('.grid-item-surveyor-left')
+    rightDiv = document.querySelector('.grid-item-surveyor-right')
+     break;
   }
 
   leftDiv.classList.toggle('hidden')
@@ -451,6 +455,9 @@ displayOrHideBranchList(){
     var postcodeEl = document.querySelector('.grid-item-postcode')
     var suggestionListEl = document.querySelector('.grid-item-suggestion-list')
     return([postcodeEl, suggestionListEl])
+    case 'surveyor':
+   
+    return([])
     break;
  }
 }
@@ -523,7 +530,6 @@ animateRoute(pathname){
   var sliderSecondsFromStart= this.getSliderSecondsFromStart()
 for(var i=sliderSecondsFromStart; i<43200; i=i+600){
   counter = (i-sliderSecondsFromStart)/4
-  console.log('counter', counter)
   var timeout = window.setTimeout(this.callPlaceMarker.bind(placeMarkers, i, pathname) , counter)
   this.animeFrames.push(timeout)
 }

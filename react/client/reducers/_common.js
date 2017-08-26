@@ -7,6 +7,7 @@ function handleTripData(state = {
   current_today_truckflicker_job: '',
   current_partload_truckflicker_job: '',
   current_planner_truckflicker_job: '',
+  current_sureyor_truckflicker_job: '',
   // branch_status_partload: 0,
   // branch_status_today: 0,
   // branch_status_planner:0 ,
@@ -14,6 +15,7 @@ function handleTripData(state = {
   show_to_branch: true,
   show_from_branch: true,
   full_screen_map_today: false,
+  full_screen_map_surveyor: false,
   full_screen_map_partload: false,
   full_screen_map_planner: false,
   branches_on_map_partload: false,
@@ -23,6 +25,7 @@ function handleTripData(state = {
   branch_list_displayed_planner: false,
   branch_list_displayed_today: false,
   planner_seconds_from_start: 14400,
+  surveyor_seconds_from_start: 14400,
   partload_seconds_from_start: 14400,
   today_seconds_from_start: 14400,
   animation_running: false
@@ -43,6 +46,9 @@ function handleTripData(state = {
         break;
         case 'planner':
         return { ...state, planner_seconds_from_start: action.secondsPassed}
+        break; 
+        case 'surveyor':
+        return { ...state, surveyor_seconds_from_start: action.secondsPassed}
         break;
     }
 
@@ -59,6 +65,9 @@ function handleTripData(state = {
         break;
         case 'planner':
         return { ...state, branch_list_displayed_planner: !state.branch_list_displayed_planner}
+        break;
+        case 'surveyor':
+        return { ...state, branch_list_displayed_surveyor: !state.branch_list_displayed_surveyor}
         break;
     }
     break;
@@ -87,6 +96,9 @@ function handleTripData(state = {
         case 'planner':
         return { ...state, branches_on_map_planner: !state.branches_on_map_planner}
         break;
+        case 'surveyor':
+        return { ...state, branches_on_map_surveyor: !state.branches_on_map_surveyor}
+        break;
     }
     break;
 
@@ -100,6 +112,9 @@ function handleTripData(state = {
             break;
             case 'planner':
             return { ...state, full_screen_map_planner: !state.full_screen_map_planner}
+            break;
+            case 'surveyor':
+            return { ...state, full_screen_map_surveyor: !state.full_screen_map_surveyor}
             break;
         }
 
@@ -202,6 +217,9 @@ function handleTripData(state = {
         case 'partload':
         return{...state, current_partload_truckflicker_job: action.payload}
         break;
+        case 'surveyor':
+        return{...state, current_surveyor_truckflicker_job: action.payload}
+        break;
     }
     break;
     //
@@ -215,6 +233,9 @@ function handleTripData(state = {
         break;
         case 'partload':
         return{...state, current_partload_truckflicker_job: ''}
+        break;
+        case 'surveyor':
+        return{...state, current_surveyor_truckflicker_job: ''}
         break;
     }
     break;

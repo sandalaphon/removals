@@ -43,6 +43,11 @@ class TruckFlicker extends React.Component {
       this.mapObject = mapObjectInstances.partload
       this.relevantArray = this.props.best_pick_up_jobs
       break;
+      case 'surveyor':
+      this.current_truckflicker_job = this.props.trips.current_surveyor_truckflicker_job
+      this.mapObject = mapObjectInstances.surveyor
+      this.relevantArray = this.props.best_pick_up_jobs
+      break;
     }
   }
 

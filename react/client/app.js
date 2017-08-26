@@ -37,7 +37,7 @@ class TopComponent extends React.Component {
           <Route path="home" component= {Home}></Route>
           <Route path="planner" component= {Planner}></Route>
           <Route path="today" component= {Today}></Route>
-          <Route path="surveyors_diary" component= {Surveyor}></Route>
+          <Route path="surveyor" component= {Surveyor}></Route>
           <Route path="update_data" component= {UpdateData}></Route>
           <Route path="account_management" component= {AccountManagement}></Route>
           <Route path="partload" component= {Partload}></Route>

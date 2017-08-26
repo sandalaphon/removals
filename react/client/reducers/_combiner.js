@@ -8,6 +8,7 @@ import planner              from './view_planner'
 import partload             from './view_partload'
 import account_management   from './view_account_management'
 import update_data          from './view_update_data'
+import surveyor             from './view_surveyor'
 
 const rootReducer = combineReducers({
   routing: routerReducer,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   planner,
   partload,
   account_management,
-  update_data
+  update_data,
+  surveyor
 })
 
 export default rootReducer

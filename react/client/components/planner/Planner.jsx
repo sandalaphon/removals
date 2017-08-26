@@ -30,8 +30,8 @@ class Planner extends React.Component {
             
             <div className='grid-item-planner-left width60vw'>
             <JobList/>
-            <TruckDayView />
             <Filter/>
+            <TruckDayView />
             <div 
             className = 'branch-info-table-planner hidden' 
             style={branchStyle}>

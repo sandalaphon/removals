@@ -150,6 +150,7 @@ renderTripById(tripId){
 
   getTable(){
     return this.props.all_trips.map((job,index)=>{
+
       if(!mapObjectInstances.planner.initialRoutesRendered){
         mapObjectInstances.planner.drawRouteWithGoogleResponse(job)
         if(index==this.props.all_trips.length-1) mapObjectInstances.planner.initialRoutesRendered=true

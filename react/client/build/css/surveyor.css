@@ -1,0 +1,88 @@
+.grid-surveyor{
+   display: grid;
+   height: 95vh;
+   grid-template-areas:
+  'LEF RIG';
+}
+
+
+.grid-item-surveyor-right{
+  grid-area: RIG;
+  display: grid;
+  height: 95vh;
+ /*width 50vw in main.css*/
+  border: 3px solid green;
+  grid-template-areas:
+  " fli"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " map"
+  " SLI"
+  ;
+  grid-template-rows: repeat(15,1fr);
+  /*grid-auto-columns: 10%;*/
+  /*grid-template-columns: repeat(1,1fr);*/
+}
+
+.grid-item-surveyor-left{
+  grid-area: LEF;
+  display: grid;
+  height: 95vh;
+/*width 50vw in main.css*/
+  border: 3px solid blue;
+  grid-template-areas:
+  "fil "
+  "fil "
+  "fil "
+  "fil "
+  "fil "
+  "fil "
+  "fil "
+  "fil "
+  "fil "
+  "fil "
+  "fil "
+  "fil "
+  "fil "
+  "fil "
+  "fil "
+  ;
+  grid-template-rows: repeat(15,1fr);
+  /*grid-auto-columns: 10%;*/
+  /*grid-template-columns: repeat(1,1fr);*/
+}
+
+
+
+/*.grid-item-list-surveyor{
+
+  grid-area:todli;
+  border: 3px solid purple;
+
+}
+*/
+.grid-item-slider-surveyor{
+  grid-area:SLI;
+  border: 3px solid purple;
+}
+
+.slider-div{
+  width: 1fr;
+  margin: 20px;
+  height:1fr;
+  /*text-align: center;*/
+  /*transform: translateY(50%);*/
+}
+
+
+
