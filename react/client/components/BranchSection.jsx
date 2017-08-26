@@ -8,7 +8,7 @@ class BranchSection extends React.Component{
   constructor(props){
     super(props)
 
-    if(this.props.id==33){
+    if(this.props.id==33){ //hardcoded default branch for now
       this.state = {
         open: true,
         class: "section open"
@@ -23,36 +23,18 @@ class BranchSection extends React.Component{
   }
 
   componentWillReceiveProps(nextProps) {
-    
-    console.log("prop",this.props.clicked_branch_id)
-    console.log("nexprop",nextProps.clicked_branch_id)
-
+    console.log("will receive")
     if(nextProps.clicked_branch_id==this.props.id){
-      // console.log("was minus 1")
       this.toggle()
     }
     if(nextProps.clicked_branch_id==-1 && this.props.clicked_branch_id==this.props.id){
       this.toggle()
     }
 
-
-    // if (nextProps.clicked_branch_id==this.props.clicked_branch_id) {
-    //     console.log("first statement")
-    // }
-
-
-    // console.log("here")
-    // if (nextProps.clicked_branch_id==this.props.clicked_branch_id==this.props.id) {
-    //     console.log("fsecondst statement")
-    // }
-
-
   }
   
   handleClick(){
     this.toggle()
-    //this.props.actions.common_actions.toggleBranchListItem()
-    
   }
 
   toggle(){
@@ -72,7 +54,7 @@ class BranchSection extends React.Component{
 
   render() {
     
-    
+    console.log("rendered branchsection")
     return (
       <div className={this.state.class}>
         <button id="toggle-button">toggle</button>

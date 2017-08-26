@@ -24,9 +24,7 @@ function handleTripData(state = {
   branch_list_displayed_today: false,
 
   clicked_branch_id: null,
-  clicked_branch_id_default: 33,
-
-  // branch_list_item_open:{}
+  
 
 },action){
 
@@ -60,25 +58,6 @@ function handleTripData(state = {
         break;
     }
     break;
-
-    // case 'TOGGLE_BRANCH_LIST_ITEM':
-    //   let toggle
-    //   if (state.branch_list_item_open.open==true){
-    //     toggle= {
-    //       open: false,
-    //       class: "section"
-    //     }
-    //   }else{
-    //     console.log("in else?")
-    //     toggle = {
-    //       open: true,
-    //       class: "section open"
-    //     }
-    //   }
-    //   console.log("toggle",state.branch_list_item_open)
-    // return {...state, branch_list_item_open: toggle}
-    // break;
-
 
 
     case 'SET_BRANCH_ICON_CLICKED_ID':

@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router'
 import {mapObjectInstances} from '../models/mapObject'
+import BranchesInfo from './BranchesInfo.jsx'
 // import { LinkContainer } from 'react-router-bootstrap';
 
 class Navb extends React.Component {
@@ -30,13 +31,15 @@ class Navb extends React.Component {
    }
 
    toggleBranchList(e){
-    e.preventDefault()
-    var pathname = this._reactInternalInstance._context.router.getCurrentLocation().pathname.slice(1)
-    console.log(pathname)
-    if(!(pathname == 'partload'||pathname == 'today'||pathname == 'planner')) return
-    var mapObject = this.getMapObject(pathname)
-    console.log(mapObject)
-      mapObject.toggleBranchList.call(mapObject)
+    // e.preventDefault()
+    // var pathname = this._reactInternalInstance._context.router.getCurrentLocation().pathname.slice(1)
+    // console.log(pathname)
+    // if(!(pathname == 'partload'||pathname == 'today'||pathname == 'planner')) return
+    // var mapObject = this.getMapObject(pathname)
+    // console.log(mapObject)
+    //   mapObject.toggleBranchList.call(mapObject)
+      document.getElementById("myDropdown").classList.toggle("show");
+    
 
    }
 
@@ -46,8 +49,12 @@ class Navb extends React.Component {
 
     <nav  className="nav-bar">
 
-    <button id="button-branch-list-nav" onClick={this.toggleBranchList.bind(this)}>Branch List</button>
-     
+      <button id="button-branch-list-nav" onClick={this.toggleBranchList.bind(this)}>Branch List</button>
+      
+      <div class="dropdown-content" id="myDropdown">
+            <BranchesInfo/>
+      </div>
+
       <div className="home-nav">
        <Link to="/" >Home</Link>
       </div> 
