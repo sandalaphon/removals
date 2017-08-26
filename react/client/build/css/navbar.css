@@ -130,4 +130,10 @@ a.active{
 .show {
     display: block;
 }
+.resize-drag {
 
+  border: 3px solid black;
+
+  /* This makes things *much* easier */
+  box-sizing: border-box;
+}

@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "compression": "^1.6.1",
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "save": "^2.3.1"
   },
   "devDependencies": {
     "eslint-rallycoding": "^1.2.0"
