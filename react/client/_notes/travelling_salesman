@@ -1,0 +1,13 @@
+Surveyor Algorithm Notes:
+
+1. Presume survey takes 30 minutes?
+2. Get distance as crow flies between all scheduled appointments and the potential appointment.
+3. Exclude un-availble slots (i.e. those which are bookended by other appointments)
+4. Available appointment slots in the next 3 days (default is 3 days, can be changed) listed by distance, and drive-time.
+5. Apointments furthest from depot to be scheduled mid journey. To allow en route appointments
+6. Get surveyor's home postcode. (Do they accept early morning or after work appointments?)
+
+
+
+
+Make journeys that are less than 15 minutes show as green.

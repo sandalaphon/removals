@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  employee: one
+  branch: one
+  appointment_date: 2017-08-26
+  appointment_time: 2017-08-26 14:04:05
+  moveware_code: 1
+  collection_address: MyString
+  delivery_address: MyString
+  client_name: MyString
+  duration: 9.99
+  branch_code: MyString
+
+two:
+  employee: two
+  branch: two
+  appointment_date: 2017-08-26
+  appointment_time: 2017-08-26 14:04:05
+  moveware_code: 1
+  collection_address: MyString
+  delivery_address: MyString
+  client_name: MyString
+  duration: 9.99
+  branch_code: MyString

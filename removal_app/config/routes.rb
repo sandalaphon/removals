@@ -1,16 +1,22 @@
 Rails.application.routes.draw do
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
 
-  get '/api/users' => 'users#allusers'
-  put '/users/:id(.:format)' => 'users#update'
+  get   '/api/users' => 'users#allusers'
+  put   '/users/:id(.:format)' => 'users#update'
   delete '/users/:id(.:format)' => 'users#delete'
-  post '/api/trips/new' => 'trips#create'
-  get '/api/trips' => 'trips#index'
-  get '/api/branches' => 'branches#index'
-  get '/api/employees' => 'employees#index'
-  post '/api/trips/partload_closest_pickup' => 'trips#partload_closest_pickup'
 
-  get '/api/:company_id' => 'companies#index'
+  post   '/api/trips/new' => 'trips#create'
+  get    '/api/trips' => 'trips#index'
+
+  get    '/api/surveys' => 'surveys#index'
+
+  get    '/api/branches' => 'branches#index'
+
+  get    '/api/employees' => 'employees#index'
+  
+  post   '/api/trips/partload_closest_pickup' => 'trips#partload_closest_pickup'
+
+  get    '/api/:company_id' => 'companies#index'
 
 
   resources :users do

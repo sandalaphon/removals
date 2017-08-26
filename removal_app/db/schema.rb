@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170818153910) do
+ActiveRecord::Schema.define(version: 20170826133234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,9 +59,10 @@ ActiveRecord::Schema.define(version: 20170818153910) do
     t.string   "email"
     t.string   "job_title"
     t.string   "driver_licence"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.string   "photoUrl"
+    t.string   "moveware_employee_code"
     t.index ["branch_id"], name: "index_employees_on_branch_id", using: :btree
   end
 
@@ -72,6 +73,25 @@ ActiveRecord::Schema.define(version: 20170818153910) do
     t.datetime "updated_at", null: false
     t.index ["trip_id"], name: "index_jobs_on_trip_id", using: :btree
     t.index ["truck_id"], name: "index_jobs_on_truck_id", using: :btree
+  end
+
+  create_table "surveys", force: :cascade do |t|
+    t.integer  "employee_id"
+    t.integer  "branch_id"
+    t.date     "appointment_date"
+    t.time     "appointment_time"
+    t.integer  "moveware_code"
+    t.string   "collection_address"
+    t.string   "delivery_address"
+    t.string   "client_name"
+    t.decimal  "duration"
+    t.string   "branch_code"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.string   "moveware_employee_code"
+    t.string   "collection_postcode"
+    t.index ["branch_id"], name: "index_surveys_on_branch_id", using: :btree
+    t.index ["employee_id"], name: "index_surveys_on_employee_id", using: :btree
   end
 
   create_table "trips", force: :cascade do |t|
@@ -141,6 +161,8 @@ ActiveRecord::Schema.define(version: 20170818153910) do
   add_foreign_key "employees", "branches"
   add_foreign_key "jobs", "trips"
   add_foreign_key "jobs", "trucks"
+  add_foreign_key "surveys", "branches"
+  add_foreign_key "surveys", "employees"
   add_foreign_key "trips", "branches"
   add_foreign_key "trucks", "branches"
   add_foreign_key "users", "companies"
