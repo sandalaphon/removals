@@ -7,43 +7,74 @@ import {connect} from 'react-redux'
 class BranchSection extends React.Component{
   constructor(props){
     super(props)
-    this.state = {
-      open: this.props.branch_list_item_open.open,
-      class: this.props.branch_list_item_open.class
+
+    if(this.props.id==33){
+      this.state = {
+        open: true,
+        class: "section open"
+      }
+    }else{
+      this.state = {
+        open: false,
+        class: "section"
+      }
+      
     }
   }
 
-  componentDidUpdate(){
+  componentWillReceiveProps(nextProps) {
+    
+    console.log("prop",this.props.clicked_branch_id)
+    console.log("nexprop",nextProps.clicked_branch_id)
+
+    if(nextProps.clicked_branch_id==this.props.id){
+      // console.log("was minus 1")
+      this.toggle()
+    }
+    if(nextProps.clicked_branch_id==-1 && this.props.clicked_branch_id==this.props.id){
+      this.toggle()
+    }
+
+
+    // if (nextProps.clicked_branch_id==this.props.clicked_branch_id) {
+    //     console.log("first statement")
+    // }
+
+
+    // console.log("here")
+    // if (nextProps.clicked_branch_id==this.props.clicked_branch_id==this.props.id) {
+    //     console.log("fsecondst statement")
+    // }
+
 
   }
   
   handleClick(){
+    this.toggle()
+    //this.props.actions.common_actions.toggleBranchListItem()
+    
+  }
 
-    this.props.actions.common_actions.toggleBranchListItem()
-    this.setState((prevState, props) => ({
-      class: prevState.class = props.branch_list_item_open.class
-    }));
+  toggle(){
+    if (this.state.open){
+      this.setState((prevState, props) => ({
+        open: prevState.open = false,
+        class: prevState.class = "section"
+      }));
+    }else{
+      this.setState((prevState, props) => ({
+        open: prevState.open = true,
+        class: prevState.class = "section open"
+      }));
+    }
   }
  
 
-
-
-
   render() {
-    //console.log("here",store.getState().common)
-    let shown
-      // if (this.props.id == this.props.clicked_branch_id){
-      //   shown = "section open"
-      // }else{
-        shown = this.state.class
-      // }
     
     
-    console.log("props id", this.props.id)
-    console.log("props id", this.state.class)
-
     return (
-      <div className={shown}>
+      <div className={this.state.class}>
         <button id="toggle-button">toggle</button>
         <div className="sectionhead" onClick={this.handleClick.bind(this)}>{this.props.title}</div>
         <div className="articlewrap">

@@ -55,6 +55,7 @@ class BranchesInfo extends React.Component{
   branchlist() {
     if(!this.props.all_branches) return
       //////////////////////////////////
+    //////order all_branches here, to but main branch to the top
     return this.props.all_branches.map((branch)=>{
       return (
         <BranchSection title={branch.name} id={branch.id}>   
