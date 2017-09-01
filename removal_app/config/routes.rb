@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get    '/api/trips' => 'trips#index'
 
   get    '/api/surveys' => 'surveys#index'
+  post    '/api/surveys/new' => 'surveys#create'
 
   get    '/api/branches' => 'branches#index'
 
@@ -16,7 +17,12 @@ Rails.application.routes.draw do
   
   post   '/api/trips/partload_closest_pickup' => 'trips#partload_closest_pickup'
 
+  get    '/api/survey_object' => 'survey_objects#index'
+  post    '/api/survey_object/new' => 'survey_objects#create'
+
   get    '/api/:company_id' => 'companies#index'
+
+  
 
 
   resources :users do

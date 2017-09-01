@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170826133234) do
+ActiveRecord::Schema.define(version: 20170831143942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,12 @@ ActiveRecord::Schema.define(version: 20170826133234) do
     t.index ["truck_id"], name: "index_jobs_on_truck_id", using: :btree
   end
 
+  create_table "survey_objects", force: :cascade do |t|
+    t.text     "all_surveys_object"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
   create_table "surveys", force: :cascade do |t|
     t.integer  "employee_id"
     t.integer  "branch_id"
@@ -86,10 +92,13 @@ ActiveRecord::Schema.define(version: 20170826133234) do
     t.string   "client_name"
     t.decimal  "duration"
     t.string   "branch_code"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.string   "moveware_employee_code"
     t.string   "collection_postcode"
+    t.string   "collection_latLng"
+    t.bigint   "milliseconds_since_1970"
+    t.text     "surveys_object"
     t.index ["branch_id"], name: "index_surveys_on_branch_id", using: :btree
     t.index ["employee_id"], name: "index_surveys_on_employee_id", using: :btree
   end

@@ -5,6 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+SurveyObject.destroy_all
 Survey.destroy_all  
 Employee.destroy_all
 Company.destroy_all
@@ -215,70 +216,70 @@ inverness.employees.create({
 #   t.index ["branch_id"], name: "index_surveys_on_branch_id", using: :btree
 #   t.index ["employee_id"], name: "index_surveys_on_employee_id", using: :btree
 
-  inverness.surveys.create({
-    appointment_time: '09:00',
-    appointment_date: '2017-10-09',
-    moveware_code: '123456',
-    collection_address: '81/2 East Claremont Street, Edinburgh, EH7 4HU',
-    collection_postcode: 'EH7 4HU',
-    client_name: 'Walt Disney',
-    duration: '1.0',
-    moveware_employee_code: 'GEH',
-    branch_code: 'AVI'
+  # inverness.surveys.create({
+  #   appointment_time: '09:00',
+  #   appointment_date: '2017-10-09',
+  #   moveware_code: '123456',
+  #   collection_address: '81/2 East Claremont Street, Edinburgh, EH7 4HU',
+  #   collection_postcode: 'EH7 4HU',
+  #   client_name: 'Walt Disney',
+  #   duration: '1.0',
+  #   moveware_employee_code: 'GEH',
+  #   branch_code: 'AVI'
 
-    })
+  #   })
 
-  inverness.surveys.create({
-    appointment_time: '10:00',
-    appointment_date: '2017-10-08',
-    moveware_code: '234567',
-    collection_address: 'iv1 1aa',
-    collection_postcode: 'iv1 1aa',
-    client_name: 'Steven Spielberg',
-    duration: '1.0',
-    moveware_employee_code: 'GEH',
-    branch_code: 'AVI'
+  # inverness.surveys.create({
+  #   appointment_time: '10:00',
+  #   appointment_date: '2017-10-08',
+  #   moveware_code: '234567',
+  #   collection_address: 'iv1 1aa',
+  #   collection_postcode: 'iv1 1aa',
+  #   client_name: 'Steven Spielberg',
+  #   duration: '1.0',
+  #   moveware_employee_code: 'GEH',
+  #   branch_code: 'AVI'
 
-    })
+  #   })
 
-  inverness.surveys.create({
-    appointment_time: '17:00',
-    appointment_date: '2017-10-08',
-    moveware_code: '345678',
-    collection_address: '10 Strand Street, Moffat',
-    collection_postcode: 'IV6 7SL',
-    client_name: 'Isaac Asimov',
-    duration: '1.0',
-    moveware_employee_code: 'GEH',
-    branch_code: 'AVI'
+  # inverness.surveys.create({
+  #   appointment_time: '17:00',
+  #   appointment_date: '2017-10-08',
+  #   moveware_code: '345678',
+  #   collection_address: '10 Strand Street, Moffat',
+  #   collection_postcode: 'IV6 7SL',
+  #   client_name: 'Isaac Asimov',
+  #   duration: '1.0',
+  #   moveware_employee_code: 'GEH',
+  #   branch_code: 'AVI'
 
-    })
+  #   })
 
-  inverness.surveys.create({
-    appointment_time: '11:00',
-    appointment_date: '2017-10-08',
-    moveware_code: '456789',
-    collection_address: 'IV2 5XL',
-    collection_postcode: 'IV2 5XL',
-    client_name: 'Spartacus',
-    duration: '1.0',
-    moveware_employee_code: 'GEH',
-    branch_code: 'AVI'
+  # inverness.surveys.create({
+  #   appointment_time: '11:00',
+  #   appointment_date: '2017-10-08',
+  #   moveware_code: '456789',
+  #   collection_address: 'IV2 5XL',
+  #   collection_postcode: 'IV2 5XL',
+  #   client_name: 'Spartacus',
+  #   duration: '1.0',
+  #   moveware_employee_code: 'GEH',
+  #   branch_code: 'AVI'
 
-    })
+  #   })
 
-  inverness.surveys.create({
-    appointment_time: '14:00',
-    appointment_date: '2017-10-08',
-    moveware_code: '987654',
-    collection_address: 'IV3 8LA',
-    collection_postcode: 'IV3 8LA',
-    client_name: 'Julius Caesar',
-    duration: '1.0',
-    moveware_employee_code: 'GEH',
-    branch_code: 'AVI'
+  # inverness.surveys.create({
+  #   appointment_time: '14:00',
+  #   appointment_date: '2017-10-08',
+  #   moveware_code: '987654',
+  #   collection_address: 'IV3 8LA',
+  #   collection_postcode: 'IV3 8LA',
+  #   client_name: 'Julius Caesar',
+  #   duration: '1.0',
+  #   moveware_employee_code: 'GEH',
+  #   branch_code: 'AVI'
 
-    })
+  #   })
 
 
 

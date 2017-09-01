@@ -26,7 +26,7 @@ def create
 
   created_trip = trip_branch.trips.create(trip_params)
   
-  render json: created_trip
+  render json: created_trip.to_json()
   # render json: Trip.all.to_json()
 
 
