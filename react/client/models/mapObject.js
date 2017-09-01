@@ -10,14 +10,16 @@ let mapObjectInstances = {}
 class MapObject{
   constructor(map, pathname){
 
-    this.map = map
-    this.directionsService = new google.maps.DirectionsService()
+    this.map = map,
+    this.directionsService = new google.maps.DirectionsService(),
     this.renderedRoutes = [],
     this.bounds= new google.maps.LatLngBounds(),
     this.markers = [],
     this.postcodeMarkers = [],
     this.sliderMarkers = [],
     this.branchesMarkers = [],
+    this.surveyMarkers = [],
+    this.highlightedMarkers = [],
     this.branchesButtonExists = false,
     this.fullScreenButtonExists = false,
     this.pathname = pathname,
@@ -28,7 +30,8 @@ class MapObject{
     this.branchesVisible = undefined,
     this.branchListVisible = false,
     this.initialRoutesRendered = false,
-    this.animeFrames =[]
+    this.animeFrames =[],
+    this.surveyRoutesByCode = {}
 
     if(!mapObjectInstances.pathname){
       mapObjectInstances[pathname]=this
@@ -36,8 +39,21 @@ class MapObject{
 
   }
 
+  placeSurveyMarker(coords, message = ''){
+    this.placeMarker(coords, this.surveySymbol(), this.surveyMarkers, false, true, message) 
+  }
+
+  highlightMarker(coords, message){
+    this.clearMarkers(this.highlightedMarkers)
+    this.placeMarker(coords, this.surveySymbol('blue'), this.highlightedMarkers, true, false, message)
+  }
+
   setZoom(zoom){
     this.map.setZoom(zoom)
+  }
+
+  setCenter(coords){
+    this.map.setCenter(coords)
   }
 
   clearMap(clearArrays=true, clearSliderMarkers = true){
@@ -49,6 +65,7 @@ class MapObject{
     this.clearRoutes(this.renderedRoutes, clearArrays)
     this.clearRoutes(this.toBranchesRoutes, clearArrays)
     this.clearRoutes(this.fromBranchesRoutes, clearArrays)
+    this.clearRoutes(Object.values(this.surveyRoutesByCode), false)
   }
 
   clearRoutes(instance_variable_array, clearArrays=true){
@@ -65,7 +82,7 @@ class MapObject{
     }
 
   reinstateMap(){
-    console.log(this.renderedRoutes)
+
     this.showOrHide(this.renderedRoutes, false)
     this.showOrHide(this.markers, false)
     this.showOrHide(this.sliderMarkers, false)
@@ -127,7 +144,38 @@ class MapObject{
     this.drawToAndFromBranch(job)
   }
 
-  drawRoute(google_directions, polylineColour='#0088FF'){
+  drawRouteWithWayPoints(startLatLng, finishLatLng, waypointLatLngArray, polylineColour, dayAndSurveyorUniqueCode){
+   console.log('saved routes object', this.surveyRoutesByCode)
+   if(this.surveyRoutesByCode[dayAndSurveyorUniqueCode]){
+    console.log('rendering saved route')
+    this.surveyRoutesByCode[dayAndSurveyorUniqueCode].setMap(this.map)
+    return
+   }
+    var waypointArray = waypointLatLngArray.map((latlng)=>{
+     return {location: latlng}
+    })
+    var directionInput = {
+      origin: startLatLng,
+      destination: finishLatLng,
+      waypoints: waypointArray,
+      travelMode: 'DRIVING',
+      avoidTolls: true
+    }
+
+    var directionsService = new google.maps.DirectionsService()
+
+    directionsService.route(directionInput, function(response, status){
+      if(status==='OK'){
+        console.log('talking to google')
+          this.drawRoute(response, polylineColour, dayAndSurveyorUniqueCode)
+       
+      }else{
+        console(status)
+      }
+    }.bind(this))
+  }
+
+  drawRoute(google_directions, polylineColour='#0088FF', dayAndSurveyorUniqueCode=null){
     var directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
       map: this.map,
@@ -139,7 +187,12 @@ class MapObject{
           }
     })
     directionsDisplay.setDirections(google_directions)
-    this.renderedRoutes.push(directionsDisplay)
+    if(dayAndSurveyorUniqueCode){
+      this.surveyRoutesByCode[dayAndSurveyorUniqueCode]=directionsDisplay
+    }else{
+      this.renderedRoutes.push(directionsDisplay)
+    }
+   
   }
 
   drawToAndFromBranch(job){
@@ -147,13 +200,13 @@ class MapObject{
     var showFromBranch = store.getState().common.show_from_branch
     if(!showFromBranch&&!showToBranch) return
       var branch = this.getBranchById(job.branch_id)
-    var branchLatLng = JSON.parse(branch.latlng)
+    // var branchLatLng = JSON.parse(branch.latlng)
     if(showFromBranch){
-      this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+      this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
       this.drawRoute(job.google_directions_from_branch, getComplementaryColour(job.colour))
     }
     if(showToBranch){
-      this.placeMarker(branchLatLng, this.branchSymbol("#265eb7"), this.toBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+      this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.toBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
       this.drawRoute(job.google_directions_to_branch, getComplementaryColour(job.colour))
     }
 
@@ -190,7 +243,6 @@ displayMarkersFromStore(marker_array_from_store,  instance_variable_marker_array
   marker_array_from_store.forEach((coords)=>{
     this.placeMarker(coords, this.pinSymbol(colour), instance_variable_marker_array, false, true, '', clickfunction)
   })
-  console.log('length', instance_variable_marker_array.length)
   if(instance_variable_marker_array.length===1) this.map.setZoom(10)
 }
 
@@ -328,6 +380,9 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
     case 'planner':
     this.branchesVisible = store.getState().common.branches_on_map_planner
     break;
+    case 'surveyor':
+    this.branchesVisible = store.getState().common.branches_on_map_surveyor
+    break;
   }
  }
 
@@ -341,6 +396,9 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
     break;
     case 'planner':
     this.branchListVisible = store.getState().common.branch_list_displayed_planner
+    break;
+    case 'surveyor':
+    this.branchListVisible = store.getState().common.branch_list_displayed_surveyor
     break;
  }
 }
@@ -375,8 +433,7 @@ store.dispatch(toggleFullScreenMap(this.pathname))
     this.clearMarkers(this.branchesMarkers, true)
   }else{
     branches.forEach((branch)=>{
-      var latlng2 = JSON.parse(branch.latlng)
-      this.placeMarker(latlng2, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+      this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
     })
   }
  }
@@ -391,6 +448,7 @@ displayOrHideBranchList(){
  hideOrShowElements(hide){
   var domElements = this.getElementsLeftHandSide()
   domElements.forEach((element)=>{
+    if(!element) return
     hide ? element.classList.add('hidden') : element.classList.remove('hidden')
   })
  }
@@ -456,8 +514,13 @@ displayOrHideBranchList(){
     var suggestionListEl = document.querySelector('.grid-item-suggestion-list')
     return([postcodeEl, suggestionListEl])
     case 'surveyor':
-   
-    return([])
+   var surveyorList = document.querySelector('.grid-item-survey-list')
+
+   var surveyorDateFlicker = document.querySelector('.grid-item-date-flicker')
+
+    // return([])
+    return([surveyorList, surveyorDateFlicker])
+    // return([ surveyorDateFlicker])
     break;
  }
 }
@@ -503,6 +566,17 @@ getTruckMarker(colour, leg='carry'){
   }
 }
 
+surveySymbol(colour='red'){
+  return {
+path: google.maps.SymbolPath.CIRCLE,
+fillColor: colour,
+fillOpacity: 1,
+strokeColor: 'black',
+strokeWeight: 1,
+scale: 5,
+  }
+}
+
 truckSymbol3(fillColour, strokeColour='black', fillOpacityy=1, strokeWeightt=.3){
   return {
 
@@ -525,7 +599,7 @@ truckSymbol3(fillColour, strokeColour='black', fillOpacityy=1, strokeWeightt=.3)
 }
 
 animateRoute(pathname){
-  console.log('animate route', pathname)
+
   var counter = 0
   var sliderSecondsFromStart= this.getSliderSecondsFromStart()
 for(var i=sliderSecondsFromStart; i<43200; i=i+600){

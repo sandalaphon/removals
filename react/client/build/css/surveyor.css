@@ -41,39 +41,71 @@
 /*width 50vw in main.css*/
   border: 3px solid blue;
   grid-template-areas:
-  "fil "
-  "fil "
-  "fil "
-  "fil "
-  "fil "
-  "fil "
-  "fil "
-  "fil "
-  "fil "
-  "fil "
-  "fil "
-  "fil "
-  "fil "
-  "fil "
-  "fil "
+  "sur-date "
+  "sur-fil "
+  "sur-fil "
+  "sur-list "
+  "sur-list "
+  "sur-list "
+  "sur-list "
+  "sur-list "
+  "sur-list "
+  "sur-list "
+  "sur-list "
+  "sur-list "
+  "sur-list "
+  "sur-list "
+  "sur-list "
   ;
   grid-template-rows: repeat(15,1fr);
   /*grid-auto-columns: 10%;*/
   /*grid-template-columns: repeat(1,1fr);*/
 }
 
+.grid-item-filter-surveyor{
+  grid-area: sur-fil;
+  display: table;
+ /*vertical-align: center;*/
+}
 
+.grid-item-date-flicker{
+  display:grid;
+grid-area:sur-date;
+border: 3px solid blue;
+grid-template-areas:
+"prev sdat next"
+;
+grid-template-columns: repeat(3,1fr);
+}
 
-/*.grid-item-list-surveyor{
+.previous-day-date-flicker{
+  grid-area:prev;
+}
 
-  grid-area:todli;
-  border: 3px solid purple;
+.date-date-flicker{
+  grid-area:sdat;
 
 }
-*/
+
+
+
+.next-day-date-flicker{
+  grid-area:next;
+}
+
+.grid-item-survey-list{
+  display: inline-block;
+  grid-area:sur-list;
+  border: 3px solid purple;
+  overflow:scroll;
+  grid-auto-rows:1fr;
+ /* height: 1fr;*/
+}
+
 .grid-item-slider-surveyor{
   grid-area:SLI;
   border: 3px solid purple;
+
 }
 
 .slider-div{
@@ -83,6 +115,17 @@
   /*text-align: center;*/
   /*transform: translateY(50%);*/
 }
+
+
+td.grid-item-survey-list{
+  width: '20%';
+}
+
+
+
+
+
+
 
 
 

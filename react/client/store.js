@@ -4,6 +4,8 @@ import { browserHistory} from 'react-router'
 import rootReducer from './reducers/_combiner'
 import logger from 'redux-logger'
 import thunk from 'redux-thunk'
+import createSagaMiddleware from 'redux-saga'
+import {rootSaga} from './sagas/sagas'
 
 
 const  defaultState = {
@@ -16,7 +18,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // const enhancers = compose(
 //   window.devToolsExtension ? window.devToolsExtension() : f => f
 //   )
-const middleware = applyMiddleware(thunk, logger())
+const sagaMiddleware = createSagaMiddleware()
+const middleware = applyMiddleware(sagaMiddleware, thunk, logger())
 // const middleware = applyMiddleware(thunk)
 
 const enhancer = composeEnhancers(middleware)
@@ -34,5 +37,7 @@ export const history = syncHistoryWithStore(browserHistory, store)
  // })
  
 //}
+
+// sagaMiddleware.run(rootSaga)
 
 export default store;

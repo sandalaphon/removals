@@ -9,37 +9,29 @@ import * as updateDataActions from '../../actions/update_data_actions'
 
 class UpdateData extends React.Component {
 
+constructor(props){
+  super(props)
+  this.trips = []
+  this.surveys = []
+  this.completedSurveyJson = []
+}
+
+
 
   handleFileSubmitClick(){
 
+    this.trips = []
     var file = document.getElementById('file').files[0]
     var reader = new FileReader()
     reader.readAsText(file)
-    console.log('THIS . PROPS', this.props)
-    reader.onload = this.convertToJson.bind(this)
+    reader.onload = this.convertToJson.bind(this, reader, this.trips, this.getGoogleDirectionsAndSendToRailsDb.bind(this))
+
 
   }
   logger(input){
-    console.log('json object with latlng?', input)
   }
 
-  convertToJson(event){
-    var csv = new Converter()
-    var text = event.target.result
-    // const arr = []
-    csv
-    .fromString(text)
-    .on('json', (json) =>{ 
-      console.log(json)
-      this.getGoogleDirectionsAndSendToRailsDb(json )
-    })
-    .on('done', ()=>{ 
-      console.log('end')
-      window.alert('Thank you for the submission, the data is saved')
-    })
-
-  }
-
+  
   getHomeBranchOfJob(branchCode){
     var branchToReturn
     this.props.all_branches.forEach((branch)=>{
@@ -68,7 +60,6 @@ class UpdateData extends React.Component {
       json['google_directions_to_branch']   = JSON.stringify(values[2])
     })
     .then((value)=>{this.props.actions.update_data_actions.sendSingleTripToRails(json)})
-    .catch((err)=>{console.log('error updating data', err)})
   }
 
 
@@ -91,9 +82,178 @@ class UpdateData extends React.Component {
         }else{
           reject(status)
         }
-      }     )
+      })
     })
   }
+
+  handleSurveyFileSubmitClick(event){
+    event.preventDefault()
+    var file = document.getElementById('surveys_file').files[0]
+    var reader = new FileReader()
+    reader.readAsText(file)
+    reader.onload = this.convertToJson.bind(this, reader, this.surveys, this.surveysCallback1.bind(this))
+    // alert('survey data')
+  }
+
+surveysCallback1(){
+  var promises = []
+  var multiple = 0
+  this.surveys.forEach((survey)=>{
+    multiple++
+    console.log('mult', multiple)
+    promises.push(this.surveysCallback.call(this, survey, multiple))
+  })
+  Promise.all(promises)
+  .then((arrayOfSurveysWithLatLngs)=>{
+    console.log('all should have latlng', arrayOfSurveysWithLatLngs)
+    arrayOfSurveysWithLatLngs.forEach((survey)=>{
+      this.calculateSecondsSince1970(survey)
+    })
+    console.log('with milli', this.completedSurveyJson)
+    this.composeSurveyObject()
+  }) 
+  .catch((error)=>{
+    console.log(error)
+  })
+
+}
+
+
+  surveysCallback(survey_json, multiple){
+    console.log('surveys callback')
+    return new Promise((resolve, reject)=>{
+      setTimeout(()=>{
+        var geocoder = new Geocoder()
+         geocoder.getLatLngPromise(survey_json.collection_postcode)
+         .then((coords)=>{
+          console.log('resolvish')
+          survey_json["collection_latLng"] = JSON.stringify(coords)
+          // this.calculateSecondsSince1970(survey_json)
+          resolve(survey_json)
+         })
+         .catch((status)=>{
+          reject(status)
+         })
+       }, 1000*multiple)
+     
+    })
+    
+  }
+
+calculateSecondsSince1970(json, sendTrip=true){
+  var dateString = json.appointment_date //"2017-10-05"
+  var timeString = json.appointment_time //"16:00"
+  var year  = +dateString.substring(0,4)
+  var month = (+dateString.substring(5,7)) - 1
+  var day   = +dateString.substring(8)
+  var hours = +timeString.substring(0,2)
+  var minutes = +timeString.substring(3)
+
+  var date = new Date(year, month, day, hours, minutes)
+  var milliseconds = date.valueOf()
+  json["milliseconds_since_1970"] = milliseconds
+  if(sendTrip){
+    // this.props.actions.update_data_actions.sendSingleSurveyToRails(json)
+    this.completedSurveyJson.push(json)
+  }else{
+    return milliseconds
+  }
+  // this.composeSurveyObject(json)
+}
+
+convertToJson(reader, instance_variable_array, callback){
+  var csv = new Converter()
+  var text = event.target.result
+  var multiple = 0
+  // const arr = []
+  csv
+  .fromString(text)
+  .on('json', (json) =>{ 
+    instance_variable_array.push(json)
+    // callback(json)
+  })
+  .on('done', ()=>{ 
+    
+    if(instance_variable_array==this.surveys){
+      // this.composeSurveyObject(callback.bind(this))
+      callback.call(this)
+    }else{
+      instance_variable_array.forEach((json, index)=>{
+           multiple++
+            setTimeout(callback.bind(this, json), 1001*multiple)      
+      })
+    }   
+  })
+}
+
+
+composeSurveyObject(){
+
+  this.completedSurveyJson.forEach((survey)=>{
+   this.props.actions.update_data_actions.sendSingleSurveyToRails(survey)
+  })
+  //do stuff
+this.surveys ///compose
+var object = {}
+var branches = this.props.all_branches
+branches.forEach((branch)=>{
+        object[branch.branch_code]={}
+    })
+this.completedSurveyJson.forEach((survey)=>{
+//get day of survey(milliseconds)
+//get milliseconds of survey appointment////////////////////////////////////////////
+var milliseconds = this.calculateSecondsSince1970(survey, false)
+var dayMilli = this.getDayOfSurvey(milliseconds)
+survey["collection_latLng"] = JSON.parse(survey["collection_latLng"])
+if(object[survey.branch_code][dayMilli]){
+ if(object[survey.branch_code][dayMilli][survey.moveware_employee_code]){
+  object[survey.branch_code][dayMilli][survey.moveware_employee_code].push(survey)
+ }else{
+  object[survey.branch_code][dayMilli][survey.moveware_employee_code] = []
+  object[survey.branch_code][dayMilli][survey.moveware_employee_code].push(survey)
+ }
+}else{
+  object[survey.branch_code][dayMilli] = {}
+  object[survey.branch_code][dayMilli][survey.moveware_employee_code]=[]
+ object[survey.branch_code][dayMilli][survey.moveware_employee_code].push(survey)
+ 
+}
+    })
+
+ 
+ var stringifiedForRails = JSON.stringify(object)
+ console.log(stringifiedForRails)
+ var objectForRails = {all_surveys_object: stringifiedForRails}
+ this.props.actions.update_data_actions.sendSurveyObjectToRails(objectForRails)
+
+
+ 
+
+ // save object to db
+ //save surveys to db
+  // setTimeout(callback.bind(this, json), 1001*multiple)
+}
+
+getDayOfSurvey(milliseconds){
+  var dateObject = new Date(milliseconds)
+  dateObject.setHours(0,0,0,0)
+  return +dateObject
+}
+
+// function compose_survey_object(branches, surveys){
+//     var object = {}
+//     branches.forEach((branch)=>{
+//         object[branch.branch_code]={}
+//     })
+//     surveys.forEach((survey)=>{
+//         if(object[survey.branch_code][survey.moveware_employee_code]){
+//             object[survey.branch_code][survey.moveware_employee_code].push(survey)
+//         }else{
+//             object[survey.branch_code][survey.moveware_employee_code]=[survey]
+//         }
+//     })
+
+
 
   render(){
     return(
@@ -107,6 +267,15 @@ class UpdateData extends React.Component {
       id="file"  
       />
       <Button bsStyle='success' bsSize='small' onClick={this.handleFileSubmitClick.bind(this)}>Submit</Button>
+
+      <br></br>
+      <ControlLabel>Please Select Surveys CSV File</ControlLabel>
+      <FormControl
+      type="file"
+      id="surveys_file"  
+      />
+      <Button bsStyle='success' bsSize='small' onClick={this.handleSurveyFileSubmitClick.bind(this)}>Submit</Button>
+
       <FormControl.Feedback />
       <HelpBlock>CSV stands for Comma Separated Values</HelpBlock>
       </FormGroup>
@@ -135,7 +304,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(UpdateData)
 
 
 // getGoogleResponseAndAppendJson(json, startString, finishString, appendToJsonName, counter = 0){
-//   console.log('before promise')
 //   var branch = this.getHomeBranchOfJob(json.branch_code)
 
 //   var directionsService = new google.maps.DirectionsService()
@@ -177,7 +345,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(UpdateData)
       
 
 //     }else{
-//       console.log(status)
 //     }
     
 

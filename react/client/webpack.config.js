@@ -1,8 +1,10 @@
+
 var webpack = require('webpack');
 
 var config = {
   entry: [
   // 'webpack-hot-middleware/client',
+  'babel-polyfill',
   __dirname + '/app.js'
   ],
   output: {

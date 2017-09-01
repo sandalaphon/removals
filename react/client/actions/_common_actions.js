@@ -29,15 +29,12 @@ export function toggleAnimationRunning(){
   }
 }
 
-
 export function toggleBranchListDisplayed(pathname){
   return {
     type: 'TOGGLE_BRANCH_LIST_DISPLAYED',
     pathname
   }
 }
-
-
 
 export function toggleBranchesOnMap(pathname){
   return {
@@ -64,8 +61,6 @@ export function toggleFullScreenMap(pathname){
     pathname
   }
 }
-
-
 
 export function setFilterSearchString(searchString){
   return {
@@ -104,9 +99,11 @@ export function setUnhiddenStatus(job){
   }
 }
 
-
-
-
+export function composeData(){
+  return {
+    type: 'COMPOSE_DATA_COMPLETED'
+  }
+}
 
 export function getAllTripsFromRails(){
   return function(dispatch){
@@ -124,6 +121,46 @@ export function getAllTripsFromRails(){
         payload: error
       })
     })
+  }
+}
+
+export function getAllSurveysFromRails(){
+  
+  return function(dispatch){
+    const url = 'http://localhost:5000/api/surveys'
+    axios.get(url, {withCredentials:true})
+  .then((response)=>{
+    dispatch({
+      type: 'GET_SURVEYS_FULFILLED',
+      payload: response.data
+    })
+  })
+  .catch((error)=>{
+    dispatch({
+      type: 'GET_SURVEYS_REJECTED',
+      payload: error
+    })
+  })
+  }
+}
+
+export function getSurveyObjectFromRails(){
+  
+  return function(dispatch){
+    const url = 'http://localhost:5000/api/survey_object'
+    axios.get(url, {withCredentials:true})
+  .then((response)=>{
+    dispatch({
+      type: 'GET_SURVEY_OBJECT_FULFILLED',
+      payload: response.data
+    })
+  })
+  .catch((error)=>{
+    dispatch({
+      type: 'GET_SURVEYS_OBJECT_REJECTED',
+      payload: error
+    })
+  })
   }
 }
 

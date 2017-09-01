@@ -2,8 +2,6 @@
 import * as helpers from './_helpers'
 
 function handleTripData(state = {
-  trips: null,
-  // renderedRoutes: [],
   current_today_truckflicker_job: '',
   current_partload_truckflicker_job: '',
   current_planner_truckflicker_job: '',
@@ -12,29 +10,79 @@ function handleTripData(state = {
   // branch_status_today: 0,
   // branch_status_planner:0 ,
   all_trips: [],
+  all_surveys: [],
   show_to_branch: true,
   show_from_branch: true,
+  
   full_screen_map_today: false,
   full_screen_map_surveyor: false,
   full_screen_map_partload: false,
   full_screen_map_planner: false,
+
   branches_on_map_partload: false,
   branches_on_map_today: false,
   branches_on_map_planner: false,
+  branches_on_map_surveyor: false,
+
   branch_list_displayed_partload: false,
   branch_list_displayed_planner: false,
   branch_list_displayed_today: false,
+  branch_list_displayed_surveyor: false,
+
   planner_seconds_from_start: 14400,
   surveyor_seconds_from_start: 14400,
   partload_seconds_from_start: 14400,
   today_seconds_from_start: 14400,
-  animation_running: false
+
+  asynch_loading_total: 0,
+  survey_object: {},
+
+  animation_running: false,
+  getSurveyObjectError: null,
+  survey_object_from_rails: {}
 
 
 },action){
 
 
   switch(action.type) {
+
+    /////////////
+    case 'GET_SURVEY_OBJECT_FULFILLED':
+    console.log('s o f', action.payload)
+    var parsed_survey_object = JSON.parse(action.payload[0].all_surveys_object)
+    
+    return {...state, survey_object_from_rails: parsed_survey_object, getSurveyObjectError: null}
+    break;
+    
+    case 'GET_SURVEY_OBJECT_REJECTED':
+    return {...state,  getSurveyObjectError: action.payload}
+    break;
+
+    /////////////////////////
+
+    case 'GET_SURVEYS_FULFILLED':
+    var received_surveys = action.payload.slice()
+    received_surveys.forEach((survey_json)=>{
+     var latLng = JSON.parse(survey_json.collection_latLng)
+     survey_json.collection_latLng = latLng
+    })
+    if(state.asynch_loading_total==3){
+        console.log('SURVEYS')
+        // console.log(compose_survey_object(state.all_branches, state.all_surveys))
+
+        return {...state, all_surveys: received_surveys, getSurveyError: null, asynch_loading_total: state.asynch_loading_total + 1, survey_object:  compose_survey_object(state.all_branches, received_surveys)}
+       
+    }
+    
+    return {...state, all_surveys: received_surveys, getSurveyError: null, asynch_loading_total: state.asynch_loading_total + 1}
+    break;
+    
+    case 'GET_SURVEYS_REJECTED':
+    return {...state,  getSurveyError: action.payload}
+    break;
+
+
 
     case 'SET_SLIDER_SECONDS_FROM_START':
     switch(action.pathname){
@@ -157,7 +205,15 @@ function handleTripData(state = {
         trip.colour=helpers.getUniqueColor(index)
         return trip
     })
-    return {...state, all_trips: anotherNewArray, getTripsError: null}
+    if(state.asynch_loading_total===3) {
+        console.log('trips')
+        // console.log(compose_survey_object(state.all_branches, state.all_surveys))
+        // compose_survey_object(state.all_branches, state.all_surveys)
+        return {...state, all_trips: anotherNewArray, getTripsError: null, asynch_loading_total: state.asynch_loading_total + 1, survey_object: compose_survey_object(state.all_branches, state.all_surveys)}
+    }else{
+        return {...state, all_trips: anotherNewArray, getTripsError: null, asynch_loading_total: state.asynch_loading_total + 1}
+    }
+   
     break;
     //
     case 'GET_TRIPS_REJECTED':
@@ -165,7 +221,15 @@ function handleTripData(state = {
     break;
     //
     case 'GET_EMPLOYEES_FULFILLED':
-    return {...state, all_employees: action.payload, getEmployeesError: null}
+    if(state.asynch_loading_total===3) {
+        console.log('EMPLOYEES')
+        // compose_survey_object(state.all_branches, state.all_surveys)
+        
+        return {...state, all_employees: action.payload, getEmployeesError: null, asynch_loading_total: state.asynch_loading_total+1, survey_object: compose_survey_object(state.all_branches, state.all_surveys)}
+    }else{
+        return {...state, all_employees: action.payload, getEmployeesError: null, asynch_loading_total: state.asynch_loading_total+1}
+    }
+   
     break;
 
     case 'GET_EMPLOYEES_REJECTED':
@@ -175,20 +239,28 @@ function handleTripData(state = {
     case 'GET_BRANCHES_FULFILLED':
     var newBranchesArray = action.payload.slice()
     var anotherNewArray = newBranchesArray.map((branch, index)=>{
+        var latlng=JSON.parse(branch.latlng)
+        branch.latlng = latlng
         branch.colour=helpers.getUniqueColor(index)
         return branch
     })
-    return {...state, all_branches: anotherNewArray, getBranchesError: null}
+    if(state.asynch_loading_total==3){
+        console.log('BRANCHES')
+        // compose_survey_object(anotherNewArray, state.all_surveys)
+        return {...state, all_branches: anotherNewArray, getBranchesError: null, asynch_loading_total: state.asynch_loading_total + 1, survey_object: compose_survey_object(anotherNewArray, state.all_surveys)}
+    }else{
+       return {...state, all_branches: anotherNewArray, getBranchesError: null, asynch_loading_total: state.asynch_loading_total + 1} 
+    }
+   
     break;
-    //
+    
     case 'GET_BRANCHES_REJECTED':
     return {...state,  getBranchesError: action.payload}
     break;
     
-    //
+   
     case 'SET_HIDDEN_STATUS':
     var holder = state.all_trips.slice()
-    console.log('id', action.payload.id)
     holder.forEach((job)=>{
         if(job.id===action.payload.id)
             {job.hidden = false}
@@ -204,8 +276,8 @@ function handleTripData(state = {
     })
     return {...state,  all_trips: holder}
     break;
-    //
-    //
+   
+
     case 'SET_CURRENT_TRUCKFLICKER_JOB':
     switch (action.pathname){
         case 'today':
@@ -222,7 +294,7 @@ function handleTripData(state = {
         break;
     }
     break;
-    //
+
     case 'CLEAR_CURRENT_TRUCKFLICKER_JOB':
       switch (action.pathname){
         case 'today':
@@ -244,4 +316,22 @@ function handleTripData(state = {
   return state
 }
 
+
+
 export default handleTripData
+
+
+function compose_survey_object(branches, surveys){
+    var object = {}
+    branches.forEach((branch)=>{
+        object[branch.branch_code]={}
+    })
+    surveys.forEach((survey)=>{
+        if(object[survey.branch_code][survey.moveware_employee_code]){
+            object[survey.branch_code][survey.moveware_employee_code].push(survey)
+        }else{
+            object[survey.branch_code][survey.moveware_employee_code]=[survey]
+        }
+    })
+    return object
+}

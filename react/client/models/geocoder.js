@@ -22,7 +22,24 @@ getLatLng(postcode, callback){
       console.log(status)
     }
   })
+}
 
+getLatLngPromise(postcode){
+  return new Promise((resolve, reject)=>{
+    this.geocoder.geocode({address: postcode}, (results, status)=>{
+      if(status===google.maps.GeocoderStatus.OK){
+        // console.log(results[0].geometry.location.lat(), results[0].geometry.location.lng())
+        console.log({lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()})
+        resolve( {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()})
+
+        // this.latLng ={lat: results[0].geometry.location.lat(),lng: results[0].geometry.location.lng()}
+        // setLatLngCallback()
+      }else{
+       
+        reject(status)
+      }
+    })
+  })
 }
 
 setLatLngAndSendToRailsDb(json, callback){

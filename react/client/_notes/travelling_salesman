@@ -4,8 +4,9 @@ Surveyor Algorithm Notes:
 2. Get distance as crow flies between all scheduled appointments and the potential appointment.
 3. Exclude un-availble slots (i.e. those which are bookended by other appointments)
 4. Available appointment slots in the next 3 days (default is 3 days, can be changed) listed by distance, and drive-time.
-5. Apointments furthest from depot to be scheduled mid journey. To allow en route appointments
+5. Appointments furthest from depot to be scheduled mid journey. To allow en route appointments (unless enroute to or from work for a surveyor)
 6. Get surveyor's home postcode. (Do they accept early morning or after work appointments?)
+7. Add annual leave to database...what is the best configuration...datetime booleans?
 
 
 

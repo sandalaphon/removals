@@ -14,32 +14,43 @@ class Layout extends React.Component {
 
   constructor(props){
     super(props)
-    this.loadingAllTrips = false
+    this.loaded = false
   }
 
   componentDidMount(){
+    console.log('layout mounted')
     this.props.actions.loginActions.fetchUser()
+  }
+
+  componentWillUnmount(){
+    console.log('layout unmounted')
+  }
+
+  loadData(){
+
+    this.props.actions.commonActions.getAllTripsFromRails()
+    this.props.actions.commonActions.getAllSurveysFromRails()
+    this.props.actions.commonActions.getAllBranchesFromRails()
+    this.props.actions.commonActions.getAllEmployeesFromRails()
+    this.props.actions.commonActions.getSurveyObjectFromRails()
+    
   }
 
   render(){
 
+
     const {loginEmail, loginPassword, signInClick, signOut} =                           this.props.actions.loginActions
     const { getUsers} =                                                                 this.props.actions.accountManagementActions
     const { signUploginEmail, signUploginPassword,signUpPasswordConfirm, signUpClick} = this.props.actions.signUpActions
-    const { getAllTripsFromRails, getAllBranchesFromRails, getAllEmployeesFromRails } = this.props.actions.commonActions
+    const { getAllTripsFromRails, getAllBranchesFromRails, getAllEmployeesFromRails}  = this.props.actions.commonActions
     const { user_email, user_password, currentUser} =                                   this.props.loginDetails
     var toDisplay
-      
-    // if theres are no trips, get them
-    if(currentUser){
-      // if(!this.props.trips.all_trips) getAllTripsFromRails()
 
-    
-        if(!this.props.trips.all_branches&&!this.loadingAllTrips){ 
-          this.loadingAllTrips = true
-          getAllBranchesFromRails()
-          getAllEmployeesFromRails()
-          getAllTripsFromRails()
+    if(currentUser){
+
+        if(!this.loaded){
+        this.loaded=true 
+          this.loadData()
         }
         
       toDisplay = 
@@ -82,6 +93,8 @@ class Layout extends React.Component {
 const mapStateToProps=(state)=>({
   loginDetails: state.login,
   trips: state.common
+  
+
 })
   
 const mapDispatchToProps=(dispatch)=>({
