@@ -12,7 +12,9 @@ def create
   puts 'survey params'
   puts survey_params
   branch = Branch.where(:branch_code => survey_params[:branch_code])[0]
+  # employee_surveying = Employee.where(:moveware_employee_code => survey_params[:moveware_employee_code])[0]
   created_survey = branch.surveys.create(survey_params)
+  # created_survey = employee_surveying.surveys.create(survey_params)
   render json: created_survey.to_json()
 end
 

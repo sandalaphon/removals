@@ -151,7 +151,8 @@ inverness.employees.create({
   telephone: '0123456789',
   branch_manager: true,
   email: 'hot_lips@a.com',
-  moveware_employee_code: 'SCJ'
+  moveware_employee_code: 'SCJ',
+  surveyor: true
   # , branch_id: glasgowBranch[0].id
   })
 glasgow.employees.create({
@@ -177,7 +178,8 @@ glasgow.employees.create({
   telephone: '0123456789',
   branch_manager: true,
   email: 'taxi@a.com',
-  moveware_employee_code: 'RDN'
+  moveware_employee_code: 'RDN',
+  surveyor: true
 
   # , branch_id: glasgowBranch[0].id
   })
@@ -195,7 +197,8 @@ inverness.employees.create({
   branch_manager: true,
   email: 'sadly_retired@a.com',
   photoUrl: 'https://cdn.pixabay.com/photo/2016/04/25/07/15/man-1351317__480.png',
-  moveware_employee_code: 'GEH'
+  moveware_employee_code: 'GEH',
+  surveyor: true
   # , branch_id: glasgowBranch[0].id
   })
 
