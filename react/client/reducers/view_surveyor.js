@@ -1,25 +1,28 @@
 
 function handleSurveyor(state = {
-  // all_surveys: [],
   survey_current_date_milliseconds: null,
-  surveyor_branch_selected: 'AVI'
+  surveyor_branch_selected: 'AVI',
+
+  surveyors_hidden: {}
 },action){
 
 
   switch(action.type) {
+
+ case 'SET_VISIBLE_SURVEYORS':
+ return {...state, visible_surveyors:action.payload}
+ break;
+
+ case 'TOGGLE_SURVEYOR_HIDDEN':
+ var obj = Object.assign({}, state.surveyors_hidden)
+ if(obj[action.payload]){
+  obj[action.payload] = false
+ }else{
+  obj[action.payload] = true
+ }
+ return {...state, surveyors_hidden:obj}
+ break;
  
- // case 'GET_SURVEYS_FULFILLED':
- // var received_surveys = action.payload.slice()
- // received_surveys.forEach((survey_json)=>{
- //  var latLng = JSON.parse(survey_json.collection_latLng)
- //  survey_json.collection_latLng = latLng
- // })
- // return {...state, all_surveys: received_surveys, getSurveyError: null}
- // break;
- 
- // case 'GET_SURVEYS_REJECTED':
- // return {...state,  getSurveyError: action.payload}
- // break;
 
  case 'SET_SURVEY_CURRENT_DATE':
  return {...state,  survey_current_date_milliseconds: action.payload}
@@ -34,15 +37,5 @@ function handleSurveyor(state = {
   return state
 }
 
-// constructSurveysObject(all_surveys){
-//   var surveyObj = {}
-//   all_surveys.forEach((survey, index)=>{
-//     if(surveyObj[survey.branch_code]){
-//       surveyObj[survey.branch_code]=Object.assign(surveyObj[survey.branch_code], surveyObj[survey.branch_code])
-//     }else{
-
-//     }
-//   })
-// }
 
 export default handleSurveyor

@@ -21,36 +21,10 @@ export function sendSingleTripToRails(trip){
           payload: error
         })
        })
-
     }
-
   
 }
 
-export function sendSurveyObjectToRails(survey_object){
-
-    return function(dispatch){
-      const data = {survey_object}
-      const url = 'http://localhost:5000/api/survey_object/new.json'
-       axios.post(url, data, {withCredentials: true})
-       .then((response)=>{
-       
-        dispatch({
-          type: 'SEND_SURVEY_OBJECT_FULFILLED',
-          payload: response.data
-        })
-       })
-       .catch((error)=>{
-        dispatch({
-          type: 'SEND_SURVEY_OBJECT_REJECTED',
-          payload: error
-        })
-       })
-
-    }
-
-  
-}
 
 export function sendSingleSurveyToRails(survey){
 
@@ -75,4 +49,28 @@ export function sendSingleSurveyToRails(survey){
   }
 }
 
-sendSingleSurveyToRails
+
+// export function sendSurveyObjectToRails(survey_object){
+
+//     return function(dispatch){
+//       const data = {survey_object}
+//       const url = 'http://localhost:5000/api/survey_object/new.json'
+//        axios.post(url, data, {withCredentials: true})
+//        .then((response)=>{
+       
+//         dispatch({
+//           type: 'SEND_SURVEY_OBJECT_FULFILLED',
+//           payload: response.data
+//         })
+//        })
+//        .catch((error)=>{
+//         dispatch({
+//           type: 'SEND_SURVEY_OBJECT_REJECTED',
+//           payload: error
+//         })
+//        })
+
+//     }
+
+  
+// }

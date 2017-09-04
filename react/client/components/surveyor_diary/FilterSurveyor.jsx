@@ -11,22 +11,11 @@ class FilterSurveyor extends React.Component{
   getBranchesAsOptions(){
     if(this.props.all_branches){
       var options =  this.props.all_branches.map((branch,i)=>{
-        console.log(this.props.branch_selected, branch.branch_code)
-        if(this.props.branch_selected===branch.branch_code){
-          return(
-            <option 
-            selected
-            value={branch.branch_code}
-            key={branch.id}>
-            {branch.branch_code}</option>
-            )
-        }else{
           return(
             <option 
             value={branch.branch_code}
             key={branch.id}>{branch.branch_code}</option>
             )
-        }
       })
       return options
     }
@@ -39,6 +28,7 @@ class FilterSurveyor extends React.Component{
 
   render(){
     var selectStyle = {display: 'inlineBlock'}
+
   // style={selectStyle}
 
   return(
@@ -46,6 +36,7 @@ class FilterSurveyor extends React.Component{
     <form>Select Branch:
     <select 
     id='branch_selector' 
+    value = {this.props.branch_selected}
     onChange={this.handleBranchSelectorChange.bind(this)}>
     
     {this.getBranchesAsOptions.call(this)}

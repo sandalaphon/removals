@@ -9,6 +9,7 @@ import Tooltip from 'rc-tooltip';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
 import {placeMarkers} from '../../models/sliderFunctions'
+import Animation from '../../models/animation'
 
 
 
@@ -25,11 +26,13 @@ class SliderPlanner extends React.Component{
   componentDidMount(){
     mapObjectInstances.planner.display_branches()
     mapObjectInstances.planner.displayOrHideBranchList()
+    this.animation = new Animation(mapObjectInstances.planner, 'planner')
   }
 
   handleSliderChange(value){
     var secondsPassed = value*10*60
-    placeMarkers(secondsPassed, 'planner')
+    // placeMarkers(secondsPassed, 'planner')
+    this.animation.placeMarkers(secondsPassed)
   }
 
   onAfterChange(value){
@@ -37,7 +40,8 @@ class SliderPlanner extends React.Component{
     const secondsPassed = value * 60 * 10
    
     this.props.actions.common_actions.setSliderSecondsFromStart(secondsPassed, 'planner')
-    placeMarkers(secondsPassed, 'planner')
+    // placeMarkers(secondsPassed, 'planner')
+    this.animation.placeMarkers(secondsPassed)
     if(this.props.animation_running){
       this.props.actions.common_actions.toggleAnimationRunning()
     }

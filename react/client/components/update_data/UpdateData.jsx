@@ -153,29 +153,26 @@ calculateSecondsSince1970(json, sendTrip=true){
   var milliseconds = date.valueOf()
   json["milliseconds_since_1970"] = milliseconds
   if(sendTrip){
-    // this.props.actions.update_data_actions.sendSingleSurveyToRails(json)
     this.completedSurveyJson.push(json)
   }else{
     return milliseconds
   }
-  // this.composeSurveyObject(json)
 }
 
 convertToJson(reader, instance_variable_array, callback){
   var csv = new Converter()
   var text = event.target.result
   var multiple = 0
-  // const arr = []
   csv
   .fromString(text)
   .on('json', (json) =>{ 
     instance_variable_array.push(json)
-    // callback(json)
+
   })
   .on('done', ()=>{ 
     
     if(instance_variable_array==this.surveys){
-      // this.composeSurveyObject(callback.bind(this))
+
       callback.call(this)
     }else{
       instance_variable_array.forEach((json, index)=>{
@@ -192,46 +189,24 @@ composeSurveyObject(){
   this.completedSurveyJson.forEach((survey)=>{
    this.props.actions.update_data_actions.sendSingleSurveyToRails(survey)
   })
-  //do stuff
-this.surveys ///compose
-var object = {}
-var branches = this.props.all_branches
-branches.forEach((branch)=>{
-        object[branch.branch_code]={}
-    })
-this.completedSurveyJson.forEach((survey)=>{
-//get day of survey(milliseconds)
-//get milliseconds of survey appointment////////////////////////////////////////////
-var milliseconds = this.calculateSecondsSince1970(survey, false)
-var dayMilli = this.getDayOfSurvey(milliseconds)
-survey["collection_latLng"] = JSON.parse(survey["collection_latLng"])
-if(object[survey.branch_code][dayMilli]){
- if(object[survey.branch_code][dayMilli][survey.moveware_employee_code]){
-  object[survey.branch_code][dayMilli][survey.moveware_employee_code].push(survey)
- }else{
-  object[survey.branch_code][dayMilli][survey.moveware_employee_code] = []
-  object[survey.branch_code][dayMilli][survey.moveware_employee_code].push(survey)
- }
-}else{
-  object[survey.branch_code][dayMilli] = {}
-  object[survey.branch_code][dayMilli][survey.moveware_employee_code]=[]
- object[survey.branch_code][dayMilli][survey.moveware_employee_code].push(survey)
- 
+
 }
-    })
 
- 
- var stringifiedForRails = JSON.stringify(object)
- console.log(stringifiedForRails)
- var objectForRails = {all_surveys_object: stringifiedForRails}
- this.props.actions.update_data_actions.sendSurveyObjectToRails(objectForRails)
-
-
- 
-
- // save object to db
- //save surveys to db
-  // setTimeout(callback.bind(this, json), 1001*multiple)
+sortSurveysByTime(object){
+  for(var branches in object){
+    console.log('branches', object[branches])
+    for(var eachDay in object[branches]){
+      console.log('eachDay', object[branches][eachDay])
+      for(var surveyor_code in object[branches][eachDay]){
+        console.log('should be array of surveys', object[branches][eachDay][surveyor_code])
+        object[branches][eachDay][surveyor_code].sort((a,b)=>{
+          if(a.milliseconds_since_1970>b.milliseconds_since_1970) return 1
+            if(a.milliseconds_since_1970<b.milliseconds_since_1970) return -1
+              if(a.milliseconds_since_1970==b.milliseconds_since_1970) return 0
+        })
+      }
+    }
+  }
 }
 
 getDayOfSurvey(milliseconds){
@@ -239,21 +214,6 @@ getDayOfSurvey(milliseconds){
   dateObject.setHours(0,0,0,0)
   return +dateObject
 }
-
-// function compose_survey_object(branches, surveys){
-//     var object = {}
-//     branches.forEach((branch)=>{
-//         object[branch.branch_code]={}
-//     })
-//     surveys.forEach((survey)=>{
-//         if(object[survey.branch_code][survey.moveware_employee_code]){
-//             object[survey.branch_code][survey.moveware_employee_code].push(survey)
-//         }else{
-//             object[survey.branch_code][survey.moveware_employee_code]=[survey]
-//         }
-//     })
-
-
 
   render(){
     return(
@@ -356,6 +316,51 @@ export default connect(mapStateToProps, mapDispatchToProps)(UpdateData)
   
   
 // }
+
+
+  //do stuff
+// this.surveys ///compose
+// var object = {}
+// var branches = this.props.all_branches
+// branches.forEach((branch)=>{
+//         object[branch.branch_code]={}
+//     })
+// this.completedSurveyJson.forEach((survey)=>{
+// //get day of survey(milliseconds)
+// //get milliseconds of survey appointment////////////////////////////////////////////
+// var milliseconds = this.calculateSecondsSince1970(survey, false)
+// var dayMilli = this.getDayOfSurvey(milliseconds)
+// survey["collection_latLng"] = JSON.parse(survey["collection_latLng"])
+// if(object[survey.branch_code][dayMilli]){
+//  if(object[survey.branch_code][dayMilli][survey.moveware_employee_code]){
+//   object[survey.branch_code][dayMilli][survey.moveware_employee_code].push(survey)
+//  }else{
+//   object[survey.branch_code][dayMilli][survey.moveware_employee_code] = []
+//   object[survey.branch_code][dayMilli][survey.moveware_employee_code].push(survey)
+//  }
+// }else{
+//   object[survey.branch_code][dayMilli] = {}
+//   object[survey.branch_code][dayMilli][survey.moveware_employee_code]=[]
+//  object[survey.branch_code][dayMilli][survey.moveware_employee_code].push(survey)
+ 
+// }
+//     })
+// console.log('before sort',object)
+// this.sortSurveysByTime(object)
+// console.log('after sort', object)
+
+ 
+//  var stringifiedForRails = JSON.stringify(object)
+//  console.log(stringifiedForRails)
+//  var objectForRails = {all_surveys_object: stringifiedForRails}
+//  this.props.actions.update_data_actions.sendSurveyObjectToRails(objectForRails)
+
+
+ 
+
+ // save object to db
+ //save surveys to db
+  // setTimeout(callback.bind(this, json), 1001*multiple)
 
 
 

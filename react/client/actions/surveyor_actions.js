@@ -21,6 +21,27 @@ import axios from 'axios'
 //   }
 // }
 
+export function toggleSurveyorHidden(surveyor_code){
+  return {
+    type: 'TOGGLE_SURVEYOR_HIDDEN',
+    payload: surveyor_code
+  }
+}
+
+// export function setVisibleSurveyorNColour(surveyorCodeColonColourObject){
+//   return {
+//     type: 'SET_VISIBLE_SURVEYORS_AND_COLOUR',
+//     payload: surveyorCodeColonColourObject
+//   }
+// }
+
+export function setVisibleSurveyors(surveyor_codes){
+  return {
+    type: 'SET_VISIBLE_SURVEYORS',
+    payload: surveyor_codes
+  }
+}
+
 export function setSurveyorBranchSelected(branch_code){
   return {
     type: 'SET_SURVEYOR_BRANCH_SELECTED',

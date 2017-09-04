@@ -72,6 +72,8 @@ function handleTripData(state = {
         // console.log(compose_survey_object(state.all_branches, state.all_surveys))
 
         return {...state, all_surveys: received_surveys, getSurveyError: null, asynch_loading_total: state.asynch_loading_total + 1, survey_object:  compose_survey_object(state.all_branches, received_surveys)}
+
+        return {...state, all_surveys: received_surveys, getSurveyError: null, asynch_loading_total: state.asynch_loading_total + 1}
        
     }
     
@@ -209,7 +211,9 @@ function handleTripData(state = {
         console.log('trips')
         // console.log(compose_survey_object(state.all_branches, state.all_surveys))
         // compose_survey_object(state.all_branches, state.all_surveys)
-        return {...state, all_trips: anotherNewArray, getTripsError: null, asynch_loading_total: state.asynch_loading_total + 1, survey_object: compose_survey_object(state.all_branches, state.all_surveys)}
+        // return {...state, all_trips: anotherNewArray, getTripsError: null, asynch_loading_total: state.asynch_loading_total + 1, survey_object: compose_survey_object(state.all_branches, state.all_surveys)}
+
+        return {...state, all_trips: anotherNewArray, getTripsError: null, asynch_loading_total: state.asynch_loading_total + 1}
     }else{
         return {...state, all_trips: anotherNewArray, getTripsError: null, asynch_loading_total: state.asynch_loading_total + 1}
     }
@@ -225,7 +229,9 @@ function handleTripData(state = {
         console.log('EMPLOYEES')
         // compose_survey_object(state.all_branches, state.all_surveys)
         
-        return {...state, all_employees: action.payload, getEmployeesError: null, asynch_loading_total: state.asynch_loading_total+1, survey_object: compose_survey_object(state.all_branches, state.all_surveys)}
+        // return {...state, all_employees: action.payload, getEmployeesError: null, asynch_loading_total: state.asynch_loading_total+1, survey_object: compose_survey_object(state.all_branches, state.all_surveys)}
+
+        return {...state, all_employees: action.payload, getEmployeesError: null, asynch_loading_total: state.asynch_loading_total+1}
     }else{
         return {...state, all_employees: action.payload, getEmployeesError: null, asynch_loading_total: state.asynch_loading_total+1}
     }
@@ -245,9 +251,8 @@ function handleTripData(state = {
         return branch
     })
     if(state.asynch_loading_total==3){
-        console.log('BRANCHES')
-        // compose_survey_object(anotherNewArray, state.all_surveys)
-        return {...state, all_branches: anotherNewArray, getBranchesError: null, asynch_loading_total: state.asynch_loading_total + 1, survey_object: compose_survey_object(anotherNewArray, state.all_surveys)}
+
+        return {...state, all_branches: anotherNewArray, getBranchesError: null, asynch_loading_total: state.asynch_loading_total + 1}
     }else{
        return {...state, all_branches: anotherNewArray, getBranchesError: null, asynch_loading_total: state.asynch_loading_total + 1} 
     }
@@ -321,17 +326,17 @@ function handleTripData(state = {
 export default handleTripData
 
 
-function compose_survey_object(branches, surveys){
-    var object = {}
-    branches.forEach((branch)=>{
-        object[branch.branch_code]={}
-    })
-    surveys.forEach((survey)=>{
-        if(object[survey.branch_code][survey.moveware_employee_code]){
-            object[survey.branch_code][survey.moveware_employee_code].push(survey)
-        }else{
-            object[survey.branch_code][survey.moveware_employee_code]=[survey]
-        }
-    })
-    return object
-}
+// function compose_survey_object(branches, surveys){
+//     var object = {}
+//     branches.forEach((branch)=>{
+//         object[branch.branch_code]={}
+//     })
+//     surveys.forEach((survey)=>{
+//         if(object[survey.branch_code][survey.moveware_employee_code]){
+//             object[survey.branch_code][survey.moveware_employee_code].push(survey)
+//         }else{
+//             object[survey.branch_code][survey.moveware_employee_code]=[survey]
+//         }
+//     })
+//     return object
+// }

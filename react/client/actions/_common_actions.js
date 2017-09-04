@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Appointment from '../models/appointments'
 
 ///////////////////////
 // export function renderJobList(){
@@ -130,6 +131,22 @@ export function getAllSurveysFromRails(){
     const url = 'http://localhost:5000/api/surveys'
     axios.get(url, {withCredentials:true})
   .then((response)=>{
+    response.data.forEach((survey)=>{
+      var a = new Appointment(
+        survey.appointment_date, 
+        survey.appointment_time,
+        survey.moveware_code, 
+        survey.collection_address, 
+        survey.collection_postcode, 
+        survey.client_name, 
+        survey.duration, 
+        survey.branch_code, 
+        survey.moveware_employee_code, 
+        survey.collection_latLng, 
+        survey.milliseconds_since_1970,
+        survey.id
+        )
+    })
     dispatch({
       type: 'GET_SURVEYS_FULFILLED',
       payload: response.data
@@ -144,25 +161,25 @@ export function getAllSurveysFromRails(){
   }
 }
 
-export function getSurveyObjectFromRails(){
+// export function getSurveyObjectFromRails(){
   
-  return function(dispatch){
-    const url = 'http://localhost:5000/api/survey_object'
-    axios.get(url, {withCredentials:true})
-  .then((response)=>{
-    dispatch({
-      type: 'GET_SURVEY_OBJECT_FULFILLED',
-      payload: response.data
-    })
-  })
-  .catch((error)=>{
-    dispatch({
-      type: 'GET_SURVEYS_OBJECT_REJECTED',
-      payload: error
-    })
-  })
-  }
-}
+//   return function(dispatch){
+//     const url = 'http://localhost:5000/api/survey_object'
+//     axios.get(url, {withCredentials:true})
+//   .then((response)=>{
+//     dispatch({
+//       type: 'GET_SURVEY_OBJECT_FULFILLED',
+//       payload: response.data
+//     })
+//   })
+//   .catch((error)=>{
+//     dispatch({
+//       type: 'GET_SURVEYS_OBJECT_REJECTED',
+//       payload: error
+//     })
+//   })
+//   }
+// }
 
 export function getAllEmployeesFromRails(){
   return function(dispatch){

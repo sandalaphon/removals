@@ -8,7 +8,8 @@ import Slider,  { Range, createSliderWithTooltip } from 'rc-slider'
 import Tooltip from 'rc-tooltip';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
-import {placeMarkers} from '../../models/sliderFunctions'
+// import {placeMarkers} from '../../models/sliderFunctions'
+import {placeSurveyorCars} from '../../models/surveyorSliderFunctions'
 
 
 
@@ -28,16 +29,16 @@ class SliderSurveyor extends React.Component{
   }
 
   handleSliderChange(value){
-    var secondsPassed = value*10*60
-    placeMarkers(secondsPassed, 'surveyor')
+    var secondsPassed = value*60
+    placeSurveyorCars(secondsPassed, this.props.survey_current_date_milliseconds)
   }
 
   onAfterChange(value){
     // this.setState({value,})  
-    const secondsPassed = value * 60 * 10
+    const secondsPassed = value * 60
    
     this.props.actions.common_actions.setSliderSecondsFromStart(secondsPassed, 'surveyor')
-    placeMarkers(secondsPassed, 'surveyor')
+    placeSurveyorCars(secondsPassed, this.props.survey_current_date_milliseconds)
     if(this.props.animation_running){
       this.props.actions.common_actions.toggleAnimationRunning()
     }
@@ -49,7 +50,7 @@ class SliderSurveyor extends React.Component{
   }
 
   sortTimeDisplay(v){
-
+    v = v / 10
     let startValue = 8 //8am
     // let endValue = 72 //8pm
     let minutesFromStartValue = v*10
@@ -65,12 +66,12 @@ class SliderSurveyor extends React.Component{
 
     const marks = {
       0:  '8:00',
-      12: '10:00',
-      24: '12:00',
-      36: '14:00',
-      48: '16:00',
-      60: '18:00',
-      72: '20:00',
+      120: '10:00',
+      240: '12:00',
+      360: '14:00',
+      480: '16:00',
+      600: '18:00',
+      720: '20:00',
     };
 
     // const sliderValue = this.props.surveyor_seconds_from_start/600 || 24
@@ -80,10 +81,10 @@ class SliderSurveyor extends React.Component{
         <div className = 'slider-div'>
         <SliderWithTooltip 
         min={0} 
-        max={72} 
+        max={720} 
         marks={marks} 
         step = {1}
-        defaultValue = {this.props.surveyor_seconds_from_start/600}
+        defaultValue = {this.props.surveyor_seconds_from_start/60}
         // defaultValue = {this.state.value}
         // value = {this.state.value}
         included = {false}
@@ -109,11 +110,9 @@ const mapDispatchToProps=(dispatch)=>({
 })
 
 const mapStateToProps=(state)=>({
-  all_trips:                          state.common.all_trips, 
+  survey_current_date_milliseconds: state.surveyor.survey_current_date_milliseconds,
   animation_running:                  state.common.animation_running, 
-  surveyor_seconds_from_start:        state.common.surveyor_seconds_from_start, 
-  show_to_branch:                     state.common.show_to_branch, 
-  show_from_branch:                   state.common.show_from_branch, 
-  current_surveyor_truckflicker_job:  state.common.current_surveyor_truckflicker_job})
+  surveyor_seconds_from_start:        state.common.surveyor_seconds_from_start
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SliderSurveyor)
