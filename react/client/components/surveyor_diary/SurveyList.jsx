@@ -55,9 +55,6 @@ class SurveyList extends React.Component {
         var latlngsOfSurveys = surveys.map((survey)=>{
           return survey.collection_latLng
         })
-       
-        
-        // this.props.actions.surveyor_actions.setVisibleSurveyorNColour({[surveyor_code]: this.surveyors_colours[surveyor_code]})
 
         this.state.mapObject.drawRouteWithWayPoints(branch.latlng, branch.latlng, latlngsOfSurveys, polylineColour, daySurveyorUnique)
      
@@ -138,18 +135,16 @@ getTable(){
   var currentDayMilli = this.props.survey_current_date_milliseconds
   var todaysSurveys
   var toDisplay = []
-  this.state.mapObject.clearMarkers(this.state.mapObject.surveyMarkers) 
-  this.state.mapObject.clearMarkers(this.state.mapObject.highlightedMarkers) 
+  // this.state.mapObject.clearMarkers(this.state.mapObject.surveyMarkers) 
+  // this.state.mapObject.clearMarkers(this.state.mapObject.highlightedMarkers) 
   this.state.mapObject.clearMap()
-
-  if(this.props.all_branches) {
+  if(!this.props.all_surveys || !this.props.all_branches) return
+  // if(this.props.all_branches) {
+  //   this.showBranchIconAndCenterMap(selected_branch)
+  // }else{
+  //   return
+  // }
     this.showBranchIconAndCenterMap(selected_branch)
-  }else{
-    return
-  }
-
-  if(!this.props.all_surveys) return
-
 
     this.todaysAppointments = Appointment.getSurveysByBranchAndDay(currentDayMilli, selected_branch)
     this.branch_surveyors = Appointment.getAllSurveyorsByBranch(selected_branch)
@@ -169,7 +164,7 @@ getTable(){
 
 
     this.calculateCurrentSurveyorRoute(surveyor, surveyors_surveys)
-    console.log('surveyors_surveys', surveyors_surveys)
+  
       surveyors_surveys.forEach((survey)=>{
         this.state.mapObject.placeSurveyMarker(survey.collection_latLng, survey.client_name)
          toDisplay.push(  
@@ -231,14 +226,12 @@ const mapDispatchToProps=(dispatch)=>({
 })
 
 const mapStateToProps=(state)=>({
-  // all_surveys: state.surveyor.all_surveys,
+
   all_branches: state.common.all_branches,
-  // survey_object_rails: state.common.survey_object_from_rails,
   selected_branch: state.surveyor.surveyor_branch_selected,
   surveyors_hidden: state.surveyor.surveyors_hidden,
   all_trips: state.common.all_trips,
   all_surveys: state.common.all_surveys,
-  // survey_object: state.common.survey_object,
   branches_on_map_surveyor: state.common.branches_on_map_surveyor,
   survey_current_date_milliseconds: state.surveyor.survey_current_date_milliseconds,
 })

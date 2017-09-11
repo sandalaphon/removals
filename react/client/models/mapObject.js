@@ -60,6 +60,8 @@ class MapObject{
     this.clearMarkers(this.markers, clearArrays)
     if(clearSliderMarkers) this.clearMarkers(this.sliderMarkers, clearArrays)
     this.clearMarkers(this.postcodeMarkers, clearArrays)
+    this.clearMarkers(this.surveyMarkers, clearArrays)
+    this.clearMarkers(this.highlightedMarkers, clearArrays)
 
     // this.clearMarkers(this.branchesMarkers, clearArrays)
     this.clearRoutes(this.renderedRoutes, clearArrays)
@@ -121,8 +123,9 @@ class MapObject{
     }else{
       console.log('sliderMarkerCoordsandIndexArray', sliderMarkerCoordsandIndexArray)
       sliderMarkerCoordsandIndexArray.forEach((object)=>{
-        console.log('object', object)
+       
         if(!object) return
+          console.log('object', object)
         this.placeMarker(object.markerCoords,  this.carSymbol(object.colour), this.sliderMarkers, false, false, object.message)
        
       })

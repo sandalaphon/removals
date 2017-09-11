@@ -16,7 +16,13 @@ class DateFlicker extends React.Component{
   }
 
   componentWillMount(){
-    var datenow = new Date()
+    var datenow
+    if(this.props.survey_current_date_milliseconds){
+      datenow = new Date(this.props.survey_current_date_milliseconds)
+    }else{
+      datenow = new Date()
+    }
+    
     var beginningOfDay = datenow.setHours(0,0,0,0)
 
     console.log(beginningOfDay)
