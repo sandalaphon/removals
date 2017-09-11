@@ -128,6 +128,58 @@ class SurveyList extends React.Component {
     mapO.placeMarker.call(mapO, branch.latlng, mapO.branchSymbol("#265eb7"), mapO.branchesMarkers, true, true, branch.address, mapO.handleBranchMarkerClick.bind(mapO))
   }
 
+  show_overview_table(){
+
+    if(!this.props.all_surveys || !this.props.all_branches) return (<div></div>)
+      // this.state.mapObject.clearMap(true, false)
+      // this.showBranchIconAndCenterMap(selected_branch)
+      var selected_branch = this.props.selected_branch
+    this.branch_surveyors = Appointment.getAllSurveyorsByBranch(selected_branch)
+    var headerStyle = {backgroundColor: 'gainsboro'}
+    var tableStyle = { tableLayout: 'fixed', width: '50vw' }
+    var tdStyle20 = { width: '20%' }
+    var tdStyle80 = { width: '80%' }
+    return (
+      <div className='grid-item-survey-list'>
+           <table 
+           style = {tableStyle}
+          >
+           <thead style={headerStyle}>
+           <tr key='survey-list-header'>
+           <td style = {tdStyle20}><b>Time</b></td>
+           <td 
+           colSpan = {this.branch_surveyors.length}
+           style = {tdStyle80}><b>Surveyors</b></td>
+           </tr>
+           </thead>
+           <tbody>
+           {this.get_overview_table_body.call(this)}
+           </tbody>
+           </table>
+           </div>
+      )
+  }
+
+  get_overview_table_body(){
+    var date = new Date(this.props.survey_current_date_milliseconds)
+    var surveyors_tds=this.branch_surveyors.map((surveyor_code)=>{
+      return (<td>{surveyor_code}</td>)
+    })
+    date.setHours(8)
+    var table_rows = []
+    for(var i = 0; i<19; i++){
+      date.setMinutes(date.getMinutes()+30)
+      var str = date.toLocaleTimeString()
+      table_rows.push(<tr><td>{str.substring(0,str.length-3)}</td>
+        {surveyors_tds}
+        </tr>)
+    }
+    return(
+      table_rows
+      )
+    
+  }
+
 
 getTable(){
 
@@ -135,19 +187,18 @@ getTable(){
   var currentDayMilli = this.props.survey_current_date_milliseconds
   var todaysSurveys
   var toDisplay = []
-  // this.state.mapObject.clearMarkers(this.state.mapObject.surveyMarkers) 
-  // this.state.mapObject.clearMarkers(this.state.mapObject.highlightedMarkers) 
-  this.state.mapObject.clearMap()
+
+  this.state.mapObject.clearMap(true, false)
   if(!this.props.all_surveys || !this.props.all_branches) return
-  // if(this.props.all_branches) {
-  //   this.showBranchIconAndCenterMap(selected_branch)
-  // }else{
-  //   return
-  // }
     this.showBranchIconAndCenterMap(selected_branch)
 
     this.todaysAppointments = Appointment.getSurveysByBranchAndDay(currentDayMilli, selected_branch)
     this.branch_surveyors = Appointment.getAllSurveyorsByBranch(selected_branch)
+    // console.log('this.props.survey_overview', this.props.survey_overview)
+   
+     
+
+    
 
     this.branch_surveyors.forEach((surveyor)=>{
       toDisplay.push(
@@ -193,6 +244,7 @@ getTable(){
       var headerStyle = {backgroundColor: 'gainsboro'}
       var tableStyle = { tableLayout: 'fixed', width: '50vw' }
       var tdStyle = { width: '20%' }
+      if(this.props.survey_overview)  return this.show_overview_table()
     return(
       <div className='grid-item-survey-list'>
       <table 
@@ -229,6 +281,7 @@ const mapStateToProps=(state)=>({
 
   all_branches: state.common.all_branches,
   selected_branch: state.surveyor.surveyor_branch_selected,
+  survey_overview: state.surveyor.survey_overview,
   surveyors_hidden: state.surveyor.surveyors_hidden,
   all_trips: state.common.all_trips,
   all_surveys: state.common.all_surveys,

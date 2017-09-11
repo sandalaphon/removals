@@ -2,7 +2,7 @@
 function handleSurveyor(state = {
   survey_current_date_milliseconds: null,
   surveyor_branch_selected: 'AVI',
-
+  survey_overview: true,
   surveyors_hidden: {}
 },action){
 
@@ -11,6 +11,10 @@ function handleSurveyor(state = {
 
  case 'SET_VISIBLE_SURVEYORS':
  return {...state, visible_surveyors:action.payload}
+ break;
+
+ case 'TOGGLE_SURVEYOR_OVERVIEW':
+ return {...state, survey_overview: !state.survey_overview}
  break;
 
  case 'TOGGLE_SURVEYOR_HIDDEN':

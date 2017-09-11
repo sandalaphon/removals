@@ -18,7 +18,6 @@ class MapObject{
     this.postcodeMarkers = [],
     this.sliderMarkers = [],
     this.branchesMarkers = [],
-    this.surveyMarkers = [],
     this.highlightedMarkers = [],
     this.branchesButtonExists = false,
     this.fullScreenButtonExists = false,
@@ -40,7 +39,7 @@ class MapObject{
   }
 
   placeSurveyMarker(coords, message = ''){
-    this.placeMarker(coords, this.surveySymbol(), this.surveyMarkers, false, true, message) 
+    this.placeMarker(coords, this.surveySymbol(), this.sliderMarkers, false, true, message) 
   }
 
   highlightMarker(coords, message){
@@ -60,10 +59,7 @@ class MapObject{
     this.clearMarkers(this.markers, clearArrays)
     if(clearSliderMarkers) this.clearMarkers(this.sliderMarkers, clearArrays)
     this.clearMarkers(this.postcodeMarkers, clearArrays)
-    this.clearMarkers(this.surveyMarkers, clearArrays)
-    this.clearMarkers(this.highlightedMarkers, clearArrays)
-
-    // this.clearMarkers(this.branchesMarkers, clearArrays)
+    this.clearMarkers(this.branchesMarkers, clearArrays)
     this.clearRoutes(this.renderedRoutes, clearArrays)
     this.clearRoutes(this.toBranchesRoutes, clearArrays)
     this.clearRoutes(this.fromBranchesRoutes, clearArrays)

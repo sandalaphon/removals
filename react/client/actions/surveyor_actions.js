@@ -28,6 +28,13 @@ export function toggleSurveyorHidden(surveyor_code){
   }
 }
 
+export function toggleSurveyorOverview(){
+  return {
+    type: 'TOGGLE_SURVEYOR_OVERVIEW'
+    
+  }
+}
+
 // export function setVisibleSurveyorNColour(surveyorCodeColonColourObject){
 //   return {
 //     type: 'SET_VISIBLE_SURVEYORS_AND_COLOUR',
