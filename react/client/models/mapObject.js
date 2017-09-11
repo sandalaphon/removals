@@ -39,7 +39,7 @@ class MapObject{
 
   }
 
-  placeSurveyMarker(coords, message = ''){
+  placeSurveyMarker(coords, message){
     this.placeMarker(coords, this.surveySymbol(), this.surveyMarkers, false, true, message) 
   }
 
@@ -79,7 +79,7 @@ class MapObject{
     if(clearArrays){
         instance_variable_marker_array.length = 0 //clears array
       }
-    }
+  }
 
   reinstateMap(){
 
@@ -102,6 +102,9 @@ class MapObject{
 
   resetBounds(){
     this.bounds = new google.maps.LatLngBounds()
+    //
+    //
+    //
   }
 
   displayArrayOfJobRoutes(arrayOfJobs){
@@ -127,7 +130,6 @@ class MapObject{
        
       })
     }
-   
   }
 
   getBranchById(branchId){
@@ -142,10 +144,10 @@ class MapObject{
   }
 
   drawRouteWithGoogleResponse(job, addStartFinishMarkers = true){
-      if(job.hidden) return
+    if(job.hidden) return
     var {start_location, end_location} = job.google_directions.routes[ 0 ].legs[ 0 ]
 
-  if(addStartFinishMarkers){
+    if(addStartFinishMarkers){
     this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this), 'S', getComplementaryColour(job.colour))
         this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this),'F', getComplementaryColour(job.colour))
       }
@@ -202,8 +204,7 @@ class MapObject{
       this.surveyRoutesByCode[dayAndSurveyorUniqueCode]=directionsDisplay
     }else{
       this.renderedRoutes.push(directionsDisplay)
-    }
-   
+    }  
   }
 
   drawToAndFromBranch(job){
@@ -220,10 +221,9 @@ class MapObject{
       this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.toBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
       this.drawRoute(job.google_directions_to_branch, getComplementaryColour(job.colour))
     }
-
   }
 
-  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null, labelText=null, labelTextColour){
+  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='eeee', clickfunction=null, labelText=null, labelTextColour){
     console.log('placing marker', this.pathname)
     // console.log(coords, message,instance_variable_marker_array)
     var marker = new google.maps.Marker({
@@ -236,9 +236,11 @@ class MapObject{
       //   // color: 'blue',
       // }
     })
-    if(labelText) marker.setLabel({text: labelText, color: labelTextColour})
+    console.log("try6")
+    console.log(message)
+    if(message) marker.setLabel(message)
 
-    if(message) this.addInfoWindow(marker, message)
+   // if(message) this.addInfoWindow(marker, message)
     if(setBounds){
       this.bounds.extend(coords) 
       this.map.fitBounds(this.bounds)  
@@ -395,11 +397,11 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
     case 'surveyor':
     this.branchesVisible = store.getState().common.branches_on_map_surveyor
     break;
-  }
+    }
  }
 
  setBranchListVisible(){
-  switch(this.pathname){
+   switch(this.pathname){
     case 'partload':
     this.branchListVisible = store.getState().common.branch_list_displayed_partload
     break;
@@ -412,7 +414,7 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
     case 'surveyor':
     this.branchListVisible = store.getState().common.branch_list_displayed_surveyor
     break;
- }
+   }
 }
 
  handleBranchMarkerClick(event){
@@ -585,7 +587,7 @@ fillColor: colour,
 fillOpacity: 1,
 strokeColor: 'black',
 strokeWeight: 1,
-scale: 5,
+scale: 8,
   }
 }
 

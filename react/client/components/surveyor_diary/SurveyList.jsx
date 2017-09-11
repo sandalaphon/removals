@@ -120,7 +120,7 @@ class SurveyList extends React.Component {
     var branch = this.getBranchByBranchCode(selected_branch)
     var mapO = this.state.mapObject
     mapO.setCenter.call(mapO, branch.latlng)
-    mapO.placeMarker.call(mapO, branch.latlng, mapO.branchSymbol("#265eb7"), mapO.branchesMarkers, true, true, branch.address, mapO.handleBranchMarkerClick.bind(mapO))
+    mapO.placeMarker.call(mapO, branch.latlng, mapO.branchSymbol("#265eb7"), mapO.branchesMarkers, true, true, "", mapO.handleBranchMarkerClick.bind(mapO))
   }
 
 
@@ -162,8 +162,9 @@ getTable(){
 
     this.calculateCurrentSurveyorRoute(surveyor, surveyors_surveys)
     console.log('surveyors_surveys', surveyors_surveys)
-      surveyors_surveys.forEach((survey)=>{
-        this.state.mapObject.placeSurveyMarker(survey.collection_latLng, survey.client_name)
+      surveyors_surveys.forEach((survey, i)=>{
+        var indexString = (i+1).toString()
+        this.state.mapObject.placeSurveyMarker(survey.collection_latLng, indexString)
          toDisplay.push(  
            <tr 
            onClick = {this.state.mapObject.setCenter.bind(this.state.mapObject, survey.collection_latLng)}
