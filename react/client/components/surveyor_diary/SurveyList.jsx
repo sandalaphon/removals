@@ -102,8 +102,6 @@ class SurveyList extends React.Component {
   }
 
   formatTimeFromPSQL(milliseconds){
-    // console.log('time', time)
-    // var milliseconds = Date.parse(time)
     var dateObj = new Date(milliseconds)
     var hours = dateObj.getHours()
 
