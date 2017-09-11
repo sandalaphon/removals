@@ -48,12 +48,10 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
     var currentStep
     var secondsStartToEndOfStep = 0
     var stepCompleted = false
-    console.log('steps', steps)
-    console.log('secondsFromStart', secondsFromStart)
     steps.forEach((step, index)=>{
       if(stepCompleted) return
        secondsStartToEndOfStep += step.duration.value
-     
+
        if(secondsStartToEndOfStep>secondsFromStart){
         fractionOfStep  = (  secondsFromStart  -  (secondsStartToEndOfStep-step.duration.value))/step.duration.value
         currentStep = steps[index]
@@ -61,7 +59,6 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
        }
     })
 
-    console.log('fraction and current step', fractionOfStep, currentStep)
     return {fractionOfStep, currentStep}
   }
 
@@ -108,11 +105,6 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
     return {arrayOfTrips, currentTruckFlickerJob}
 
   }
-
-
-
-
-
 
 }
 
