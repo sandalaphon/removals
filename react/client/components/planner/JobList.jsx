@@ -19,7 +19,7 @@ class JobList extends React.Component{
 
   componentDidMount(){
     this.setState ({mapObject:mapObjectInstances.planner})
-    document.getElementById("defaultOpen").click() // shows joblist tab on default
+   
   }
 
   componentDidUpdate(){
@@ -126,20 +126,7 @@ renderTripById(tripId){
 
   }
 
-  openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
-   
-  }
+  
 
   jobs(){
     if(this.state.mapObject)
@@ -201,15 +188,7 @@ render(){
   return(
     <div className='grid-item-joblist'>
 
-      <div className="tab">
-        <button className="tablinks" onClick={this.openTab.bind(this,event,'jobs')} id="defaultOpen">Jobs</button>
-        <button className="tablinks" onClick={this.openTab.bind(this,event,'branches')} >BranchInfo</button>
-       
-      </div>
-
-      <div id="jobs" className="tabcontent">
-
-       
+   
         <table   
            onDrag={this.handleOnDragJobList.bind(this)}
            onDrop={this.handleJobListDrop.bind(this)} 
@@ -231,11 +210,9 @@ render(){
             {this.jobs()}
            </tbody>
          </table>
-      </div>
+     
 
-      <div id="branches" className="tabcontent">
-        <BranchesInfo/>
-      </div>
+   
 
       
     </div>
