@@ -119,9 +119,9 @@ class MapObject{
         this.placeMarker(object.markerCoords,  this.getTruckMarker(object.colour, object.leg), this.sliderMarkers, false, false, object.message)
       })
     }else{
-      console.log('sliderMarkerCoordsandIndexArray', sliderMarkerCoordsandIndexArray)
+      
       sliderMarkerCoordsandIndexArray.forEach((object)=>{
-        console.log('object', object)
+       
         if(!object) return
         this.placeMarker(object.markerCoords,  this.carSymbol(object.colour), this.sliderMarkers, false, false, object.message)
        
@@ -157,8 +157,7 @@ class MapObject{
   drawRouteWithWayPoints(startLatLng, finishLatLng, waypointLatLngArray, polylineColour, dayAndSurveyorUniqueCode){
   
    if(this.surveyRoutesByCode[dayAndSurveyorUniqueCode]){
-    console.log('rendering saved route')
-    console.log('display', this.surveyRoutesByCode[dayAndSurveyorUniqueCode])
+    
     this.surveyRoutesByCode[dayAndSurveyorUniqueCode].setMap(this.map)
     return
    }
@@ -224,7 +223,7 @@ class MapObject{
   }
 
   placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null, labelText=null, labelTextColour){
-    console.log('placing marker', this.pathname)
+    
     // console.log(coords, message,instance_variable_marker_array)
     var marker = new google.maps.Marker({
       position: coords,
@@ -416,8 +415,6 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
 }
 
  handleBranchMarkerClick(branchId){
-  console.log(event)
-  
   
   store.dispatch(setBranchIconClickedId(branchId))
  // store.dispatch(toggleBranchListDisplayed(this.pathname))

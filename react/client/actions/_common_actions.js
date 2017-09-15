@@ -86,7 +86,6 @@ export function setCurrentTruckFlickerJob(job, pathname){
 }
 
 export function clearCurrentTruckFlickerJob(pathname){
-  console.log('pathname', pathname)
   return {
     type: 'CLEAR_CURRENT_TRUCKFLICKER_JOB',
     pathname

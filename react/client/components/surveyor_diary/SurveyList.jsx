@@ -92,7 +92,7 @@ class SurveyList extends React.Component {
   }
 
   formatTimeFromPSQL(milliseconds){
-    // console.log('time', time)
+    
     // var milliseconds = Date.parse(time)
     var dateObj = new Date(milliseconds)
     var hours = dateObj.getHours()
@@ -161,7 +161,6 @@ getTable(){
 
 
     this.calculateCurrentSurveyorRoute(surveyor, surveyors_surveys)
-    console.log('surveyors_surveys', surveyors_surveys)
       surveyors_surveys.forEach((survey)=>{
         this.state.mapObject.placeSurveyMarker(survey.collection_latLng, survey.client_name)
          toDisplay.push(  

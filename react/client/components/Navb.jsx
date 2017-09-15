@@ -10,7 +10,7 @@ class Navb extends React.Component {
   }
 
   toggleBranchList(e){
-    console.log("clicked")
+    
     document.getElementById("myDropdown").classList.toggle("show");
   }
 

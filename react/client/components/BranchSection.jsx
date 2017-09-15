@@ -23,7 +23,7 @@ class BranchSection extends React.Component{
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("will receive")
+ 
     if(nextProps.clicked_branch_id==this.props.id){
       this.toggle()
     }
@@ -54,7 +54,7 @@ class BranchSection extends React.Component{
 
   render() {
     
-    console.log("rendered branchsection")
+    
     return (
       <div className={this.state.class}>
         <button id="toggle-button">toggle</button>

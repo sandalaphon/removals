@@ -57,7 +57,7 @@ class BranchesInfo extends React.Component{
     //////order all_branches here, to but main branch to the top
     return this.props.all_branches.map((branch)=>{
       return (
-        <BranchSection title={branch.name} id={branch.id}>   
+        <BranchSection title={branch.name} id={branch.id} key={branch.id}>   
             {this.getEmployeeTable(branch.id)}
         </BranchSection>
       )

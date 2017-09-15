@@ -19,7 +19,7 @@ class DateFlicker extends React.Component{
     var datenow = new Date()
     var beginningOfDay = datenow.setHours(0,0,0,0)
 
-    console.log(beginningOfDay)
+    
 
     this.setState({date: datenow})
 
