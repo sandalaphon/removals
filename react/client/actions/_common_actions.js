@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Appointment from '../models/appointments'
+import Trip from '../models/trip'
 
 ///////////////////////
 // export function renderJobList(){
@@ -100,17 +101,44 @@ export function setUnhiddenStatus(job){
   }
 }
 
-export function composeData(){
-  return {
-    type: 'COMPOSE_DATA_COMPLETED'
-  }
-}
+// export function composeData(){
+//   return {
+//     type: 'COMPOSE_DATA_COMPLETED'
+//   }
+// }
 
 export function getAllTripsFromRails(){
   return function(dispatch){
     const url = 'http://localhost:5000/api/trips'
     axios.get(url, {withCredentials:true})
     .then((response)=>{
+      response.data.forEach((trip)=>{
+        var a = new Trip(
+          trip.date,
+          trip.branch_id,
+          trip.moveware_code,
+          trip.client_name,
+          trip.client_address,
+          trip.client_postcode,
+          trip.collection_address,
+          trip.delivery_address,
+          trip.delivery_postcode,
+          trip.allocated,
+          trip.hourly,
+          trip.arrival_time,
+          trip.men_requested,
+          trip.volume,
+          trip.notes,
+          trip.kind,
+          trip.delivery_latlng,
+          trip.collection_latLng,
+          trip.estimated_hours,
+          trip.google_directions,
+          trip.branch_code,
+          trip.google_directions_to_branch,
+          trip.google_directions_from_branch
+          )
+      })
       dispatch({
         type: 'GET_TRIPS_FULFILLED',
         payload: response.data

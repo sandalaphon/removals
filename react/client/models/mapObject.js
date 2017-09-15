@@ -30,7 +30,8 @@ class MapObject{
     this.branchListVisible = false,
     this.initialRoutesRendered = false,
     this.animeFrames =[],
-    this.surveyRoutesByCode = {}
+    this.surveyRoutesByCode = {},
+    this.survey_markers = []
 
     if(!mapObjectInstances.pathname){
       mapObjectInstances[pathname]=this
@@ -39,7 +40,8 @@ class MapObject{
   }
 
   placeSurveyMarker(coords, message = ''){
-    this.placeMarker(coords, this.surveySymbol(), this.sliderMarkers, false, true, message) 
+    console.log('place survey markers')
+    this.placeMarker(coords, this.surveySymbol(), this.survey_markers, false, true, message) 
   }
 
   highlightMarker(coords, message){
@@ -60,9 +62,11 @@ class MapObject{
     if(clearSliderMarkers) this.clearMarkers(this.sliderMarkers, clearArrays)
     this.clearMarkers(this.postcodeMarkers, clearArrays)
     this.clearMarkers(this.branchesMarkers, clearArrays)
+    this.clearMarkers(this.survey_markers, clearArrays)
     this.clearRoutes(this.renderedRoutes, clearArrays)
     this.clearRoutes(this.toBranchesRoutes, clearArrays)
     this.clearRoutes(this.fromBranchesRoutes, clearArrays)
+    console.log('intance variables??', this.surveyRoutesByCode)
     this.clearRoutes(Object.values(this.surveyRoutesByCode), false)
   }
 
@@ -180,7 +184,7 @@ class MapObject{
           this.drawRoute(response, polylineColour, dayAndSurveyorUniqueCode)
        
       }else{
-        console(status)
+        
       }
     }.bind(this))
   }

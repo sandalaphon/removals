@@ -20,7 +20,6 @@ class SliderSurveyor extends React.Component{
       this.state = {
         tooltipValue: 0
       }
-
   }
 
   componentDidMount(){
@@ -34,7 +33,6 @@ class SliderSurveyor extends React.Component{
   }
 
   onAfterChange(value){
-    // this.setState({value,})  
     const secondsPassed = value * 60
    
     this.props.actions.common_actions.setSliderSecondsFromStart(secondsPassed, 'surveyor')
@@ -42,7 +40,6 @@ class SliderSurveyor extends React.Component{
     if(this.props.animation_running){
       this.props.actions.common_actions.toggleAnimationRunning()
     }
-
   }
 
   onBeforeChange(value){
@@ -52,13 +49,12 @@ class SliderSurveyor extends React.Component{
   sortTimeDisplay(v){
     v = v / 10
     let startValue = 8 //8am
-    // let endValue = 72 //8pm
     let minutesFromStartValue = v*10
-    let minutesLeft = minutesFromStartValue%60
+    let minutesLeft = (minutesFromStartValue%60).toString()
+    if(minutesLeft.length===1) minutesLeft = '0'+ minutesLeft
     let hoursPassed = (minutesFromStartValue-minutesLeft)/60
-    if(minutesLeft===0) minutesLeft='00'
-    const time = `${startValue+hoursPassed}:${minutesLeft} `
-    return time
+    return `${startValue+hoursPassed}:${minutesLeft} `
+  
   }
 
   render(){
@@ -85,8 +81,6 @@ class SliderSurveyor extends React.Component{
         marks={marks} 
         step = {1}
         defaultValue = {this.props.surveyor_seconds_from_start/60}
-        // defaultValue = {this.state.value}
-        // value = {this.state.value}
         included = {false}
         onChange = {this.handleSliderChange.bind(this)}
         onAfterChange = {this.onAfterChange.bind(this)}

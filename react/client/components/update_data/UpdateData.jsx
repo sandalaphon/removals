@@ -16,17 +16,13 @@ constructor(props){
   this.completedSurveyJson = []
 }
 
-
-
   handleFileSubmitClick(){
 
-    this.trips = []
+    // this.trips = []
     var file = document.getElementById('file').files[0]
     var reader = new FileReader()
     reader.readAsText(file)
     reader.onload = this.convertToJson.bind(this, reader, this.trips, this.getGoogleDirectionsAndSendToRailsDb.bind(this))
-
-
   }
   logger(input){
   }
@@ -41,8 +37,6 @@ constructor(props){
     })
     return branchToReturn
   }
-
-
 
   getGoogleDirectionsAndSendToRailsDb(json){
 
@@ -62,10 +56,9 @@ constructor(props){
     .then((value)=>{this.props.actions.update_data_actions.sendSingleTripToRails(json)})
   }
 
-
-
   getGoogleResponsePromise(startString, finishString){
     return new Promise((resolve, reject)=>{
+      // setTimeout(()=>{
       var directionsService = new google.maps.DirectionsService()
       var directionInput = {
         origin: startString,
@@ -83,6 +76,7 @@ constructor(props){
           reject(status)
         }
       })
+      // }, 1000*multiple)
     })
   }
 
@@ -100,17 +94,20 @@ surveysCallback1(){
   var multiple = 0
   this.surveys.forEach((survey)=>{
     multiple++
-    console.log('mult', multiple)
+    // console.log('mult', multiple)
     promises.push(this.surveysCallback.call(this, survey, multiple))
   })
   Promise.all(promises)
   .then((arrayOfSurveysWithLatLngs)=>{
-    console.log('all should have latlng', arrayOfSurveysWithLatLngs)
+    // console.log('all should have latlng', arrayOfSurveysWithLatLngs)
     arrayOfSurveysWithLatLngs.forEach((survey)=>{
       this.calculateSecondsSince1970(survey)
     })
-    console.log('with milli', this.completedSurveyJson)
-    this.composeSurveyObject()
+
+    this.completedSurveyJson.forEach((survey)=>{
+     this.props.actions.update_data_actions.sendSingleSurveyToRails(survey)
+    })
+
   }) 
   .catch((error)=>{
     console.log(error)
@@ -123,17 +120,18 @@ surveysCallback1(){
     console.log('surveys callback')
     return new Promise((resolve, reject)=>{
       setTimeout(()=>{
+
         var geocoder = new Geocoder()
          geocoder.getLatLngPromise(survey_json.collection_postcode)
          .then((coords)=>{
-          console.log('resolvish')
+          // console.log('resolvish')
           survey_json["collection_latLng"] = JSON.stringify(coords)
-          // this.calculateSecondsSince1970(survey_json)
           resolve(survey_json)
          })
          .catch((status)=>{
           reject(status)
          })
+
        }, 1000*multiple)
      
     })
@@ -162,7 +160,6 @@ calculateSecondsSince1970(json, sendTrip=true){
 convertToJson(reader, instance_variable_array, callback){
   var csv = new Converter()
   var text = event.target.result
-  var multiple = 0
   csv
   .fromString(text)
   .on('json', (json) =>{ 
@@ -175,22 +172,17 @@ convertToJson(reader, instance_variable_array, callback){
 
       callback.call(this)
     }else{
+
       instance_variable_array.forEach((json, index)=>{
-           multiple++
-            setTimeout(callback.bind(this, json), 1001*multiple)      
+        setTimeout(()=>{
+          callback.call(this, json)
+        }, 2000*index)
+                 
       })
     }   
   })
 }
 
-
-composeSurveyObject(){
-
-  this.completedSurveyJson.forEach((survey)=>{
-   this.props.actions.update_data_actions.sendSingleSurveyToRails(survey)
-  })
-
-}
 
 sortSurveysByTime(object){
   for(var branches in object){
@@ -259,110 +251,4 @@ const mapDispatchToProps=(dispatch)=>({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateData)
-
-
-
-
-// getGoogleResponseAndAppendJson(json, startString, finishString, appendToJsonName, counter = 0){
-//   var branch = this.getHomeBranchOfJob(json.branch_code)
-
-//   var directionsService = new google.maps.DirectionsService()
-//   var directionInput = {
-//     origin: startString,
-//     destination: finishString,
-//     waypoints: [],
-//     travelMode: 'DRIVING',
-//     avoidTolls: true
-//   }
-
-//   directionsService.route(directionInput, function(response, status){
-   
-//     if(status==='OK'){
-//       var stringifiedResponse = JSON.stringify(response)
-//       json[appendToJsonName]= stringifiedResponse
-//       if(counter==0){
-//         var collectionString = ''
-
-//         if(json.collection_postcode){
-//           collectionString = json.collection_postcode
-//         }else{
-//           collectionString = json.collection_address
-//         }
-//         this.getGoogleResponseAndAppendJson(json, branch.postcode, collectionString,  'google_directions_from_branch', 1)
-//       }
-//       if(counter==1){
-//         var deliveryString = ''
-//         if(json.delivery_postcode){
-//           deliveryString = json.delivery_postcode
-//         }else{
-//           deliveryString = json.delivery_address
-//         }
-//         this.getGoogleResponseAndAppendJson(json, deliveryString,  branch.postcode,  'google_directions_to_branch', 2)
-//       }
-//       if(counter==2){
-//         this.props.actions.update_data_actions.sendSingleTripToRails(json)
-//       }
-      
-
-//     }else{
-//     }
-    
-
-//   }.bind(this))
-
-
-  
-//   return json
-  
-  
-// }
-
-
-  //do stuff
-// this.surveys ///compose
-// var object = {}
-// var branches = this.props.all_branches
-// branches.forEach((branch)=>{
-//         object[branch.branch_code]={}
-//     })
-// this.completedSurveyJson.forEach((survey)=>{
-// //get day of survey(milliseconds)
-// //get milliseconds of survey appointment////////////////////////////////////////////
-// var milliseconds = this.calculateSecondsSince1970(survey, false)
-// var dayMilli = this.getDayOfSurvey(milliseconds)
-// survey["collection_latLng"] = JSON.parse(survey["collection_latLng"])
-// if(object[survey.branch_code][dayMilli]){
-//  if(object[survey.branch_code][dayMilli][survey.moveware_employee_code]){
-//   object[survey.branch_code][dayMilli][survey.moveware_employee_code].push(survey)
-//  }else{
-//   object[survey.branch_code][dayMilli][survey.moveware_employee_code] = []
-//   object[survey.branch_code][dayMilli][survey.moveware_employee_code].push(survey)
-//  }
-// }else{
-//   object[survey.branch_code][dayMilli] = {}
-//   object[survey.branch_code][dayMilli][survey.moveware_employee_code]=[]
-//  object[survey.branch_code][dayMilli][survey.moveware_employee_code].push(survey)
- 
-// }
-//     })
-// console.log('before sort',object)
-// this.sortSurveysByTime(object)
-// console.log('after sort', object)
-
- 
-//  var stringifiedForRails = JSON.stringify(object)
-//  console.log(stringifiedForRails)
-//  var objectForRails = {all_surveys_object: stringifiedForRails}
-//  this.props.actions.update_data_actions.sendSurveyObjectToRails(objectForRails)
-
-
- 
-
- // save object to db
- //save surveys to db
-  // setTimeout(callback.bind(this, json), 1001*multiple)
-
-
-
-
 

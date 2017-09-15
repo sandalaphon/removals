@@ -71,6 +71,7 @@ handleNextDayClick(e){
   var newDate = this.state.date.setDate(this.state.date.getDate()+1)
   this.setState({date: new Date(newDate)})
   this.props.actions.surveyor_actions.setSurveyCurrentDate(+newDate)
+  mapObjectInstances.surveyor.clearMap(true, true)
 }
 
 handlePreviousDayClick(e){
@@ -78,6 +79,7 @@ handlePreviousDayClick(e){
   var newDate = this.state.date.setDate(this.state.date.getDate()-1)
   this.setState({date: new Date(newDate)})
   this.props.actions.surveyor_actions.setSurveyCurrentDate(+newDate)
+  mapObjectInstances.surveyor.clearMap(true, true)
 }
 
 render(){

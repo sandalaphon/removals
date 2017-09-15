@@ -109,11 +109,6 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
 
   }
 
-
-
-
-
-
 }
 
 export default Animation
