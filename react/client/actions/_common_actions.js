@@ -44,6 +44,13 @@ export function toggleBranchesOnMap(pathname){
   }
 }
 
+export function setBranchIconClickedId(id){
+  return {
+    type: 'SET_BRANCH_ICON_CLICKED_ID',
+    id
+  }
+}
+
 export function setShowToBranch(){
   return {
     type: 'SET_SHOW_TO_BRANCH'

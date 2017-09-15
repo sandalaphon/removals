@@ -416,10 +416,10 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
 }
 
  handleBranchMarkerClick(event){
-  
- store.dispatch(toggleBranchListDisplayed(this.pathname))
-  this.setBranchListVisible()
-  this.displayOrHideBranchList(this.branchListVisible)
+  store.dispatch(setBranchIconClickedId(branchId))
+ // store.dispatch(toggleBranchListDisplayed(this.pathname))
+ //  this.setBranchListVisible()
+ //  this.displayOrHideBranchList(this.branchListVisible)
  }
 
 //////////////////////////////////////////////////////////////
