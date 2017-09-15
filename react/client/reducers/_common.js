@@ -122,6 +122,20 @@ function handleTripData(state = {
     }
     break;
 
+    case 'SET_BRANCH_ICON_CLICKED_ID':
+      let theId
+      if(state.clicked_branch_id==action.id){
+        theId = -1
+      }
+      else{
+        theId=action.id
+      }
+
+
+
+    return {...state, clicked_branch_id: theId}
+    break;
+
     // case 'TOGGLE_BRANCH_LIST_DISPLAYED':
 
     //     var branch_list_displayed = 

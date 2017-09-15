@@ -1,7 +1,7 @@
 // import pantech from '../build/images/pantech.png'
 import store from '../store.js'
 import { dispatch } from 'redux';
-import { toggleBranchesOnMap, toggleFullScreenMap, toggleBranchListDisplayed, setSliderSecondsFromStart } from '../actions/_common_actions';
+import { toggleBranchesOnMap, toggleFullScreenMap, toggleBranchListDisplayed, setSliderSecondsFromStart, setBranchIconClickedId } from '../actions/_common_actions';
 import {getComplementaryColour} from '../reducers/_helpers';
 import {placeMarkers} from './sliderFunctions'
 
@@ -243,7 +243,7 @@ class MapObject{
       this.bounds.extend(coords) 
       this.map.fitBounds(this.bounds)  
     }
-    if(clickfunction) marker.addListener('click', (e)=>{clickfunction(e)})
+    if(clickfunction) marker.addListener('click', clickfunction)
     instance_variable_marker_array.push(marker)
 
   }
@@ -415,7 +415,10 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
  }
 }
 
- handleBranchMarkerClick(event){
+ handleBranchMarkerClick(branchId){
+  console.log(event)
+  
+  
   store.dispatch(setBranchIconClickedId(branchId))
  // store.dispatch(toggleBranchListDisplayed(this.pathname))
  //  this.setBranchListVisible()
@@ -445,7 +448,7 @@ store.dispatch(toggleFullScreenMap(this.pathname))
     this.clearMarkers(this.branchesMarkers, true)
   }else{
     branches.forEach((branch)=>{
-      this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+      this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.branchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this,branch.id))
     })
   }
  }
