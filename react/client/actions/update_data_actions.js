@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-
-
 export function sendSingleTripToRails(trip){
 
     return function(dispatch){
@@ -21,10 +19,8 @@ export function sendSingleTripToRails(trip){
           payload: error
         })
        })
-    }
-  
+    } 
 }
-
 
 export function sendSingleSurveyToRails(survey){
 

@@ -86,7 +86,6 @@ class GmapPartload extends React.Component {
     } = this.props
 
     if(mapObject){
-
    
       mapObject.display_branches()
       mapObject.displayOrHideBranchList(this.props.branch_list_displayed_partload)

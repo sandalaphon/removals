@@ -8,7 +8,8 @@ import Slider,  { Range, createSliderWithTooltip } from 'rc-slider'
 import Tooltip from 'rc-tooltip';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
-import {placeMarkers} from '../../models/sliderFunctions'
+// import {placeMarkers} from '../../models/sliderFunctions'
+import Animation from '../../models/animation'
 
 
 
@@ -27,12 +28,15 @@ class SliderToday extends React.Component{
     }
     mapObjectInstances.today.display_branches() 
     mapObjectInstances.today.displayOrHideBranchList()
+    // this.animation = new Animation(mapObjectInstances.today, 'today')
+    this.animation = mapObjectInstances.today.animation
   }
 
 
   handleSliderChange(value){
     var secondsPassed = value*10*60
-    placeMarkers(secondsPassed, 'today')
+    // placeMarkers(secondsPassed, 'today')
+    this.animation.placeMarkers(secondsPassed)
     
   }
 
@@ -40,6 +44,7 @@ class SliderToday extends React.Component{
     // this.setState({value,})  
     const secondsPassed = value * 60 * 10
     this.props.actions.common_actions.setSliderSecondsFromStart(secondsPassed, 'today')
+    this.animation.placeMarkers(secondsPassed)
     if(this.props.animation_running){
       this.props.actions.common_actions.toggleAnimationRunning()
     }

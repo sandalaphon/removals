@@ -43,7 +43,7 @@ def partload_closest_pickup
   startLng = params[:startLng]
   trips = Trip.all
   arrayOfShortestDistanceToPoint = trips.map do |trip|
-    parsed = JSON.parse(trip[:google_directions])
+    parsed = JSON.parse(trip[:google_waypoints_directions])
     # puts "______s_______"
     # puts trip[:google_directions].[:routes]
     # puts parsed["routes"]
@@ -117,7 +117,10 @@ def trip_params
     :branch_code,
     :google_directions_from_branch,
     :google_directions_to_branch,
-    :google_waypoints_directions
+    :google_waypoints_directions,
+    :seconds_to_load,
+    :seconds_to_unload,
+    :dateMilli
     ])
 end
 

@@ -6,3 +6,18 @@ export function setTodayDateSelector(milliSeconds){
     payload: milliSeconds
   }
 }
+
+
+
+export function setTodayBranchSelected(branch_code){
+  return {
+    type: 'SET_TODAY_BRANCH_SELECTED',
+    payload: branch_code
+  }
+}
+
+export function setTodayTrips(){
+  return {
+    type: 'SET_TODAY_TRIPS'
+  }
+}

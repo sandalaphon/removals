@@ -37,9 +37,7 @@ function handleTripData(state = {
   asynch_loading_total: 0,
   survey_object: {},
 
-  animation_running: false,
-  getSurveyObjectError: null,
-  survey_object_from_rails: {}
+  animation_running: false
 
 
 },action){
@@ -48,16 +46,16 @@ function handleTripData(state = {
   switch(action.type) {
 
     /////////////
-    case 'GET_SURVEY_OBJECT_FULFILLED':
-    console.log('s o f', action.payload)
-    var parsed_survey_object = JSON.parse(action.payload[0].all_surveys_object)
+    // case 'GET_SURVEY_OBJECT_FULFILLED':
+    // console.log('s o f', action.payload)
+    // var parsed_survey_object = JSON.parse(action.payload[0].all_surveys_object)
     
-    return {...state, survey_object_from_rails: parsed_survey_object, getSurveyObjectError: null}
-    break;
+    // return {...state, survey_object_from_rails: parsed_survey_object, getSurveyObjectError: null}
+    // break;
     
-    case 'GET_SURVEY_OBJECT_REJECTED':
-    return {...state,  getSurveyObjectError: action.payload}
-    break;
+    // case 'GET_SURVEY_OBJECT_REJECTED':
+    // return {...state,  getSurveyObjectError: action.payload}
+    // break;
 
     /////////////////////////
 
@@ -71,7 +69,7 @@ function handleTripData(state = {
         console.log('SURVEYS')
         // console.log(compose_survey_object(state.all_branches, state.all_surveys))
 
-        return {...state, all_surveys: received_surveys, getSurveyError: null, asynch_loading_total: state.asynch_loading_total + 1, survey_object:  compose_survey_object(state.all_branches, received_surveys)}
+       
 
         return {...state, all_surveys: received_surveys, getSurveyError: null, asynch_loading_total: state.asynch_loading_total + 1}
        

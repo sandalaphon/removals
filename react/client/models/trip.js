@@ -3,96 +3,55 @@ var trips = []
 class Trip{
 
 constructor(
-  date,
-  branch_id,
-  moveware_code,
-  client_name,
-  client_address,
-  client_postcode,
-  collection_address,
-  delivery_address,
-  delivery_postcode,
-  allocated,
-  hourly,
-  arrival_time,
-  men_requested,
-  volume,
-  notes,
-  created_at,
-  updated_at,
-  kind,
-  delivery_latlng,
-  collection_latlng,
-  estimated_hours,
-  google_directions,
-  branch_code,
-  google_directions_to_branch,
-  google_directions_from_branch,
-  google_waypoints_directions
+  trip_object
   ){
-  this.date                          = date,
-  this.branch_id                     = branch_id,
-  this.moveware_code                 = moveware_code,
-  this.client_name                   = client_name,
-  this.client_address                = client_address,
-  this.client_postcode               = client_postcode,
-  this.collection_address            = collection_address,
-  this.delivery_address              = delivery_address,
-  this.delivery_postcode             = delivery_postcode,
-  this.allocated                     = allocated,
-  this.hourly                        = hourly,
-  this.arrival_time                  = arrival_time,
-  this.men_requested                 = men_requested,
-  this.volume                        = volume,
-  this.notes                         = notes,
-  this.kind                          = kind,
-  this.delivery_latlng               = delivery_latlng,
-  this.collection_latlng             = collection_latlng,
-  this.estimated_hours               = estimated_hours,
-  this.google_directions             = google_directions,
-  this.branch_code                   = branch_code,
-  this.google_directions_to_branch   = google_directions_to_branch,
-  this.google_directions_from_branch = google_directions_from_branch,
-  this.google_waypoints_directions   = google_waypoints_directions,
+this.date                          = trip_object.date,
+this.branch_id                     = trip_object.branch_id,
+this.moveware_code                 = trip_object.moveware_code,
+this.client_name                   = trip_object.client_name,
+this.client_address                = trip_object.client_address,
+this.client_postcode               = trip_object.client_postcode,
+this.collection_address            = trip_object.collection_address,
+this.delivery_address              = trip_object.delivery_address,
+this.delivery_postcode             = trip_object.delivery_postcode,
+this.allocated                     = trip_object.allocated,
+this.hourly                        = trip_object.hourly,
+this.arrival_time                  = trip_object.arrival_time,
+this.men_requested                 = trip_object.men_requested,
+this.volume                        = trip_object.volume,
+this.notes                         = trip_object.notes,
+this.kind                          = trip_object.kind,
+this.delivery_latlng               = trip_object.delivery_latlng,
+this.collection_latlng             = trip_object.collection_latlng,
+this.estimated_hours               = trip_object.estimated_hours,
 
+this.branch_code                   = trip_object.branch_code,
+this.google_waypoints_directions   = JSON.parse(trip_object.google_waypoints_directions),
+this.seconds_to_load               = trip_object.seconds_to_load,
+this.seconds_to_unload             = trip_object.seconds_to_unload,
+this.dateMilli                     = trip_object.dateMilli,
 
-  this.collection_floor = null,
-  this.delivery_florr = null,
-  this.loading_time = this.getLoadingTime(),
-  this.unloading_time = this.getUnloadingTime()
-
+  trips.push(this)
 }
 
-getLoadingTime(){
-  switch (this.men_requested){
-    case 2: //2 men load 150 cuft per hour
-    return (this.volume/150)*360
-    break;
-    case 3: //3 men load 250 cuft per hour
-    return (this.volume/250)*360
-    break;
-    case 4: // 4 men load 350 cuft per hour
-    return (this.volume/350)*360
-    break;
+
+
+static getTripsByDayMilliAndBranch(dayMilli, branch_code){
+  if(branch_code=='All_Branches'){
+    console.log('All_Branches', branch_code)
+    console.log('trips', trips)
+    var t 
+    t = trips.filter((trip)=>{
+      return (trip.dateMilli === dayMilli)
+    })
+    console.log('t', t)
+    return t
+  }else{
+    console.log('else', branch_code)
+    return trips.filter((trip)=>{
+      return (trip.branch_code===branch_code && trip.dateMilli==dayMilli)
+    })
   }
-}
-
-getUnloadingTime(){
-  switch (this.men_requested){
-    case 2: //2 men unload 200 cuft per hour
-    return (this.volume/200)*360
-    break;
-    case 3: //3 men unload 300 cuft per hour
-    return (this.volume/300)*360
-    break;
-    case 4: // 4 men unload 400 cuft per hour
-    return (this.volume/400)*360
-    break;
-  }
-}
-
-static getTripsByBranchAndDate(branch_code, date){
-
 }
 
 }

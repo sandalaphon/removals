@@ -8,7 +8,8 @@ import Slider,  { Range, createSliderWithTooltip } from 'rc-slider'
 import Tooltip from 'rc-tooltip';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
-import {placeMarkers} from '../../models/sliderFunctions';
+// import {placeMarkers} from '../../models/sliderFunctions';
+import Animation from '../../models/animation'
 
 
 class SliderPartload extends React.Component{
@@ -22,20 +23,23 @@ class SliderPartload extends React.Component{
 
   componentDidMount(){
     if(this.props.partload_seconds_from_start){
-      placeMarkers(this.props.partload_seconds_from_start, 'partload')
+      // placeMarkers(this.props.partload_seconds_from_start, 'partload')
+      mapObjectInstances.partload.animation.placeMarkers(this.props.partload_seconds_from_start)
     }
   }
 
   handleSliderChange(value){
     var secondsPassed = value*10*60
-    placeMarkers(secondsPassed, 'partload')
+    // placeMarkers(secondsPassed, 'partload')
+    mapObjectInstances.partload.animation.placeMarkers(secondsPassed)
   }
 
   onAfterChange(value){
     // this.setState({value})  
     const secondsPassed = value * 60 * 10
     this.props.actions.common_actions.setSliderSecondsFromStart(secondsPassed, 'partload')
-    placeMarkers(secondsPassed, 'partload')
+    // placeMarkers(secondsPassed, 'partload')
+    mapObjectInstances.partload.animation.placeMarkers(secondsPassed)
     if(this.props.animation_running){
       this.props.actions.common_actions.toggleAnimationRunning()
     }

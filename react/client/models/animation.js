@@ -33,12 +33,12 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
 
       var sliderMarkerObject
       var {steps, leg, secondsFromStart} = this.getStepsAndLegAndSecondsFromStartWaypoints(secondsFromStart, trip)
-      var {fractionOfStep, currentStep} = this.getCurrentStepAndFractionOfStep(steps, secondsFromStart)
+      var {fractionOfStep, currentStep}  = this.getCurrentStepAndFractionOfStep(steps, secondsFromStart)
       if(!fractionOfStep) return
-      var indexOfPath = Math.floor(fractionOfStep*currentStep.path.length)
+      var indexOfPath                    = Math.floor(fractionOfStep*currentStep.path.length)
 
-      var markerCoords = ({lat: currentStep.path[indexOfPath].lat, lng: currentStep.path[indexOfPath].lng})
-      sliderMarkerObject = {markerCoords, colour: trip.colour, message: trip.client_name, index, leg}
+      var markerCoords                   = ({lat: currentStep.path[indexOfPath].lat, lng: currentStep.path[indexOfPath].lng})
+      sliderMarkerObject                 = {markerCoords, colour: trip.colour, message: trip.client_name, index, leg}
 
       return sliderMarkerObject
   }
@@ -46,19 +46,19 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
   getCurrentStepAndFractionOfStep(steps, secondsFromStart){
     var fractionOfStep
     var currentStep
-    var secondsStartToEndOfStep = 0
-    var stepCompleted = false
+    var secondsStartToEndOfStep    = 0
+    var stepCompleted              = false
     steps.forEach((step, index)=>{
       if(stepCompleted) return
-       secondsStartToEndOfStep += step.duration.value
+       secondsStartToEndOfStep    += step.duration.value
        if(secondsStartToEndOfStep>secondsFromStart){
-        fractionOfStep  = (  secondsFromStart  -  (secondsStartToEndOfStep-step.duration.value))/step.duration.value
-        currentStep = steps[index]
-        stepCompleted = true
+        fractionOfStep            = (  secondsFromStart  -  (secondsStartToEndOfStep-step.duration.value))/step.duration.value
+        currentStep               = steps[index]
+        stepCompleted             = true
        }
     })
 
-    console.log('fraction and current step', fractionOfStep, currentStep)
+
     return {fractionOfStep, currentStep}
   }
 

@@ -8,7 +8,7 @@ import Slider,  { Range, createSliderWithTooltip } from 'rc-slider'
 import Tooltip from 'rc-tooltip';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
-import {placeMarkers} from '../../models/sliderFunctions'
+// import {placeMarkers} from '../../models/sliderFunctions'
 import Animation from '../../models/animation'
 
 

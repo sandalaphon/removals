@@ -2,6 +2,7 @@ import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as todayActions from '../../actions/today_actions'
+import {mapObjectInstances} from '../../models/mapObject'
 
 class TodayDateSelector extends React.Component{
 
@@ -9,12 +10,16 @@ class TodayDateSelector extends React.Component{
     event.preventDefault()
     this.date.setDate(this.date.getDate()+1)
     this.props.actions.today_actions.setTodayDateSelector(+this.date)
+    mapObjectInstances.today.clearMap()
+    this.props.actions.today_actions.setTodayTrips()
   }
 
   handlePreviousDayClick(event){
     event.preventDefault()
+    mapObjectInstances.today.clearMap()
     this.date.setDate(this.date.getDate()-1)
     this.props.actions.today_actions.setTodayDateSelector(+this.date)
+    this.props.actions.today_actions.setTodayTrips()
   }
 
   render(){

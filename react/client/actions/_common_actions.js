@@ -98,32 +98,7 @@ export function getAllTripsFromRails(){
     axios.get(url, {withCredentials:true})
     .then((response)=>{
       response.data.forEach((trip)=>{
-        var a = new Trip(
-          trip.date,
-          trip.branch_id,
-          trip.moveware_code,
-          trip.client_name,
-          trip.client_address,
-          trip.client_postcode,
-          trip.collection_address,
-          trip.delivery_address,
-          trip.delivery_postcode,
-          trip.allocated,
-          trip.hourly,
-          trip.arrival_time,
-          trip.men_requested,
-          trip.volume,
-          trip.notes,
-          trip.kind,
-          trip.delivery_latlng,
-          trip.collection_latLng,
-          trip.estimated_hours,
-          trip.google_directions,
-          trip.branch_code,
-          trip.google_directions_to_branch,
-          trip.google_directions_from_branch,
-          trip.google_waypoints_directions
-          )
+        var a = new Trip(trip)
       })
       dispatch({
         type: 'GET_TRIPS_FULFILLED',

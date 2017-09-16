@@ -34,7 +34,8 @@ class ListToday extends React.Component {
 
   getTable(){
 
-    return this.props.all_trips.map((job, index)=>{
+    return this.props.today_trips.map((job, index)=>{
+    // return this.props.all_trips.map((job, index)=>{
      if(!mapObjectInstances.today.initialRoutesRendered){
             mapObjectInstances.today.drawRouteWithGoogleResponse(job)
             if(index==this.props.all_trips.length-1) mapObjectInstances.today.initialRoutesRendered=true
@@ -90,7 +91,8 @@ const mapDispatchToProps=(dispatch)=>({
 })
 
 const mapStateToProps=(state)=>({
-  all_trips: state.common.all_trips, 
+  all_trips: state.common.all_trips,
+  today_trips: state.today.today_trips,
   current_today_truckflicker_job: state.common.current_today_truckflicker_job
 })
 

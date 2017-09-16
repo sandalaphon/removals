@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170916100617) do
+ActiveRecord::Schema.define(version: 20170916151639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,6 +131,9 @@ ActiveRecord::Schema.define(version: 20170916100617) do
     t.jsonb    "google_directions_to_branch",   default: "{}"
     t.jsonb    "google_directions_from_branch", default: "{}"
     t.jsonb    "google_waypoints_directions"
+    t.integer  "seconds_to_load"
+    t.integer  "seconds_to_unload"
+    t.bigint   "dateMilli"
     t.index ["branch_id"], name: "index_trips_on_branch_id", using: :btree
   end
 

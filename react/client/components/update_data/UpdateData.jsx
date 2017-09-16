@@ -36,8 +36,71 @@ constructor(props){
     return branchToReturn
   }
 
-  getGoogleDirectionsAndSendToRailsDb(json){
+  assignLoadingAndUnloadingTimes(json){
+    var seconds_to_load     = this.getLoadingTime(json)
+    var seconds_to_unload   = this.getUnloadingTime(json)
+    console.log('seconds to load', seconds_to_load)
+    json['seconds_to_load']   = seconds_to_load
+    json['seconds_to_unload'] = seconds_to_unload
+    console.log('json', json)
+    return json
+  }
 
+  getLoadingTime(json){
+    console.log('json.men_requested', typeof json.men_requested)
+    console.log('json.voume', typeof json.volume)
+    switch (+json.men_requested){
+      case 2: //2 men load 150 cuft per hour
+      console.log('2')
+      return Math.ceil((+json.volume/150)*360)
+      break;
+      case 3: //3 men load 250 cuft per hour
+      console.log('3')
+      return Math.ceil((+json.volume/250)*360)
+      break;
+      case 4: // 4 men load 350 cuft per hour
+      console.log('4')
+      return Math.ceil((+json.volume/350)*360)
+      case 5: // 4 men load 450 cuft per hour
+      console.log('5')
+      return Math.ceil((+json.volume/450)*360)
+      break;
+      default:
+      console.log('default')
+    }
+  }
+
+  getUnloadingTime(json){
+    switch (+json.men_requested){
+      case 2: //2 men unload 200 cuft per hour
+      return Math.ceil((+json.volume/200)*360)
+      break;
+      case 3: //3 men unload 300 cuft per hour
+      return Math.ceil((+json.volume/300)*360)
+      break;
+      case 4: // 4 men unload 400 cuft per hour
+      return Math.ceil((+json.volume/400)*360)
+      break;
+      case 5: // 4 men unload 500 cuft per hour
+      return Math.ceil((+json.volume/500)*360)
+      break;
+    }
+  }
+
+  assignDateMilli(json){
+    console.log('json.date', json.date)
+    var date = new Date(json.date)
+    date.setHours(0,0,0,0)
+    console.log('date', +date)
+    json['dateMilli'] = +date
+    return json
+  }
+
+
+
+  getGoogleDirectionsAndSendToRailsDb(json){
+    json = this.assignLoadingAndUnloadingTimes(json)
+    json = this.assignDateMilli(json)
     var branch           = this.getHomeBranchOfJob(json.branch_code)
     var collectionString = json.collection_postcode ? json.collection_postcode : json.collection_address
     var deliveryString   = json.delivery_postcode ? json.delivery_postcode : json.delivery_address
@@ -49,7 +112,7 @@ constructor(props){
     // Promise.all([toCollection, carry, backToBase, waypoints_route])
     Promise.all([ waypoints_route])
     .then((values)=>{
-      console.log('values', values)
+      // console.log('values', values)
       // json['google_directions_from_branch'] = JSON.stringify(values[0])
       // json['google_directions']             = JSON.stringify(values[1])
       // json['google_directions_to_branch']   = JSON.stringify(values[2])

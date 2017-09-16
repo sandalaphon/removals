@@ -3,35 +3,38 @@ import store from '../store.js'
 import { dispatch } from 'redux';
 import { toggleBranchesOnMap, toggleFullScreenMap, toggleBranchListDisplayed, setSliderSecondsFromStart } from '../actions/_common_actions';
 import {getComplementaryColour} from '../reducers/_helpers';
-import {placeMarkers} from './sliderFunctions'
+// import {placeMarkers} from './sliderFunctions'
+import Animation from '../models/animation'
 
 let mapObjectInstances = {}
 
 class MapObject{
   constructor(map, pathname){
 
-    this.map = map,
-    this.directionsService = new google.maps.DirectionsService(),
-    this.renderedRoutes = [],
-    this.bounds= new google.maps.LatLngBounds(),
-    this.markers = [],
-    this.postcodeMarkers = [],
-    this.sliderMarkers = [],
-    this.branchesMarkers = [],
-    this.highlightedMarkers = [],
-    this.branchesButtonExists = false,
+    this.map                    = map,
+    this.pathname               = pathname,
+    this.animation              = new Animation(this, pathname)
+    this.directionsService      = new google.maps.DirectionsService(),
+    this.renderedRoutes         = [],
+    this.bounds                 = new google.maps.LatLngBounds(),
+    this.markers                = [],
+    this.postcodeMarkers        = [],
+    this.sliderMarkers          = [],
+    this.branchesMarkers        = [],
+    this.highlightedMarkers     = [],
+    this.branchesButtonExists   = false,
     this.fullScreenButtonExists = false,
-    this.pathname = pathname,
-    this.fromBranchesRoutes=[],
-    this.toBranchesRoutes=[],
-    this.toBranchesMarkers=[],
-    this.fromBranchesMarkers=[],
-    this.branchesVisible = undefined,
-    this.branchListVisible = false,
-    this.initialRoutesRendered = false,
-    this.animeFrames =[],
-    this.surveyRoutesByCode = {},
-    this.survey_markers = []
+    this.fromBranchesRoutes     = [],
+    this.toBranchesRoutes       = [],
+    this.toBranchesMarkers      = [],
+    this.fromBranchesMarkers    = [],
+    this.branchesVisible        = undefined,
+    this.branchListVisible      = false,
+    this.initialRoutesRendered  = false,
+    this.animeFrames            = [],
+    this.surveyRoutesByCode     = {},
+    this.survey_markers         = []
+    
 
     if(!mapObjectInstances.pathname){
       mapObjectInstances[pathname]=this
@@ -666,7 +669,7 @@ animateRoute(pathname){
   var sliderSecondsFromStart= this.getSliderSecondsFromStart()
 for(var i=sliderSecondsFromStart; i<43200; i=i+600){
   counter = (i-sliderSecondsFromStart)/4
-  var timeout = window.setTimeout(this.callPlaceMarker.bind(placeMarkers, i, pathname) , counter)
+  var timeout = window.setTimeout(this.callPlaceMarker.bind(this, i, pathname) , counter)
   this.animeFrames.push(timeout)
 }
 }
@@ -679,7 +682,8 @@ pauseAnime(){
 
 callPlaceMarker(secondsFromStart, pathname){
   store.dispatch(setSliderSecondsFromStart(secondsFromStart, pathname))
-  placeMarkers(secondsFromStart, pathname)
+  this.animation.placeMarkers(secondsFromStart)
+  // placeMarkers(secondsFromStart, pathname)
 }
 
 getSliderSecondsFromStart(){
