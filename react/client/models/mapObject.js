@@ -144,18 +144,40 @@ class MapObject{
     return branchToReturn
   }
 
+  // drawRouteWithGoogleResponse(job, addStartFinishMarkers = true){
+  //     if(job.hidden) return
+  //   var {start_location, end_location} = job.google_directions.routes[ 0 ].legs[ 0 ]
+
+  // if(addStartFinishMarkers){
+  //   this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this), 'S', getComplementaryColour(job.colour))
+  //       this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this),'F', getComplementaryColour(job.colour))
+  //     }
+
+  //   this.drawRoute(job.google_directions, getComplementaryColour(job.colour))
+  //   this.drawToAndFromBranch(job)
+  // }
+
+  ///////////////////
+
   drawRouteWithGoogleResponse(job, addStartFinishMarkers = true){
       if(job.hidden) return
-    var {start_location, end_location} = job.google_directions.routes[ 0 ].legs[ 0 ]
+    var {start_location, end_location} = job.google_waypoints_directions.routes[ 0 ].legs[ 1 ]
+    var branch = this.getBranchById(job.branch_id)
 
   if(addStartFinishMarkers){
     this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this), 'S', getComplementaryColour(job.colour))
         this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this),'F', getComplementaryColour(job.colour))
+        this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
       }
 
-    this.drawRoute(job.google_directions, getComplementaryColour(job.colour))
-    this.drawToAndFromBranch(job)
+    this.drawRoute(job.google_waypoints_directions, getComplementaryColour(job.colour))
+    // this.drawToAndFromBranch(job)
   }
+
+  
+
+
+  /////////////////////
 
   drawRouteWithWayPoints(startLatLng, finishLatLng, waypointLatLngArray, polylineColour, dayAndSurveyorUniqueCode){
   
@@ -209,26 +231,25 @@ class MapObject{
    
   }
 
-  drawToAndFromBranch(job){
-    var showToBranch = store.getState().common.show_to_branch
-    var showFromBranch = store.getState().common.show_from_branch
-    if(!showFromBranch&&!showToBranch) return
-      var branch = this.getBranchById(job.branch_id)
-    // var branchLatLng = JSON.parse(branch.latlng)
-    if(showFromBranch){
-      this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
-      this.drawRoute(job.google_directions_from_branch, getComplementaryColour(job.colour))
-    }
-    if(showToBranch){
-      this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.toBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
-      this.drawRoute(job.google_directions_to_branch, getComplementaryColour(job.colour))
-    }
+  // drawToAndFromBranch(job){
+  //   var showToBranch = store.getState().common.show_to_branch
+  //   var showFromBranch = store.getState().common.show_from_branch
+  //   if(!showFromBranch&&!showToBranch) return
+  //     var branch = this.getBranchById(job.branch_id)
+  //   // var branchLatLng = JSON.parse(branch.latlng)
+  //   if(showFromBranch){
+  //     this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+  //     this.drawRoute(job.google_directions_from_branch, getComplementaryColour(job.colour))
+  //   }
+  //   if(showToBranch){
+  //     this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.toBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+  //     this.drawRoute(job.google_directions_to_branch, getComplementaryColour(job.colour))
+  //   }
 
-  }
+  // }
 
   placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null, labelText=null, labelTextColour){
-    console.log('placing marker', this.pathname)
-    // console.log(coords, message,instance_variable_marker_array)
+    
     var marker = new google.maps.Marker({
       position: coords,
       map: this.map,

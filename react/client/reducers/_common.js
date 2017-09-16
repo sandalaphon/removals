@@ -203,6 +203,9 @@ function handleTripData(state = {
         trip.google_directions_to_branch = google_directions_to_branch
         var google_directions_from_branch= JSON.parse(trip.google_directions_from_branch)
         trip.google_directions_from_branch = google_directions_from_branch
+        
+        var google_waypoints_directions= JSON.parse(trip.google_waypoints_directions)
+        trip.google_waypoints_directions = google_waypoints_directions
        
         trip.colour=helpers.getUniqueColor(index)
         return trip

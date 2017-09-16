@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-// export function setTodaySliderSecondsFromStart(secondsPassed){
-//   return {
-//     type: 'SET_TODAY_SLIDER_SECONDS_FROM_START',
-//     payload: secondsPassed
-//   }
-// }
+export function setTodayDateSelector(milliSeconds){
+  return {
+    type: 'SET_TODAY_DATE_SELECTOR',
+    payload: milliSeconds
+  }
+}

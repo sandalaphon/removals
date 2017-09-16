@@ -2,21 +2,6 @@ import axios from 'axios'
 import Appointment from '../models/appointments'
 import Trip from '../models/trip'
 
-///////////////////////
-// export function renderJobList(){
-//   return {
-//     type: 'RENDER_JOB_LIST'
-//   }
-// }
-//////////////////////////////////////
-// export function setBranchDisplayStatus(pathname, showing){
-//   return {
-//     type: 'SET_BRANCH_DISPLAYED_STATUS',
-//     showing,
-//     pathname
-//   }
-// }
-
 export function setSliderSecondsFromStart(secondsPassed, pathname){
   return {
     type: 'SET_SLIDER_SECONDS_FROM_START',
@@ -136,7 +121,8 @@ export function getAllTripsFromRails(){
           trip.google_directions,
           trip.branch_code,
           trip.google_directions_to_branch,
-          trip.google_directions_from_branch
+          trip.google_directions_from_branch,
+          trip.google_waypoints_directions
           )
       })
       dispatch({
@@ -188,26 +174,6 @@ export function getAllSurveysFromRails(){
   })
   }
 }
-
-// export function getSurveyObjectFromRails(){
-  
-//   return function(dispatch){
-//     const url = 'http://localhost:5000/api/survey_object'
-//     axios.get(url, {withCredentials:true})
-//   .then((response)=>{
-//     dispatch({
-//       type: 'GET_SURVEY_OBJECT_FULFILLED',
-//       payload: response.data
-//     })
-//   })
-//   .catch((error)=>{
-//     dispatch({
-//       type: 'GET_SURVEYS_OBJECT_REJECTED',
-//       payload: error
-//     })
-//   })
-//   }
-// }
 
 export function getAllEmployeesFromRails(){
   return function(dispatch){

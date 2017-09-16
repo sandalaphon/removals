@@ -18,7 +18,6 @@ constructor(props){
 
   handleFileSubmitClick(){
 
-    // this.trips = []
     var file = document.getElementById('file').files[0]
     var reader = new FileReader()
     reader.readAsText(file)
@@ -27,7 +26,6 @@ constructor(props){
   logger(input){
   }
 
-  
   getHomeBranchOfJob(branchCode){
     var branchToReturn
     this.props.all_branches.forEach((branch)=>{
@@ -40,25 +38,29 @@ constructor(props){
 
   getGoogleDirectionsAndSendToRailsDb(json){
 
-    var branch = this.getHomeBranchOfJob(json.branch_code)
+    var branch           = this.getHomeBranchOfJob(json.branch_code)
     var collectionString = json.collection_postcode ? json.collection_postcode : json.collection_address
-    var deliveryString = json.delivery_postcode ? json.delivery_postcode : json.delivery_address
-    var toCollection = this.getGoogleResponsePromise(branch.postcode, collectionString)
-    var carry        = this.getGoogleResponsePromise(collectionString, deliveryString)
-    var backToBase   = this.getGoogleResponsePromise(deliveryString, branch.postcode)
+    var deliveryString   = json.delivery_postcode ? json.delivery_postcode : json.delivery_address
+    // var toCollection     = this.getGoogleResponsePromise(branch.postcode, collectionString)
+    // var carry            = this.getGoogleResponsePromise(collectionString, deliveryString)
+    // var backToBase       = this.getGoogleResponsePromise(deliveryString, branch.postcode)
+    var waypoints_route  = this.getGoogleWaypointsResponsePromise(branch.postcode, collectionString, deliveryString)
 
-    Promise.all([toCollection, carry, backToBase])
+    // Promise.all([toCollection, carry, backToBase, waypoints_route])
+    Promise.all([ waypoints_route])
     .then((values)=>{
-      json['google_directions_from_branch'] = JSON.stringify(values[0])
-      json['google_directions']             = JSON.stringify(values[1])
-      json['google_directions_to_branch']   = JSON.stringify(values[2])
+      console.log('values', values)
+      // json['google_directions_from_branch'] = JSON.stringify(values[0])
+      // json['google_directions']             = JSON.stringify(values[1])
+      // json['google_directions_to_branch']   = JSON.stringify(values[2])
+      // json['google_waypoints_directions']   = JSON.stringify(values[3])
+      json['google_waypoints_directions']   = JSON.stringify(values[0])
     })
     .then((value)=>{this.props.actions.update_data_actions.sendSingleTripToRails(json)})
   }
 
   getGoogleResponsePromise(startString, finishString){
     return new Promise((resolve, reject)=>{
-      // setTimeout(()=>{
       var directionsService = new google.maps.DirectionsService()
       var directionInput = {
         origin: startString,
@@ -76,7 +78,75 @@ constructor(props){
           reject(status)
         }
       })
-      // }, 1000*multiple)
+    })
+  }
+
+  getGoogleWaypointsResponsePromise(branch_postcode, collectionString, deliveryString){
+    var waypts = [{location: collectionString}, {location: deliveryString}]
+    return new Promise((resolve, reject)=>{
+      var directionsService = new google.maps.DirectionsService()
+      var directionInput = {
+        origin: branch_postcode,
+        destination: branch_postcode,
+        waypoints: waypts,
+        travelMode: 'DRIVING',
+        avoidTolls: true
+      }
+
+      console.log('directionInput', directionInput)
+
+      directionsService.route(directionInput, function(response, status){
+        if(status==='OK'){
+            resolve(response)
+        }else{
+          reject(status)
+        }
+      })
+    })
+  }
+
+  calculateSecondsSince1970(json, sendTrip=true){
+    var dateString = json.appointment_date //"2017-10-05"
+    var timeString = json.appointment_time //"16:00"
+    var year  = +dateString.substring(0,4)
+    var month = (+dateString.substring(5,7)) - 1
+    var day   = +dateString.substring(8)
+    var hours = +timeString.substring(0,2)
+    var minutes = +timeString.substring(3)
+
+    var date = new Date(year, month, day, hours, minutes)
+    var milliseconds = date.valueOf()
+    json["milliseconds_since_1970"] = milliseconds
+    if(sendTrip){
+      this.completedSurveyJson.push(json)
+    }else{
+      return milliseconds
+    }
+  }
+
+  convertToJson(reader, instance_variable_array, callback){
+    var csv = new Converter()
+    var text = event.target.result
+    csv
+    .fromString(text)
+    .on('json', (json) =>{ 
+      instance_variable_array.push(json)
+
+    })
+    .on('done', ()=>{ 
+      
+      if(instance_variable_array==this.surveys){
+
+        callback.call(this)
+      }else{
+
+        instance_variable_array.forEach((json, index)=>{
+          setTimeout(()=>{
+            callback.call(this, json)
+          }, 3000*index)
+                   
+        })
+      }   
     })
   }
 
@@ -133,73 +203,25 @@ surveysCallback1(){
          })
 
        }, 1000*multiple)
+    }) 
+  }
+
+// sortSurveysByTime(object){
+//   for(var branches in object){
+ 
+//     for(var eachDay in object[branches]){
      
-    })
-    
-  }
-
-calculateSecondsSince1970(json, sendTrip=true){
-  var dateString = json.appointment_date //"2017-10-05"
-  var timeString = json.appointment_time //"16:00"
-  var year  = +dateString.substring(0,4)
-  var month = (+dateString.substring(5,7)) - 1
-  var day   = +dateString.substring(8)
-  var hours = +timeString.substring(0,2)
-  var minutes = +timeString.substring(3)
-
-  var date = new Date(year, month, day, hours, minutes)
-  var milliseconds = date.valueOf()
-  json["milliseconds_since_1970"] = milliseconds
-  if(sendTrip){
-    this.completedSurveyJson.push(json)
-  }else{
-    return milliseconds
-  }
-}
-
-convertToJson(reader, instance_variable_array, callback){
-  var csv = new Converter()
-  var text = event.target.result
-  csv
-  .fromString(text)
-  .on('json', (json) =>{ 
-    instance_variable_array.push(json)
-
-  })
-  .on('done', ()=>{ 
-    
-    if(instance_variable_array==this.surveys){
-
-      callback.call(this)
-    }else{
-
-      instance_variable_array.forEach((json, index)=>{
-        setTimeout(()=>{
-          callback.call(this, json)
-        }, 2000*index)
-                 
-      })
-    }   
-  })
-}
-
-
-sortSurveysByTime(object){
-  for(var branches in object){
-    console.log('branches', object[branches])
-    for(var eachDay in object[branches]){
-      console.log('eachDay', object[branches][eachDay])
-      for(var surveyor_code in object[branches][eachDay]){
-        console.log('should be array of surveys', object[branches][eachDay][surveyor_code])
-        object[branches][eachDay][surveyor_code].sort((a,b)=>{
-          if(a.milliseconds_since_1970>b.milliseconds_since_1970) return 1
-            if(a.milliseconds_since_1970<b.milliseconds_since_1970) return -1
-              if(a.milliseconds_since_1970==b.milliseconds_since_1970) return 0
-        })
-      }
-    }
-  }
-}
+//       for(var surveyor_code in object[branches][eachDay]){
+       
+//         object[branches][eachDay][surveyor_code].sort((a,b)=>{
+//           if(a.milliseconds_since_1970>b.milliseconds_since_1970) return 1
+//             if(a.milliseconds_since_1970<b.milliseconds_since_1970) return -1
+//               if(a.milliseconds_since_1970==b.milliseconds_since_1970) return 0
+//         })
+//       }
+//     }
+//   }
+// }
 
 getDayOfSurvey(milliseconds){
   var dateObject = new Date(milliseconds)

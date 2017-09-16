@@ -116,7 +116,8 @@ def trip_params
     :google_directions,
     :branch_code,
     :google_directions_from_branch,
-    :google_directions_to_branch
+    :google_directions_to_branch,
+    :google_waypoints_directions
     ])
 end
 

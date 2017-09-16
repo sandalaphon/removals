@@ -3,6 +3,7 @@ import Gmap from '../Gmap'
 import Filter from '../planner/Filter'
 import ListToday from './ListToday'
 import SliderToday from './SliderToday'
+import TodayDateSelector from './TodayDateSelector'
 import TruckFlicker from '../TruckFlicker'
 import BranchesInfo   from '../BranchesInfo'
 
@@ -31,6 +32,7 @@ class Today extends React.Component {
       </div>
         
       <div className='grid-item-today-left width50vw'>
+        <TodayDateSelector/>
         <ListToday />
          <div 
              className = 'branch-info-table-today hidden' 
