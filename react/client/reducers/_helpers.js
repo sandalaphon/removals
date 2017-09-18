@@ -12,6 +12,7 @@ export function getUniqueColor(index){
   if(index<24){
     return colours[index]
   }else{
+    
     var newColour =getRandomColor()
       if(!colours.includes(newColour)){
         colours.push(newColour)

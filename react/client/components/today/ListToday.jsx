@@ -33,11 +33,14 @@ class ListToday extends React.Component {
   }
 
   getTable(){
-
+    
     return this.props.today_trips.map((job, index)=>{
     // return this.props.all_trips.map((job, index)=>{
      if(!mapObjectInstances.today.initialRoutesRendered){
-            mapObjectInstances.today.drawRouteWithGoogleResponse(job)
+      if(!this.props.current_today_truckflicker_job){
+        mapObjectInstances.today.drawRouteWithGoogleResponse(job)
+      }
+            
             if(index==this.props.all_trips.length-1) mapObjectInstances.today.initialRoutesRendered=true
           }
       var truckFlickerJob = ''

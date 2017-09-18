@@ -52,18 +52,18 @@ constructor(props){
     switch (+json.men_requested){
       case 2: //2 men load 150 cuft per hour
       console.log('2')
-      return Math.ceil((+json.volume/150)*360)
+      return Math.ceil((+json.volume/150)*3600)
       break;
       case 3: //3 men load 250 cuft per hour
       console.log('3')
-      return Math.ceil((+json.volume/250)*360)
+      return Math.ceil((+json.volume/250)*3600)
       break;
       case 4: // 4 men load 350 cuft per hour
       console.log('4')
-      return Math.ceil((+json.volume/350)*360)
-      case 5: // 4 men load 450 cuft per hour
+      return Math.ceil((+json.volume/350)*3600)
+      case 5: // 5 men load 450 cuft per hour
       console.log('5')
-      return Math.ceil((+json.volume/450)*360)
+      return Math.ceil((+json.volume/450)*3600)
       break;
       default:
       console.log('default')
@@ -73,16 +73,16 @@ constructor(props){
   getUnloadingTime(json){
     switch (+json.men_requested){
       case 2: //2 men unload 200 cuft per hour
-      return Math.ceil((+json.volume/200)*360)
+      return Math.ceil((+json.volume/200)*3600)
       break;
       case 3: //3 men unload 300 cuft per hour
-      return Math.ceil((+json.volume/300)*360)
+      return Math.ceil((+json.volume/300)*3600)
       break;
       case 4: // 4 men unload 400 cuft per hour
-      return Math.ceil((+json.volume/400)*360)
+      return Math.ceil((+json.volume/400)*3600)
       break;
-      case 5: // 4 men unload 500 cuft per hour
-      return Math.ceil((+json.volume/500)*360)
+      case 5: // 5 men unload 500 cuft per hour
+      return Math.ceil((+json.volume/500)*3600)
       break;
     }
   }

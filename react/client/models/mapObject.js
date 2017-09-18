@@ -596,8 +596,14 @@ getTruckMarker(colour, leg='carry'){
     return this.truckSymbol3(getComplementaryColour(colour), colour, 1, 1.5)
     // return this.truckSymbol3('black', colour, .2, 1.5)
     break;
+    case 'loading':
+    return this.truckSymbol3(colour, 'black', 1, .3)
+    break;
     case 'carry':
     return this.truckSymbol3(colour, 'black', 1, .3)
+    break;
+    case 'unloading':
+    return this.truckSymbol3('white', colour, .3, 1.5)
     break;
     case 'to_branch':
     return this.truckSymbol3('white', colour, .3, 1.5)

@@ -30,7 +30,7 @@ class TruckFlicker extends React.Component {
       case 'today':
       this.current_truckflicker_job = this.props.trips.current_today_truckflicker_job
       this.mapObject = mapObjectInstances.today
-      this.relevantArray = this.props.trips.all_trips
+      this.relevantArray = this.props.today_trips
       this.branchStatus = this.props.trips.branches_status_today
       break;
       case 'planner':
@@ -169,6 +169,7 @@ const mapDispatchToProps=(dispatch)=>({
 
 const mapStateToProps=(state)=>({
   trips: state.common,
+  today_trips: state.today.today_trips,
   best_pick_up_jobs: state.partload.best_pick_up_jobs
 })
 

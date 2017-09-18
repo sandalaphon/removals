@@ -33,8 +33,20 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
 
       var sliderMarkerObject
       var {steps, leg, secondsFromStart} = this.getStepsAndLegAndSecondsFromStartWaypoints(secondsFromStart, trip)
-      var {fractionOfStep, currentStep}  = this.getCurrentStepAndFractionOfStep(steps, secondsFromStart)
-      if(!fractionOfStep) return
+      if(steps){
+        var {fractionOfStep, currentStep}  = this.getCurrentStepAndFractionOfStep(steps, secondsFromStart)
+      }else{
+        switch(leg){
+          case 'loading':
+          return {markerCoords: trip.google_waypoints_directions.routes[0].legs[1].start_location, colour: trip.colour, message: trip.client_name, index, leg}
+          break;
+          case 'unloading':
+          return {markerCoords: trip.google_waypoints_directions.routes[0].legs[1].end_location, colour: trip.colour, message: trip.client_name, index, leg}
+          break;
+        }
+      }
+     
+      if(fractionOfStep==undefined) return
       var indexOfPath                    = Math.floor(fractionOfStep*currentStep.path.length)
 
       var markerCoords                   = ({lat: currentStep.path[indexOfPath].lat, lng: currentStep.path[indexOfPath].lng})
@@ -50,14 +62,13 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
     var stepCompleted              = false
     steps.forEach((step, index)=>{
       if(stepCompleted) return
-       secondsStartToEndOfStep    += step.duration.value
-       if(secondsStartToEndOfStep>secondsFromStart){
-        fractionOfStep            = (  secondsFromStart  -  (secondsStartToEndOfStep-step.duration.value))/step.duration.value
-        currentStep               = steps[index]
-        stepCompleted             = true
+       secondsStartToEndOfStep     += step.duration.value
+       if(secondsStartToEndOfStep  > secondsFromStart){
+        fractionOfStep             = (  secondsFromStart  -  (secondsStartToEndOfStep - step.duration.value)) / step.duration.value
+        currentStep                = steps[index]
+        stepCompleted              = true
        }
     })
-
 
     return {fractionOfStep, currentStep}
   }
@@ -99,19 +110,27 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
     var carry_duration_seconds       = carry.duration.value
     var to_branch_duration_seconds   = to_branch.duration.value
 
-    if(secondsFromStart<=from_branch_duration_seconds){
-      var {steps} = from_branch
-      var leg = 'from_branch'
-    }else if(secondsFromStart<=carry_duration_seconds+from_branch_duration_seconds){
-      secondsFromStart=secondsFromStart-from_branch_duration_seconds
-      var {steps} = carry
-      var leg = 'carry'
-    }else{
-      secondsFromStart=secondsFromStart-from_branch_duration_seconds-carry_duration_seconds
-      var {steps} = to_branch
-      var leg = 'to_branch'
-    }
+    console.log('trip.seconds_to_load', trip.seconds_to_load)
+    console.log('trip.seconds_to_unload', trip.seconds_to_unload)
 
+    if(secondsFromStart<=from_branch_duration_seconds){
+      var {steps} =  from_branch
+      var leg     = 'from_branch'
+    }else if(secondsFromStart <= from_branch_duration_seconds + trip.seconds_to_load){
+      var steps   =  null
+      var leg     = 'loading'
+    }else if(secondsFromStart <= carry_duration_seconds + from_branch_duration_seconds + trip.seconds_to_load){
+      secondsFromStart = secondsFromStart - from_branch_duration_seconds - trip.seconds_to_load
+      var {steps} =  carry
+      var leg     = 'carry'
+    }else if(secondsFromStart <= carry_duration_seconds + from_branch_duration_seconds + trip.seconds_to_load +trip.seconds_to_unload){
+      var steps   =  null
+      var leg     = 'unloading'
+    }else{
+      secondsFromStart = secondsFromStart - from_branch_duration_seconds - carry_duration_seconds - trip.seconds_to_load - trip.seconds_to_unload
+      var {steps} =  to_branch
+      var leg     = 'to_branch'
+    }
 
     return {steps, leg, secondsFromStart}
   }
@@ -135,7 +154,7 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
 
       break;
       case 'today':
-      arrayOfTrips = store.getState().common.all_trips
+      arrayOfTrips = store.getState().today.today_trips
       currentTruckFlickerJob = store.getState().common.current_today_truckflicker_job
     
       break;
