@@ -31,6 +31,7 @@ class TodayDateSelector extends React.Component{
      end.setHours(0,0,0,0)
      this.props.actions.today_actions.setTodayDateRange({start_date: +start, end_date: +end})
      this.props.actions.today_actions.setTodayTrips()
+     this.props.actions.common_actions.setCurrentTruckFlickerJob('', 'today')
    }
 
    handleDateClick(e){

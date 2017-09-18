@@ -11,6 +11,7 @@ handleBranchSelectorChange(e){
   mapObjectInstances.today.clearMap()
   this.props.actions.today_actions.setTodayBranchSelected(e.target.value)
   this.props.actions.today_actions.setTodayTrips()
+  this.props.actions.common_actions.setCurrentTruckFlickerJob('', 'today')
 }
 
 getBranchesAsOptions(){
