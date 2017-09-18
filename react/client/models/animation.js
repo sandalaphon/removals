@@ -110,9 +110,6 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
     var carry_duration_seconds       = carry.duration.value
     var to_branch_duration_seconds   = to_branch.duration.value
 
-    console.log('trip.seconds_to_load', trip.seconds_to_load)
-    console.log('trip.seconds_to_unload', trip.seconds_to_unload)
-
     if(secondsFromStart<=from_branch_duration_seconds){
       var {steps} =  from_branch
       var leg     = 'from_branch'

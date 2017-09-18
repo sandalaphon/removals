@@ -4,6 +4,7 @@ import * as commonActions from '../actions/_common_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
+import Animation from '../models/animation'
 
 class TruckFlicker extends React.Component {
 
@@ -118,22 +119,34 @@ class TruckFlicker extends React.Component {
     return jobToReturn
   }
 
-  toFromBranch(event){
-    event.preventDefault()
-    this.props.actions.common_actions.setShowFromBranch()
-    this.props.actions.common_actions.setShowToBranch()
-    this.showAllRoutes()
+  resetToStart(){
+    this.setInstanceVariables()
+    if(this.props.trips.animation_running){
+      this.mapObject.pauseAnime()
+      this.props.actions.common_actions.setSliderSecondsFromStart(0, this.pathname)
+      this.mapObject.animateRoute(this.pathname)
+    }else{
+      this.props.actions.common_actions.setSliderSecondsFromStart(0, this.pathname)
+      this.mapObject.animateRoute(this.pathname)
+      setTimeout(this.mapObject.pauseAnime.bind(this.mapObject), 0)
+    }
   }
 
-  // handleShowFromBranch(event){
-  //   event.preventDefault()
-  //   this.props.actions.common_actions.setShowFromBranch()
-  // }
-
-  // handleShowToBranch(event){
-  //   event.preventDefault()
-  //   this.props.actions.common_actions.setShowToBranch()
-  // }
+  setToEnd(){
+    this.setInstanceVariables()
+    if(this.props.trips.animation_running){
+      this.mapObject.pauseAnime()
+      this.props.actions.common_actions.setSliderSecondsFromStart(43200, this.pathname)
+      this.props.actions.common_actions.toggleAnimationRunning()
+      this.mapObject.animation.placeMarkers(43200)
+      // this.mapObject.animateRoute(this.pathname)
+    }else{
+      this.props.actions.common_actions.setSliderSecondsFromStart(43200, this.pathname)
+      this.mapObject.animation.placeMarkers(43200)
+      // this.mapObject.animateRoute(this.pathname)
+      // setTimeout(this.mapObject.pauseAnime.bind(this.mapObject), 0)
+    }
+  }
 
   handleAnimateClick(event){
     event.preventDefault()
@@ -147,15 +160,52 @@ class TruckFlicker extends React.Component {
    
   }
 
+  handleAccelerationClick(e){
+    e.preventDefault()
+    this.props.actions.common_actions.setAnimationSpeed(this.pathname, 1)
+    this.mapObject.pauseAnime()
+    this.mapObject.animateRoute(this.pathname)
+  }
+
+  handleDecelerationClick(e){
+    e.preventDefault()
+    this.props.actions.common_actions.setAnimationSpeed(this.pathname, -1)
+    this.mapObject.pauseAnime()
+    this.mapObject.animateRoute(this.pathname)
+  }
+  
+
   render(){
     // this.setInstanceVariables()
+    var playOrPauseIcon = this.props.trips.animation_running ? 
+    <i className ="fa fa-pause fa-lg play_pause" 
+    aria-hidden="true" 
+    onClick={this.handleAnimateClick.bind(this)}></i> : 
+    <i className ="fa fa-play fa-lg play_pause"
+    aria-hidden="true" 
+    onClick={this.handleAnimateClick.bind(this)}></i>
+
+
     return (
       <div className = 'grid-item-truck-flicker'>
-      <button onClick={this.showAllRoutes.bind(this)}>Show All Routes</button>
-      <button onClick={this.handleAnimateClick.bind(this)}>Animate</button>
-      <button onClick={this.toFromBranch.bind(this)}>To From Branch</button>
-      <button onClick={this.handlePreviousClick.bind(this)}>Previous</button>
-      <button onClick={this.handleNextClick.bind(this)}>Next</button>
+      <i class="fa fa-arrow-left fa-lg" 
+      aria-hidden="true" 
+      onClick={this.handlePreviousClick.bind(this)}></i>
+
+      <i className="fa fa-step-backward fa-lg" 
+      aria-hidden="true" 
+      onClick = {this.resetToStart.bind(this)}></i>
+      <i className="fa fa-backward fa-lg" 
+      aria-hidden="true" 
+      onClick = {this.handleDecelerationClick.bind(this)}></i>
+      {playOrPauseIcon}
+      <i className="fa fa-forward fa-lg" 
+      aria-hidden="true"  
+      onClick = {this.handleAccelerationClick.bind(this)}></i>
+      <i className="fa fa-step-forward fa-lg"
+      aria-hidden="true"
+      onClick = {this.setToEnd.bind(this)}></i>
+      <i class="fa fa-arrow-right fa-lg" aria-hidden="true" onClick={this.handleNextClick.bind(this)}></i>
       </div>
       );
   }

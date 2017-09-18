@@ -16,6 +16,14 @@ export function toggleAnimationRunning(){
   }
 }
 
+export function setAnimationSpeed(pathname, increment){
+  return {
+    type: 'SET_ANIMATION_SPEED',
+    pathname,
+    increment
+  }
+}
+
 export function toggleBranchListDisplayed(pathname){
   return {
     type: 'TOGGLE_BRANCH_LIST_DISPLAYED',
@@ -30,17 +38,17 @@ export function toggleBranchesOnMap(pathname){
   }
 }
 
-export function setShowToBranch(){
-  return {
-    type: 'SET_SHOW_TO_BRANCH'
-  }
-}
+// export function setShowToBranch(){
+//   return {
+//     type: 'SET_SHOW_TO_BRANCH'
+//   }
+// }
 
-export function setShowFromBranch(){
-  return {
-    type: 'SET_SHOW_FROM_BRANCH'
-  }
-}
+// export function setShowFromBranch(){
+//   return {
+//     type: 'SET_SHOW_FROM_BRANCH'
+//   }
+// }
 
 export function toggleFullScreenMap(pathname){
   return {

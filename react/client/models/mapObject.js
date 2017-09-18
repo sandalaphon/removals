@@ -27,7 +27,7 @@ class MapObject{
     this.fromBranchesRoutes     = [],
     this.toBranchesRoutes       = [],
     this.toBranchesMarkers      = [],
-    this.fromBranchesMarkers    = [],
+    this.home_branch_of_route_markers    = [],
     this.branchesVisible        = undefined,
     this.branchListVisible      = false,
     this.initialRoutesRendered  = false,
@@ -62,6 +62,7 @@ class MapObject{
 
   clearMap(clearArrays=true, clearSliderMarkers = true){
     this.clearMarkers(this.markers, clearArrays)
+    this.clearMarkers(this.home_branch_of_route_markers, clearArrays)
     if(clearSliderMarkers) this.clearMarkers(this.sliderMarkers, clearArrays)
     this.clearMarkers(this.postcodeMarkers, clearArrays)
     this.clearMarkers(this.branchesMarkers, clearArrays)
@@ -170,7 +171,7 @@ class MapObject{
   if(addStartFinishMarkers){
     this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this), 'S', getComplementaryColour(job.colour))
         this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this),'F', getComplementaryColour(job.colour))
-        this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+        this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.home_branch_of_route_markers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
       }
 
     this.drawRoute(job.google_waypoints_directions, getComplementaryColour(job.colour))
@@ -241,7 +242,7 @@ class MapObject{
   //     var branch = this.getBranchById(job.branch_id)
   //   // var branchLatLng = JSON.parse(branch.latlng)
   //   if(showFromBranch){
-  //     this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.fromBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+  //     this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.home_branch_of_route_markers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
   //     this.drawRoute(job.google_directions_from_branch, getComplementaryColour(job.colour))
   //   }
   //   if(showToBranch){
@@ -670,11 +671,18 @@ truckSymbol3(fillColour, strokeColour='black', fillOpacityy=1, strokeWeightt=.3)
 }
 
 animateRoute(pathname){
-
+  var animation_speed ={
+    today:    store.getState().common.today_animation_speed,
+    planner:  store.getState().common.planner_animation_speed,
+    partload: store.getState().common.partload_animation_speed,
+    surveyor: store.getState().common.surveyor_animation_speed
+  }
+  
+  store.getState().common.today_seconds_from_start
   var counter = 0
   var sliderSecondsFromStart= this.getSliderSecondsFromStart()
 for(var i=sliderSecondsFromStart; i<43200; i=i+600){
-  counter = (i-sliderSecondsFromStart)/4
+  counter = Math.ceil((i-sliderSecondsFromStart)/animation_speed[pathname])
   var timeout = window.setTimeout(this.callPlaceMarker.bind(this, i, pathname) , counter)
   this.animeFrames.push(timeout)
 }

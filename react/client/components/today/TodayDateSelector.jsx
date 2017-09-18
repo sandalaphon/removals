@@ -7,7 +7,8 @@ import {mapObjectInstances} from '../../models/mapObject'
 // import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates'
 import moment from 'moment'
 // import 'react-dates/lib/css/_datepicker.css';
-import { defaultRanges, Calendar, DateRange } from 'react-date-range';
+// import { defaultRanges, Calendar, DateRange } from 'react-date-range';
+import { Calendar, DateRange } from 'react-date-range';
 
 
 class TodayDateSelector extends React.Component{
@@ -21,17 +22,18 @@ class TodayDateSelector extends React.Component{
   }
 
   handleChange(payload) {
- 
+ mapObjectInstances.today.clearMap()
      this.setState({
        'rangePicker' : payload
      });
+     this.props.actions.common_actions.setCurrentTruckFlickerJob('', 'today')
      var start = payload.startDate.toDate()
      start.setHours(0,0,0,0)
      var end = payload.endDate.toDate()
      end.setHours(0,0,0,0)
      this.props.actions.today_actions.setTodayDateRange({start_date: +start, end_date: +end})
      this.props.actions.today_actions.setTodayTrips()
-     this.props.actions.common_actions.setCurrentTruckFlickerJob('', 'today')
+     
    }
 
    handleDateClick(e){
@@ -69,10 +71,11 @@ class TodayDateSelector extends React.Component{
     var defined_ranges = {
       'Today': {'startDate': (now)=>{return now}, 'endDate': (now)=>{return now}},
       'Tomorrow': {'startDate': (now)=>{return now.add(1, 'days')},'endDate': (now)=>{return now.add(1, 'days')}}, 
-      'Next 7 Days': {'startDate': (now)=>{return now}, 'endDate': (now)=>{return now.add(7, 'days')}}
+      'Next 7 Days': {'startDate': (now)=>{return now}, 'endDate': (now)=>{return now.add(7, 'days')}},
+      'Next 14 Days': {'startDate': (now)=>{return now}, 'endDate': (now)=>{return now.add(14, 'days')}}
     }
    
-    console.log('defaultRanges', defaultRanges)
+
     const { rangePicker, linked, datePicker} = this.state;
     const format = 'dddd, D MMMM YYYY'
     this.date = new Date(this.props.today_date_selector)
@@ -81,11 +84,12 @@ class TodayDateSelector extends React.Component{
       <div>
       <input
       onClick = {this.handleDateClick.bind(this)}
-      size = {'25'}
+      size = {'28'}
       type='text'
       readOnly
       value={ rangePicker['startDate'] && rangePicker['startDate'].format(format).toString() }
     />
+    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
     <input
       onClick = {this.handleDateClick.bind(this)}
       size = {'28'}

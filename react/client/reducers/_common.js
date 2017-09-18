@@ -11,8 +11,8 @@ function handleTripData(state = {
   // branch_status_planner:0 ,
   all_trips: [],
   all_surveys: [],
-  show_to_branch: true,
-  show_from_branch: true,
+  // show_to_branch: true,
+  // show_from_branch: true,
   
   full_screen_map_today: false,
   full_screen_map_surveyor: false,
@@ -33,6 +33,11 @@ function handleTripData(state = {
   surveyor_seconds_from_start: 14400,
   partload_seconds_from_start: 14400,
   today_seconds_from_start: 14400,
+
+  today_animation_speed:    4,
+  planner_animation_speed:  4,
+  partload_animation_speed: 4,
+  surveyor_animation_speed: 4,
 
   asynch_loading_total: 0,
   survey_object: {},
@@ -80,6 +85,29 @@ function handleTripData(state = {
     
     case 'GET_SURVEYS_REJECTED':
     return {...state,  getSurveyError: action.payload}
+    break;
+
+    case 'SET_ANIMATION_SPEED':
+    var increment
+    switch(action.pathname){
+        
+            case 'partload':
+            increment = state.partload_animation_speed==1 && action.increment == -1 ? 0 : action.increment
+            return { ...state, partload_animation_speed: state.partload_animation_speed + increment}
+            break;
+            case 'today':
+            increment = state.today_animation_speed==1 && action.increment == -1 ? 0 : action.increment
+            return { ...state, today_animation_speed: state.today_animation_speed + increment}
+            break;
+            case 'planner':
+            increment = state.planner_animation_speed==1 && action.increment == -1 ? 0 : action.increment
+            return { ...state, planner_animation_speed: state.planner_animation_speed + increment}
+            break; 
+            case 'surveyor':
+            increment = state.surveyor_animation_speed==1 && action.increment == -1 ? 0 : action.increment
+            return { ...state, surveyor_animation_speed: state.surveyor_animation_speed + increment}
+            break;
+          }
     break;
 
 
@@ -169,17 +197,17 @@ function handleTripData(state = {
     return { ...state, full_screen_map: !state.full_screen_map}
     break;
 
-    case 'SET_SHOW_FROM_BRANCH':
-    return { ...state, show_from_branch: !state.show_from_branch}
-    break;
+    // case 'SET_SHOW_FROM_BRANCH':
+    // return { ...state, show_from_branch: !state.show_from_branch}
+    // break;
 
     case 'TOGGLE_ANIMATION_RUNNING':
     return { ...state, animation_running: !state.animation_running}
     break;
 
-    case 'SET_SHOW_TO_BRANCH':
-    return { ...state, show_to_branch: !state.show_to_branch}
-    break;
+    // case 'SET_SHOW_TO_BRANCH':
+    // return { ...state, show_to_branch: !state.show_to_branch}
+    // break;
 
 
     case 'SET_FILTER_SEARCH_STRING':

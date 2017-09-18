@@ -124,13 +124,64 @@ min-width:5vw;
 }
 
 .grid-item-truck-flicker{
+  display: grid;
   grid-area: fli;
-  border:1px solid yellow;
-  justify-self: center;
+  /*border:1px solid yellow;*/
+ 
   align-self: center;
   width: 1fr;
-
+  grid-template-areas:
+  "  a a a b b b c c c d d d e e e f f f g g g  "
+  
 }
+
+.show_all_routes_btn{
+  justify-self: center;
+  grid-area: btn;
+}
+
+
+
+.fa-arrow-left{
+  justify-self: center;
+  grid-area: a;
+}
+
+
+
+.fa-step-backward{
+  justify-self: center;
+  grid-area: b;
+}
+
+.fa-backward{
+  justify-self: center;
+  grid-area: c;
+}
+
+
+
+.play_pause{
+  justify-self: center;
+ grid-area: d;
+}
+
+.fa-forward{
+  justify-self: center;
+  grid-area: e;
+}
+
+.fa-step-forward{
+  justify-self: center;
+  grid-area: f;
+}
+
+.fa-arrow-right{
+  justify-self: center;
+  grid-area: g;
+}
+
+
 
 .grid-item-map {
   /*grid-area: map;*/

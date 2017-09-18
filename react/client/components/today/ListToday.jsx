@@ -33,16 +33,24 @@ class ListToday extends React.Component {
   }
 
   getTable(){
+
+    if(!this.props.current_today_truckflicker_job){
+            mapObjectInstances.today.displayArrayOfJobRoutes(this.props.today_trips)
+          }
+
     
+
+
     return this.props.today_trips.map((job, index)=>{
     // return this.props.all_trips.map((job, index)=>{
-     if(!mapObjectInstances.today.initialRoutesRendered){
-      if(!this.props.current_today_truckflicker_job){
-        mapObjectInstances.today.drawRouteWithGoogleResponse(job)
-      }
+     // if(!mapObjectInstances.today.initialRoutesRendered){
+
+      // if(!this.props.current_today_truckflicker_job){
+      //   mapObjectInstances.today.drawRouteWithGoogleResponse(job)
+      // }
             
             if(index==this.props.all_trips.length-1) mapObjectInstances.today.initialRoutesRendered=true
-          }
+          // }
       var truckFlickerJob = ''
       var collapseStyle = job.hidden ? {display: 'none'} : {}
       if(job.id === this.props.current_today_truckflicker_job.id){

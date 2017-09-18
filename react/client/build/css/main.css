@@ -34,3 +34,7 @@
      /*grid item planner right*/
 }
 
+.float_left{
+     float: left;
+     margin-right: 10px;
+}
