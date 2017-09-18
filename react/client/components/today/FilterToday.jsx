@@ -3,10 +3,12 @@ import {connect} from 'react-redux'
 import * as commonActions from '../../actions/_common_actions'
 import * as todayActions from '../../actions/today_actions'
 import {bindActionCreators} from 'redux'
+import {mapObjectInstances} from '../../models/mapObject'
 
 class FilterToday extends React.Component{
 
 handleBranchSelectorChange(e){
+  mapObjectInstances.today.clearMap()
   this.props.actions.today_actions.setTodayBranchSelected(e.target.value)
   this.props.actions.today_actions.setTodayTrips()
 }
