@@ -73,33 +73,7 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
     return {fractionOfStep, currentStep}
   }
 
-  // getStepsAndLegAndSecondsFromStart(secondsFromStart, trip){
-  //   var from_branch_duration_seconds=trip.google_directions_from_branch.routes[0].legs[0].duration.value
 
-  //   var carry_duration_seconds=trip.google_directions.routes[0].legs[0].duration.value
-
-  //   var to_branch_duration_seconds=trip.google_directions_to_branch.routes[0].legs[0].duration.value
-  //   if(secondsFromStart<=from_branch_duration_seconds){
-  //     var {steps} =trip.google_directions_from_branch.routes[0].legs[0]
-  //     var leg = 'from_branch'
-  //   }else if(secondsFromStart<=carry_duration_seconds+from_branch_duration_seconds){
-  //     secondsFromStart=secondsFromStart-from_branch_duration_seconds
-  //     var {steps} =trip.google_directions.routes[0].legs[0]
-  //     var leg = 'carry'
-  //   }else{
-  //     secondsFromStart=secondsFromStart-from_branch_duration_seconds-carry_duration_seconds
-  //     var {steps} =trip.google_directions_to_branch.routes[0].legs[0]
-  //     var leg = 'to_branch'
-  //   }
-
-
-  //   return {steps, leg, secondsFromStart}
-  // }
-
-
-
-
-  ////////////////
 
   getStepsAndLegAndSecondsFromStartWaypoints(secondsFromStart, trip){
     var from_branch = trip.google_waypoints_directions.routes[0].legs[0]

@@ -131,9 +131,18 @@ min-width:5vw;
   align-self: center;
   width: 1fr;
   grid-template-areas:
-  "  a a a b b b c c c d d d e e e f f f g g g  "
+  " l l l l l l l l l l a b c d e f g r r r r r r r r r r "
   
 }
+
+.left-holder{
+  grid-area: l;
+}
+
+.right-holder{
+  grid-area: r;
+}
+
 
 .show_all_routes_btn{
   justify-self: center;
@@ -142,7 +151,7 @@ min-width:5vw;
 
 
 
-.fa-arrow-left{
+.arrow-left{
   justify-self: center;
   grid-area: a;
 }

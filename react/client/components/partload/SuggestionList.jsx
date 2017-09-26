@@ -4,6 +4,7 @@ import * as commonActions from '../../actions/_common_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {mapObjectInstances} from '../../models/mapObject'
+import moment from 'moment'
 
 class SuggestionList extends React.Component{
   constructor(props){
@@ -47,6 +48,8 @@ class SuggestionList extends React.Component{
     var shortest_distances = []
 
     this.props.all_trips.forEach((trip)=>{
+     
+     
       let path = trip.google_directions.routes[0].overview_path
       var path_length = path.length
 
@@ -71,6 +74,8 @@ class SuggestionList extends React.Component{
   jobs(){
 
   return this.props.best_pick_up_jobs.map((job, index)=>{
+    let format = 'ddd, D MMM'
+    let date_string = moment(job.dateMilli).format(format).toString()
     var collapseStyle = job.hidden ? {display: 'none'} : {}
 
     return(
@@ -81,10 +86,10 @@ class SuggestionList extends React.Component{
           </button></td>
         <td> {job.moveware_code}</td>
         <td >{job.client_name}</td>
-        <td >Colour</td>
+        <td >{date_string}</td>
         <td >Spare Capacity</td>
         <td >{job.men_requested}</td>
-        <td >{job.branch_id}</td>
+        <td >{job.branch_code}</td>
         <td >view notes click here?</td>
         <td >Truck Type</td>
       </tr>)
@@ -110,7 +115,7 @@ render(){
             <th>View Route    </th>
             <th>Moveware Code </th>
             <th>Client Name.  </th>
-            <th>Colour        </th>
+            <th>Date        </th>
             <th>Spare Capacity</th>
             <th>Men Requested </th>
             <th>Branch        </th>

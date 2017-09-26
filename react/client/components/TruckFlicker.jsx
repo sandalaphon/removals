@@ -162,16 +162,26 @@ class TruckFlicker extends React.Component {
 
   handleAccelerationClick(e){
     e.preventDefault()
-    this.props.actions.common_actions.setAnimationSpeed(this.pathname, 1)
-    this.mapObject.pauseAnime()
-    this.mapObject.animateRoute(this.pathname)
+    if(this.props.trips.animation_running){
+      this.props.actions.common_actions.setAnimationSpeed(this.pathname, 1)
+      this.mapObject.pauseAnime()
+      this.mapObject.animateRoute(this.pathname)
+    }else{
+      this.props.actions.common_actions.setAnimationSpeed(this.pathname, 1)
+    }
+    
   }
 
   handleDecelerationClick(e){
     e.preventDefault()
-    this.props.actions.common_actions.setAnimationSpeed(this.pathname, -1)
-    this.mapObject.pauseAnime()
-    this.mapObject.animateRoute(this.pathname)
+    if(this.props.trips.animation_running){
+     this.props.actions.common_actions.setAnimationSpeed(this.pathname, -1)
+     this.mapObject.pauseAnime()
+     this.mapObject.animateRoute(this.pathname)
+    }else{
+      this.props.actions.common_actions.setAnimationSpeed(this.pathname, -1)
+    }
+    
   }
   
 
@@ -185,14 +195,28 @@ class TruckFlicker extends React.Component {
     aria-hidden="true" 
     onClick={this.handleAnimateClick.bind(this)}></i>
 
+    // <div className = 'arrow-left tooltip'>
+   // </div>
+  
 
     return (
       <div className = 'grid-item-truck-flicker'>
-      <i class="fa fa-arrow-left fa-lg" 
-      aria-hidden="true" 
-      onClick={this.handlePreviousClick.bind(this)}></i>
+      <div className={'left-holder'}></div>
 
-      <i className="fa fa-step-backward fa-lg" 
+     
+
+       <i class="fa fa-arrow-left fa-lg" 
+       aria-hidden="true" 
+       onClick={this.handlePreviousClick.bind(this)}></i>
+
+     
+      
+
+    
+
+      <i 
+      title = 'Step Back'
+      className="fa fa-step-backward fa-lg" 
       aria-hidden="true" 
       onClick = {this.resetToStart.bind(this)}></i>
       <i className="fa fa-backward fa-lg" 
@@ -200,12 +224,16 @@ class TruckFlicker extends React.Component {
       onClick = {this.handleDecelerationClick.bind(this)}></i>
       {playOrPauseIcon}
       <i className="fa fa-forward fa-lg" 
+      title = 'hello'
       aria-hidden="true"  
       onClick = {this.handleAccelerationClick.bind(this)}></i>
       <i className="fa fa-step-forward fa-lg"
       aria-hidden="true"
       onClick = {this.setToEnd.bind(this)}></i>
-      <i class="fa fa-arrow-right fa-lg" aria-hidden="true" onClick={this.handleNextClick.bind(this)}></i>
+      <i class="fa fa-arrow-right fa-lg" 
+      aria-hidden="true" 
+      onClick={this.handleNextClick.bind(this)}></i>
+      <div className={'rigth-holder'}></div>
       </div>
       );
   }
