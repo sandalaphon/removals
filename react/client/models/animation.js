@@ -58,6 +58,7 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
   getCurrentStepAndFractionOfStep(steps, secondsFromStart){
     var fractionOfStep
     var currentStep
+// <<<<<<< HEAD
     var secondsStartToEndOfStep    = 0
     var stepCompleted              = false
     steps.forEach((step, index)=>{
@@ -67,6 +68,18 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
         fractionOfStep             = (  secondsFromStart  -  (secondsStartToEndOfStep - step.duration.value)) / step.duration.value
         currentStep                = steps[index]
         stepCompleted              = true
+// =======
+//     var secondsStartToEndOfStep = 0
+//     var stepCompleted = false
+//     steps.forEach((step, index)=>{
+//       if(stepCompleted) return
+//        secondsStartToEndOfStep += step.duration.value
+
+//        if(secondsStartToEndOfStep>secondsFromStart){
+//         fractionOfStep  = (  secondsFromStart  -  (secondsStartToEndOfStep-step.duration.value))/step.duration.value
+//         currentStep = steps[index]
+//         stepCompleted = true
+// >>>>>>> develop
        }
     })
 

@@ -24,6 +24,7 @@
   grid-template-columns: repeat(2,1fr);
 }*/
 .grid-today{
+  margin-left: 20px;
    display: grid;
    height: 95vh;
    grid-template-areas:
@@ -36,7 +37,7 @@
   display: grid;
   height: 95vh;
  /*width 50vw in main.css*/
-  border: 3px solid green;
+  /*border: 3px solid green;*/
   grid-template-areas:
   " fli"
   " map"
@@ -64,7 +65,7 @@
   display: grid;
   height: 95vh;
 /*width 50vw in main.css*/
-  border: 3px solid blue;
+  /*border: 3px solid blue;*/
   grid-template-areas:
   "fil "
   "fil "
@@ -92,14 +93,14 @@
 .grid-item-list-today{
   /*display: inline-block;*/
   grid-area:todli;
-  border: 3px solid purple;
+  /*border: 3px solid purple;*/
   /*grid-auto-rows:1fr;*/
 }
 
 .grid-item-slider-today{
   /*display: inline-block;*/
   grid-area:sli;
-  border: 3px solid purple;
+ /*border: 3px solid purple;*/
   
 
   /*grid-auto-rows:1fr;*/

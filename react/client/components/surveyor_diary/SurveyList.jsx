@@ -56,10 +56,20 @@ class SurveyList extends React.Component {
 
     this.state.mapObject.drawRouteWithWayPoints(branch.latlng, branch.latlng, latlngsOfSurveys, polylineColour, daySurveyorUnique)
 
+// <<<<<<< HEAD
   }
 
 
 
+// =======
+//         var latlngsOfSurveys = surveys.map((survey)=>{
+//           return survey.collection_latLng
+//         })
+
+//         this.state.mapObject.drawRouteWithWayPoints(branch.latlng, branch.latlng, latlngsOfSurveys, polylineColour, daySurveyorUnique)
+//       }
+    
+// >>>>>>> develop
   surveyAndFlickerDateAreTheSame(surveyDate){
     var dateFlickerDate = new Date(this.props.survey_current_date_milliseconds)
     var appointment_date = new Date(surveyDate)
@@ -69,7 +79,6 @@ class SurveyList extends React.Component {
       return false
     }
   }
-
 
   handleTableRowHover(event){
     var survey = this.getSurveyById( event.currentTarget.id )
