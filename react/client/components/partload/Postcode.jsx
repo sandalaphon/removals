@@ -57,6 +57,11 @@ class Postcode extends React.Component{
     this.props.actions.partload_actions.setPartloadDeliveryPostcode(event.target.value)
   }
 
+  handleRemovalFromStoreClick(e){
+    e.preventDefault()
+    this.props.actions.partload_actions.removal_from_store_suggestions_request()
+  }
+
   render(){
     var stored_delivery_value = ''
     if(this.props.partload_delivery_postcode){
@@ -94,6 +99,7 @@ class Postcode extends React.Component{
           <input type='submit'>
           </input>
         </form>
+        <button onClick = {this.handleRemovalFromStoreClick.bind(this)}>Click me Params</button>
       </div>
       )
   }

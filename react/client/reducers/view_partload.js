@@ -29,7 +29,17 @@ function handlePartloadData(state = {
     case 'SET_PARTLOAD_COLLECTION_POSTCODE':
     return{...state, partload_collection_postcode: action.payload}
     break;
-    //
+    ////////////////
+
+    case 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_FULFILLED':
+    console.log('fulfilled', action.payload)
+    break;
+    case 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_REJECTED':
+    console.log('rejection', action.payload)
+    break;
+
+//////////
+
     case 'SET_PARTLOAD_DELIVERY_POSTCODE':
     return{...state, partload_delivery_postcode: action.payload}
     break;

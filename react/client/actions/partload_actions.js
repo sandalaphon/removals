@@ -13,6 +13,25 @@ export function clearPartloadMarkerArray(){
   }
 }
 
+export function removal_from_store_suggestions_request(){
+  return function(dispatch) {
+    const url = 'http://localhost:5000/api/removal_from_store/123/1234/1236'
+    axios.get(url, {withCredentials:true})
+    .then((response)=>{
+      dispatch({
+        type: 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_FULFILLED',
+        payload: response.data
+      })
+    })
+    .catch((error)=>{
+      dispatch({
+        type: 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_REJECTED',
+        payload: error
+      })
+    })
+  }
+}
+
 export function addMarkerToPartloadMarkerArray(coords){
   return {
     type: 'ADD_MARKER_TO_PARTLOAD_MARKER_ARRAY',
