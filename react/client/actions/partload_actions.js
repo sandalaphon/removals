@@ -15,7 +15,7 @@ export function clearPartloadMarkerArray(){
 
 export function removal_from_store_suggestions_request(){
   return function(dispatch) {
-    const url = 'http://localhost:5000/api/removal_from_store/123/1234/1236'
+    const url = 'http://localhost:5000/api/removal_from_store/123/1511827200000/1239'
     axios.get(url, {withCredentials:true})
     .then((response)=>{
       dispatch({
