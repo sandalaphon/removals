@@ -104,22 +104,47 @@ constructor(props){
     var branch           = this.getHomeBranchOfJob(json.branch_code)
     var collectionString = json.collection_postcode ? json.collection_postcode : json.collection_address
     var deliveryString   = json.delivery_postcode ? json.delivery_postcode : json.delivery_address
-    // var toCollection     = this.getGoogleResponsePromise(branch.postcode, collectionString)
-    // var carry            = this.getGoogleResponsePromise(collectionString, deliveryString)
-    // var backToBase       = this.getGoogleResponsePromise(deliveryString, branch.postcode)
     var waypoints_route  = this.getGoogleWaypointsResponsePromise(branch.postcode, collectionString, deliveryString)
 
-    // Promise.all([toCollection, carry, backToBase, waypoints_route])
     Promise.all([ waypoints_route])
     .then((values)=>{
-      // console.log('values', values)
-      // json['google_directions_from_branch'] = JSON.stringify(values[0])
-      // json['google_directions']             = JSON.stringify(values[1])
-      // json['google_directions_to_branch']   = JSON.stringify(values[2])
-      // json['google_waypoints_directions']   = JSON.stringify(values[3])
       json['google_waypoints_directions']   = JSON.stringify(values[0])
+      json['return_bearing'] =   this.getReturnBearing(json, values[0])
+      console.log('json', json)
     })
     .then((value)=>{this.props.actions.update_data_actions.sendSingleTripToRails(json)})
+  }
+
+  getReturnBearing(json, google_waypoints_directions){
+    console.log('google', google_waypoints_directions)
+
+    var branch_lat_lng      = google_waypoints_directions.routes[0].legs[2].end_location
+    var lat_lng_of_delivery = google_waypoints_directions.routes[0].legs[1].end_location
+
+    var startLat = this.getRadians(lat_lng_of_delivery.lat());
+    var startLong = this.getRadians(lat_lng_of_delivery.lng());
+    var endLat = this.getRadians(branch_lat_lng.lat());
+    var endLong = this.getRadians(branch_lat_lng.lng());
+
+    var dLong = endLong - startLong;
+
+        var dPhi = Math.log(Math.tan(endLat/2.0+Math.PI/4.0)/Math.tan(startLat/2.0+Math.PI/4.0));
+        if (Math.abs(dLong) > Math.PI){
+          if (dLong > 0.0)
+             dLong = -(2.0 * Math.PI - dLong);
+          else
+             dLong = (2.0 * Math.PI + dLong);
+        }
+      
+       return (this.getDegrees(Math.atan2(dLong, dPhi)) + 360.0) % 360.0;
+  }
+
+  getRadians(n) {
+    return n * (Math.PI / 180);
+  }
+
+  getDegrees(n) {
+    return n * (180 / Math.PI);
   }
 
   getGoogleResponsePromise(startString, finishString){
@@ -268,6 +293,8 @@ surveysCallback1(){
        }, 1000*multiple)
     }) 
   }
+
+
 
 // sortSurveysByTime(object){
 //   for(var branches in object){

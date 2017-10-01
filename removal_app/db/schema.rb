@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170916151639) do
+ActiveRecord::Schema.define(version: 20170929111601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,6 +134,7 @@ ActiveRecord::Schema.define(version: 20170916151639) do
     t.integer  "seconds_to_load"
     t.integer  "seconds_to_unload"
     t.bigint   "dateMilli"
+    t.decimal  "return_bearing"
     t.index ["branch_id"], name: "index_trips_on_branch_id", using: :btree
   end
 

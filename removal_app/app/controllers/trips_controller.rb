@@ -120,7 +120,8 @@ def trip_params
     :google_waypoints_directions,
     :seconds_to_load,
     :seconds_to_unload,
-    :dateMilli
+    :dateMilli,
+    :return_bearing
     ])
 end
 
