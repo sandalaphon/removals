@@ -69,53 +69,54 @@ class SuggestionList extends React.Component{
   // handleDrawRouteClick(){}
 
   handleRemovalFromStoreDisplay(){
-    var closest_branch           = this.props.removal_from_store_suggestion_array[0]
-    var storage_delivery_lat_lng = this.props.removal_from_store_suggestion_array[1]
-    var single_branch_solutions  = this.props.removal_from_store_suggestion_array[2]
-    var multi_branch_solutions   = this.props.removal_from_store_suggestion_array[3]
-    var out_of_store_job_details = this.props.removal_from_store_suggestion_array[4]
-    var out_of_store_job = Trip.getTripById(out_of_store_job_details.id)
-    console.log('out_of_store_job_details.branch_code', out_of_store_job_details.branch_code)
-    var storage_branch = this.getBranchbyBranchCode(out_of_store_job_details.branch_code)
-    console.log('storage branch', storage_branch)
-    single_branch_solutions.forEach((job)=>{
-      console.log('job....id???', job, job.id)
-     var trip = Trip.getTripById(job.id)
+    // var closest_branch           = this.props.removal_from_store_suggestion_array[0]
+    // var storage_delivery_lat_lng = this.props.removal_from_store_suggestion_array[1]
+    // var single_branch_solutions  = this.props.removal_from_store_suggestion_array[2]
+    // var multi_branch_solutions   = this.props.removal_from_store_suggestion_array[3]
+    // var out_of_store_job_details = this.props.removal_from_store_suggestion_array[4]
+    // var out_of_store_job         = Trip.getTripById(out_of_store_job_details.id)
+    // console.log('out_of_store_job_details.branch_code', out_of_store_job_details.branch_code)
+    // var storage_branch = this.getBranchbyBranchCode(out_of_store_job_details.branch_code)
+    // console.log('storage branch', storage_branch)
+    // single_branch_solutions.forEach((job)=>{
+    //   console.log('job....id???', job, job.id)
+    //  var trip = Trip.getTripById(job.id)
 
-     var trip_diversion_waypoint_directions = this.get_waypoint_google_directions(trip, storage_branch, storage_delivery_lat_lng, out_of_store_job)
+    //  // var trip_diversion_waypoint_directions = this.get_waypoint_google_directions(trip, storage_branch, storage_delivery_lat_lng, out_of_store_job)
+    //  // var trip_diversion_waypoint_directions = this.get_waypoint_google_directions(trip, storage_branch, storage_delivery_lat_lng, out_of_store_job)
      
-    })
-    console.log('multi_branch_solutions', Object.keys(multi_branch_solutions[0])[0])
+    // })
+    // console.log('multi_branch_solutions', Object.keys(multi_branch_solutions[0])[0])
     return (<div></div>)
   }
 
-  get_waypoint_google_directions(job, storage_branch, storage_delivery_lat_lng, out_of_store_job, closest_branch = null){
-    console.log('storage_branch', storage_branch)
-    console.log('closest_branch', closest_branch)
-    var job_home_branch = this.getBranchbyBranchCode(job.branch_code)
-    var waypts = closest_branch ? [{location: storage_branch.latlng}, {location: closest_branch.latlng}] : [{location: storage_branch.latlng}]
-    var directionInput = {
-      origin: job_home_branch.latlng,
-      destination: job_home_branch.latlng,
-      waypoints: waypts,
-      travelMode: 'DRIVING',
-      avoidTolls: true,
-      optimizeWaypoints: false
-    }
-    var waypoint_google_directions 
-    var directionsService = new google.maps.DirectionsService()
-    directionsService.route(directionInput, function(response, status){
-      if(status==='OK'){
-          // waypoint_google_directions = response
+  // get_waypoint_google_directions(job, storage_branch, storage_delivery_lat_lng, out_of_store_job, closest_branch = null){
+  //   console.log('storage_branch', storage_branch)
+  //   console.log('closest_branch', closest_branch)
+  //   var job_home_branch = this.getBranchbyBranchCode(job.branch_code)
+  //   var waypts = closest_branch ? [{location: storage_branch.latlng}, {location: closest_branch.latlng}] : [{location: storage_branch.latlng}]
+  //   var directionInput = {
+  //     origin: job_home_branch.latlng,
+  //     destination: job_home_branch.latlng,
+  //     waypoints: waypts,
+  //     travelMode: 'DRIVING',
+  //     avoidTolls: true,
+  //     optimizeWaypoints: false
+  //   }
+  //   var waypoint_google_directions 
+  //   var directionsService = new google.maps.DirectionsService()
+  //   directionsService.route(directionInput, function(response, status){
+  //     if(status==='OK'){
+  //         // waypoint_google_directions = response
 
-          var a = new Diversion(job, storage_delivery_lat_lng, response, out_of_store_job)
+  //         var a = new Diversion(job, storage_delivery_lat_lng, response, out_of_store_job)
        
-      }else{
-        console.log(status)
-      }
-    })
-    return waypoint_google_directions
-  }
+  //     }else{
+  //       console.log(status)
+  //     }
+  //   })
+  //   return waypoint_google_directions
+  // }
 
   getBranchbyBranchCode(branch_code){
    return this.props.all_branches.find((branch)=>{

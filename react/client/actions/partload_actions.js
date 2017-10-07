@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Trip from '../models/trip'
+import Diversion from '../models/diversion'
 
 // export function setPartloadSliderSecondsFromStart(secondsPassed){
 //   return {
@@ -19,13 +20,23 @@ export function removal_from_store_suggestions_request(){
     const url = 'http://localhost:5000/api/removal_from_store/123/1511827200000/1241'
     axios.get(url, {withCredentials:true})
     .then((response)=>{
+      // response.data[0].latlng = JSON.parse(response.data[0].latlng)
+      var latlng2 = JSON.parse(response.data[0].latlng)
+      response.data[0].latlng = latlng2
+      var directions = JSON.parse(response.data[4].google_waypoints_directions)
+      response.data[4].google_waypoints_directions = directions
+   
       response.data[2].forEach((trip)=>{
        var a = new Trip(trip)
-
+       var g_dir = JSON.parse(trip.google_waypoints_directions)
+       trip.google_waypoints_directions = g_dir
+       var diversion = createDiversion(trip, response.data)
       })
       response.data[3].forEach((trip)=>{
        var a = new Trip(trip)
-
+       var g_dir = JSON.parse(trip.google_waypoints_directions)
+       trip.google_waypoints_directions = g_dir
+       var diversion = createDiversion(trip, response.data, false)
       })
       dispatch({
         type: 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_FULFILLED',
@@ -39,6 +50,26 @@ export function removal_from_store_suggestions_request(){
       })
     })
   }
+}
+
+function createDiversion(trip, response_array, single_trip_solution = true){
+  console.log('response array', response_array)
+
+   // response_array[0].latlng2 = JSON.parse(response_array[0].latlng)
+   // response_array[4].google_waypoints_directions2
+ // = JSON.parse(response_array[4].google_waypoints_directions)
+
+ // var latlng2 = JSON.parse(response_array[0].latlng)
+ // console.log('latlng' , latlng2)
+ // delete response_array[0].latlng
+ // response_array[0].latlng = latlng2
+ // var g_dir = JSON.parse(response_array[4].google_waypoints_directions)
+ // response_array[4].google_waypoints_directions = g_dir
+   
+   var diversion = new Diversion(trip, response_array, single_trip_solution)
+   return diversion
+
+  
 }
 
 export function addMarkerToPartloadMarkerArray(coords){
