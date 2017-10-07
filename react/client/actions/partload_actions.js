@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Trip from '../models/trip'
 
 // export function setPartloadSliderSecondsFromStart(secondsPassed){
 //   return {
@@ -18,6 +19,14 @@ export function removal_from_store_suggestions_request(){
     const url = 'http://localhost:5000/api/removal_from_store/123/1511827200000/1241'
     axios.get(url, {withCredentials:true})
     .then((response)=>{
+      response.data[2].forEach((trip)=>{
+       var a = new Trip(trip)
+
+      })
+      response.data[3].forEach((trip)=>{
+       var a = new Trip(trip)
+
+      })
       dispatch({
         type: 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_FULFILLED',
         payload: response.data

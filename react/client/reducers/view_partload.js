@@ -6,7 +6,8 @@ function handlePartloadData(state = {
   partload_delivery_postcode: '',
   partload_marker_array: [],
   best_pick_up_jobs: [],
-  partload_seconds_from_start: ''
+  partload_seconds_from_start: '',
+  removal_from_store_suggestion_array: []
 
 },action){
 
@@ -32,10 +33,12 @@ function handlePartloadData(state = {
     ////////////////
 
     case 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_FULFILLED':
+    return{...state, removal_from_store_suggestion_array: action.payload, removal_from_store_error: null}
     console.log('fulfilled', action.payload)
     break;
     case 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_REJECTED':
     console.log('rejection', action.payload)
+    return{...state, removal_from_store_suggestion_array: [], removal_from_store_error: action.payload}
     break;
 
 //////////
