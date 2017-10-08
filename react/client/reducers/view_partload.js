@@ -12,7 +12,6 @@ function handlePartloadData(state = {
 },action){
 
   switch(action.type) {
-    //
     // case 'SET_PARTLOAD_SLIDER_SECONDS_FROM_START':
     // return { ...state, partload_seconds_from_start: action.payload}
     // break;
@@ -34,10 +33,9 @@ function handlePartloadData(state = {
 
     case 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_FULFILLED':
     return{...state, removal_from_store_suggestion_array: action.payload, removal_from_store_error: null}
-    console.log('fulfilled', action.payload)
     break;
+
     case 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_REJECTED':
-    console.log('rejection', action.payload)
     return{...state, removal_from_store_suggestion_array: [], removal_from_store_error: action.payload}
     break;
 
@@ -48,13 +46,8 @@ function handlePartloadData(state = {
     break;
     //
     case 'BEST_PICK_UP_JOBS_FULFILLED' :
-      var newArray = action.payload.slice()
-      var anotherNewArray = newArray.map((trip, index)=>{
-        // var google_directions= JSON.parse(trip.google_directions)
-        // trip.google_directions = google_directions
-        // var google_directions_to_branch= JSON.parse(trip.google_directions_to_branch)
-        // trip.google_directions_to_branch = google_directions_to_branch
-        // var google_directions_from_branch= JSON.parse(trip.google_directions_from_branch)
+        var newArray = action.payload.slice()
+        var anotherNewArray = newArray.map((trip, index)=>{
         var google_waypoints_directions = JSON.parse(trip.google_waypoints_directions)
         trip.google_waypoints_directions = google_waypoints_directions
         trip.colour=helpers.getUniqueColor(index)

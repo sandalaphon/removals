@@ -2,9 +2,7 @@ import Trip from './trip'
 
 var diversions = []
 
-
 class Diversion{
-
 
   constructor(trip, removal_from_store_suggestion_response_array, single_trip_solution = true){
 
@@ -14,16 +12,14 @@ class Diversion{
     this.storage_delivery_lat_lng = a[1]
     this.out_of_store_job = a[4]
     this.closest_branch_to_storage_delivery = a[0]
-    // this.reRouted_g_directions = this.calc_reRoute(single_trip_solution) //now a promise
     this.reRouted_g_directions
     this.g_dir_from_new_branch_to_storage_delivery
     this.distance_saved
+    this.single_trip_solution = single_trip_solution
     this.set_instance_variables(single_trip_solution)
     diversions.push(this)
  
  }
-
-
 
  set_instance_variables(single_trip_solution){
   var reRoutedPromise = this.calc_reRoute(single_trip_solution)
@@ -37,17 +33,11 @@ class Diversion{
   .catch((error)=>{
     console.log(error)
   })
- //  this.get_new_delivery_branch_to_storage_delivery_g_directions(single_trip_solution)
- //  .then((g_directions)=>{
- //   this.g_dir_from_new_branch_to_storage_delivery = g_directions
- //   this.distance_saved = single_trip_solution ? this.get_single_branch_saving() : this.get_multiple_branch_saving()
- // })
- //  .catch((error)=>{
- //   console.log('error', error)
- // })
 }
 
-
+static all_diversions(){
+  return diversions
+}
 
 calc_reRoute(single_trip_solution){
   if(single_trip_solution){

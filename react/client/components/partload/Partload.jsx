@@ -12,12 +12,45 @@ class Partload extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      mapObject:null
+      mapObject:null,
+      partload_visible: true,
+      ros_visible: false
     }
+  }
+
+  // ComponentWillMount(){
+   
+
+  // }
+
+  handleROSClick(e){
+    e.preventDefault()
+    this.setState({ros_visible: !this.state.ros_visible})
+    alert('ROS clicked')
+  }
+
+  handlePartloadClick(e){
+    e.preventDefault()
+    this.setState({partload_visible: !this.state.partload_visible})
+    var partload = document.querySelector('.partload')
+    console.log('classlist', partload.classList)
+    if(this.state.partload_visible){
+      partload.classList.add('hidden')
+    }else{
+      partload.classList.remove('hidden')
+    }
+    // alert('Partload Clicked')
   }
 
   componentDidMount(){
     this.setState({mapObject:mapObjectInstances.partload})
+    var partload = document.querySelector('.partload')
+    if(this.state.partload_visible){
+     
+      partload.classList.remove('hidden')
+    }else{
+     partload.classList.add('hidden')
+    }
   }
 
   render(){
@@ -38,8 +71,12 @@ class Partload extends React.Component{
       </div>
 
       <div className='grid-item-partload-left width50vw'>
+      <button onClick = {this.handlePartloadClick.bind(this)}>PartLoad</button>
+      <button onClick = {this.handleROSClick.bind(this)}>Removal Out of Store</button>
+      <div className = 'partload'>
       <Postcode />
       <SuggestionList/>
+      </div>
       <div 
       className = 'branch-info-table-partload hidden' 
       style={branchStyle}>

@@ -34,7 +34,8 @@ class Trip{
     this.colour                        = this.getUniqueColor(trips.length),
     this.complementary_color           = this.getComplementaryColour(this.color)
       trips.push(this),
-    this.hidden                        = false
+    this.hidden                        = false,
+    this.possible_diversions           = []
    
   }
 
