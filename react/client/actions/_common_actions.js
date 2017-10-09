@@ -137,6 +137,34 @@ export function getAllTripsFromRails(){
   }
 }
 
+//////////////////////////////
+
+
+
+export function getRosCandidatesFromRails(){
+  return function(dispatch){
+    const url = 'http://localhost:5000/api/rosCandidates'
+    axios.get(url, {withCredentials:true})
+    .then((response)=>{
+      response.data.forEach((trip)=>{
+        // var a = new Trip(trip)
+      })
+      dispatch({
+        type: 'GET_ROS_CANDIDATES_FULFILLED',
+        payload: response.data
+      })
+    })
+    .catch((error)=>{
+      dispatch({
+        type: 'GET_ROS_CANDIDATES_REJECTED',
+        payload: error
+      })
+    })
+  }
+}
+
+
+/////////////////////////////////////////
 export function getAllSurveysFromRails(){
   
   return function(dispatch){

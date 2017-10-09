@@ -79,11 +79,11 @@ class SuggestionList extends React.Component{
 }
 
 render(){
-  var table_to_display
-  if (this.props.removal_from_store_suggestion_array.length){
-     table_to_display = this.handleRemovalFromStoreDisplay()
-  }else{
-    table_to_display = (<table >
+  // var table_to_display
+  // if (this.props.removal_from_store_suggestion_array.length){
+  //    table_to_display = this.handleRemovalFromStoreDisplay()
+  // }else{
+   var table_to_display = (<table >
             <tbody>
               <tr>
                 <th>View Route    </th>
@@ -102,7 +102,7 @@ render(){
       
       
     
-  }
+  // }
   return(
     <div className='grid-item-suggestion-list'>
     <div className='nearest-start-button-div'>

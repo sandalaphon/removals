@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   get    '/api/branches' => 'branches#index'
 
   get    '/api/employees' => 'employees#index'
+
+  get    '/api/rosCandidates' => 'trips#rosCandidates'
   
   post   '/api/trips/partload_closest_pickup' => 'trips#partload_closest_pickup'
 

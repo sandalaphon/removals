@@ -21,22 +21,19 @@ export function removal_from_store_suggestions_request(){
     axios.get(url, {withCredentials:true})
     .then((response)=>{
       // response.data[0].latlng = JSON.parse(response.data[0].latlng)
-      var latlng2 = JSON.parse(response.data[0].latlng)
-      response.data[0].latlng = latlng2
+      var holder = JSON.parse(response.data[0].latlng)
+      response.data[0].latlng = holder
       var directions = JSON.parse(response.data[4].google_waypoints_directions)
       response.data[4].google_waypoints_directions = directions
    
       response.data[2].forEach((trip)=>{
        var a = new Trip(trip)
-       // var g_dir = JSON.parse(trip.google_waypoints_directions)
-       // trip.google_waypoints_directions = g_dir
        var diversion = createDiversion(trip, response.data)
        a.possible_diversions.push(diversion)
       })
       
       response.data[3].forEach((trip)=>{
        var a = new Trip(trip)
-       
        var diversion = createDiversion(trip, response.data, false)
        a.possible_diversions.push(diversion)
       })

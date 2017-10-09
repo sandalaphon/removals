@@ -231,7 +231,7 @@ constructor(props){
         instance_variable_array.forEach((json, index)=>{
           setTimeout(()=>{
             callback.call(this, json)
-          }, 3000*index)
+          }, 1000*index)
                    
         })
       }   

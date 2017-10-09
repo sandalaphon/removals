@@ -39,6 +39,9 @@ function handleTripData(state = {
   partload_animation_speed: 4,
   surveyor_animation_speed: 4,
 
+  ros_candidates: [],
+  ros_candidates_error: null,
+
   asynch_loading_total: 0,
   survey_object: {},
 
@@ -63,6 +66,14 @@ function handleTripData(state = {
     // break;
 
     /////////////////////////
+
+    case 'GET_ROS_CANDIDATES_FULFILLED':
+    return {...state, ros_candidates: action.payload, ros_candidate_error: null}
+    break;
+
+    case 'GET_ROS_CANDIDATES_FULFILLED':
+    return {...state, ros_candidates: [], ros_candidate_error: action.payload}
+    break;
 
     case 'GET_SURVEYS_FULFILLED':
     var received_surveys = action.payload.slice()

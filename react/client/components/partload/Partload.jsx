@@ -7,6 +7,7 @@ import SliderPartload from './SliderPartload'
 import {mapObjectInstances} from '../../models/mapObject'
 import TruckFlicker from '../TruckFlicker'
 import BranchesInfo   from '../BranchesInfo'
+import RosCandidateList from './RosCandidateList'
 
 class Partload extends React.Component{
   constructor(props){
@@ -33,11 +34,14 @@ class Partload extends React.Component{
     e.preventDefault()
     this.setState({partload_visible: !this.state.partload_visible})
     var partload = document.querySelector('.partload')
+    var ros = document.querySelector('.ros')
     console.log('classlist', partload.classList)
     if(this.state.partload_visible){
       partload.classList.add('hidden')
+      ros.classList.remove('hidden')
     }else{
       partload.classList.remove('hidden')
+      ros.classList.add('hidden')
     }
     // alert('Partload Clicked')
   }
@@ -45,8 +49,7 @@ class Partload extends React.Component{
   componentDidMount(){
     this.setState({mapObject:mapObjectInstances.partload})
     var partload = document.querySelector('.partload')
-    if(this.state.partload_visible){
-     
+    if(this.state.partload_visible){  
       partload.classList.remove('hidden')
     }else{
      partload.classList.add('hidden')
@@ -76,6 +79,9 @@ class Partload extends React.Component{
       <div className = 'partload'>
       <Postcode />
       <SuggestionList/>
+      </div>
+      <div className = 'ros'>
+      <RosCandidateList/>
       </div>
       <div 
       className = 'branch-info-table-partload hidden' 

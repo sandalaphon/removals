@@ -11,31 +11,85 @@ class TripsController < ApplicationController
   # render :json => data.to_json()
 # end
 
+
+
+
 def create
 
   # puts trip_params
   # puts Branch.where(:branch_code => trip_params[:branch_code])
   trip_branch = Branch.where(:branch_code => trip_params[:branch_code])[0]
-  puts "hello"
-  puts trip_branch
-  puts 'hellooo'
+  # puts "hello"
+  # puts trip_branch
+  # puts 'hellooo'
 
   # puts trip_params
   # trip_branch.trips.create(trip_params)
   # @newtrip = Trip.create(trip_params)
 
   created_trip = trip_branch.trips.create(trip_params)
+  # p 'trip_params'
+  # p trip_params
+  set_ros_candidate_bool(created_trip, trip_branch)
   
   render json: created_trip.to_json()
-  # render json: Trip.all.to_json()
 
+end
 
+def set_ros_candidate_bool(trip, trip_branch)
 
+  if trip["kind"] == "ROS"
+    home_branch_is_closest = is_home_branch_closest(trip, trip_branch)
+   if home_branch_is_closest
+    trip.update(ros_candidate: 'false')
+  else
+    trip.update(ros_candidate: 'true')
+  end
+  else
+    # p 'not ros'
+    trip.update(ros_candidate: 'false')
+  end
+end
+
+def is_home_branch_closest(trip, trip_branch)
+g_dir = JSON.parse(trip['google_waypoints_directions'])
+delivery_lat_lng = g_dir['routes'][0]['legs'][1]['end_location']
+optimal_branch = find_optimal_branch(delivery_lat_lng)
+optimal_branch == trip_branch
+end
+
+def find_optimal_branch(delivery_lat_lng)
+
+  branches              = Branch.all
+  optimal_branch        = nil
+  smallest_distance     = nil
+  branches.each{|branch|
+    if optimal_branch == nil
+      optimal_branch    = branch
+      smallest_distance = distance_between_latlngs(delivery_lat_lng, JSON.parse(branch['latlng']))
+    elsif smallest_distance > distance_between_latlngs(delivery_lat_lng, JSON.parse(branch['latlng']))
+      optimal_branch    = branch
+      smallest_distance = distance_between_latlngs(delivery_lat_lng, JSON.parse(branch['latlng']))
+    end
+  }
+  return optimal_branch
+end
+
+def distance_between_latlngs(latlng1, latlng2)
+  # not haversine...just plain trig is good enough here
+  x = latlng1['lat'].to_f- latlng2['lat'].to_f
+  y = latlng1['lng'].to_f-latlng2['lng'].to_f
+  Math.sqrt(x**2 + y**2)
 end
 
 def index
   trips = Trip.all
   render json: trips.to_json()
+end
+
+def rosCandidates
+  candidates = Trip.where(ros_candidate: 'true').select(Trip.column_names - ["google_waypoints_directions"])
+  render json: candidates.to_json()
 end
 
 def partload_closest_pickup
@@ -121,7 +175,8 @@ def trip_params
     :seconds_to_load,
     :seconds_to_unload,
     :dateMilli,
-    :return_bearing
+    :return_bearing,
+    :ros_candidate
     ])
 end
 
