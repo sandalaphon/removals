@@ -7,7 +7,8 @@ function handlePartloadData(state = {
   partload_marker_array: [],
   best_pick_up_jobs: [],
   partload_seconds_from_start: '',
-  removal_from_store_suggestion_array: []
+  removal_from_store_suggestion_array: [],
+  ros_requested_ids: []
 
 },action){
 
@@ -32,7 +33,8 @@ function handlePartloadData(state = {
     ////////////////
 
     case 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_FULFILLED':
-    return{...state, removal_from_store_suggestion_array: action.payload, removal_from_store_error: null}
+    var holder = state.ros_requested_ids.concat([+action.trip_id])
+    return{...state, removal_from_store_suggestion_array: action.payload, ros_requested_ids: holder, removal_from_store_error: null}
     break;
 
     case 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_REJECTED':

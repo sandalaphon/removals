@@ -35,6 +35,18 @@ class Diversion{
   })
 }
 
+static get_ros_result_data_array(moveware_code){
+  return diversions.filter((d)=>{
+    return d.out_of_store_job.moveware_code == moveware_code
+  })
+}
+
+static find_diversions_for_ros_suggestion(trip_id){
+  return diversions.filter((d)=>{
+    return d.out_of_store_job.id == trip_id
+  })
+}
+
 static all_diversions(){
   return diversions
 }

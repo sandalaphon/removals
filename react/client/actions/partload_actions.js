@@ -15,31 +15,36 @@ export function clearPartloadMarkerArray(){
   }
 }
 
-export function removal_from_store_suggestions_request(){
+export function removal_from_store_suggestions_request(trip_id, end_date_milli){
   return function(dispatch) {
-    const url = 'http://localhost:5000/api/removal_from_store/123/1511827200000/1241'
+    const url = `http://localhost:5000/api/removal_from_store/123/${end_date_milli}/${trip_id}`
+    console.log('url', url)
+    // const url = 'http://localhost:5000/api/removal_from_store/123/1511827200000/1241'
     axios.get(url, {withCredentials:true})
     .then((response)=>{
-      // response.data[0].latlng = JSON.parse(response.data[0].latlng)
-      var holder = JSON.parse(response.data[0].latlng)
-      response.data[0].latlng = holder
-      var directions = JSON.parse(response.data[4].google_waypoints_directions)
-      response.data[4].google_waypoints_directions = directions
+      var latlng_holder                            = JSON.parse(response.data[0].latlng)
+      var directions_holder                        = JSON.parse(response.data[4].google_waypoints_directions)
+      // var moveware_codes                           = []
+      response.data[0].latlng                      = latlng_holder
+      response.data[4].google_waypoints_directions = directions_holder
    
       response.data[2].forEach((trip)=>{
        var a = new Trip(trip)
        var diversion = createDiversion(trip, response.data)
        a.possible_diversions.push(diversion)
+       // moveware_codes.push(a.moveware_code)
       })
       
       response.data[3].forEach((trip)=>{
        var a = new Trip(trip)
        var diversion = createDiversion(trip, response.data, false)
        a.possible_diversions.push(diversion)
+       // moveware_codes.push(a.moveware_code)
       })
       dispatch({
         type: 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_FULFILLED',
-        payload: response.data
+        payload: response.data,
+        trip_id
       })
     })
     .catch((error)=>{

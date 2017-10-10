@@ -108,3 +108,9 @@
   min-height: 1fr;
   }*/
 
+
+  .new-table{
+    border: solid 2px black;
+    width: 50vw;
+  }
+

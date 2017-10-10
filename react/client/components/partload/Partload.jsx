@@ -80,7 +80,7 @@ class Partload extends React.Component{
       <Postcode />
       <SuggestionList/>
       </div>
-      <div className = 'ros'>
+      <div className = 'ros hidden'>
       <RosCandidateList/>
       </div>
       <div 
