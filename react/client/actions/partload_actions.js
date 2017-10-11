@@ -22,30 +22,33 @@ export function removal_from_store_suggestions_request(trip_id, end_date_milli){
     // const url = 'http://localhost:5000/api/removal_from_store/123/1511827200000/1241'
     axios.get(url, {withCredentials:true})
     .then((response)=>{
+      var diversions_promised = []
       var latlng_holder                            = JSON.parse(response.data[0].latlng)
       var directions_holder                        = JSON.parse(response.data[4].google_waypoints_directions)
-      // var moveware_codes                           = []
       response.data[0].latlng                      = latlng_holder
       response.data[4].google_waypoints_directions = directions_holder
    
       response.data[2].forEach((trip)=>{
        var a = new Trip(trip)
        var diversion = createDiversion(trip, response.data)
-       a.possible_diversions.push(diversion)
-       // moveware_codes.push(a.moveware_code)
+       diversions_promised.push(diversion)
       })
       
       response.data[3].forEach((trip)=>{
        var a = new Trip(trip)
        var diversion = createDiversion(trip, response.data, false)
-       a.possible_diversions.push(diversion)
-       // moveware_codes.push(a.moveware_code)
+       diversions_promised.push(diversion)
+       console.log('diversion', diversion)
+     })
+      Promise.all(diversions_promised)
+      .then((diversions)=>{
+        dispatch({
+          type: 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_FULFILLED',
+          payload: response.data,
+          trip_id
+        })
       })
-      dispatch({
-        type: 'GET_REMOVAL_FROM_STORE_SUGGESTIONS_FULFILLED',
-        payload: response.data,
-        trip_id
-      })
+      
     })
     .catch((error)=>{
       dispatch({
@@ -56,14 +59,14 @@ export function removal_from_store_suggestions_request(trip_id, end_date_milli){
   }
 }
 
+
+
 function createDiversion(trip, response_array, single_trip_solution = true){
+// return new Promise((resolve, reject)=>{
   console.log('response array', response_array)
    var g_dir = JSON.parse(trip.google_waypoints_directions)
    trip.google_waypoints_directions = g_dir
-   var diversion = new Diversion(trip, response_array, single_trip_solution)
-   return diversion
-
-  
+   return Diversion.diversion_factory(trip, response_array, single_trip_solution)
 }
 
 export function addMarkerToPartloadMarkerArray(coords){
@@ -96,6 +99,29 @@ export function getPickUpBestJobsFromRails(startLat, startLng){
     })
   }
 }
+
+// function getGoogleDirectionPromise(branch_lat_lng, waypoint_latlng_array){
+//   var directionInput = {
+//       origin: branch_lat_lng,
+//       destination: branch_lat_lng,
+//       waypoints: waypointArray,
+//       travelMode: 'DRIVING',
+//       avoidTolls: true
+//     }
+
+// var directionsService = new google.maps.DirectionsService()
+// directionsService.route(directionInput, function(response, status){
+//   if(status==='OK'){
+//     console.log('response', response)
+//     resolve(response)
+
+//   }else{
+//     console.log('in promise error', status)
+//     reject(status)
+//   }
+// })
+
+// }
 
 
 export function clearPickUpBestJobs(){

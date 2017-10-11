@@ -63,6 +63,7 @@
     "shallowequal": "^1.0.2",
     "strip-bom": "^3.0.0",
     "style-loader": "^0.18.2",
+    "uuid": "^3.1.0",
     "warning": "^3.0.0"
   }
 }

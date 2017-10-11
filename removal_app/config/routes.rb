@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   get    '/api/survey_object' => 'survey_objects#index'
   post    '/api/survey_object/new' => 'survey_objects#create'
 
-  get    'api/removal_from_store/:start_date/:end_date/:moveware_code' => 'removal_from_store#index'
+  get    'api/removal_from_store/:start_date/:end_date/:id' => 'removal_from_store#index'
 
   get    '/api/:company_id' => 'companies#index'
 

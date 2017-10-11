@@ -42,15 +42,9 @@ class ListToday extends React.Component {
 
 
     return this.props.today_trips.map((job, index)=>{
-    // return this.props.all_trips.map((job, index)=>{
-     // if(!mapObjectInstances.today.initialRoutesRendered){
-
-      // if(!this.props.current_today_truckflicker_job){
-      //   mapObjectInstances.today.drawRouteWithGoogleResponse(job)
-      // }
             
             if(index==this.props.all_trips.length-1) mapObjectInstances.today.initialRoutesRendered=true
-          // }
+
       var truckFlickerJob = ''
       var collapseStyle = job.hidden ? {display: 'none'} : {}
       if(job.id === this.props.current_today_truckflicker_job.id){
@@ -78,7 +72,7 @@ class ListToday extends React.Component {
           <tbody>
             <tr>
               <th>Moveware Code </th>
-              <th>Client Name.  </th>
+              <th>Client Name   </th>
               <th>Colour        </th>
               <th>Spare Capacity</th>
               <th>Men Requested </th>

@@ -3,10 +3,14 @@ class RemovalFromStoreController < ApplicationController
 
   def index
   @branch_distance_hash         = get_branch_distance_hash()
+  p params
   start_date                    = params[:start_date]
   end_date                      = params[:end_date]
-  moveware_code                 = params[:moveware_code]
-  out_of_store_job              = Trip.where(moveware_code: moveware_code)
+  id                 = params[:id]
+
+
+  out_of_store_job              = Trip.where(id: id)
+  p out_of_store_job
   delivery_parsed_google_directions = JSON.parse(out_of_store_job[0][:google_waypoints_directions])
   storage_branch                = Branch.where(:branch_code => out_of_store_job[0]['branch_code'])
   storage_branch_latlng         = JSON.parse(storage_branch[0]['latlng'])

@@ -1,39 +1,77 @@
 import Trip from './trip'
+import uuidv4 from 'uuid/v4'
 
 var diversions = []
 
 class Diversion{
 
-  constructor(trip, removal_from_store_suggestion_response_array, single_trip_solution = true){
-
-    var a = removal_from_store_suggestion_response_array
-    this.undiverted_job   = trip
-    this.optimal_branch_lat_lng = a[0].latlng
-    this.storage_delivery_lat_lng = a[1]
-    this.out_of_store_job = a[4]
-    this.closest_branch_to_storage_delivery = a[0]
-    this.reRouted_g_directions
-    this.g_dir_from_new_branch_to_storage_delivery
-    this.distance_saved
-    this.single_trip_solution = single_trip_solution
-    this.set_instance_variables(single_trip_solution)
+  // constructor(trip, removal_from_store_suggestion_response_array, single_trip_solution = true){
+  constructor(
+    undiverted_job, 
+    optimal_branch_lat_lng, 
+    storage_delivery_lat_lng, 
+    out_of_store_job, 
+    closest_branch_to_storage_delivery, 
+    reRouted_g_directions, 
+    g_dir_from_new_branch_to_storage_delivery, 
+    distance_saved, 
+    single_trip_solution,
+    optimal_branch
+    ){
+    this.id = uuidv4()
+    this.undiverted_job = undiverted_job, 
+    this.optimal_branch_lat_lng = optimal_branch_lat_lng, 
+    this.storage_delivery_lat_lng =storage_delivery_lat_lng, 
+    this.out_of_store_job = out_of_store_job, 
+    this.closest_branch_to_storage_delivery = closest_branch_to_storage_delivery, 
+    this.reRouted_g_directions = reRouted_g_directions, 
+    this.g_dir_from_new_branch_to_storage_delivery = g_dir_from_new_branch_to_storage_delivery, 
+    this.distance_saved = distance_saved, 
+    this.single_trip_solution = single_trip_solution,
+    this.optimal_branch = optimal_branch
     diversions.push(this)
  
  }
 
- set_instance_variables(single_trip_solution){
-  var reRoutedPromise = this.calc_reRoute(single_trip_solution)
-  var newBranchDeliveryPromise = this.get_new_delivery_branch_to_storage_delivery_g_directions(single_trip_solution)
+ static diversion_factory(trip, removal_from_store_suggestion_response_array, single_trip_solution = true){
+  var a = removal_from_store_suggestion_response_array
+  var undiverted_job   = trip
+  var optimal_branch_lat_lng = a[0].latlng
+  var optimal_branch = a[0]
+  var storage_delivery_lat_lng = a[1]
+  var out_of_store_job = a[4]
+  var closest_branch_to_storage_delivery = a[0]
+  var reRouted_g_directions
+  var g_dir_from_new_branch_to_storage_delivery
+  var distance_saved
+  var new_diversion
+  var reRoutedPromise = Diversion.calc_reRoute(single_trip_solution, undiverted_job, out_of_store_job, optimal_branch_lat_lng)
+  var newBranchDeliveryPromise = Diversion.get_new_delivery_branch_to_storage_delivery_g_directions(single_trip_solution, undiverted_job, storage_delivery_lat_lng, closest_branch_to_storage_delivery)
+
+return new Promise((resolve, reject)=>{
+
   Promise.all([reRoutedPromise, newBranchDeliveryPromise])
   .then((values)=>{
-    this.reRouted_g_directions = values[0]
-    this.g_dir_from_new_branch_to_storage_delivery = values[1]
-    this.distance_saved = single_trip_solution ? this.get_single_branch_saving() : this.get_multiple_branch_saving()
+    reRouted_g_directions = values[0]
+    g_dir_from_new_branch_to_storage_delivery = values[1]
+    distance_saved = single_trip_solution ? 
+    Diversion.get_single_branch_saving(out_of_store_job, undiverted_job, g_dir_from_new_branch_to_storage_delivery, reRouted_g_directions) 
+    : Diversion.get_multiple_branch_saving(reRouted_g_directions, out_of_store_job, undiverted_job, g_dir_from_new_branch_to_storage_delivery)
+  
+      new_diversion = new Diversion(undiverted_job, optimal_branch_lat_lng, storage_delivery_lat_lng, out_of_store_job, closest_branch_to_storage_delivery, reRouted_g_directions, g_dir_from_new_branch_to_storage_delivery, distance_saved, single_trip_solution, optimal_branch)
+    
+     return new_diversion
+    
+  })
+  .then((new_diversion)=>{
+    resolve(new_diversion) 
   })
   .catch((error)=>{
-    console.log(error)
+    reject(error)
   })
+})
 }
+
 
 static get_ros_result_data_array(moveware_code){
   return diversions.filter((d)=>{
@@ -51,24 +89,36 @@ static all_diversions(){
   return diversions
 }
 
-calc_reRoute(single_trip_solution){
+static get_diversion_by_id(id){
+  return diversions.find((d)=>{
+    return d.id == id
+  })
+}
+
+
+
+static calc_reRoute(single_trip_solution, undiverted_job, out_of_store_job, optimal_branch_lat_lng){
   if(single_trip_solution){
-    return this.calc_single_trip_reRoute()
+    return Diversion.calc_single_trip_reRoute(undiverted_job, out_of_store_job)
   }else{
-    return this.calc_multi_trip_reRoute()
+    return Diversion.calc_multi_trip_reRoute(undiverted_job, out_of_store_job, optimal_branch_lat_lng)
   }
 }
 
-calc_single_trip_reRoute(){
+static calc_single_trip_reRoute(undiverted_job, out_of_store_job){
   // start branch lat lng
   //  initial job collection
   // inital job delivery
   // storage branch lat lng
   // var g_dir
-  var undiverted_job_home_branch_lat_lng = this.undiverted_job.google_waypoints_directions.routes[0].legs[0].start_location
-  var storage_branch_lat_lng = this.out_of_store_job.google_waypoints_directions.routes[0].legs[0].start_location
-  var undiverted_job_collection_lat_lng = this.undiverted_job.google_waypoints_directions.routes[0].legs[1].start_location
-  var undiverted_job_delivery_lat_lng = this.undiverted_job.google_waypoints_directions.routes[0].legs[1].end_location
+  // var undiverted_job_home_branch_lat_lng = this.undiverted_job.google_waypoints_directions.routes[0].legs[0].start_location
+  var undiverted_job_home_branch_lat_lng = undiverted_job.google_waypoints_directions.routes[0].legs[0].start_location
+  // var storage_branch_lat_lng = this.out_of_store_job.google_waypoints_directions.routes[0].legs[0].start_location
+  var storage_branch_lat_lng = out_of_store_job.google_waypoints_directions.routes[0].legs[0].start_location
+  // var undiverted_job_collection_lat_lng = this.undiverted_job.google_waypoints_directions.routes[0].legs[1].start_location
+  var undiverted_job_collection_lat_lng = undiverted_job.google_waypoints_directions.routes[0].legs[1].start_location
+  // var undiverted_job_delivery_lat_lng = this.undiverted_job.google_waypoints_directions.routes[0].legs[1].end_location
+  var undiverted_job_delivery_lat_lng = undiverted_job.google_waypoints_directions.routes[0].legs[1].end_location
 
   var waypts = [
   {location: undiverted_job_collection_lat_lng}, 
@@ -104,7 +154,7 @@ calc_single_trip_reRoute(){
   // return g_dir
 }
 
-calc_multi_trip_reRoute(){
+static calc_multi_trip_reRoute(undiverted_job, out_of_store_job, optimal_branch_lat_lng){
   // start branch lat lng
   //  initial job collection
   // inital job delivery
@@ -112,16 +162,21 @@ calc_multi_trip_reRoute(){
   // optimal branch lat lng
 
   // var g_dir
-  var undiverted_job_home_branch_lat_lng = this.undiverted_job.google_waypoints_directions.routes[0].legs[0].start_location
-  var storage_branch_lat_lng = this.out_of_store_job.google_waypoints_directions.routes[0].legs[0].start_location
-  var undiverted_job_collection_lat_lng = this.undiverted_job.google_waypoints_directions.routes[0].legs[1].start_location
-  var undiverted_job_delivery_lat_lng = this.undiverted_job.google_waypoints_directions.routes[0].legs[1].end_location
+  // var undiverted_job_home_branch_lat_lng = this.undiverted_job.google_waypoints_directions.routes[0].legs[0].start_location
+  var undiverted_job_home_branch_lat_lng = undiverted_job.google_waypoints_directions.routes[0].legs[0].start_location
+  // var storage_branch_lat_lng = this.out_of_store_job.google_waypoints_directions.routes[0].legs[0].start_location
+  var storage_branch_lat_lng = out_of_store_job.google_waypoints_directions.routes[0].legs[0].start_location
+  // var undiverted_job_collection_lat_lng = this.undiverted_job.google_waypoints_directions.routes[0].legs[1].start_location
+  var undiverted_job_collection_lat_lng = undiverted_job.google_waypoints_directions.routes[0].legs[1].start_location
+  // var undiverted_job_delivery_lat_lng = this.undiverted_job.google_waypoints_directions.routes[0].legs[1].end_location
+  var undiverted_job_delivery_lat_lng = undiverted_job.google_waypoints_directions.routes[0].legs[1].end_location
 
   var waypts = [
   {location: undiverted_job_collection_lat_lng}, 
   {location: undiverted_job_delivery_lat_lng}, 
   {location: storage_branch_lat_lng},
-  {location: this.optimal_branch_lat_lng}
+  // {location: this.optimal_branch_lat_lng}
+  {location: optimal_branch_lat_lng}
   ]
   
   return new Promise((resolve, reject)=>{
@@ -159,20 +214,23 @@ calc_multi_trip_reRoute(){
 
 
 
-get_new_delivery_branch_to_storage_delivery_g_directions(single_trip_solution){
+static get_new_delivery_branch_to_storage_delivery_g_directions(single_trip_solution, undiverted_job, storage_delivery_lat_lng, closest_branch_to_storage_delivery){
   return new Promise((resolve, reject)=>{
     var branch_to_storage_delivery_g_directions 
     var branch_lat_lng
-    var undiverted_trip = Trip.getTripById(this.undiverted_job.id)
+    // var undiverted_trip = Trip.getTripById(this.undiverted_job.id)
+    var undiverted_trip = Trip.getTripById(undiverted_job.id)
 
     var distance
     if(single_trip_solution){
       branch_lat_lng = undiverted_trip.google_waypoints_directions.routes[0].legs[0].start_location
       
     }else{
-     branch_lat_lng = this.closest_branch_to_storage_delivery.latlng
+     // branch_lat_lng = this.closest_branch_to_storage_delivery.latlng
+     branch_lat_lng = closest_branch_to_storage_delivery.latlng
    }
-   var waypointArray = [{location: this.storage_delivery_lat_lng}]
+   // var waypointArray = [{location: this.storage_delivery_lat_lng}]
+   var waypointArray = [{location: storage_delivery_lat_lng}]
    var directionInput = {
     origin: branch_lat_lng,
     destination: branch_lat_lng,
@@ -199,14 +257,17 @@ get_new_delivery_branch_to_storage_delivery_g_directions(single_trip_solution){
     // return branch_to_storage_delivery_g_directions
   }
 
-  get_single_branch_saving(){
-    // var out_of_store_trip                  = Trip.getTripById(this.out_of_store_job.id)
-    var out_of_store_total_distance_meters = this.get_trip_distance_in_meters(this.out_of_store_job)
-    // var undiverted_trip                    = Trip.getTripById(this.undiverted_job.id)
-    var undiverted_trip_meters             = this.get_trip_distance_in_meters(this.undiverted_job)
+  static get_single_branch_saving(out_of_store_job, undiverted_job, g_dir_from_new_branch_to_storage_delivery, reRouted_g_directions){
+    
+    // var out_of_store_total_distance_meters = this.get_trip_distance_in_meters(this.out_of_store_job)
+    var out_of_store_total_distance_meters = Diversion.get_trip_distance_in_meters(out_of_store_job)
+    // var undiverted_trip_meters             = this.get_trip_distance_in_meters(this.undiverted_job)
+    var undiverted_trip_meters             = Diversion.get_trip_distance_in_meters(undiverted_job)
 
-    var diverted_trip_meters               = this.reRouted_g_directions.routes[0].legs.reduce((acc, leg)=>{return acc + leg.distance.value},0)
-    var dist_new_branch_to_storage_delivery_meters   = this.get_trip_distance_in_meters(this.g_dir_from_new_branch_to_storage_delivery, false)
+    // var diverted_trip_meters               = this.reRouted_g_directions.routes[0].legs.reduce((acc, leg)=>{return acc + leg.distance.value},0)
+    var diverted_trip_meters               = reRouted_g_directions.routes[0].legs.reduce((acc, leg)=>{return acc + leg.distance.value},0)
+    // var dist_new_branch_to_storage_delivery_meters   = this.get_trip_distance_in_meters(this.g_dir_from_new_branch_to_storage_delivery, false)
+    var dist_new_branch_to_storage_delivery_meters   = Diversion.get_trip_distance_in_meters(g_dir_from_new_branch_to_storage_delivery, false)
 
     var a = out_of_store_total_distance_meters
     var b = undiverted_trip_meters
@@ -215,20 +276,22 @@ get_new_delivery_branch_to_storage_delivery_g_directions(single_trip_solution){
 
     var saving_meters = (a+b) - (c+d)
     // var saving_meters                      = out_of_store_total_distance_meters - ((diverted_trip_meters - undiverted_trip_meters) + dist_new_branch_to_storage_delivery_meters)
-    console.log('client name', this.undiverted_job.client_name)
+    console.log('client name', undiverted_job.client_name)
     console.log('saving_meters', saving_meters)
     console.log('a,b,c,d', a, b, c, d)
     return saving_meters
   }
 
-  get_multiple_branch_saving(){
+  static get_multiple_branch_saving(reRouted_g_directions, out_of_store_job, undiverted_job, g_dir_from_new_branch_to_storage_delivery){
 
-    var out_of_store_total_distance_meters = this.get_trip_distance_in_meters(this.out_of_store_job)
-    // var undiverted_trip                    = Trip.getTripById(this.undiverted_job.id)
-    var undiverted_trip_meters             = this.get_trip_distance_in_meters(this.undiverted_job)
+    // var out_of_store_total_distance_meters = this.get_trip_distance_in_meters(this.out_of_store_job)
+    var out_of_store_total_distance_meters = Diversion.get_trip_distance_in_meters(out_of_store_job)
 
-    var diverted_trip_meters               = this.reRouted_g_directions.routes[0].legs.reduce((acc, leg)=>{return acc + leg.distance.value},0)
-    var dist_new_branch_to_storage_delivery_meters   = this.get_trip_distance_in_meters(this.g_dir_from_new_branch_to_storage_delivery, false)
+    // var undiverted_trip_meters             = this.get_trip_distance_in_meters(this.undiverted_job)
+    var undiverted_trip_meters             = Diversion.get_trip_distance_in_meters(undiverted_job)
+    var diverted_trip_meters               = reRouted_g_directions.routes[0].legs.reduce((acc, leg)=>{return acc + leg.distance.value},0)
+    // var dist_new_branch_to_storage_delivery_meters   = this.get_trip_distance_in_meters(this.g_dir_from_new_branch_to_storage_delivery, false)
+    var dist_new_branch_to_storage_delivery_meters   = Diversion.get_trip_distance_in_meters(g_dir_from_new_branch_to_storage_delivery, false)
 
     var a = out_of_store_total_distance_meters
     var b = undiverted_trip_meters
@@ -237,7 +300,7 @@ get_new_delivery_branch_to_storage_delivery_g_directions(single_trip_solution){
 
     var saving_meters = (a+b) - (c+d)
 
-    console.log('client name', this.undiverted_job.client_name)
+    console.log('client name', undiverted_job.client_name)
     console.log('multi branch saving_meters', saving_meters)
     console.log('a,b,c,d', a, b, c, d)
     return saving_meters
@@ -247,7 +310,7 @@ get_new_delivery_branch_to_storage_delivery_g_directions(single_trip_solution){
 
   
 
-  get_trip_distance_in_meters(trip_or_g_directions, trip = true){
+  static get_trip_distance_in_meters(trip_or_g_directions, trip = true){
 
     if(trip){
       return trip_or_g_directions.google_waypoints_directions.routes[0].legs.reduce((acc, leg)=>{return acc + leg.distance.value},0)
