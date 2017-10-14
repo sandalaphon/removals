@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171008125623) do
+ActiveRecord::Schema.define(version: 20171013113305) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,18 @@ ActiveRecord::Schema.define(version: 20171008125623) do
     t.string   "billing_contact_email"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+  end
+
+  create_table "costs", force: :cascade do |t|
+    t.string   "fuel_per_mile_18t"
+    t.string   "fuel_per_mile_9t"
+    t.string   "fuel_per_mile_luton"
+    t.string   "driver_per_hour_18t"
+    t.string   "driver_per_hour_9t"
+    t.string   "driver_per_hour_luton"
+    t.string   "porter_per_hour"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   create_table "employees", force: :cascade do |t|

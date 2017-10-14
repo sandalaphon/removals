@@ -27,12 +27,14 @@ class Layout extends React.Component {
   }
 
   loadData(){
-
-    this.props.actions.commonActions.getAllTripsFromRails()
-    this.props.actions.commonActions.getAllSurveysFromRails()
-    this.props.actions.commonActions.getAllBranchesFromRails()
     this.props.actions.commonActions.getAllEmployeesFromRails()
+    
+    
+    this.props.actions.commonActions.getAllSurveysFromRails()
+    this.props.actions.commonActions.getAllBranchesFromRails()  
+    this.props.actions.commonActions.getAllTripsFromRails()
     this.props.actions.commonActions.getRosCandidatesFromRails()
+
     
   }
 

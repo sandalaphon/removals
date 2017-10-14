@@ -15,6 +15,31 @@ export function clearPartloadMarkerArray(){
   }
 }
 
+export function getTripByIdFromRails(trip_id){
+  return function(dispatch) {
+    const url = `http://localhost:5000/api/get_trip_by_id/${trip_id}`
+    console.log('url', url)
+   
+    axios.get(url, {withCredentials:true})
+    .then((response)=>{
+       var a = new Trip(response.data)
+      console.log('trip received', a)
+        dispatch({
+          type: 'GET_TRIP_BY_ID_FROM_RAILS_FULFILLED',
+          trip_id
+     
+      })
+      
+    })
+    .catch((error)=>{
+      dispatch({
+        type: 'GET_TRIP_BY_ID_FROM_RAILS_REJECTED',
+        payload: error
+      })
+    })
+  }
+}
+
 export function removal_from_store_suggestions_request(trip_id, end_date_milli){
   return function(dispatch) {
     const url = `http://localhost:5000/api/removal_from_store/123/${end_date_milli}/${trip_id}`

@@ -1,5 +1,7 @@
-import Trip from './trip'
+import Trip   from './trip'
+import Branch from './branch'
 import uuidv4 from 'uuid/v4'
+import Costs  from './costs'
 
 var diversions = []
 
@@ -16,21 +18,56 @@ class Diversion{
     g_dir_from_new_branch_to_storage_delivery, 
     distance_saved, 
     single_trip_solution,
-    optimal_branch
+    optimal_branch,
+    out_of_store_total_distance_meters, 
+    undiverted_trip_meters, 
+    diverted_trip_meters, 
+    dist_new_branch_to_storage_delivery_meters
     ){
     this.id = uuidv4()
-    this.undiverted_job = undiverted_job, 
-    this.optimal_branch_lat_lng = optimal_branch_lat_lng, 
-    this.storage_delivery_lat_lng =storage_delivery_lat_lng, 
-    this.out_of_store_job = out_of_store_job, 
+    this.undiverted_job           = this.makeATrip(undiverted_job), 
+    this.optimal_branch_lat_lng   = optimal_branch_lat_lng, 
+    this.storage_delivery_lat_lng = storage_delivery_lat_lng, 
+    this.out_of_store_job         = this.makeATrip(out_of_store_job), 
     this.closest_branch_to_storage_delivery = closest_branch_to_storage_delivery, 
-    this.reRouted_g_directions = reRouted_g_directions, 
+    this.reRouted_g_directions    = reRouted_g_directions, 
     this.g_dir_from_new_branch_to_storage_delivery = g_dir_from_new_branch_to_storage_delivery, 
-    this.distance_saved = distance_saved, 
-    this.single_trip_solution = single_trip_solution,
-    this.optimal_branch = optimal_branch
+    this.distance_saved           = distance_saved, 
+    this.single_trip_solution     = single_trip_solution,
+    this.optimal_branch           = optimal_branch,
+    this.out_of_store_total_distance_meters = out_of_store_total_distance_meters,
+    this.undiverted_trip_meters   = undiverted_trip_meters,
+    this.diverted_trip_meters     = diverted_trip_meters,
+    this.dist_new_branch_to_storage_delivery_meters = dist_new_branch_to_storage_delivery_meters,
+    this.out_of_store_branch      = Branch.getBranchByBranchCode(this.out_of_store_job.branch_code),
+    this.out_of_store_branch_savings = this.getOutOfStoreBranchSavingsObject(),
+    this.collecting_branch_costs  = this.getCollectingBranchCosts(),
+    this.delivering_branch_costs  = this.getDeliveringBranchCosts()
+
     diversions.push(this)
  
+ }
+
+ getOutOfStoreBranchSavingsObject(){
+  return 4
+ }
+
+ getCollectingBranchCosts(){
+  return 5
+ }
+
+ getDeliveringBranchCosts(){
+  return 6
+ }
+
+ makeATrip(undiverted_job){
+  var trip = Trip.getTripById(undiverted_job.id)
+  if(trip){
+    return trip
+  }else{
+    trip = new Trip(undiverted_job)
+  }
+  return trip
  }
 
  static diversion_factory(trip, removal_from_store_suggestion_response_array, single_trip_solution = true){
@@ -43,7 +80,7 @@ class Diversion{
   var closest_branch_to_storage_delivery = a[0]
   var reRouted_g_directions
   var g_dir_from_new_branch_to_storage_delivery
-  var distance_saved
+  var distances_object
   var new_diversion
   var reRoutedPromise = Diversion.calc_reRoute(single_trip_solution, undiverted_job, out_of_store_job, optimal_branch_lat_lng)
   var newBranchDeliveryPromise = Diversion.get_new_delivery_branch_to_storage_delivery_g_directions(single_trip_solution, undiverted_job, storage_delivery_lat_lng, closest_branch_to_storage_delivery)
@@ -54,11 +91,13 @@ return new Promise((resolve, reject)=>{
   .then((values)=>{
     reRouted_g_directions = values[0]
     g_dir_from_new_branch_to_storage_delivery = values[1]
-    distance_saved = single_trip_solution ? 
+    distances_object = single_trip_solution ? 
     Diversion.get_single_branch_saving(out_of_store_job, undiverted_job, g_dir_from_new_branch_to_storage_delivery, reRouted_g_directions) 
     : Diversion.get_multiple_branch_saving(reRouted_g_directions, out_of_store_job, undiverted_job, g_dir_from_new_branch_to_storage_delivery)
-  
-      new_diversion = new Diversion(undiverted_job, optimal_branch_lat_lng, storage_delivery_lat_lng, out_of_store_job, closest_branch_to_storage_delivery, reRouted_g_directions, g_dir_from_new_branch_to_storage_delivery, distance_saved, single_trip_solution, optimal_branch)
+
+     var {distance_saved, out_of_store_total_distance_meters, undiverted_trip_meters, diverted_trip_meters, dist_new_branch_to_storage_delivery_meters} = distances_object
+     console.log('distances object', distances_object)
+      new_diversion = new Diversion(undiverted_job, optimal_branch_lat_lng, storage_delivery_lat_lng, out_of_store_job, closest_branch_to_storage_delivery, reRouted_g_directions, g_dir_from_new_branch_to_storage_delivery, distance_saved, single_trip_solution, optimal_branch, out_of_store_total_distance_meters, undiverted_trip_meters, diverted_trip_meters, dist_new_branch_to_storage_delivery_meters)
     
      return new_diversion
     
@@ -274,12 +313,12 @@ static get_new_delivery_branch_to_storage_delivery_g_directions(single_trip_solu
     var c = diverted_trip_meters 
     var d = dist_new_branch_to_storage_delivery_meters
 
-    var saving_meters = (a+b) - (c+d)
-    // var saving_meters                      = out_of_store_total_distance_meters - ((diverted_trip_meters - undiverted_trip_meters) + dist_new_branch_to_storage_delivery_meters)
+    var distance_saved = (a+b) - (c+d)
+    // var distance_saved                      = out_of_store_total_distance_meters - ((diverted_trip_meters - undiverted_trip_meters) + dist_new_branch_to_storage_delivery_meters)
     console.log('client name', undiverted_job.client_name)
-    console.log('saving_meters', saving_meters)
+    console.log('distance_saved', distance_saved)
     console.log('a,b,c,d', a, b, c, d)
-    return saving_meters
+    return {distance_saved, out_of_store_total_distance_meters, undiverted_trip_meters, diverted_trip_meters, dist_new_branch_to_storage_delivery_meters }
   }
 
   static get_multiple_branch_saving(reRouted_g_directions, out_of_store_job, undiverted_job, g_dir_from_new_branch_to_storage_delivery){
@@ -298,12 +337,12 @@ static get_new_delivery_branch_to_storage_delivery_g_directions(single_trip_solu
     var c = diverted_trip_meters 
     var d = dist_new_branch_to_storage_delivery_meters
 
-    var saving_meters = (a+b) - (c+d)
+    var distance_saved = (a+b) - (c+d)
 
     console.log('client name', undiverted_job.client_name)
-    console.log('multi branch saving_meters', saving_meters)
+    console.log('multi branch distance_saved', distance_saved)
     console.log('a,b,c,d', a, b, c, d)
-    return saving_meters
+    return {distance_saved, out_of_store_total_distance_meters, undiverted_trip_meters, diverted_trip_meters, dist_new_branch_to_storage_delivery_meters }
   }
 
   

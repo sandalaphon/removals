@@ -1,28 +1,4 @@
-/*.grid-today{
-  display: grid;
-  height: 95vh;
-  border: 3px solid hotpink;
-  grid-template-areas:
-  "fil fli"
-  "fil map"
-  "fil map"
-  "todli map"
-  "todli map"
-  "todli map"
-  "todli map"
-  "todli map"
-  "todli map"
-  "todli map"
-  "todli map"
-  "todli map"
-  "todli map"
-  "todli map"
-  "todli sli"
-  ;
-  grid-template-rows: repeat(15,1fr);
-  grid-auto-columns: 10%;
-  grid-template-columns: repeat(2,1fr);
-}*/
+
 .grid-today{
   margin-left: 20px;
    display: grid;
@@ -56,16 +32,12 @@
   " sli"
   ;
   grid-template-rows: repeat(15,1fr);
-  /*grid-auto-columns: 10%;*/
-  /*grid-template-columns: repeat(1,1fr);*/
 }
 
 .grid-item-today-left{
   grid-area: lEF;
   display: grid;
   height: 95vh;
-/*width 50vw in main.css*/
-  /*border: 3px solid blue;*/
   grid-template-areas:
   "fil "
   "fil "
@@ -84,40 +56,28 @@
   "todli "
   ;
   grid-template-rows: repeat(15,1fr);
-  /*grid-auto-columns: 10%;*/
-  /*grid-template-columns: repeat(1,1fr);*/
 }
 
 
 
 .grid-item-list-today{
-  /*display: inline-block;*/
   grid-area:todli;
-  /*border: 3px solid purple;*/
-  /*grid-auto-rows:1fr;*/
 }
 
 .grid-item-slider-today{
-  /*display: inline-block;*/
   grid-area:sli;
- /*border: 3px solid purple;*/
-  
-
-  /*grid-auto-rows:1fr;*/
+  grid-auto-rows:1fr;*/
 }
 
 .slider-div{
-  /*border: 1px solid black;*/
-  
+
   width: 1fr;
   margin: 20px;
   height:1fr;
-  /*text-align: center;*/
-  /*transform: translateY(50%);*/
+
 }
 
 .truckFlickerJob{
-  /*border: 2px solid purple ;*/
   color: red;
 }
 

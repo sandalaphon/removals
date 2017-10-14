@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   get    '/api/employees' => 'employees#index'
 
   get    '/api/rosCandidates' => 'trips#rosCandidates'
+
+  get   '/api/get_trip_by_id/:trip_id' => 'removal_from_store#get_trip_by_id'
   
   post   '/api/trips/partload_closest_pickup' => 'trips#partload_closest_pickup'
 
@@ -25,6 +27,10 @@ Rails.application.routes.draw do
   get    'api/removal_from_store/:start_date/:end_date/:id' => 'removal_from_store#index'
 
   get    '/api/:company_id' => 'companies#index'
+
+  get    '/api/costs/index'  => 'costs#index'
+  put    '/api/costs/update' => 'costs#update'
+
 
   
 

@@ -1,5 +1,4 @@
 import React from 'react'
-// import * as todayActions from '../../actions/today_actions'
 import * as commonActions from '../../actions/_common_actions'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -8,12 +7,10 @@ import Slider,  { Range, createSliderWithTooltip } from 'rc-slider'
 import Tooltip from 'rc-tooltip';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
-// import {placeMarkers} from '../../models/sliderFunctions'
 import Animation from '../../models/animation'
 
 
-
-class SliderToday extends React.Component{
+class SliderROS extends React.Component{
 
   constructor(props) { //may need this later
       super(props);
@@ -23,15 +20,14 @@ class SliderToday extends React.Component{
   }
 
   componentDidMount(){
-    if(this.props.current_today_truckflicker_job){
-      mapObjectInstances.today.drawRouteWithGoogleResponse(this.props.current_today_truckflicker_job)
+    if(this.props.current_removal_from_store_truckflicker_job){
+      mapObjectInstances.removal_from_store.drawRouteWithGoogleResponse(this.props.current_removal_from_store_truckflicker_job)
     }
-    mapObjectInstances.today.display_branches() 
-    // mapObjectInstances.today.displayOrHideBranchList()
-    // this.animation = new Animation(mapObjectInstances.today, 'today')
-    this.animation = mapObjectInstances.today.animation
+    mapObjectInstances.removal_from_store.display_branches() 
+    // mapObjectInstances.removal_from_store.displayOrHideBranchList()
+    // this.animation = new Animation(mapObjectInstances.removal_from_store, 'removal_from_store')
+    this.animation = mapObjectInstances.removal_from_store.animation
   }
-
 
   handleSliderChange(value){
     var secondsPassed = value*10*60
@@ -43,7 +39,7 @@ class SliderToday extends React.Component{
   onAfterChange(value){
     // this.setState({value,})  
     const secondsPassed = value * 60 * 10
-    this.props.actions.common_actions.setSliderSecondsFromStart(secondsPassed, 'today')
+    this.props.actions.common_actions.setSliderSecondsFromStart(secondsPassed, 'removal_from_store')
     this.animation.placeMarkers(secondsPassed)
     if(this.props.animation_running){
       this.props.actions.common_actions.toggleAnimationRunning()
@@ -52,9 +48,8 @@ class SliderToday extends React.Component{
   }
 
   onBeforeChange(value){
-    mapObjectInstances.today.pauseAnime() 
+    mapObjectInstances.removal_from_store.pauseAnime() 
   }
-
 
   sortTimeDisplay(v){
     let startValue = 8 //8am
@@ -66,10 +61,6 @@ class SliderToday extends React.Component{
     const time = `${startValue+hoursPassed}:${minutesLeft} `
     return time
   }
-
-
-
-
 
   render(){
     const SliderWithTooltip = createSliderWithTooltip(Slider);
@@ -85,42 +76,39 @@ class SliderToday extends React.Component{
     };
 
     return(
-        <div className='grid-item-slider-today'>
-        <div className = 'slider-div'>
-        <SliderWithTooltip 
-        min={0} 
-        max={72} 
-        marks={marks} 
-        step = {1}
-        defaultValue = {this.props.today_seconds_from_start/600}
-        included = {false}
-        onChange = {this.handleSliderChange.bind(this)}
-        onAfterChange = {this.onAfterChange.bind(this)}
-        onBeforeChange = {this.onBeforeChange.bind(this)}
-        tipFormatter = {value=>`${this.sortTimeDisplay(value)}`}
+      <div className='grid-item-slider-ros'>
+      <div className = 'slider-div'>
+      <SliderWithTooltip 
+      min={0} 
+      max={72} 
+      marks={marks} 
+      step = {1}
+      defaultValue = {this.props.removal_from_store_seconds_from_start/600}
+      included = {false}
+      onChange = {this.handleSliderChange.bind(this)}
+      onAfterChange = {this.onAfterChange.bind(this)}
+      onBeforeChange = {this.onBeforeChange.bind(this)}
+      tipFormatter = {value=>`${this.sortTimeDisplay(value)}`}     
+      />
       
-        />
-        
-        </div>
-        </div>
+      </div>
+      </div>
       )
   }
-  }
+}
+
 
 
 const mapDispatchToProps=(dispatch)=>({
-  actions: {
-    // today_actions: bindActionCreators(todayActions, dispatch),
+  actions:{
     common_actions: bindActionCreators( commonActions, dispatch)
   }
 })
 
 const mapStateToProps=(state)=>({
-  all_trips: state.common.all_trips, 
-  animation_running: state.common.animation_running, 
-  today_seconds_from_start: state.common.today_seconds_from_start, 
-  current_today_truckflicker_job: state.common.current_today_truckflicker_job
+  removal_from_store_seconds_from_start:            state.common.removal_from_store_seconds_from_start, 
+  animation_running:                      state.common.animation_running, 
+  current_removal_from_store_truckflicker_job:      state.common.current_removal_from_store_truckflicker_job, 
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SliderToday)
-
+export default connect(mapStateToProps, mapDispatchToProps)(SliderROS)

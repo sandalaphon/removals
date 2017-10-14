@@ -75,6 +75,8 @@
     border-color: black transparent transparent transparent;
 }
 
+input[placeholder] { text-overflow: ellipsis; }
+
 
 
 

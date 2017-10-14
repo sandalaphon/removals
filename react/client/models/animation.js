@@ -141,6 +141,12 @@ getSliderMarkerObject(trip, secondsFromStart, index=0){
       arrayOfTrips = store.getState().today.today_trips
       currentTruckFlickerJob = store.getState().common.current_today_truckflicker_job
     
+      break; 
+      case 'removal_from_store':
+      // arrayOfTrips = store.getState().removal_from_store.removal_from_store_trips
+      arrayOfTrips = []
+      currentTruckFlickerJob = store.getState().common.current_removal_from_store_truckflicker_job
+    
       break;
     }
     return {arrayOfTrips, currentTruckFlickerJob}

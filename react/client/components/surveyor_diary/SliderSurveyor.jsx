@@ -24,7 +24,7 @@ class SliderSurveyor extends React.Component{
 
   componentDidMount(){
     mapObjectInstances.surveyor.display_branches()
-    mapObjectInstances.surveyor.displayOrHideBranchList()
+    // mapObjectInstances.surveyor.displayOrHideBranchList()
   }
 
   handleSliderChange(value){

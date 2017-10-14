@@ -62,6 +62,14 @@ p return_array
   render json: return_array.to_json()
 end
 
+def get_trip_by_id
+  
+  trip_sought = Trip.find(params[:trip_id])
+
+  render json: trip_sought.to_json()
+
+end
+
 def find_best_solutions_and_format_return_array(closest_branch, storage_delivery_lat_lng, single_branch_solutions, multi_branch_solutions, out_of_store_job)
 
   single_branch_distances = single_branch_solutions.map{|h| h.values[0]}

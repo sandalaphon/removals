@@ -25,6 +25,10 @@ class TruckFlicker extends React.Component {
     }
   }
 
+  get_relevant_ros_array(){
+    return []
+  }
+
   setInstanceVariables(){
 
     switch (this.pathname){
@@ -48,6 +52,11 @@ class TruckFlicker extends React.Component {
       this.current_truckflicker_job = this.props.trips.current_surveyor_truckflicker_job
       this.mapObject = mapObjectInstances.surveyor
       this.relevantArray = this.props.best_pick_up_jobs
+      break;
+      case 'removal_from_store':
+      this.current_truckflicker_job = this.props.trips.removal_from_store_truckflicker_job
+      this.mapObject = mapObjectInstances.removal_from_store_truckflicker_job
+      this.relevantArray = this.get_relevant_ros_array()
       break;
     }
   }

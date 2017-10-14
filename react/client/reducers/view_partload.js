@@ -8,7 +8,8 @@ function handlePartloadData(state = {
   best_pick_up_jobs: [],
   partload_seconds_from_start: '',
   removal_from_store_suggestion_array: [],
-  ros_requested_ids: []
+  ros_requested_ids: [],
+  trips_loaded_by_id: []
 
 },action){
 
@@ -22,7 +23,20 @@ function handlePartloadData(state = {
       holder.push(action.payload)
     return{...state, partload_marker_array: holder}
     break;
+
+    case 'GET_TRIP_BY_ID_FROM_RAILS_FULFILLED':
+      var holder = state.trips_loaded_by_id.slice()
+      holder.push(action.trip_id)
+    return{...state, trips_loaded_by_id: holder, trips_loaded_by_id_error: null}
+    break;
     //
+
+    case 'GET_TRIP_BY_ID_FROM_RAILS_REJECTED':
+     
+    return{...state,  trips_loaded_by_id_error: action.payload}
+    break;
+
+
     case 'CLEAR_PARTLOAD_MARKER_ARRAY':
     return {...state,  partload_marker_array: []}
     break;

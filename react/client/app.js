@@ -7,7 +7,6 @@ import Raven from 'raven-js'
 import {sentry_url, logException} from './helpers/config'
 
 import LoginBox from './components/sign_in/LoginBox'
-// import Main from './components/Main'
 import Layout from './components/Layout'
 import Partload from './components/partload/Partload'
 import Home from './components/home/Home'
@@ -15,6 +14,7 @@ import Planner from './components/planner/Planner'
 import Today from './components/today/Today'
 import Surveyor from './components/surveyor_diary/Surveyor'
 import UpdateData from './components/update_data/UpdateData'
+import RemovalFromStore from './components/removal_from_store/RemovalFromStore'
 import AccountManagement from './components/account_management/AccountManagement'
 
 
@@ -41,6 +41,7 @@ class TopComponent extends React.Component {
           <Route path="update_data" component= {UpdateData}></Route>
           <Route path="account_management" component= {AccountManagement}></Route>
           <Route path="partload" component= {Partload}></Route>
+          <Route path="removal_from_store" component= {RemovalFromStore}></Route>
           <Route path="account_management/add_user" component= {AccountManagement}></Route>
         </Route>
       </Router>

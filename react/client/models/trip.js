@@ -1,10 +1,16 @@
+import store from '../store.js'
+import { dispatch } from 'redux';
+import {set_ids_of_trips } from '../actions/_common_actions';
+
 var trips = []
 
 class Trip{
 
-  constructor(
-    trip_object
-    ){
+  constructor(trip_object){
+    var ids = trips.map((trip)=>{
+          return trip.id
+        })
+    if(ids.includes(trip_object.id)) return
     this.id                            = trip_object.id,
     this.date                          = trip_object.date,
     this.branch_id                     = trip_object.branch_id,
@@ -32,11 +38,17 @@ class Trip{
     this.seconds_to_unload             = trip_object.seconds_to_unload,
     this.dateMilli                     = trip_object.dateMilli,
     this.colour                        = this.getUniqueColor(trips.length),
-    this.complementary_color           = this.getComplementaryColour(this.color)
-      trips.push(this),
+    this.complementary_color           = this.getComplementaryColour(this.color),
     this.hidden                        = false,
-    this.possible_diversions           = []
+    this.possible_diversions           = [],
+    this.add_trip_to_trips()
+    
    
+  }
+
+  add_trip_to_trips(){
+    trips.push(this)
+    store.dispatch(set_ids_of_trips(this.id))
   }
 
 

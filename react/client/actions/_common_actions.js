@@ -65,6 +65,13 @@ export function toggleBranchesOnMap(pathname){
 //   }
 // }
 
+export function set_ids_of_trips(id){
+  return {
+    type: 'SET_IDS_OF_TRIPS',
+    id
+  }
+}
+
 export function toggleFullScreenMap(pathname){
   return {
     type: 'TOGGLE_FULL_SCREEN_MAP',

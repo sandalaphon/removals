@@ -26,22 +26,22 @@ class Today extends React.Component {
     return(
       <div className = 'grid-today' >
 
-      <div className='grid-item-today-right width50vw'>
-      <Gmap />
-      <TruckFlicker/>
-      <SliderToday />
-      </div>
+          <div className='grid-item-today-right width50vw'>
+          <Gmap />
+          <TruckFlicker/>
+          <SliderToday />
+          </div>
         
-      <div className='grid-item-today-left width50vw'>
-        <TodayDateSelector/>
-        <FilterToday/>
-        <ListToday />
-         <div 
-             className = 'branch-info-table-today hidden' 
-             style={branchStyle}>
-          <BranchesInfo/>
-        </div>
-        </div>
+          <div className='grid-item-today-left width50vw'>
+            <TodayDateSelector/>
+            <FilterToday/>
+            <ListToday />
+               <div 
+                   className = 'branch-info-table-today hidden' 
+                   style={branchStyle}>
+                <BranchesInfo/>
+               </div>
+          </div>
         </div>
       )
   }

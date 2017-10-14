@@ -25,7 +25,7 @@ class SliderPlanner extends React.Component{
 
   componentDidMount(){
     mapObjectInstances.planner.display_branches()
-    mapObjectInstances.planner.displayOrHideBranchList()
+    // mapObjectInstances.planner.displayOrHideBranchList()
     this.animation = new Animation(mapObjectInstances.planner, 'planner')
   }
 

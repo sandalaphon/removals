@@ -33,13 +33,19 @@ class MapObject{
     this.initialRoutesRendered  = false,
     this.animeFrames            = [],
     this.surveyRoutesByCode     = {},
-    this.survey_markers         = []
+    this.survey_markers         = [],
+    this.renderedRoutesObject   = {},
+    this.renderedRoutesStartFinishMarkersObject = {}
     
 
     if(!mapObjectInstances.pathname){
       mapObjectInstances[pathname]=this
     }
+    console.log('map object instances', mapObjectInstances)
+  }
 
+  isRouteDisplaySaved(id){
+   return Object.keys(this.renderedRoutes).includes(id)
   }
 
   placeSurveyMarker(coords, message = ''){
@@ -79,6 +85,10 @@ class MapObject{
     if(clearArrays) this.renderedRoutes.length = 0
   }
 
+
+
+  
+
   clearMarkers(instance_variable_marker_array, clearArrays=true){
     this.resetBounds()
     this.showOrHide(instance_variable_marker_array, true, clearArrays)
@@ -104,6 +114,21 @@ class MapObject{
       google.maps.event.clearInstanceListeners(markerOrRoute);
     }
    })
+  }
+
+  hideRouteById(trip_id){
+    console.log('this.renderedRoutesObject', this.renderedRoutesObject[trip_id])
+    this.renderedRoutesObject[trip_id].setMap(null)
+    this.renderedRoutesStartFinishMarkersObject[trip_id].forEach((marker)=>{
+      marker.setMap(null)
+  })
+}
+
+  showRouteById(trip_id){
+    this.renderedRoutesObject[trip_id].setMap(this.map)
+    this.renderedRoutesStartFinishMarkersObject[trip_id].forEach((marker)=>{
+      marker.setMap(this.map)
+    })
   }
 
   resetBounds(){
@@ -148,40 +173,22 @@ class MapObject{
     return branchToReturn
   }
 
-  // drawRouteWithGoogleResponse(job, addStartFinishMarkers = true){
-  //     if(job.hidden) return
-  //   var {start_location, end_location} = job.google_directions.routes[ 0 ].legs[ 0 ]
-
-  // if(addStartFinishMarkers){
-  //   this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this), 'S', getComplementaryColour(job.colour))
-  //       this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this),'F', getComplementaryColour(job.colour))
-  //     }
-
-  //   this.drawRoute(job.google_directions, getComplementaryColour(job.colour))
-  //   this.drawToAndFromBranch(job)
-  // }
-
-  ///////////////////
-
   drawRouteWithGoogleResponse(job, addStartFinishMarkers = true){
       if(job.hidden) return
     var {start_location, end_location} = job.google_waypoints_directions.routes[ 0 ].legs[ 1 ]
     var branch = this.getBranchById(job.branch_id)
 
   if(addStartFinishMarkers){
-    this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this), 'S', getComplementaryColour(job.colour))
-        this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this),'F', getComplementaryColour(job.colour))
-        this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.home_branch_of_route_markers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
+    this.placeMarker(start_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this), 'S', getComplementaryColour(job.colour), job)
+        this.placeMarker(end_location , this.pinSymbol(job.colour), this.markers, true, false, '', this.panToStreetView.bind(this),'F', getComplementaryColour(job.colour), job)
+        this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.home_branch_of_route_markers, true, false, branch.address, this.handleBranchMarkerClick.bind(this), null, null, job)
       }
 
-    this.drawRoute(job.google_waypoints_directions, getComplementaryColour(job.colour))
-    // this.drawToAndFromBranch(job)
+    this.drawRoute(job.google_waypoints_directions, getComplementaryColour(job.colour), null, job)
+
   }
 
-  
 
-
-  /////////////////////
 
   drawRouteWithWayPoints(startLatLng, finishLatLng, waypointLatLngArray, polylineColour, dayAndSurveyorUniqueCode){
   
@@ -215,7 +222,7 @@ class MapObject{
     }.bind(this))
   }
 
-  drawRoute(google_directions, polylineColour='#0088FF', dayAndSurveyorUniqueCode=null){
+  drawRoute(google_directions, polylineColour='#0088FF', dayAndSurveyorUniqueCode=null, trip = null){
     var directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
       map: this.map,
@@ -231,28 +238,12 @@ class MapObject{
       this.surveyRoutesByCode[dayAndSurveyorUniqueCode]=directionsDisplay
     }else{
       this.renderedRoutes.push(directionsDisplay)
+      this.renderedRoutesObject[trip.id] = directionsDisplay
     }
    
   }
 
-  // drawToAndFromBranch(job){
-  //   var showToBranch = store.getState().common.show_to_branch
-  //   var showFromBranch = store.getState().common.show_from_branch
-  //   if(!showFromBranch&&!showToBranch) return
-  //     var branch = this.getBranchById(job.branch_id)
-  //   // var branchLatLng = JSON.parse(branch.latlng)
-  //   if(showFromBranch){
-  //     this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.home_branch_of_route_markers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
-  //     this.drawRoute(job.google_directions_from_branch, getComplementaryColour(job.colour))
-  //   }
-  //   if(showToBranch){
-  //     this.placeMarker(branch.latlng, this.branchSymbol("#265eb7"), this.toBranchesMarkers, true, false, branch.address, this.handleBranchMarkerClick.bind(this))
-  //     this.drawRoute(job.google_directions_to_branch, getComplementaryColour(job.colour))
-  //   }
-
-  // }
-
-  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null, labelText=null, labelTextColour){
+  placeMarker(coords, symbol, instance_variable_marker_array, drop=true, setBounds=false, message='', clickfunction=null, labelText=null, labelTextColour, trip = null){
     
     var marker = new google.maps.Marker({
       position: coords,
@@ -274,6 +265,13 @@ class MapObject{
     if(clickfunction) marker.addListener('click', clickfunction)
     instance_variable_marker_array.push(marker)
 
+  if(!trip) return
+
+    if (this.renderedRoutesStartFinishMarkersObject[trip.id]){
+      this.renderedRoutesStartFinishMarkersObject[trip.id].push(marker)
+    }else{
+      this.renderedRoutesStartFinishMarkersObject[trip.id] = [marker]
+    }
   }
 
  
@@ -423,6 +421,9 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
     case 'surveyor':
     this.branchesVisible = store.getState().common.branches_on_map_surveyor
     break;
+     case 'removal_from_store':
+    this.branchesVisible = store.getState().common.branches_on_map_removal_from_store
+    break;
   }
  }
 
@@ -439,6 +440,9 @@ styleButtonAndAddListener(button, map, listenerFunction, nameString, streetView)
     break;
     case 'surveyor':
     this.branchListVisible = store.getState().common.branch_list_displayed_surveyor
+    break;
+    case 'removal_from_store':
+    this.branchListVisible = store.getState().common.branch_list_displayed_removal_from_store
     break;
  }
 }
@@ -481,11 +485,11 @@ store.dispatch(toggleFullScreenMap(this.pathname))
   }
  }
 
-displayOrHideBranchList(){
-    this.setBranchListVisible()
-    this.hideOrShowElements(this.branchListVisible)
-    this.setBranchListVisibility(!this.branchListVisible) 
-}
+// displayOrHideBranchList(){
+//     this.setBranchListVisible()
+//     this.hideOrShowElements(this.branchListVisible)
+//     this.setBranchListVisibility(!this.branchListVisible) 
+// }
 
 
  hideOrShowElements(hide){
@@ -496,10 +500,10 @@ displayOrHideBranchList(){
   })
  }
 
- setBranchListVisibility(hide){
-    var branchListDiv = document.querySelector(`.branch-info-table-${this.pathname}`)
-    hide ? branchListDiv.classList.add('hidden') : branchListDiv.classList.remove('hidden')
- }
+ // setBranchListVisibility(hide){
+ //    var branchListDiv = document.querySelector(`.branch-info-table-${this.pathname}`)
+ //    hide ? branchListDiv.classList.add('hidden') : branchListDiv.classList.remove('hidden')
+ // }
 
  toggleLeftHandSideVisibility(){
   var leftDiv
@@ -515,7 +519,6 @@ displayOrHideBranchList(){
      case 'today':
     leftDiv = document.querySelector('.grid-item-today-left')
     rightDiv = document.querySelector('.grid-item-today-right')
-
      break;
      case 'partload':
     leftDiv = document.querySelector('.grid-item-partload-left')
@@ -524,6 +527,10 @@ displayOrHideBranchList(){
      case 'surveyor':
     leftDiv = document.querySelector('.grid-item-surveyor-left')
     rightDiv = document.querySelector('.grid-item-surveyor-right')
+     break;
+     case 'removal_from_store':
+    leftDiv = document.querySelector('.grid-item-ros-left')
+    rightDiv = document.querySelector('.grid-item-ros-right')
      break;
   }
 
@@ -551,6 +558,10 @@ displayOrHideBranchList(){
     case 'today':
     var listTodayEl = document.querySelector('.grid-item-list-today')
     return([listTodayEl])
+    break;
+    case 'removal_from_store':
+    // var listRosEl = document.querySelector('.grid-item-list-today')
+    return([])
     break;
     case 'partload':
     var postcodeEl = document.querySelector('.grid-item-postcode')
@@ -678,10 +689,11 @@ animateRoute(pathname){
     today:    store.getState().common.today_animation_speed,
     planner:  store.getState().common.planner_animation_speed,
     partload: store.getState().common.partload_animation_speed,
-    surveyor: store.getState().common.surveyor_animation_speed
+    surveyor: store.getState().common.surveyor_animation_speed,
+    removal_from_store: store.getState().common.removal_from_store_animation_speed
   }
   
-  store.getState().common.today_seconds_from_start
+  // store.getState().common.today_seconds_from_start
   var counter = 0
   var sliderSecondsFromStart= this.getSliderSecondsFromStart()
 for(var i=sliderSecondsFromStart; i<43200; i=i+600){
@@ -713,6 +725,9 @@ switch(this.pathname){
   break;
   case('partload'):
   return store.getState().common.partload_seconds_from_start
+  break;
+  case('removal_from_store'):
+  return store.getState().common.removal_from_store_seconds_from_start
   break;
  }
 }

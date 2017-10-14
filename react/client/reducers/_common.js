@@ -1,4 +1,6 @@
 
+
+import Branch from '../models/branch'
 import * as helpers from './_helpers'
 
 function handleTripData(state = {
@@ -6,6 +8,7 @@ function handleTripData(state = {
   current_partload_truckflicker_job: '',
   current_planner_truckflicker_job: '',
   current_sureyor_truckflicker_job: '',
+  current_removal_from_store_truckflicker_job: '',
   // branch_status_partload: 0,
   // branch_status_today: 0,
   // branch_status_planner:0 ,
@@ -18,26 +21,31 @@ function handleTripData(state = {
   full_screen_map_surveyor: false,
   full_screen_map_partload: false,
   full_screen_map_planner: false,
+  full_screen_map_removal_from_store: false,
 
   branches_on_map_partload: false,
   branches_on_map_today: false,
   branches_on_map_planner: false,
   branches_on_map_surveyor: false,
+  branches_on_map__removal_from_store: false,
 
   branch_list_displayed_partload: false,
   branch_list_displayed_planner: false,
   branch_list_displayed_today: false,
   branch_list_displayed_surveyor: false,
+  branch_list_displayed_removal_from_store: false,
 
   planner_seconds_from_start: 14400,
   surveyor_seconds_from_start: 14400,
   partload_seconds_from_start: 14400,
   today_seconds_from_start: 14400,
+  removal_from_store_seconds_from_start: 14400,
 
   today_animation_speed:    4,
   planner_animation_speed:  4,
   partload_animation_speed: 4,
   surveyor_animation_speed: 4,
+  removal_from_store_animation_speed: 4,
 
   ros_candidates: [],
   ros_candidates_error: null,
@@ -45,7 +53,9 @@ function handleTripData(state = {
   asynch_loading_total: 0,
   survey_object: {},
 
-  animation_running: false
+  animation_running: false,
+
+  ids_of_trips: []
 
 
 },action){
@@ -66,6 +76,10 @@ function handleTripData(state = {
     // break;
 
     /////////////////////////
+
+    case 'SET_IDS_OF_TRIPS':
+    return {...state, ids_of_trips: state.ids_of_trips.concat([action.id])}
+    break;
 
     case 'GET_ROS_CANDIDATES_FULFILLED':
     return {...state, ros_candidates: action.payload, ros_candidate_error: null}
@@ -118,6 +132,10 @@ function handleTripData(state = {
             increment = state.surveyor_animation_speed==1 && action.increment == -1 ? 0 : action.increment
             return { ...state, surveyor_animation_speed: state.surveyor_animation_speed + increment}
             break;
+            case 'removal_from_store':
+            increment = state.removal_from_store_animation_speed==1 && action.increment == -1 ? 0 : action.increment
+            return { ...state, removal_from_store_animation_speed: state.removal_from_store_animation_speed + increment}
+            break;
           }
     break;
 
@@ -136,6 +154,9 @@ function handleTripData(state = {
         break; 
         case 'surveyor':
         return { ...state, surveyor_seconds_from_start: action.secondsPassed}
+        break; 
+        case 'removal_from_store':
+        return { ...state, removal_from_store_seconds_from_start: action.secondsPassed}
         break;
     }
 
@@ -155,6 +176,9 @@ function handleTripData(state = {
         break;
         case 'surveyor':
         return { ...state, branch_list_displayed_surveyor: !state.branch_list_displayed_surveyor}
+        break;
+        case 'surveyor':
+        return { ...state, branch_list_displayed_removal_from_store: !state.branch_list_displayed_removal_from_store}
         break;
     }
     break;
@@ -200,6 +224,9 @@ function handleTripData(state = {
         case 'surveyor':
         return { ...state, branches_on_map_surveyor: !state.branches_on_map_surveyor}
         break;
+         case 'removal_from_store':
+        return { ...state, branches_on_map_removal_from_store: !state.branches_on_map_removal_from_store}
+        break;
     }
     break;
 
@@ -216,6 +243,9 @@ function handleTripData(state = {
             break;
             case 'surveyor':
             return { ...state, full_screen_map_surveyor: !state.full_screen_map_surveyor}
+            break;
+             case 'surveyor':
+            return { ...state, full_screen_map_removal_from_store: !state.full_screen_map_removal_from_store}
             break;
         }
 
@@ -304,6 +334,9 @@ function handleTripData(state = {
         branch.colour=helpers.getUniqueColor(index)
         return branch
     })
+    anotherNewArray.forEach((branch)=>{
+        new Branch(branch)
+    })
     if(state.asynch_loading_total==3){
 
         return {...state, all_branches: anotherNewArray, getBranchesError: null, asynch_loading_total: state.asynch_loading_total + 1}
@@ -351,6 +384,9 @@ function handleTripData(state = {
         case 'surveyor':
         return{...state, current_surveyor_truckflicker_job: action.payload}
         break;
+        case 'removal_from_store':
+        return{...state, current_removal_from_store_truckflicker_job: action.payload}
+        break;
     }
     break;
 
@@ -367,6 +403,10 @@ function handleTripData(state = {
         break;
         case 'surveyor':
         return{...state, current_surveyor_truckflicker_job: ''}
+        break;
+        break;
+        case 'removal_from_store':
+        return{...state, current_removal_from_store_truckflicker_job: ''}
         break;
     }
     break;

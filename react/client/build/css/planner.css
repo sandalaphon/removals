@@ -193,7 +193,6 @@ min-width:5vw;
 
 
 .grid-item-map {
-  /*grid-area: map;*/
   border: 3px solid green;
   min-height: 1fr;
   width: 1fr;

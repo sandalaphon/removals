@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  18t_fuel_per_mile: MyString
+  9t_fuel_per_mile: MyString
+  3.5t_fuel_per_mile: MyString
+  18t_driver_per_hour: 
+  9t_driver_per_hour: MyString
+  luton_driver_per_hour: MyString
+  porter_per_hour: MyString
+
+two:
+  18t_fuel_per_mile: MyString
+  9t_fuel_per_mile: MyString
+  3.5t_fuel_per_mile: MyString
+  18t_driver_per_hour: 
+  9t_driver_per_hour: MyString
+  luton_driver_per_hour: MyString
+  porter_per_hour: MyString

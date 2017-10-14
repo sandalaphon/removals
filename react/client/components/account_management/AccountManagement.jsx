@@ -1,6 +1,7 @@
 import React from 'react'
 import SignUp from './SignUp'
 import UserList from './UserList'
+import EnterCosts from './EnterCosts'
 import AddEmployee from './AddEmployee'
 import {Button, Collapse, Well} from 'react-bootstrap'
 import {bindActionCreators} from 'redux'
@@ -19,13 +20,16 @@ class AccountManagement extends React.Component {
     this.props.actions.accountActions.getUsers()
   }
 
+
   render(){
-    var {getUsers, deleteUser, updateAdmin} = this.props.actions.accountActions
+    var {getUsers, deleteUser, updateAdmin, setFuelPerMile18t,
+      setFuelPerMile9t, setFuelPerMileLuton, setDriverPerHour18t, setDriverPerHour9t, setDriverPerHourLuton, setPorterPerHour, updateCost, getCostsFromRails } = this.props.actions.accountActions
     var {signUpClick, signUploginEmail, signUploginPassword, signUpPasswordConfirm} = this.props.actions.signUpActions
   
     return(
       
       <div>
+     
       <Button bsSize="small" bsStyle="success" onClick={ ()=> this.setState({ open0: !this.state.open0 })}>
         Click To Add/Edit Employee
       </Button>
@@ -74,7 +78,38 @@ class AccountManagement extends React.Component {
               />      
             </Well>
           </div>
-        </Collapse>       
+        </Collapse>  
+
+        <Button bsSize = 'small' bsStyle = 'success' onClick = {() => this.setState({open2 : !this.state.open2})}>
+        Enter Costs
+        </Button>
+
+
+        <Collapse in={this.state.open2}>
+          <div>
+            <Well>
+             <EnterCosts
+             costs                 = {this.props.accountManagement.costs}
+             updateCost            = {updateCost}
+             setFuelPerMile18t     = {setFuelPerMile18t}
+             setFuelPerMile9t      = {setFuelPerMile9t}
+             setFuelPerMileLuton   = {setFuelPerMileLuton}
+             setDriverPerHour18t   = {setDriverPerHour18t}
+             setDriverPerHour9t    = {setDriverPerHour9t}
+             setDriverPerHourLuton = {setDriverPerHourLuton}
+             setPorterPerHour      = {setPorterPerHour}
+             getCostsFromRails     = {getCostsFromRails}
+             fuel_per_mile_18t     = {this.props.accountManagement.fuel_per_mile_18t}
+             fuel_per_mile_9t      = {this.props.accountManagement.fuel_per_mile_9t}
+             fuel_per_mile_luton   = {this.props.accountManagement.fuel_per_mile_luton}
+             driver_per_hour_18t   = {this.props.accountManagement.driver_per_hour_18t}
+             driver_per_hour_9t    = {this.props.accountManagement.driver_per_hour_9t}
+             driver_per_hour_luton = {this.props.accountManagement.driver_per_hour_luton}
+             porter_per_hour       = {this.props.accountManagement.porter_per_hour}
+             />
+            </Well>
+          </div>
+        </Collapse>     
       </div>
       )
   }

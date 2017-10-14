@@ -33,6 +33,7 @@
     "webpack-hot-middleware": "^2.10.0"
   },
   "dependencies": {
+    "autosize-input": "^0.4.0",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.23.0",
     "classnames": "^2.2.5",

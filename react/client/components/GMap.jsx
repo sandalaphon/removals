@@ -74,9 +74,9 @@ class GMap extends React.Component {
   render() {
         return (  
         <div className='gmap-map-outer'>            
-                <div id='map' className='grid-item-map' ref="mapCanvas">  
-                </div>
-                </div>
+            <div id='map' className='grid-item-map' ref="mapCanvas">  
+            </div>
+        </div>
           )
       }
     };
