@@ -28,8 +28,6 @@ class Layout extends React.Component {
 
   loadData(){
     this.props.actions.commonActions.getAllEmployeesFromRails()
-    
-    
     this.props.actions.commonActions.getAllSurveysFromRails()
     this.props.actions.commonActions.getAllBranchesFromRails()  
     this.props.actions.commonActions.getAllTripsFromRails()
@@ -41,11 +39,11 @@ class Layout extends React.Component {
   render(){
 
 
-    const {loginEmail, loginPassword, signInClick, signOut} =                           this.props.actions.loginActions
-    const { getUsers} =                                                                 this.props.actions.accountManagementActions
+    const {loginEmail, loginPassword, signInClick, signOut}                           = this.props.actions.loginActions
+    const { getUsers}                                                                 = this.props.actions.accountManagementActions
     const { signUploginEmail, signUploginPassword,signUpPasswordConfirm, signUpClick} = this.props.actions.signUpActions
     const { getAllTripsFromRails, getAllBranchesFromRails, getAllEmployeesFromRails}  = this.props.actions.commonActions
-    const { user_email, user_password, currentUser} =                                   this.props.loginDetails
+    const { user_email, user_password, currentUser}                                   = this.props.loginDetails
     var toDisplay
 
     if(currentUser){
@@ -102,7 +100,7 @@ const mapStateToProps=(state)=>({
 const mapDispatchToProps=(dispatch)=>({
   actions:{
     commonActions:              bindActionCreators( commonActions, dispatch ),
-    accountManagementActions :  bindActionCreators( accountManagementActions, dispatch ),
+    accountManagementActions:   bindActionCreators( accountManagementActions, dispatch ),
     loginActions:               bindActionCreators( loginActions, dispatch ),
     signUpActions:              bindActionCreators( signupActions, dispatch )
   }

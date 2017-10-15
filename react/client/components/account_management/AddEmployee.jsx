@@ -11,6 +11,7 @@ class AddEmployee extends React.Component{
 
   render(){
     return(
+      
           <div>
             <h3>Please Enter New Employee Details </h3>
             <form ref='commentForm'>

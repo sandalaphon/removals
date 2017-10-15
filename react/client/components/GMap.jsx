@@ -27,11 +27,11 @@ class GMap extends React.Component {
 
 
   createMap() {
-    let pathname=this.props.location.pathname
-    pathname = pathname.slice(1)
+    let pathname  = this.props.location.pathname
+    pathname      = pathname.slice(1)
     if (mapObjectInstances[pathname]){
-      var map = mapObjectInstances[pathname].map
-      var el = document.querySelector('.gmap-map-outer')
+      var map     = mapObjectInstances[pathname].map
+      var el      = document.querySelector('.gmap-map-outer')
       var innerEl = document.querySelector('.grid-item-map')
       innerEl.parentNode.removeChild(innerEl);
       el.appendChild(map.getDiv())
@@ -39,21 +39,22 @@ class GMap extends React.Component {
       return map
     }else{
       let mapOptions = {
-        zoom: this.state.zoom,
-        center: this.mapCenter(),
-        zoomControl: true,
-         mapTypeControl: true,
-         mapTypeControlOptions: {
+        zoom:               this.state.zoom,
+        center:             this.mapCenter(),
+        zoomControl:        true,
+        mapTypeControl:     true,
+        scaleControl:       true,
+        streetViewControl:  true,
+        rotateControl:      true,
+        fullscreenControl:  false,
+        mapTypeControlOptions: {
                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
                mapTypeIds: ['roadmap', 'terrain']
              },
-         scaleControl: true,
-         streetViewControl: true,
-         rotateControl: true,
-         fullscreenControl: false
+         
       }
 
-      var map = new google.maps.Map(this.refs.mapCanvas, mapOptions)
+      var map       = new google.maps.Map(this.refs.mapCanvas, mapOptions)
       var mapObject = new MapObject(map, pathname)
       mapObject.createAMapButton(mapObject.handleBranchesClick.bind(mapObject), 'TOP_RIGHT', 'Branches')
       mapObject.createAMapButton(mapObject.handleFullScreenMapClick.bind(mapObject), 'TOP_RIGHT', 'Full Screen')
@@ -90,9 +91,9 @@ const mapDispatchToProps=(dispatch)=>({
 })
 
 const mapStateToProps=(state)=>({
-  all_trips: state.common.all_trips, 
+  all_trips:             state.common.all_trips, 
   partload_marker_array: state.partload.partload_marker_array, 
-  best_pick_up_jobs: state.partload.best_pick_up_jobs })
+  best_pick_up_jobs:     state.partload.best_pick_up_jobs })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GMap))
 
