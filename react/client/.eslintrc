@@ -19,11 +19,12 @@
     "babel/no-await-in-loop": 1,
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
-    "react/react-in-jsx-scope": 2
+    "react/react-in-jsx-scope": 2,
+    "prettier/prettier": "error"
   },
   "plugins": [
     "babel",
     "react",
-    
+    "prettier"
   ]
 }

@@ -1,82 +1,80 @@
-#floating-panel{
+#floating-panel {
   position: absolute;
-          top: 10px;
-          left: 25%;
-          z-index: 5;
-          background-color: #fff;
-          padding: 5px;
-          border: 1px solid #999;
-          text-align: center;
-          font-family: 'Roboto','sans-serif';
-          line-height: 30px;
-          padding-left: 10px;
+  top: 10px;
+  left: 25%;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: "Roboto", "sans-serif";
+  line-height: 30px;
+  padding-left: 10px;
 }
 
-.hidden{
-     display: none;
+.hidden {
+  display: none;
 }
 
-.width50vw{
-     width: 50vw;
+.width50vw {
+  width: 50vw;
 }
 
-.width100vw{
-     width: 100vw;
+.width100vw {
+  width: 100vw;
 }
 
-.width60vw{
-     width:60vw; 
-     /*grid item planner left*/
+.width60vw {
+  width: 60vw;
+  /*grid item planner left*/
 }
 
-.width40vw{
-     width:40vw;
-     /*grid item planner right*/
+.width40vw {
+  width: 40vw;
+  /*grid item planner right*/
 }
 
-.float_left{
-     float: left;
-     margin-right: 10px;
+.float_left {
+  float: left;
+  margin-right: 10px;
 }
 
 .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
+  visibility: visible;
 }
 
 .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 150%;
-    left: 50%;
-    margin-left: -60px;
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -60px;
 }
 
 .tooltip .tooltiptext::after {
-    content: " ";
-    position: absolute;
-    top: 100%; /* At the bottom of the tooltip */
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: black transparent transparent transparent;
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
 }
 
-input[placeholder] { text-overflow: ellipsis; }
-
-
-
-
+input[placeholder] {
+  text-overflow: ellipsis;
+}

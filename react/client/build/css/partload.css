@@ -1,97 +1,62 @@
+.grid-item-map-partload {
+  min-height: 1fr;
+  width: 1fr;
+  border: 1px solid purple;
+}
 
+.partload-map-outer {
+  grid-area: maP;
+  display: grid;
+  min-height: 1fr;
+  width: 1fr;
+  border: 1px solid black;
+}
 
-  .grid-item-map-partload{
-    min-height: 1fr;
-    width: 1fr;
-    border:1px solid purple;
-  }
+.grid-partload {
+  display: grid;
+  height: 95vh;
+  grid-template-areas: "leF riG";
+}
 
-  .partload-map-outer{
-    grid-area: maP;
-    display:grid;
-    min-height: 1fr;
-    width: 1fr;
-    border:1px solid black;
-  }
-
-
-
-  .grid-partload{
-   display: grid;
-   height: 95vh;
-   grid-template-areas:
-   'leF riG';
- }
-
- .grid-item-partload-right{
+.grid-item-partload-right {
   grid-area: riG;
   display: grid;
   height: 95vh;
- /*width 50vw in main.css*/
+  /*width 50vw in main.css*/
   border: 3px solid green;
-  grid-template-areas:
-  " fli"
-  " maP"
-  " maP"
-  " maP"
-  " maP"
-  " maP"
-  " maP"
-  " maP"
-  " maP"
-  " maP"
-  " maP"
-  " maP"
-  " maP"
-  " maP"
-  " sLI"
-  ;
-  grid-template-rows: repeat(15,1fr);
+  grid-template-areas: " fli" " maP" " maP" " maP" " maP" " maP" " maP" " maP"
+    " maP" " maP" " maP" " maP" " maP" " maP" " sLI";
+  grid-template-rows: repeat(15, 1fr);
   /*grid-auto-columns: 10%;*/
   /*grid-template-columns: repeat(2,1fr);*/
 }
 
-.grid-item-partload-left{
+.grid-item-partload-left {
   grid-area: leF;
   display: grid;
   height: 95vh;
- /*width 50vw in main.css*/
+  /*width 50vw in main.css*/
   border: 3px solid hotpink;
-  grid-template-areas:
-  "pos "
-  "pos "
-  "pos "
-  "pos "
-  "sug "
-  "sug "
-  "sug "
-  "sug "
-  "sug "
-  "sug "
-  "sug "
-  "sug "
-  "sug "
-  "sug "
-  "sug "
-  ;
-  grid-template-rows: repeat(15,1fr);
+  grid-template-areas: "pos " "pos " "pos " "pos " "sug " "sug " "sug " "sug "
+    "sug " "sug " "sug " "sug " "sug " "sug " "sug ";
+  grid-template-rows: repeat(15, 1fr);
   /*grid-auto-columns: 10%;*/
   /*grid-template-columns: repeat(2,1fr);*/
 }
 
-.grid-item-suggestion-list{
-  grid-area:sug;
+.grid-item-suggestion-list {
+  grid-area: sug;
   display: inline-block;
 }
 
-.grid-item-postcode{
-  grid-area:pos;
-  display:inline-block;
+.grid-item-postcode {
+  grid-area: pos;
+  display: inline-block;
 }
 
-.grid-item-slider-partload{
-  grid-area:sLI;
-  border:1px solid purple;
+.grid-item-slider-partload {
+  grid-area: sLI;
+  border: 1px solid purple;
 }
 
 /*.grid-item-truck-flicker{
@@ -108,9 +73,7 @@
   min-height: 1fr;
   }*/
 
-
-  .new-table{
-    border: solid 2px black;
-    width: 50vw;
-  }
-
+.new-table {
+  border: solid 2px black;
+  width: 50vw;
+}

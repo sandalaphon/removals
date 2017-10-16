@@ -1,11 +1,9 @@
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-import * as actionCreators from '../../actions/actionCreators'
-import UpdateData from './UpdateData'
+import { bindActionCreators } from "redux"
+import { connect } from "react-redux"
+import * as actionCreators from "../../actions/actionCreators"
+import UpdateData from "./UpdateData"
 
-
-
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return {
     // posts: state.posts,
     // comments: state.comments,
@@ -15,7 +13,7 @@ function mapStateToProps(state){
   }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return bindActionCreators(actionCreators, dispatch)
 }
 

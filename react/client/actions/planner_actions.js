@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from "axios";
 
 // export function setPlannerSliderSecondsFromStart(secondsPassed){
 //   return {
@@ -7,51 +7,45 @@ import axios from 'axios'
 //   }
 // }
 
-
-
-
-export function setSearchQuery(searchString){
+export function setSearchQuery(searchString) {
   return {
-    type: 'SET_SEARCH_STRING',
+    type: "SET_SEARCH_STRING",
     payload: searchString
-  }
+  };
 }
 
-
-
-export function setCurrentDragJob(jobObject){
+export function setCurrentDragJob(jobObject) {
   return {
-    type: 'SET_CURRENT_DRAG_JOB',
+    type: "SET_CURRENT_DRAG_JOB",
     payload: jobObject
-  }
+  };
 }
 
-export function setDroppedCells(colourAndCellsObject){
+export function setDroppedCells(colourAndCellsObject) {
   return {
-    type: 'SET_DROPPED_CELLS',
+    type: "SET_DROPPED_CELLS",
     payload: colourAndCellsObject
-  }
+  };
 }
 
-export function deleteDroppedCells(colour){
+export function deleteDroppedCells(colour) {
   return {
-    type: 'DELETE_DROPPED_CELLS',
+    type: "DELETE_DROPPED_CELLS",
     payload: colour
-  }
+  };
 }
 
-
-export function setHighlightedCells(cellIds){
+export function setHighlightedCells(cellIds) {
   return {
-    type: 'SET_HIGHLIGHTED_CELLS',
+    type: "SET_HIGHLIGHTED_CELLS",
     payload: cellIds
-  }
+  };
 }
 
-export function sortByColumn(attribute, order){
+export function sortByColumn(attribute, order) {
   return {
-    type: 'SORT_BY_COLUMN',
+    type: "SORT_BY_COLUMN",
     attribute,
     order
-  }
+  };
 }

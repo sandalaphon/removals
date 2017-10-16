@@ -1,196 +1,158 @@
 /*////////////////LAYOUT//////////////////////////////*/
 
-
-
-.grid-planner{
+.grid-planner {
   display: grid;
   height: 95vh;
-  grid-template-areas:
- 'lef rig';
+  grid-template-areas: "lef rig";
 }
 
-.grid-item-planner-right{
-  grid-area:rig;
+.grid-item-planner-right {
+  grid-area: rig;
   display: grid;
   height: 95vh;
 
-  grid-template-areas:
-    " fli fli fli fli"
-    " map map map map"
-    " map map map map"
-    " map map map map"
-    " map map map map"
-    " map map map map"
-    " map map map map"
-    " map map map map"
-    " map map map map"
-    " map map map map"
-    " map map map map"
-    " map map map map"
-    " map map map map"
-    " map map map map"
-    " slI slI slI slI";
-  grid-template-rows: repeat(15,1fr);
+  grid-template-areas: " fli fli fli fli" " map map map map" " map map map map"
+    " map map map map" " map map map map" " map map map map" " map map map map"
+    " map map map map" " map map map map" " map map map map" " map map map map"
+    " map map map map" " map map map map" " map map map map" " slI slI slI slI";
+  grid-template-rows: repeat(15, 1fr);
   /*grid-auto-columns: 16.66%;*/
 }
 
-
-.grid-item-planner-left{
-  grid-area:lef;
+.grid-item-planner-left {
+  grid-area: lef;
   display: grid;
   height: 95vh;
-/*class .width60vw*/
-  grid-template-areas:
-  "cal cal cal cal cal cal    "
-  "cal cal cal cal cal cal    "
-  "cal cal cal cal cal cal    "
-  "cal cal cal cal cal cal    "
-  "cal cal cal cal cal cal    "
-  "fil fil fil fil fil fil    "
-  "job job job job job job    "
-  "job job job job job job    "
-  "job job job job job job    "
-  "job job job job job job    "
-  "job job job job job job    "
-  "job job job job job job    "
-  "job job job job job job    "
-  "job job job job job job    "
-  "job job job job job job    ";
-  grid-template-rows: repeat(15,1fr);
+  /*class .width60vw*/
+  grid-template-areas: "cal cal cal cal cal cal    "
+    "cal cal cal cal cal cal    " "cal cal cal cal cal cal    "
+    "cal cal cal cal cal cal    " "cal cal cal cal cal cal    "
+    "fil fil fil fil fil fil    " "job job job job job job    "
+    "job job job job job job    " "job job job job job job    "
+    "job job job job job job    " "job job job job job job    "
+    "job job job job job job    " "job job job job job job    "
+    "job job job job job job    " "job job job job job job    ";
+  grid-template-rows: repeat(15, 1fr);
   /*grid-auto-columns: 16.66%;*/
 }
 
-
-
-.grid-item-slider-planner{
+.grid-item-slider-planner {
   /*display: inline-block;*/
-  grid-area:slI;
+  grid-area: slI;
   border: 3px solid purple;
-  
 
   /*grid-auto-rows:1fr;*/
 }
 
-.slider-div{
+.slider-div {
   /*border: 1px solid black;*/
-  
+
   width: 1fr;
   margin: 20px;
-  height:1fr;
+  height: 1fr;
   /*text-align: center;*/
   /*transform: translateY(50%);*/
 }
 
-.grid-item-truck-day-view{
-   margin-top: 20px;
-   display:inline-grid;
-   border:1px solid red;
-   grid-area: cal;
-   overflow: scroll;
-   grid-template-columns: repeat(19,1fr);
+.grid-item-truck-day-view {
+  margin-top: 20px;
+  display: inline-grid;
+  border: 1px solid red;
+  grid-area: cal;
+  overflow: scroll;
+  grid-template-columns: repeat(19, 1fr);
 }
 
-.grid-item-joblist{
+.grid-item-joblist {
   display: inline-block;
-  grid-area:job;
+  grid-area: job;
   border: 3px solid purple;
-  grid-auto-rows:1fr;
+  grid-auto-rows: 1fr;
   overflow: scroll;
 }
 
-.drop-target{
+.drop-target {
   background-color: hotpink;
 }
 
-table{
+table {
   overflow: scroll;
 }
 
-td, th{
-border: 1px solid black;
-vertical-align: middle;
-text-align: center;
-/*width: 10%;*/
-min-width:5vw;
-/*pointer-events: none;*/
+td,
+th {
+  border: 1px solid black;
+  vertical-align: middle;
+  text-align: center;
+  /*width: 10%;*/
+  min-width: 5vw;
+  /*pointer-events: none;*/
 }
 
-
-.grid-item-filter{
+.grid-item-filter {
   grid-area: fil;
-  border:1px solid blue;
+  border: 1px solid blue;
   overflow: scroll;
-  display:inline-block;
+  display: inline-block;
 }
 
-.grid-item-truck-flicker{
+.grid-item-truck-flicker {
   display: grid;
   grid-area: fli;
   /*border:1px solid yellow;*/
- 
+
   align-self: center;
   width: 1fr;
-  grid-template-areas:
-  " l l l l l l l l l l a b c d e f g r r r r r r r r r r "
-  
+  grid-template-areas: " l l l l l l l l l l a b c d e f g r r r r r r r r r r ";
 }
 
-.left-holder{
+.left-holder {
   grid-area: l;
 }
 
-.right-holder{
+.right-holder {
   grid-area: r;
 }
 
-
-.show_all_routes_btn{
+.show_all_routes_btn {
   justify-self: center;
   grid-area: btn;
 }
 
-
-
-.arrow-left{
+.arrow-left {
   justify-self: center;
   grid-area: a;
 }
 
-
-
-.fa-step-backward{
+.fa-step-backward {
   justify-self: center;
   grid-area: b;
 }
 
-.fa-backward{
+.fa-backward {
   justify-self: center;
   grid-area: c;
 }
 
-
-
-.play_pause{
+.play_pause {
   justify-self: center;
- grid-area: d;
+  grid-area: d;
 }
 
-.fa-forward{
+.fa-forward {
   justify-self: center;
   grid-area: e;
 }
 
-.fa-step-forward{
+.fa-step-forward {
   justify-self: center;
   grid-area: f;
 }
 
-.fa-arrow-right{
+.fa-arrow-right {
   justify-self: center;
   grid-area: g;
 }
-
-
 
 .grid-item-map {
   border: 3px solid green;
@@ -198,71 +160,48 @@ min-width:5vw;
   width: 1fr;
 }
 
-.gmap-map-outer{
+.gmap-map-outer {
   grid-area: map;
-  display:grid;
+  display: grid;
   min-height: 1fr;
   width: 1fr;
 }
 
 /*////////////////SCHEDULE////////////////////////////*/
 
-
-.truck-cell{
+.truck-cell {
   display: inline-block;
-
 }
-.truck-day-time-cell{
+.truck-day-time-cell {
   border: 1px solid black;
- 
 }
 
-
-
-.cell{
+.cell {
   border: 1px solid black;
-  text-align:center;
+  text-align: center;
   align-items: center;
-  display:grid;
+  display: grid;
 }
 
-
-.timecolumn{
-  display:grid; 
-  grid-auto-rows:1fr;
+.timecolumn {
+  display: grid;
+  grid-auto-rows: 1fr;
 }
 
-.material-icons.md-18{
+.material-icons.md-18 {
 }
 
-.truckimage{
+.truckimage {
 }
-
-
-
 
 /*////////////////FILTER//////////////////////////////*/
 
-
-
 /*////////////////TRUCK-FLICKER///////////////////////*/
 
-
-.truck-pagi{
+.truck-pagi {
   border: solid 3px red;
 }
 
 /*////////////////MAP/////////////////////////////////*/
 
-
 /*////////////////TIMESCROLLER////////////////////////*/
-
-
-
-
-
-
-
-
-
-

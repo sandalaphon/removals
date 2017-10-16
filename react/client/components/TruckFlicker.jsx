@@ -1,126 +1,125 @@
-import React from 'react'
-import {mapObjectInstances} from '../models/mapObject'
-import * as commonActions from '../actions/_common_actions'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-import {withRouter} from 'react-router'
-import Animation from '../models/animation'
+import React from "react"
+import { mapObjectInstances } from "../models/mapObject"
+import * as commonActions from "../actions/_common_actions"
+import { bindActionCreators } from "redux"
+import { connect } from "react-redux"
+import { withRouter } from "react-router"
+import Animation from "../models/animation"
 
 class TruckFlicker extends React.Component {
-
   constructor(props) {
-    super(props);
-    this.state = {
-    }
+    super(props)
+    this.state = {}
   }
 
-  componentWillMount(){
+  componentWillMount() {
     this.pathname = this.props.router.location.pathname.slice(1)
   }
 
-  componentWillUnmount(){
-    if(this.props.trips.animation_running){
+  componentWillUnmount() {
+    if (this.props.trips.animation_running) {
       mapObjectInstances[this.pathname].pauseAnime()
       this.props.actions.common_actions.toggleAnimationRunning()
     }
   }
 
-  get_relevant_ros_array(){
+  get_relevant_ros_array() {
     return []
   }
 
-  setInstanceVariables(){
-
-    switch (this.pathname){
-      case 'today':
-      this.current_truckflicker_job = this.props.trips.current_today_truckflicker_job
-      this.mapObject = mapObjectInstances.today
-      this.relevantArray = this.props.today_trips
-      this.branchStatus = this.props.trips.branches_status_today
-      break;
-      case 'planner':
-      this.current_truckflicker_job = this.props.trips.current_planner_truckflicker_job
-      this.mapObject = mapObjectInstances.planner
-      this.relevantArray = this.props.trips.all_trips
-      break;
-      case 'partload':
-      this.current_truckflicker_job = this.props.trips.current_partload_truckflicker_job
-      this.mapObject = mapObjectInstances.partload
-      this.relevantArray = this.props.best_pick_up_jobs
-      break;
-      case 'surveyor':
-      this.current_truckflicker_job = this.props.trips.current_surveyor_truckflicker_job
-      this.mapObject = mapObjectInstances.surveyor
-      this.relevantArray = this.props.best_pick_up_jobs
-      break;
-      case 'removal_from_store':
-      this.current_truckflicker_job = this.props.trips.removal_from_store_truckflicker_job
-      this.mapObject = mapObjectInstances.removal_from_store_truckflicker_job
-      this.relevantArray = this.get_relevant_ros_array()
-      break;
+  setInstanceVariables() {
+    switch (this.pathname) {
+      case "today":
+        this.current_truckflicker_job = this.props.trips.current_today_truckflicker_job
+        this.mapObject = mapObjectInstances.today
+        this.relevantArray = this.props.today_trips
+        this.branchStatus = this.props.trips.branches_status_today
+        break
+      case "planner":
+        this.current_truckflicker_job = this.props.trips.current_planner_truckflicker_job
+        this.mapObject = mapObjectInstances.planner
+        this.relevantArray = this.props.trips.all_trips
+        break
+      case "partload":
+        this.current_truckflicker_job = this.props.trips.current_partload_truckflicker_job
+        this.mapObject = mapObjectInstances.partload
+        this.relevantArray = this.props.best_pick_up_jobs
+        break
+      case "surveyor":
+        this.current_truckflicker_job = this.props.trips.current_surveyor_truckflicker_job
+        this.mapObject = mapObjectInstances.surveyor
+        this.relevantArray = this.props.best_pick_up_jobs
+        break
+      case "removal_from_store":
+        this.current_truckflicker_job = this.props.trips.removal_from_store_truckflicker_job
+        this.mapObject = mapObjectInstances.removal_from_store_truckflicker_job
+        this.relevantArray = this.get_relevant_ros_array()
+        break
     }
   }
 
-  showAllRoutes(event){
-    if(event) event.preventDefault()
+  showAllRoutes(event) {
+    if (event) event.preventDefault()
     this.setInstanceVariables()
     this.mapObject.clearMap()
-    this.relevantArray.forEach((job)=>{
+    this.relevantArray.forEach(job => {
       this.props.actions.common_actions.setHiddenStatus(job)
-    }) 
+    })
     this.props.actions.common_actions.clearCurrentTruckFlickerJob(this.pathname)
     this.mapObject.displayArrayOfJobRoutes(this.relevantArray)
   }
 
-  handlePreviousClick(event){
+  handlePreviousClick(event) {
     event.preventDefault()
     this.renderAppropriateRoute(false)
   }
 
-  handleNextClick(event){
-   event.preventDefault()
-   this.renderAppropriateRoute(true)
- }
-
-
- renderAppropriateRoute(next = true){
-  this.setInstanceVariables()
-  var jobToDisplay = this.getNextJobToDisplay(next)
-  this.mapObject.clearMap()
-  // this.mapObject.branchesShowing=false
-  if(jobToDisplay){
-    this.mapObject.drawRouteWithGoogleResponse(jobToDisplay)
-      // this.current_truckflicker_job = jobToDisplay
-      this.props.actions.common_actions.setCurrentTruckFlickerJob(jobToDisplay, this.pathname)
-    }
-
+  handleNextClick(event) {
+    event.preventDefault()
+    this.renderAppropriateRoute(true)
   }
 
-  getNextJobToDisplay(next){
+  renderAppropriateRoute(next = true) {
+    this.setInstanceVariables()
+    var jobToDisplay = this.getNextJobToDisplay(next)
+    this.mapObject.clearMap()
+    // this.mapObject.branchesShowing=false
+    if (jobToDisplay) {
+      this.mapObject.drawRouteWithGoogleResponse(jobToDisplay)
+      // this.current_truckflicker_job = jobToDisplay
+      this.props.actions.common_actions.setCurrentTruckFlickerJob(
+        jobToDisplay,
+        this.pathname
+      )
+    }
+  }
 
-    var arrayToUse = next ? this.relevantArray : this.relevantArray.slice().reverse()
+  getNextJobToDisplay(next) {
+    var arrayToUse = next
+      ? this.relevantArray
+      : this.relevantArray.slice().reverse()
     var jobToReturn
-    var unfound=true
-    if(!this.current_truckflicker_job){
-      arrayToUse.forEach((job)=>{
-        if(!job.hidden&&unfound){
+    var unfound = true
+    if (!this.current_truckflicker_job) {
+      arrayToUse.forEach(job => {
+        if (!job.hidden && unfound) {
           jobToReturn = job
-          unfound=false
-        } 
-      })
-    }else{
-      let currentIndex = arrayToUse.indexOf(this.current_truckflicker_job)
-      arrayToUse.forEach((job, index)=>{
-        if(!job.hidden&&index>currentIndex&&unfound){
-          jobToReturn=job
-          unfound=false
+          unfound = false
         }
       })
-      if(unfound){
-        arrayToUse.forEach((job, index)=>{
-          if(!job.hidden&&index<=currentIndex&&unfound){
-            jobToReturn=job
-            unfound=false
+    } else {
+      let currentIndex = arrayToUse.indexOf(this.current_truckflicker_job)
+      arrayToUse.forEach((job, index) => {
+        if (!job.hidden && index > currentIndex && unfound) {
+          jobToReturn = job
+          unfound = false
+        }
+      })
+      if (unfound) {
+        arrayToUse.forEach((job, index) => {
+          if (!job.hidden && index <= currentIndex && unfound) {
+            jobToReturn = job
+            unfound = false
           }
         })
       }
@@ -128,137 +127,155 @@ class TruckFlicker extends React.Component {
     return jobToReturn
   }
 
-  resetToStart(){
+  resetToStart() {
     this.setInstanceVariables()
-    if(this.props.trips.animation_running){
+    if (this.props.trips.animation_running) {
       this.mapObject.pauseAnime()
-      this.props.actions.common_actions.setSliderSecondsFromStart(0, this.pathname)
+      this.props.actions.common_actions.setSliderSecondsFromStart(
+        0,
+        this.pathname
+      )
       this.mapObject.animateRoute(this.pathname)
-    }else{
-      this.props.actions.common_actions.setSliderSecondsFromStart(0, this.pathname)
+    } else {
+      this.props.actions.common_actions.setSliderSecondsFromStart(
+        0,
+        this.pathname
+      )
       this.mapObject.animateRoute(this.pathname)
       setTimeout(this.mapObject.pauseAnime.bind(this.mapObject), 0)
     }
   }
 
-  setToEnd(){
+  setToEnd() {
     this.setInstanceVariables()
-    if(this.props.trips.animation_running){
+    if (this.props.trips.animation_running) {
       this.mapObject.pauseAnime()
-      this.props.actions.common_actions.setSliderSecondsFromStart(43200, this.pathname)
+      this.props.actions.common_actions.setSliderSecondsFromStart(
+        43200,
+        this.pathname
+      )
       this.props.actions.common_actions.toggleAnimationRunning()
       this.mapObject.animation.placeMarkers(43200)
       // this.mapObject.animateRoute(this.pathname)
-    }else{
-      this.props.actions.common_actions.setSliderSecondsFromStart(43200, this.pathname)
+    } else {
+      this.props.actions.common_actions.setSliderSecondsFromStart(
+        43200,
+        this.pathname
+      )
       this.mapObject.animation.placeMarkers(43200)
       // this.mapObject.animateRoute(this.pathname)
       // setTimeout(this.mapObject.pauseAnime.bind(this.mapObject), 0)
     }
   }
 
-  handleAnimateClick(event){
+  handleAnimateClick(event) {
     event.preventDefault()
     this.setInstanceVariables()
-    if(this.props.trips.animation_running){
+    if (this.props.trips.animation_running) {
       this.mapObject.pauseAnime()
-    }else{
+    } else {
       this.mapObject.animateRoute(this.pathname)
     }
     this.props.actions.common_actions.toggleAnimationRunning()
-   
   }
 
-  handleAccelerationClick(e){
+  handleAccelerationClick(e) {
     e.preventDefault()
-    if(this.props.trips.animation_running){
+    if (this.props.trips.animation_running) {
       this.props.actions.common_actions.setAnimationSpeed(this.pathname, 1)
       this.mapObject.pauseAnime()
       this.mapObject.animateRoute(this.pathname)
-    }else{
+    } else {
       this.props.actions.common_actions.setAnimationSpeed(this.pathname, 1)
     }
-    
   }
 
-  handleDecelerationClick(e){
+  handleDecelerationClick(e) {
     e.preventDefault()
-    if(this.props.trips.animation_running){
-     this.props.actions.common_actions.setAnimationSpeed(this.pathname, -1)
-     this.mapObject.pauseAnime()
-     this.mapObject.animateRoute(this.pathname)
-    }else{
+    if (this.props.trips.animation_running) {
+      this.props.actions.common_actions.setAnimationSpeed(this.pathname, -1)
+      this.mapObject.pauseAnime()
+      this.mapObject.animateRoute(this.pathname)
+    } else {
       this.props.actions.common_actions.setAnimationSpeed(this.pathname, -1)
     }
-    
   }
-  
 
-  render(){
+  render() {
     // this.setInstanceVariables()
-    var playOrPauseIcon = this.props.trips.animation_running ? 
-    <i className ="fa fa-pause fa-lg play_pause" 
-    aria-hidden="true" 
-    onClick={this.handleAnimateClick.bind(this)}></i> : 
-    <i className ="fa fa-play fa-lg play_pause"
-    aria-hidden="true" 
-    onClick={this.handleAnimateClick.bind(this)}></i>
+    var playOrPauseIcon = this.props.trips.animation_running ? (
+      <i
+        className="fa fa-pause fa-lg play_pause"
+        aria-hidden="true"
+        onClick={this.handleAnimateClick.bind(this)}
+      />
+    ) : (
+      <i
+        className="fa fa-play fa-lg play_pause"
+        aria-hidden="true"
+        onClick={this.handleAnimateClick.bind(this)}
+      />
+    )
 
     // <div className = 'arrow-left tooltip'>
-   // </div>
-  
+    // </div>
 
     return (
-      <div className = 'grid-item-truck-flicker'>
-      <div className={'left-holder'}></div>
+      <div className="grid-item-truck-flicker">
+        <div className={"left-holder"} />
 
-     
+        <i
+          class="fa fa-arrow-left fa-lg"
+          aria-hidden="true"
+          onClick={this.handlePreviousClick.bind(this)}
+        />
 
-       <i class="fa fa-arrow-left fa-lg" 
-       aria-hidden="true" 
-       onClick={this.handlePreviousClick.bind(this)}></i>
-
-     
-      
-
-    
-
-      <i 
-      title = 'Step Back'
-      className="fa fa-step-backward fa-lg" 
-      aria-hidden="true" 
-      onClick = {this.resetToStart.bind(this)}></i>
-      <i className="fa fa-backward fa-lg" 
-      aria-hidden="true" 
-      onClick = {this.handleDecelerationClick.bind(this)}></i>
-      {playOrPauseIcon}
-      <i className="fa fa-forward fa-lg" 
-      title = 'hello'
-      aria-hidden="true"  
-      onClick = {this.handleAccelerationClick.bind(this)}></i>
-      <i className="fa fa-step-forward fa-lg"
-      aria-hidden="true"
-      onClick = {this.setToEnd.bind(this)}></i>
-      <i class="fa fa-arrow-right fa-lg" 
-      aria-hidden="true" 
-      onClick={this.handleNextClick.bind(this)}></i>
-      <div className={'rigth-holder'}></div>
+        <i
+          title="Step Back"
+          className="fa fa-step-backward fa-lg"
+          aria-hidden="true"
+          onClick={this.resetToStart.bind(this)}
+        />
+        <i
+          className="fa fa-backward fa-lg"
+          aria-hidden="true"
+          onClick={this.handleDecelerationClick.bind(this)}
+        />
+        {playOrPauseIcon}
+        <i
+          className="fa fa-forward fa-lg"
+          title="hello"
+          aria-hidden="true"
+          onClick={this.handleAccelerationClick.bind(this)}
+        />
+        <i
+          className="fa fa-step-forward fa-lg"
+          aria-hidden="true"
+          onClick={this.setToEnd.bind(this)}
+        />
+        <i
+          class="fa fa-arrow-right fa-lg"
+          aria-hidden="true"
+          onClick={this.handleNextClick.bind(this)}
+        />
+        <div className={"rigth-holder"} />
       </div>
-      );
+    )
   }
 }
 
-const mapDispatchToProps=(dispatch)=>({
+const mapDispatchToProps = dispatch => ({
   actions: {
     common_actions: bindActionCreators(commonActions, dispatch)
   }
 })
 
-const mapStateToProps=(state)=>({
+const mapStateToProps = state => ({
   trips: state.common,
   today_trips: state.today.today_trips,
   best_pick_up_jobs: state.partload.best_pick_up_jobs
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TruckFlicker))
-
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(TruckFlicker)
+)
