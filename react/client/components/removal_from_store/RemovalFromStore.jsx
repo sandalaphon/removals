@@ -1,8 +1,8 @@
-import React from "react";
-import Gmap from "../Gmap";
-import TruckFlicker from "../TruckFlicker";
-import SliderROS from "./SliderROS";
-import RosCandidateList from "./RosCandidateList";
+import React from 'react'
+import Gmap from '../Gmap'
+import TruckFlicker from '../TruckFlicker'
+import SliderROS from './SliderROS'
+import RosCandidateList from './RosCandidateList'
 
 class RemovalFromStore extends React.Component {
   render() {
@@ -18,8 +18,8 @@ class RemovalFromStore extends React.Component {
           <RosCandidateList />
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default RemovalFromStore;
+export default RemovalFromStore

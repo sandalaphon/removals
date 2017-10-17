@@ -101,16 +101,22 @@ class RosCandidateList extends React.Component {
     )
   }
 
-  handleUndivertedClick(undiverted_job) {
-    console.log('undiverted_job', undiverted_job)
+  handleUndivertedClick(diversion) {
+    this.mapObject.drawRouteWithGoogleResponse(diversion.undiverted_job)
   }
 
-  handleDivertedClick(g_directions) {
-    console.log('g_directions', g_directions)
+  handleDivertedClick(diversion) {
+    this.mapObject.drawDivertedRoute(
+      diversion.reRouted_g_directions,
+      diversion.undiverted_job
+    )
   }
 
-  handleDeliveryClick(g_directions) {
-    console.log('g_directions', g_directions)
+  handleDeliveryClick(diversion) {
+    console.log(
+      'g_dir_from_new_branch_to_storage_delivery',
+      diversion.g_dir_from_new_branch_to_storage_delivery
+    )
   }
 
   get_rt_columns() {
@@ -177,8 +183,16 @@ class RosCandidateList extends React.Component {
   get_rt_subcomponent_columns() {
     return [
       {
-        Header: 'Click to View',
-        accessor: 'view_solution_button'
+        Header: 'View Undiverted Job',
+        accessor: 'undiverted'
+      },
+      {
+        Header: 'View Diverted Job',
+        accessor: 'xfer'
+      },
+      {
+        Header: 'View Delivery',
+        accessor: 'delivery'
       },
       {
         Header: 'Total Saving',
@@ -203,6 +217,10 @@ class RosCandidateList extends React.Component {
     ]
   }
 
+  // <button onClick={this.handleUndivertedClick.bind(this, diversion)}>
+  //   Undiverted
+  // </button>
+
   format_sub_component_data(diversions) {
     var formatted_data = []
     diversions = diversions.sort((a, b) => {
@@ -217,6 +235,17 @@ class RosCandidateList extends React.Component {
             .branch_code}`
       formatted_data.push({
         id: diversion.id,
+        undiverted: this.getCheckbox(diversion, this.handleMapCheckBoxChecked),
+        xfer: (
+          <button onClick={this.handleDivertedClick.bind(this, diversion)}>
+            Transfer
+          </button>
+        ),
+        delivery: (
+          <button onClick={this.handleDeliveryClick.bind(this, diversion)}>
+            Delivery
+          </button>
+        ),
         total_saving: `£${diversion.total_saving}`,
         branches_involved: branches_involved_string,
         moveware_code: diversion.undiverted_job.moveware_code,
@@ -239,34 +268,38 @@ class RosCandidateList extends React.Component {
     return formatted_data
   }
 
-  handleMapCheckBoxChecked(e) {
-    console.log('e', e.target.id)
-    var isChecked = document.getElementById(e.target.id).checked
-    console.log('ISCHECKED', isChecked)
-    var haveRouteAlready = this.mapObject.isRouteDisplaySaved(e.target.id)
+  handleUndivertedCheckBoxChecked(diversion) {
+    var isChecked = document.getElementById(diversion).checked
+  }
 
-    if (this.props.ids_of_trips.includes(+e.target.id)) {
+  handleMapCheckBoxChecked(trip) {
+    console.log('e', trip.id)
+    var isChecked = document.getElementById(trip.id).checked
+    console.log('ISCHECKED', isChecked)
+    var haveRouteAlready = this.mapObject.isRouteDisplaySaved(trip.id)
+
+    if (this.props.ids_of_trips.includes(+trip.id)) {
       if (!isChecked) {
-        this.mapObject.hideRouteById(e.target.id)
+        this.mapObject.hideRouteById(trip.id)
       } else {
         if (haveRouteAlready) {
-          this.mapObject.showRouteById(e.target.id)
+          this.mapObject.showRouteById(trip.id)
         } else {
-          var trip = Trip.getTripById(e.target.id)
+          var trip = Trip.getTripById(trip.id)
           this.mapObject.drawRouteWithGoogleResponse(trip)
         }
       }
     } else {
-      this.props.actions.partload_actions.getTripByIdFromRails(e.target.id)
+      this.props.actions.partload_actions.getTripByIdFromRails(trip.id)
     }
   }
 
-  getCheckbox(id) {
+  getCheckbox(params, onChangeFunction) {
     return (
       <input
         type="checkbox"
-        id={id}
-        onChange={this.handleMapCheckBoxChecked.bind(this)}
+        id={params.id}
+        onChange={onChangeFunction.bind(this, params)}
       />
     )
   }
@@ -293,7 +326,7 @@ class RosCandidateList extends React.Component {
       }
 
       var data_item = {
-        map_checkbox: this.getCheckbox(trip.id),
+        map_checkbox: this.getCheckbox(trip, this.handleMapCheckBoxChecked),
         dateMilli: trip.dateMilli,
         max_saving,
         id: trip.id,

@@ -6,7 +6,7 @@ import {
   toggleFullScreenMap,
   toggleBranchListDisplayed,
   setSliderSecondsFromStart,
-  setBranchIconClickedId,
+  setBranchIconClickedId
 } from '../actions/_common_actions'
 import { getComplementaryColour } from '../reducers/_helpers'
 // import {placeMarkers} from './sliderFunctions'
@@ -60,7 +60,7 @@ class MapObject {
       this.survey_markers,
       false,
       true,
-      message,
+      message
     )
   }
 
@@ -72,7 +72,7 @@ class MapObject {
       this.highlightedMarkers,
       true,
       false,
-      message,
+      message
     )
   }
 
@@ -167,13 +167,13 @@ class MapObject {
           this.sliderMarkers,
           false,
           false,
-          object.message,
+          object.message
         )
       })
     } else {
       console.log(
         'sliderMarkerCoordsandIndexArray',
-        sliderMarkerCoordsandIndexArray,
+        sliderMarkerCoordsandIndexArray
       )
       sliderMarkerCoordsandIndexArray.forEach(object => {
         if (!object) return
@@ -184,7 +184,7 @@ class MapObject {
           this.sliderMarkers,
           false,
           false,
-          object.message,
+          object.message
         )
       })
     }
@@ -201,11 +201,69 @@ class MapObject {
     return branchToReturn
   }
 
+  drawDivertedRoute(g_directions, undiverted_job) {
+    var { start_location } = g_directions.routes[0].legs[1]
+
+    var { end_location } = g_directions.routes[0].legs[
+      g_directions.routes[0].legs.length - 2
+    ]
+
+    var waypoints_lat_lngs = g_directions.routes[0].legs.map(leg => {
+      return leg.start_location
+    })
+    var home_branch_location = waypoints_lat_lngs.shift()
+    var pick_up_lat_lng = waypoints_lat_lngs.shift()
+    var drop_off_lat_lng = waypoints_lat_lngs.shift()
+    var further_waypoints = waypoints_lat_lngs
+    var polylineColour = undiverted_job.colour
+    var marker_colour = getComplementaryColour(undiverted_job.colour)
+    console.log('p colour', polylineColour)
+    console.log('marker_colour', marker_colour)
+    console.log('further_waypoints', further_waypoints)
+    this.placeMarker(
+      pick_up_lat_lng,
+      this.pinSymbol(marker_colour),
+      this.markers,
+      true,
+      false,
+      '',
+      this.panToStreetView.bind(this),
+      'S',
+      polylineColour
+    )
+    this.placeMarker(
+      drop_off_lat_lng,
+      this.pinSymbol(marker_colour),
+      this.markers,
+      true,
+      false,
+      '',
+      this.panToStreetView.bind(this),
+      'F',
+      polylineColour
+    )
+    further_waypoints.forEach(waypoint => {
+      this.placeMarker(
+        waypoint,
+        this.pinSymbol(marker_colour),
+        this.markers,
+        true,
+        false,
+        '',
+        this.panToStreetView.bind(this),
+        'W',
+        polylineColour
+      )
+    })
+
+    this.drawRoute(g_directions, polylineColour, null)
+  }
+
   drawRouteWithGoogleResponse(job, addStartFinishMarkers = true) {
     if (job.hidden) return
     var {
       start_location,
-      end_location,
+      end_location
     } = job.google_waypoints_directions.routes[0].legs[1]
     var branch = this.getBranchById(job.branch_id)
 
@@ -220,7 +278,7 @@ class MapObject {
         this.panToStreetView.bind(this),
         'S',
         getComplementaryColour(job.colour),
-        job,
+        job
       )
       this.placeMarker(
         end_location,
@@ -232,7 +290,7 @@ class MapObject {
         this.panToStreetView.bind(this),
         'F',
         getComplementaryColour(job.colour),
-        job,
+        job
       )
       this.placeMarker(
         branch.latlng,
@@ -244,7 +302,7 @@ class MapObject {
         this.handleBranchMarkerClick.bind(this),
         null,
         null,
-        job,
+        job
       )
     }
 
@@ -252,7 +310,7 @@ class MapObject {
       job.google_waypoints_directions,
       getComplementaryColour(job.colour),
       null,
-      job,
+      job
     )
   }
 
@@ -261,7 +319,7 @@ class MapObject {
     finishLatLng,
     waypointLatLngArray,
     polylineColour,
-    dayAndSurveyorUniqueCode,
+    dayAndSurveyorUniqueCode
   ) {
     if (this.surveyRoutesByCode[dayAndSurveyorUniqueCode]) {
       console.log('rendering saved route')
@@ -277,7 +335,7 @@ class MapObject {
       destination: finishLatLng,
       waypoints: waypointArray,
       travelMode: 'DRIVING',
-      avoidTolls: true,
+      avoidTolls: true
     }
 
     var directionsService = new google.maps.DirectionsService()
@@ -290,7 +348,7 @@ class MapObject {
           this.drawRoute(response, polylineColour, dayAndSurveyorUniqueCode)
         } else {
         }
-      }.bind(this),
+      }.bind(this)
     )
   }
 
@@ -298,7 +356,7 @@ class MapObject {
     google_directions,
     polylineColour = '#0088FF',
     dayAndSurveyorUniqueCode = null,
-    trip = null,
+    trip = null
   ) {
     var directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
@@ -307,13 +365,14 @@ class MapObject {
       polylineOptions: {
         strokeColor: polylineColour,
         strokeWeight: 4,
-        strokeOpacity: 0.6,
-      },
+        strokeOpacity: 0.6
+      }
     })
     directionsDisplay.setDirections(google_directions)
     if (dayAndSurveyorUniqueCode) {
       this.surveyRoutesByCode[dayAndSurveyorUniqueCode] = directionsDisplay
     } else {
+      if (!trip) return
       this.renderedRoutes.push(directionsDisplay)
       this.renderedRoutesObject[trip.id] = directionsDisplay
     }
@@ -329,13 +388,13 @@ class MapObject {
     clickfunction = null,
     labelText = null,
     labelTextColour,
-    trip = null,
+    trip = null
   ) {
     var marker = new google.maps.Marker({
       position: coords,
       map: this.map,
       icon: symbol,
-      animation: drop ? google.maps.Animation.DROP : null,
+      animation: drop ? google.maps.Animation.DROP : null
       // label: {
       //   text: labelText,
       //   // color: 'blue',
@@ -364,7 +423,7 @@ class MapObject {
     marker_array_from_store,
     instance_variable_marker_array,
     colour = 'red',
-    clickfunction,
+    clickfunction
   ) {
     marker_array_from_store.forEach(coords => {
       this.placeMarker(
@@ -374,7 +433,7 @@ class MapObject {
         false,
         true,
         '',
-        clickfunction,
+        clickfunction
       )
     })
     if (instance_variable_marker_array.length === 1) this.map.setZoom(10)
@@ -386,18 +445,18 @@ class MapObject {
       {
         position: coords.latLng,
         addressControlOptions: {
-          position: google.maps.ControlPosition.TOP_LEFT,
+          position: google.maps.ControlPosition.TOP_LEFT
         },
         linksControl: false,
         panControl: true,
-        enableCloseButton: false,
-      },
+        enableCloseButton: false
+      }
     )
     this.createAMapButton(
       this.returnToMap.bind(this, streetView),
       'LEFT_BOTTOM',
       'Return To Map',
-      streetView,
+      streetView
     )
   }
 
@@ -447,7 +506,7 @@ class MapObject {
     var infoWindow = new google.maps.InfoWindow({
       content: `${message}`,
       maxWidth: 200,
-      disableAutoPan: true,
+      disableAutoPan: true
       // pixelOffset: this.getInfowindowOffset(marker)
     })
 
@@ -466,7 +525,7 @@ class MapObject {
     listenerFunction,
     positionInCapitals,
     nameString,
-    streetView,
+    streetView
   ) {
     //if no streetView then normal map
     if (nameString == 'Branches') {
@@ -483,17 +542,17 @@ class MapObject {
       this.map,
       listenerFunction,
       nameString,
-      streetView,
+      streetView
     )
     button.index = 1
     if (streetView) {
       streetView.controls[google.maps.ControlPosition[positionInCapitals]].push(
-        button,
+        button
       )
       //push to streetviewcontrols
     } else {
       this.map.controls[google.maps.ControlPosition[positionInCapitals]].push(
-        button,
+        button
       )
     }
   }
@@ -503,7 +562,7 @@ class MapObject {
     map,
     listenerFunction,
     nameString,
-    streetView,
+    streetView
   ) {
     var backColor = streetView ? 'rgb(25,25,25)' : '#fff'
     var textColor = streetView ? '#fff' : 'rgb(25,25,25)'
@@ -609,7 +668,7 @@ class MapObject {
           true,
           false,
           branch.address,
-          this.handleBranchMarkerClick.bind(this, branch.id),
+          this.handleBranchMarkerClick.bind(this, branch.id)
         )
       })
     }
@@ -697,14 +756,14 @@ class MapObject {
       case 'partload':
         var postcodeEl = document.querySelector('.grid-item-postcode')
         var suggestionListEl = document.querySelector(
-          '.grid-item-suggestion-list',
+          '.grid-item-suggestion-list'
         )
         return [postcodeEl, suggestionListEl]
       case 'surveyor':
         var surveyorList = document.querySelector('.grid-item-survey-list')
 
         var surveyorDateFlicker = document.querySelector(
-          '.grid-item-date-flicker',
+          '.grid-item-date-flicker'
         )
 
         // return([])
@@ -724,7 +783,7 @@ class MapObject {
       strokeColor: '#000',
       strokeWeight: 1,
       scale: 1,
-      labelOrigin: new google.maps.Point(0, -29),
+      labelOrigin: new google.maps.Point(0, -29)
     }
   }
 
@@ -738,7 +797,7 @@ class MapObject {
       strokeWeight: 2,
       scale: 0.4,
       origin: new google.maps.Point(0, 0), //origin point
-      anchor: new google.maps.Point(24, 24), // offset point
+      anchor: new google.maps.Point(24, 24) // offset point
     }
   }
 
@@ -770,7 +829,7 @@ class MapObject {
       fillOpacity: 1,
       strokeColor: 'black',
       strokeWeight: 1,
-      scale: 5,
+      scale: 5
     }
   }
 
@@ -778,7 +837,7 @@ class MapObject {
     fillColour,
     strokeColour = 'black',
     fillOpacityy = 1,
-    strokeWeightt = 0.3,
+    strokeWeightt = 0.3
   ) {
     return {
       path:
@@ -797,7 +856,7 @@ class MapObject {
       // rotation: 180,
       // size: new google.maps.Size(800, 800), //size
       origin: new google.maps.Point(0, 0), //origin point
-      anchor: new google.maps.Point(255, 165), // offset point
+      anchor: new google.maps.Point(255, 165) // offset point
     }
   }
 
@@ -805,7 +864,7 @@ class MapObject {
     fillColour,
     strokeColour = 'black',
     fillOpacityy = 1,
-    strokeWeightt = 0.3,
+    strokeWeightt = 0.3
   ) {
     return {
       path:
@@ -823,7 +882,7 @@ class MapObject {
       rotation: 180,
       // size: new google.maps.Size(800, 800), //size
       origin: new google.maps.Point(0, 0), //origin point
-      anchor: new google.maps.Point(1000, 1000), // offset point
+      anchor: new google.maps.Point(1000, 1000) // offset point
     }
   }
 
@@ -834,7 +893,7 @@ class MapObject {
       partload: store.getState().common.partload_animation_speed,
       surveyor: store.getState().common.surveyor_animation_speed,
       removal_from_store: store.getState().common
-        .removal_from_store_animation_speed,
+        .removal_from_store_animation_speed
     }
 
     // store.getState().common.today_seconds_from_start
@@ -842,11 +901,11 @@ class MapObject {
     var sliderSecondsFromStart = this.getSliderSecondsFromStart()
     for (var i = sliderSecondsFromStart; i < 43200; i = i + 600) {
       counter = Math.ceil(
-        (i - sliderSecondsFromStart) / animation_speed[pathname],
+        (i - sliderSecondsFromStart) / animation_speed[pathname]
       )
       var timeout = window.setTimeout(
         this.callPlaceMarker.bind(this, i, pathname),
-        counter,
+        counter
       )
       this.animeFrames.push(timeout)
     }
