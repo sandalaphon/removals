@@ -1,92 +1,90 @@
 import React from "react"
 import * as commonActions from "../actions/_common_actions"
-import BranchSection from "./BranchSection.jsx"
+
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import { MapObject, mapObjectInstances } from "../models/mapObject"
 import { withRouter } from "react-router"
 
+import ReactTable from 'react-table'
+import 'react-table/react-table.css'
+
 class BranchesInfo extends React.Component {
   constructor(props) {
     super(props)
-  }
-
-
-  handleImageClick(event) {
-    event.preventDefault()
-    alert("get photo")
-  }
-
-
-
-
-  getEmployeeTable(branchId) {
-    if (!this.props.all_employees) return
-    if (!this.props.all_branches) return
-    ////////////////////////////////////////////
-    var pictureOrButton
-    var pictureSize = {
-      height: "auto",
-      width: "auto",
-      maxWidth: "70px",
-      maxHeight: "70px"
+    this.state = {
+      rowStatus: {}
     }
-
-    return this.props.all_employees.map((employee, index) => {
-      if (employee.branch_id == branchId) {
-        pictureOrButton = employee.photoUrl ? (
-          <img style={pictureSize} src={employee.photoUrl} />
-        ) : (
-          <button id={employee.id} onClick={this.handleImageClick.bind(this)}>
-            Upload Picture
-          </button>
-        )
-        return (
-          <div className="employee-row" key={employee.id}>
-            <div className="employee-cell">{pictureOrButton}</div>
-            <div className="employee-cell">{employee.name}</div>
-            <div className="employee-cell">{employee.email}</div>
-            <div className="employee-cell">{employee.telephone}</div>
-          </div>
-        )
-      }
-    })
   }
 
-  // getEmployeeBranch(branch_id){
-  //   var branchCode
-  //   this.props.all_branches.forEach((branch)=>{
-  //       if(branch.id==branch_id) branchCode=branch.branch_code
-  //   })
-  //   return branchCode
-  // }
-
-  branchlist() {
-    if (!this.props.all_branches) return
-    //////////////////////////////////
-    //////order all_branches here, to but main branch to the top
-    return this.props.all_branches.map(branch => {
-      return (
-        <BranchSection title={branch.name} id={branch.id} key={branch.id}>
-          {this.getEmployeeTable(branch.id)}
-        </BranchSection>
-      )
-    })
+  openRow(viewIndex){
+    var obj = this.state.rowStatus
+    if (obj[viewIndex] == true){
+      obj[viewIndex] = false
+      this.setState({rowStatus:obj})
+    }else{
+      obj[viewIndex] = true
+      this.setState({rowStatus:obj})
+    }
   }
+
+
+
+
+
 
   render() {
+    var data = []
+    if(this.props.all_branches){
+      data  = this.props.all_branches;
+    }
+    console.log(this.props.all_branches)
+    
+    const  columns = [{Header: 'Branches', accessor: 'name'}];
+    
     return (
-      <div id="branch-list-top" className="branch-info-table">
-        <div className="branch-header-row">
-          <div className="branch-header-cell">Photo</div>
-          <div className="branch-header-cell">Name</div>
-          <div className="branch-header-cell">email</div>
-          <div className="branch-header-cell">Phone No.</div>
-        </div>
-        <div className="branch-body">{this.branchlist.call(this)}</div>
+      <div>
+        <ReactTable
+          getTrProps={(state, rowInfo, column,instance) => {
+            return {
+              onClick: (e, handleOriginal) => {
+                var viewIndex = rowInfo.viewIndex
+                this.openRow(viewIndex)
+                }
+              }
+          }}
+          data={data}
+          columns={columns}
+          defaultPageSize={10}
+          className="-striped -highlight"
+          showPagination={false}
+          expanded={this.state.rowStatus}
+
+          SubComponent={row => {
+            return (
+              <div style={{ padding: "20px" }}>
+                          
+                <ReactTable
+                  isExpanded = {true}
+                  data={data}
+                  columns={columns}
+                  defaultPageSize={3}
+                  showPagination={false}
+                            
+                />
+              </div>
+            );
+          }}
+        />
       </div>
-    )
+    );
   }
+  
+
+
+
+
+
 }
 
 const mapDispatchToProps = dispatch => ({
