@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 
 class BranchSection extends React.Component {
+
   constructor(props) {
     super(props)
 
@@ -53,6 +54,7 @@ class BranchSection extends React.Component {
   }
 
   render() {
+   
     return (
       <div className={this.state.class}>
         <button id="toggle-button">toggle</button>
@@ -60,7 +62,7 @@ class BranchSection extends React.Component {
           {this.props.title}
         </div>
         <div className="articlewrap">
-          <div className="article">{this.props.children}</div>
+          <div id="branch-child" className="article">{this.props.children}</div>
         </div>
       </div>
     )
@@ -79,3 +81,4 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(BranchSection)
+
