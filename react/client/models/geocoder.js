@@ -5,19 +5,22 @@ class Geocoder {
     this.collection_LatLng = null
     this.googleDirectionsService = new google.maps.DirectionsService()
   }
-  getLatLng(postcode, callback) {
+  getLatLng(postcode, callback, callback2 = null) {
+    console.log('receive postcode', postcode)
     this.geocoder.geocode({ address: postcode }, (results, status) => {
       if (status === google.maps.GeocoderStatus.OK) {
         // console.log(results[0].geometry.location.lat(), results[0].geometry.location.lng())
-        console.log({
+        var coords = {
           lat: results[0].geometry.location.lat(),
           lng: results[0].geometry.location.lng(),
-        })
-        callback({
-          lat: results[0].geometry.location.lat(),
-          lng: results[0].geometry.location.lng(),
-        })
+        }
+        console.log(coords)
+        callback(coords, postcode)
 
+        if(callback2){
+          console.log('callback2', coords, callback2)
+          callback2(coords)
+        }
         // this.latLng ={lat: results[0].geometry.location.lat(),lng: results[0].geometry.location.lng()}
         // setLatLngCallback()
       } else {

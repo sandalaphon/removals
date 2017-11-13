@@ -1,4 +1,5 @@
 import axios from "axios";
+import Trip from '../models/trip'
 
 export function setTodayDateSelector(milliSeconds) {
   return {
@@ -6,6 +7,8 @@ export function setTodayDateSelector(milliSeconds) {
     payload: milliSeconds
   };
 }
+
+
 
 export function setTodayDateRange(date_range_object_milli) {
   return {
@@ -21,8 +24,43 @@ export function setTodayBranchSelected(branch_code) {
   };
 }
 
+export function setTodayPostCode(post_code) {
+  return {
+    type: "SET_TODAY_POSTCODE",
+    payload: post_code
+  };
+}
+
 export function setTodayTrips() {
   return {
     type: "SET_TODAY_TRIPS"
   };
+}
+
+export function getClosestTripsToPostCodeInGivenDateRange(date_range_object_milli, lat_lng, branch) {
+  console.log('i am here', date_range_object_milli, branch, lat_lng)
+  return function(dispatch){
+    const url = "http://localhost:5000/api/trips/today_closest.json"
+    const data = {date_range_object_milli, lat_lng, branch}
+    axios
+    .post(url, data, { withCredentials: true})
+    .then(response => {
+      console.log('response', response)
+      response.data.forEach(trip => {
+       new Trip(trip);
+      });
+      dispatch({
+        type: "CLOSEST_TRIPS_FULFILLED",
+        payload: response.data
+      })
+    })
+    .catch(error => {
+      console.log('error', error)
+      dispatch({
+        type: "CLOSEST_TRIPS_REJECTED",
+        payload: error
+      })
+    })
+  }
+  
 }

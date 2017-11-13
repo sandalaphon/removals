@@ -40,7 +40,8 @@ class MapObject {
     this.surveyRoutesByCode = {}
     this.survey_markers = []
     this.renderedRoutesObject = {}
-    this.renderedRoutesStartFinishMarkersObject = {}
+    this.renderedRoutesStartFinishMarkersObject = {},
+    this.todayPostCodeMarkers = []
 
     if (!mapObjectInstances.pathname) {
       mapObjectInstances[pathname] = this
@@ -50,6 +51,21 @@ class MapObject {
 
   isRouteDisplaySaved(id) {
     return Object.keys(this.renderedRoutes).includes(id)
+  }
+
+  placeTodayPostCodeMarker(latlng, postcode){
+    // this.todayPostCodeMarkers = []
+    this.clearMarkers(this.todayPostCodeMarkers)
+    this.placeMarker(
+      latlng,
+      // this.pinSymbol('blue'),
+      null,
+      this.todayPostCodeMarkers,
+      true,
+      false,
+      postcode
+      )
+    this.setCenter(latlng)
   }
 
   placeSurveyMarker(coords, message = '') {
@@ -201,7 +217,7 @@ class MapObject {
     return branchToReturn
   }
 
-  drawDivertedRoute(g_directions, undiverted_job) {
+  drawDiversionRoute(g_directions, diversion) {
     var { start_location } = g_directions.routes[0].legs[1]
 
     var { end_location } = g_directions.routes[0].legs[
@@ -215,8 +231,8 @@ class MapObject {
     var pick_up_lat_lng = waypoints_lat_lngs.shift()
     var drop_off_lat_lng = waypoints_lat_lngs.shift()
     var further_waypoints = waypoints_lat_lngs
-    var polylineColour = undiverted_job.colour
-    var marker_colour = getComplementaryColour(undiverted_job.colour)
+    var polylineColour = diversion.undiverted_job.colour
+    var marker_colour = getComplementaryColour(diversion.undiverted_job.colour)
     console.log('p colour', polylineColour)
     console.log('marker_colour', marker_colour)
     console.log('further_waypoints', further_waypoints)
@@ -229,7 +245,8 @@ class MapObject {
       '',
       this.panToStreetView.bind(this),
       'S',
-      polylineColour
+      polylineColour,
+      diversion
     )
     this.placeMarker(
       drop_off_lat_lng,
@@ -240,7 +257,8 @@ class MapObject {
       '',
       this.panToStreetView.bind(this),
       'F',
-      polylineColour
+      polylineColour,
+      diversion
     )
     further_waypoints.forEach(waypoint => {
       this.placeMarker(
@@ -252,11 +270,12 @@ class MapObject {
         '',
         this.panToStreetView.bind(this),
         'W',
-        polylineColour
+        polylineColour,
+        diversion
       )
     })
 
-    this.drawRoute(g_directions, polylineColour, null)
+    this.drawRoute(g_directions, polylineColour, null, diversion)
   }
 
   drawRouteWithGoogleResponse(job, addStartFinishMarkers = true) {
@@ -356,7 +375,7 @@ class MapObject {
     google_directions,
     polylineColour = '#0088FF',
     dayAndSurveyorUniqueCode = null,
-    trip = null
+    tripOrDiversion = null
   ) {
     var directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true,
@@ -372,9 +391,9 @@ class MapObject {
     if (dayAndSurveyorUniqueCode) {
       this.surveyRoutesByCode[dayAndSurveyorUniqueCode] = directionsDisplay
     } else {
-      if (!trip) return
+      if (!tripOrDiversion) return
       this.renderedRoutes.push(directionsDisplay)
-      this.renderedRoutesObject[trip.id] = directionsDisplay
+      this.renderedRoutesObject[tripOrDiversion.id] = directionsDisplay
     }
   }
 

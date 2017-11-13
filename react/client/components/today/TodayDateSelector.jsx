@@ -66,6 +66,10 @@ class TodayDateSelector extends React.Component {
   //   console.log(e)
   // }
 
+  handlePostCodeEntry(){
+    
+  }
+
   render() {
     var now = moment()
     var defined_ranges = {

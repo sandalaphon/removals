@@ -11,6 +11,63 @@ class TripsController < ApplicationController
   # render :json => data.to_json()
 # end
 
+def today_closest
+  date_range_object = params[:date_range_object_milli]
+  lat_lng_object = params[:lat_lng]
+  branch = params[:branch]
+  start_milli = date_range_object[:start_date]
+  end_milli = date_range_object[:end_date]
+  lat = lat_lng_object[:lat]
+  lng = lat_lng_object[:lng]
+ 
+  p start_milli
+  p end_milli
+  p lat
+  p lng
+  p branch
+
+  best_trips = getClosestTrips(start_milli, end_milli, lat, lng, branch)
+  render json: best_trips.to_json()
+end
+
+def getClosestTrips(start_milli, end_milli, lat, lng, branch)
+  date_millis = get_date_milli_array(start_milli, end_milli)
+  branches = []
+  if branch == 'All_Branches'
+    Branch.all.each{|branch| branches.push(branch[:branch_code])}
+  else
+    branches.push(branch)
+  end
+
+  trip_id_closest_distance_hash = {}
+  Trip.where(branch_code: branches, dateMilli: date_millis).all.find_each(batch_size:50) do |trip|
+    parsed = JSON.parse(trip[:google_waypoints_directions])
+    path = parsed["routes"][0]["overview_path"]
+    closest_distance = getShortestDistance(path, lat, lng)
+    trip_id = trip.id
+    trip_id_closest_distance_hash[trip_id] = closest_distance
+  end
+  p trip_id_closest_distance_hash
+  trip_id_closest_distance_hash = trip_id_closest_distance_hash.sort_by {|k,v| v}.to_h
+  p trip_id_closest_distance_hash
+  best_trips = []
+  trip_id_closest_distance_hash.keys[0..4].each do |key|
+    best_trips.push(Trip.find(key.to_i))
+  end
+  best_trips
+end
+
+
+
+def get_date_milli_array(start_milli, end_milli)
+  milli = start_milli.to_i
+  array_of_accepted_date_millis = []
+  while milli <= end_milli.to_i
+    array_of_accepted_date_millis.push(milli)
+    milli += 86400000
+  end
+  array_of_accepted_date_millis
+end
 
 
 
@@ -119,21 +176,23 @@ def find_best_pickup_trucks_indexes(array_of_distances)
 array_of_distances.each_index.min_by(5){|i| array_of_distances[i]} 
   end
 
+
+
 def getShortestDistance(path, startLat, startLng)
   counter = 0
-  shortest_distance=nil
-  while counter<path.length do
-    x =startLat - path[counter]["lat"]
+  shortest_distance = nil
+  while counter < path.length do
+    x = startLat - path[counter]["lat"]
     y = startLng - path[counter]["lng"]
     distance = Math.sqrt((x*x) + (y*y))
-    if shortest_distance==nil 
+    if shortest_distance == nil 
       shortest_distance = distance
     end
 
-    if distance<shortest_distance 
+    if distance < shortest_distance 
       shortest_distance = distance
     end
-    counter =counter + 10
+    counter = counter + 10
   end
   return shortest_distance
 end
