@@ -96,12 +96,23 @@ class BranchesInfo extends React.Component {
               if(employee.branch_id == branchId){
                 var uniqueId = `${employee.id + employee.name}`
                 
-                employee.photo = (<img 
-                  className="employee-pic" 
-                  id={uniqueId} 
-                  src={employee.photoUrl} 
-                  onClick={this.handleImageClick.bind(this, uniqueId)}
-                  />)
+                employee.photo = (
+                  <div>
+                  <a class="lightbox" href={`#${uniqueId}`}>
+                     <img src={employee.photoUrl}/>
+                  </a> 
+                  <div class="lightbox-target" id={uniqueId}>
+                     <img src={employee.photoUrl}/>
+                     <a class="lightbox-close" href="#"></a>
+                  </div>
+                  </div>
+                  // <img 
+                  // className="employee-pic" 
+                  // id={uniqueId} 
+                  // src={employee.photoUrl} 
+                  // onClick={this.handleImageClick.bind(this, uniqueId)}
+                  // />
+                  )
                 employeesByBranch.push(employee)
               }
             })
