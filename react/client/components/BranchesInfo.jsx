@@ -39,13 +39,9 @@ class BranchesInfo extends React.Component {
 
   render() {
     var branches = []
-    var employees = []
 
     if(this.props.all_branches){
       branches  = this.props.all_branches;
-    }
-    if(this.props.all_employees){
-      employees  = this.props.all_employees;
     }
     
     const  branchesColumns = [{Header: 'Branches', accessor: 'name'}];
@@ -54,6 +50,11 @@ class BranchesInfo extends React.Component {
       {
         Header: 'Name',
         accessor: 'name'
+      },
+      {
+        Header: 'Photo',
+        accessor: 'photo'
+        
       },
       {
         Header: 'Code',
@@ -66,12 +67,8 @@ class BranchesInfo extends React.Component {
       {
         Header: 'Phone',
         accessor: 'telephone'
-      },
-      {
-        Header: 'Photo',
-        accessor: 'photo'
-        
-      }];
+      }
+      ];
     
     return (
       <div>
@@ -92,22 +89,22 @@ class BranchesInfo extends React.Component {
           expanded={this.state.rowStatus}
 
           SubComponent={row => {
-            console.log(row.original.id)
+            
             var branchId = row.original.id
             var employeesByBranch = []
             this.props.all_employees.forEach((employee)=>{
               if(employee.branch_id == branchId){
                 var uniqueId = `${employee.id + employee.name}`
-                console.log(uniqueId)
-                employee.photo = (<img className="employee-pic" id={uniqueId} src={employee.photoUrl} onClick={this.handleImageClick.bind(this, uniqueId)}/>)
-
-
+                
+                employee.photo = (<img 
+                  className="employee-pic" 
+                  id={uniqueId} 
+                  src={employee.photoUrl} 
+                  onClick={this.handleImageClick.bind(this, uniqueId)}
+                  />)
                 employeesByBranch.push(employee)
-                console.log("employeesbybranch",employeesByBranch)
               }
             })
-
-
 
             return (
               <div style={{ padding: "20px" }}>

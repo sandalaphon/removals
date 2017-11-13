@@ -1,12 +1,34 @@
+.branch-sidebar {
+  transition: 1s;
+  /*display: none;*/
+  /*margin: 60px;*/
+  /*height: 90vh;*/
+  position: absolute;
+  left: -45vw;
+  background-color: #f9f9f9;
+  width: 45vw;
+  min-width: 160px;
+  z-index: 1;
+  white-space: nowrap;
+  /*border: 1px solid black;*/
+}
+.show {
+  /*must be under sidebar*/
+  transition: 1s;
+  left: 0px;
+  /*border: solid 2px red;*/
+}
 
 .employee-pic{
   width: 30px;
   height: 30px;
 }
-
+/*toggled by clicking on employee pic*/
 .employee-pic-large{
+  position: absolute;
   width: 300px;
   height: 300px;
+  z-index: 20;
 }
 
 
