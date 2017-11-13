@@ -1,3 +1,19 @@
+
+.employee-pic{
+  width: 30px;
+  height: 30px;
+}
+
+.employee-pic-large{
+  width: 300px;
+  height: 300px;
+}
+
+
+
+
+/*vvvvvvvvvvvvvvv   dunnoo what are these for anymore  vvvvvvvvvv*/
+
 .employee-panel {
   padding: 0 18px;
   display: none;

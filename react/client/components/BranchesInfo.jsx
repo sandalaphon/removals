@@ -29,18 +29,49 @@ class BranchesInfo extends React.Component {
   }
 
 
-
+  handleImageClick(id){
+    var pic = document.getElementById(id)
+    pic.classList.toggle('employee-pic-large');
+    
+  }
 
 
 
   render() {
-    var data = []
+    var branches = []
+    var employees = []
+
     if(this.props.all_branches){
-      data  = this.props.all_branches;
+      branches  = this.props.all_branches;
     }
-    console.log(this.props.all_branches)
+    if(this.props.all_employees){
+      employees  = this.props.all_employees;
+    }
     
-    const  columns = [{Header: 'Branches', accessor: 'name'}];
+    const  branchesColumns = [{Header: 'Branches', accessor: 'name'}];
+
+    const  employeesColumns = [
+      {
+        Header: 'Name',
+        accessor: 'name'
+      },
+      {
+        Header: 'Code',
+        accessor: 'moveware_employee_code'
+      },
+      {
+        Header: 'Email',
+        accessor: 'email'
+      },
+      {
+        Header: 'Phone',
+        accessor: 'telephone'
+      },
+      {
+        Header: 'Photo',
+        accessor: 'photo'
+        
+      }];
     
     return (
       <div>
@@ -53,21 +84,37 @@ class BranchesInfo extends React.Component {
                 }
               }
           }}
-          data={data}
-          columns={columns}
+          data={branches}
+          columns={branchesColumns}
           defaultPageSize={10}
           className="-striped -highlight"
           showPagination={false}
           expanded={this.state.rowStatus}
 
           SubComponent={row => {
+            console.log(row.original.id)
+            var branchId = row.original.id
+            var employeesByBranch = []
+            this.props.all_employees.forEach((employee)=>{
+              if(employee.branch_id == branchId){
+                var uniqueId = `${employee.id + employee.name}`
+                console.log(uniqueId)
+                employee.photo = (<img className="employee-pic" id={uniqueId} src={employee.photoUrl} onClick={this.handleImageClick.bind(this, uniqueId)}/>)
+
+
+                employeesByBranch.push(employee)
+                console.log("employeesbybranch",employeesByBranch)
+              }
+            })
+
+
+
             return (
               <div style={{ padding: "20px" }}>
-                          
                 <ReactTable
                   isExpanded = {true}
-                  data={data}
-                  columns={columns}
+                  data={employeesByBranch}
+                  columns={employeesColumns}
                   defaultPageSize={3}
                   showPagination={false}
                             
