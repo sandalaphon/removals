@@ -11,10 +11,14 @@ class BranchesInfo extends React.Component {
     super(props)
   }
 
+
   handleImageClick(event) {
     event.preventDefault()
     alert("get photo")
   }
+
+
+
 
   getEmployeeTable(branchId) {
     if (!this.props.all_employees) return
@@ -72,7 +76,7 @@ class BranchesInfo extends React.Component {
 
   render() {
     return (
-      <div className="branch-info-table">
+      <div id="branch-list-top" className="branch-info-table">
         <div className="branch-header-row">
           <div className="branch-header-cell">Photo</div>
           <div className="branch-header-cell">Name</div>

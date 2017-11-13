@@ -3,14 +3,43 @@ import { Link } from "react-router"
 import BranchesInfo from "./BranchesInfo.jsx"
 
 class Navb extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.handleOutsideClick = this.handleOutsideClick.bind(this) // still have to bind, to see setState
+    this.state = {
+      branchOpen: false
+    }
+  }
+
+  handleOutsideClick(e){
+    var branchListTop    =  document.getElementById('myDropdown')
+    var branchListButton =  document.getElementById('button-branch-list-nav')
+
+    if (e.target == branchListButton){ // button click
+      document.removeEventListener('click', this.handleOutsideClick)
+    }else if(!branchListTop.contains(e.target)){  //click outside
+      document.getElementById("myDropdown").classList.toggle("show")
+      document.removeEventListener('click', this.handleOutsideClick)
+      this.setState({branchOpen: false})
+    }
+  }
+
+  toggleBranchList() {
+    if (this.state.branchOpen){
+      document.removeEventListener('click', this.handleOutsideClick)
+      document.getElementById("myDropdown").classList.toggle("show")
+      this.setState({branchOpen : false})
+    }else{
+      document.addEventListener('click', this.handleOutsideClick)
+      document.getElementById("myDropdown").classList.toggle("show")
+      this.setState({branchOpen : true})
+    }
+  }
+
   signOut(e) {
     e.preventDefault()
     this.props.signOut()
-  }
-
-  toggleBranchList(e) {
-    console.log("clicked")
-    document.getElementById("myDropdown").classList.toggle("show")
   }
 
   setPartloadOrRemovalFromStore(e) {
@@ -106,20 +135,25 @@ class Navb extends React.Component {
           <div className="branch-list">
             <BranchesInfo />
           </div>
-          <div
-            className="branch-icon"
-            onClick={this.toggleBranchList.bind(this)}
-          >
-            branches
-          </div>
         </div>
+        
       </div>
     )
   }
+
 }
 
 export default Navb
 
+
+
+ // TRIANGLE BRANCH BUTTON
+ //  vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+ //          <div
+ //            className="branch-icon"
+ //            onClick={this.toggleBranchList.bind(this)}
+ //          >
+ //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // <div className="csv-nav">
 // <Link  to="/update_data" activeClassName="active">Update Data</Link>
 // </div>
