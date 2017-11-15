@@ -31,8 +31,12 @@ class BranchesInfo extends React.Component {
 
   handleImageClick(id){
     var pic = document.getElementById(id)
+    var picHolder = document.getElementById(`holder${id}`)
+    var picX = document.getElementById(`x${id}`)
+
     pic.classList.toggle('employee-pic-large');
-    
+    picHolder.classList.toggle('employee-pic-holder-large')
+    picX.classList.toggle('employee-pic-open')
   }
 
 
@@ -96,22 +100,23 @@ class BranchesInfo extends React.Component {
               if(employee.branch_id == branchId){
                 var uniqueId = `${employee.id + employee.name}`
                 
+
                 employee.photo = (
-                  <div>
-                  <a class="lightbox" href={`#${uniqueId}`}>
-                     <img src={employee.photoUrl}/>
-                  </a> 
-                  <div class="lightbox-target" id={uniqueId}>
-                     <img src={employee.photoUrl}/>
-                     <a class="lightbox-close" href="#"></a>
+                  <div 
+                    className="employee-pic-holder"
+                    id={`holder${uniqueId}`}
+                    onClick={this.handleImageClick.bind(this, uniqueId)}
+                  >
+                    <div className="employee-pic-closed"
+                    id={`x${uniqueId}`}
+
+                    ></div>
+                    <img 
+                      className="employee-pic" 
+                      id={uniqueId} 
+                      src={employee.photoUrl} 
+                    />
                   </div>
-                  </div>
-                  // <img 
-                  // className="employee-pic" 
-                  // id={uniqueId} 
-                  // src={employee.photoUrl} 
-                  // onClick={this.handleImageClick.bind(this, uniqueId)}
-                  // />
                   )
                 employeesByBranch.push(employee)
               }

@@ -10,6 +10,9 @@
   min-width: 160px;
   z-index: 1;
   white-space: nowrap;
+  height: 90vh;
+
+  overflow-y:scroll;
   /*border: 1px solid black;*/
 }
 .show {
@@ -19,17 +22,74 @@
   /*border: solid 2px red;*/
 }
 
+/*PIC CLICK*/
+.employee-pic-holder{
+  height: 100%;
+  width: 100%;
+}
+
+.employee-pic-closed{
+  /*border: 1px solid yellow;*/
+}
 .employee-pic{
   width: 30px;
-  height: 30px;
+  height: 40px;
 }
+
 /*toggled by clicking on employee pic*/
+.employee-pic-holder-large{
+  position: absolute;
+  z-index: 3;
+  width: 375px;
+  height: 400px;
+  padding: 25px;
+  background-color: rgba(255,255,255,0.7);
+  /*border:2px solid black;*/
+}
+.employee-pic-open:before{
+  content: "";
+  display: block;
+  height: 30px;
+  width: 1px;
+  background: black;
+  position: absolute;
+  left: 365px;
+  top:10px;
+  -webkit-transform:rotate(45deg);
+  -moz-transform:rotate(45deg);
+  -o-transform:rotate(45deg);
+  transform:rotate(45deg);
+  
+}
+
+.employee-pic-open:after{
+  content: "";
+  display: block;
+  height: 30px;
+  width: 1px;
+  background: black;
+  position: absolute;
+  left: 365px;
+  top:10px;
+  -webkit-transform:rotate(-45deg);
+  -moz-transform:rotate(-45deg);
+  -o-transform:rotate(-45deg);
+  transform:rotate(-45deg);
+  
+}
+
 .employee-pic-large{
   position: absolute;
-  width: 300px;
-  height: 300px;
+  display:block;
+  width: 325px;
+  height: 350px;
+  
   z-index: 20;
 }
+
+
+
+/*PIC CLICK END*/
 
 /*LigthBoxy thing start*/
 a.lightbox img {
