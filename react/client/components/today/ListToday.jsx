@@ -6,6 +6,9 @@ import { connect } from "react-redux"
 import { mapObjectInstances } from "../../models/mapObject"
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
+import TodayDateSelector from "./TodayDateSelector"
+import FilterToday from "./FilterToday"
+
 import moment from 'moment'
 import loadingGIF from '../../build/images/loading.svg'
 import Trip from '../../models/trip'
@@ -191,7 +194,9 @@ class ListToday extends React.Component {
     if(!this.state.mapObject) return <div></div>
     console.log('called how many times?')
     return (
-      <div className="grid-item-list-today">
+      <div >
+      <TodayDateSelector/>
+      <FilterToday/>
        <ReactTable
 
        getTrProps={(state, rowInfo, column) => {
