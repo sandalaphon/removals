@@ -16,7 +16,7 @@ class Animation {
 
     if (currentTruckFlickerJob) {
       var trip = currentTruckFlickerJob
-      if (trip.hidden) return
+      if (trip.hidden[this.pathname]) return
       sliderMarkerObjectArray = this.getSliderMarkerObject(
         trip,
         sliderSecondsFromStart,
@@ -25,7 +25,7 @@ class Animation {
         : []
     } else {
       arrayOfTrips.forEach((trip, index) => {
-        if (trip.hidden) return
+        if (trip.hidden[this.pathname]) return
         var sliderMarkerObject = this.getSliderMarkerObject(
           trip,
           sliderSecondsFromStart,

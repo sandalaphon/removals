@@ -1,5 +1,6 @@
 import React from "react"
 import * as todayActions from "../../actions/today_actions"
+import * as commonActions from "../../actions/_common_actions"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
 import { mapObjectInstances } from "../../models/mapObject"
@@ -9,12 +10,15 @@ import moment from 'moment'
 import loadingGIF from '../../build/images/loading.svg'
 import Trip from '../../models/trip'
 
+
 class ListToday extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      mapObject: null
+      mapObject: null,
+      relevant_array: []
     }
+    this.relevant_array = []
   }
 
   componentDidMount() {
@@ -29,61 +33,16 @@ class ListToday extends React.Component {
     }
   }
 
-  // jobs2() {
-  //   if (this.state.mapObject) {
-  //     var toDisplay = this.getTable()
-  //     return toDisplay
+  // componentWillReceiveProps(nextProps){
+  //   if (!this.state.mapObject) {
+  //     this.setState({
+  //       mapObject: mapObjectInstances.today
+  //     })
   //   }
-  // }
-
-  // getTable() {
-  //   var relevant_array
-  //   if(this.props.today_closest.length){
-  //     relevant_array = this.props.today_closest
-  //   }else{
-  //     relevant_array = this.props.today_trips
+  //   if(this.props != nextProps  && this.state.mapObject){
+  //     this.state.mapObject.clearMap()
   //   }
     
-  //   if (!this.props.current_today_truckflicker_job) {
-  //     mapObjectInstances.today.displayArrayOfJobRoutes(relevant_array)
-  //   }
-
-  //   return relevant_array.map((job, index) => {
-  //     if (index == this.props.all_trips.length - 1)
-  //       mapObjectInstances.today.initialRoutesRendered = true
-
-  //     var truckFlickerJob = ""
-  //     var collapseStyle = job.hidden ? { display: "none" } : {}
-  //     if (job.id === this.props.current_today_truckflicker_job.id) {
-  //       truckFlickerJob = "truckFlickerJob"
-  //     }
-  //     return (
-  //       <tr key={job.id} style={collapseStyle} className={truckFlickerJob}>
-  //         <td> {job.moveware_code}</td>
-  //         <td>{job.client_name}</td>
-  //         <td>Colour</td>
-  //         <td>Spare Capacity</td>
-  //         <td>{job.men_requested}</td>
-  //         <td>view notes click here?</td>
-  //         <td>Truck Type</td>
-  //       </tr>
-  //     )
-  //   })
-  // }
-
-  // getInitalTable(){
-  //   var relevant_array
-  //   if(this.props.today_closest.length){
-  //     relevant_array = this.props.today_closest
-  //   }else{
-  //     relevant_array = this.props.today_trips
-  //   }
-    
-  //   if (!this.props.current_today_truckflicker_job) {
-  //     mapObjectInstances.today.displayArrayOfJobRoutes(relevant_array)
-  //   }
-
-  //   this.getInitialTableColumns()
   // }
 
   getInitialTableColumns(){
@@ -95,12 +54,14 @@ class ListToday extends React.Component {
     }
     return [
     {
-      Header: 'Moveware No.',
-      accessor: 'moveware_code'
+      Header: 'Mware No.',
+      accessor: 'moveware_code',
+      maxWidth: 75
     },
     {
       Header: 'Branch',
       accessor: 'branch',
+      maxWidth: 75,
       Filter: ({filter, onChange}) => (
         <select
         onChange={event => onChange(event.target.value)}
@@ -111,42 +72,97 @@ class ListToday extends React.Component {
         {branches}
         </select>
         )
+    },
+    {
+      Header: 'Client',
+      accessor: 'client_name',
+      maxWidth: 150
+    },
+    {
+      Header: 'Colour',
+      filterable: false,
+      maxWidth: 60,
+      Cell: row => {
+        console.log('row cell...........', row)
+            return    (<div
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          backgroundColor: row.original.colour,
+                          borderRadius: '2px'
+                        }}
+                      >
+                                   
+                     </div>)
+                }
     }
     ]
+  }
+
+  // <div
+  //   style={{
+  //     width: `${row.value}%`,
+  //     height: '100%',
+  //     backgroundColor: row.value > 66 ? '#85cc00'
+  //       : row.value > 33 ? '#ffbf00'
+  //       : '#ff2e00',
+  //     borderRadius: '2px',
+  //     transition: 'all .2s ease-out'
+  //   }}
+  // />
+
+  displayRoutes(trip){
+    if (!this.props.current_today_truckflicker_job) {
+    // this.state.mapObject.displayArrayOfJobRoutes(this.relevant_array)
+    this.state.mapObject.drawRouteWithGoogleResponse(trip)
+  }else{
+    console.log('truck flicker...')
+  }
   }
 
   getInitialTableData(){
     // if(!this.state.mapObject) return
 
-    var relevant_array
     if(this.props.today_closest.length){
-      relevant_array = this.props.today_closest
+      this.relevant_array = this.props.today_closest
     }else{
-      relevant_array = this.props.today_trips
+      this.relevant_array = this.props.today_trips
     }
     // if (!this.props.current_today_truckflicker_job) {
-    //   mapObjectInstances.today.displayArrayOfJobRoutes(relevant_array)
+    //   this.state.mapObject.displayArrayOfJobRoutes(this.relevant_array)
     // }
     var data = []
-    relevant_array.forEach((trip)=>{
+    this.relevant_array.forEach((trip)=>{
       data.push({
         moveware_code: trip.moveware_code,
         branch: trip.branch_code,
-        id: trip.id
+        id: trip.id,
+        client_name: trip.client_name,
+        colour: trip.colour
       })
     })
     return data
   }
 
   filterMethod(filter, row) {
-    this.state.mapObject.clearMap()
+    // if(row._index%10==0){
+    //   this.state.mapObject.clearMap()
+    // }
+    // if(this.props.current_today_truckflicker_job){
+    //   this.props.actions.common_actions.clearCurrentTruckFlickerJob('today')
+    // }
+    
+    console.log('row in filter', row)
     var haystack = String(row[filter.id])
     var needle = filter.value
+    var bool 
     if (needle == 'All_Branches'){
-      return true
+      bool = true
     }else{
-      return haystack.toUpperCase().indexOf(needle.toUpperCase()) >= 0
-    }  
+      bool = haystack.toUpperCase().indexOf(needle.toUpperCase()) >= 0
+    } 
+    Trip.hideOrShowById(row._original.id, 'today', !bool)
+    return bool 
   }
 
  getBranchesAsOptions() {
@@ -173,25 +189,29 @@ class ListToday extends React.Component {
 
   render() {
     if(!this.state.mapObject) return <div></div>
-
     console.log('called how many times?')
     return (
       <div className="grid-item-list-today">
        <ReactTable
 
        getTrProps={(state, rowInfo, column) => {
-        console.log('rowInfo',rowInfo)
         if(!rowInfo) return {}
-          if(!this.props.current_today_truckflicker_job){
-            this.state.mapObject.drawRouteWithGoogleResponse(Trip.getTripById(rowInfo.original.id))
-          }
-            
+          var trip = Trip.getTripById(rowInfo.original.id)
+        this.displayRoutes(trip)
            return {
              style: {
-               color: rowInfo.row.branch == 'AVI' ? 'red' : null
-             }
+               color: rowInfo.original.id == this.props.current_today_truckflicker_job.id ? 'red' : null,
+               border: rowInfo.original.colour
+             },
+             onClick: (e, handleOriginal) => {
+           var trip = Trip.getTripById(rowInfo.original.id)
+           this.props.actions.common_actions.setCurrentTruckFlickerJob(trip, 'today')
+           this.state.mapObject.clearMap()
+           this.state.mapObject.drawRouteWithGoogleResponse(trip)
+           }
            }
          }}
+    
        filterable
        style={{ height: '90vh' }}
        collapseOnDataChange={false}
@@ -200,12 +220,24 @@ class ListToday extends React.Component {
        columns={this.getInitialTableColumns.call(this)}
        className="-striped -highlight"
        defaultFilterMethod={this.filterMethod.bind(this)}
+       onFilteredChange={(column, value) => {this.props.actions.common_actions.clearCurrentTruckFlickerJob('today')
+         this.state.mapObject.displayArrayOfJobRoutes(this.relevant_array)
+     }}
        />
 
       </div>
     )
+    
   }
 }
+
+// getTdProps= {(state, rowInfo, column) => {
+//  if(!rowInfo) return {}
+//           console.log('state, rowInfo, column', state, rowInfo, column)
+//           return { style:{
+//             background: rowInfo.original.colour
+//           }}
+//        }}
 
 // <table>
   // <tbody>
@@ -224,7 +256,8 @@ class ListToday extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    today_actions: bindActionCreators(todayActions, dispatch)
+    today_actions: bindActionCreators(todayActions, dispatch),
+    common_actions: bindActionCreators(commonActions, dispatch)
   }
 })
 

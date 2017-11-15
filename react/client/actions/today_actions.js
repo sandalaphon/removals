@@ -8,7 +8,11 @@ export function setTodayDateSelector(milliSeconds) {
   };
 }
 
-
+export function toggleDateOpen(){
+  return {
+    type: 'TOGGLE DATE OPEN'
+  }
+}
 
 export function setTodayDateRange(date_range_object_milli) {
   return {

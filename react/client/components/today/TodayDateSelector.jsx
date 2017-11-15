@@ -9,6 +9,10 @@ import moment from "moment"
 // import 'react-dates/lib/css/_datepicker.css';
 // import { defaultRanges, Calendar, DateRange } from 'react-date-range';
 import { Calendar, DateRange } from "react-date-range"
+import onClickOutside from 'react-onclickoutside'
+import FilterToday from './FilterToday'
+
+
 
 class TodayDateSelector extends React.Component {
   constructor(props, context) {
@@ -18,6 +22,7 @@ class TodayDateSelector extends React.Component {
       datePicker: null
     }
   }
+
 
   handleChange(payload) {
     mapObjectInstances.today.clearMap()
@@ -38,11 +43,24 @@ class TodayDateSelector extends React.Component {
 
   handleDateClick(e) {
     e.preventDefault()
+    this.props.actions.today_actions.toggleDateOpen()
     var el = document.getElementById("date_range")
     el.classList.contains("hidden")
       ? el.classList.remove("hidden")
       : el.classList.add("hidden")
   }
+
+  handleClickOutside() {
+      console.log('click outside')
+     this.props.actions.today_actions.toggleDateOpen()
+      var el = document.getElementById("date_range")
+      el.classList.contains("hidden")
+        ? el.classList.remove("hidden")
+        : el.classList.add("hidden")
+  }
+
+
+
 
   // handleNextDayClick(event){
   //   event.preventDefault()
@@ -65,10 +83,6 @@ class TodayDateSelector extends React.Component {
   // handleSelect(e){
   //   console.log(e)
   // }
-
-  handlePostCodeEntry(){
-    
-  }
 
   render() {
     var now = moment()
@@ -111,12 +125,16 @@ class TodayDateSelector extends React.Component {
     const format = "dddd, D MMMM YYYY"
     this.date = new Date(this.props.today_date_selector)
     var date_display = this.date.toLocaleDateString()
+    var border_style = this.props.date_open ? {border: '1px solid black'}:{border: ''}
     return (
-      <div>
+      <div style = {border_style} className = 'today_date_outer'>
+      <div className = 'filter_today'><FilterToday/></div>
+      <div className = 'today_date_selector'>
         <input
           onClick={this.handleDateClick.bind(this)}
           size={"28"}
           type="text"
+          ref = 'start_date'
           readOnly
           value={
             rangePicker["startDate"] &&
@@ -128,14 +146,17 @@ class TodayDateSelector extends React.Component {
           onClick={this.handleDateClick.bind(this)}
           size={"28"}
           type="text"
+          ref = 'end_date'
           readOnly
           value={
             rangePicker["endDate"] &&
             rangePicker["endDate"].format(format).toString()
           }
         />
-        <div className="hidden" id="date_range">
+        <div className="hidden" id="date_range" >
+       
           <DateRange
+
             className="hidden"
             linkedCalendars={true}
             onInit={this.handleChange.bind(this)}
@@ -147,6 +168,8 @@ class TodayDateSelector extends React.Component {
             }}
           />
         </div>
+        </div>
+
       </div>
     )
   }
@@ -160,10 +183,11 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mapStateToProps = state => ({
-  today_date_selector: state.today.today_date_selector
+  today_date_selector: state.today.today_date_selector,
+  date_open: state.today.date_open
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodayDateSelector)
+export default connect(mapStateToProps, mapDispatchToProps)(onClickOutside(TodayDateSelector))
 
 // <button onClick = {this.handlePreviousDayClick.bind(this)}>Previous Day</button>
 //  <div>{date_display}</div>

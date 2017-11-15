@@ -10,6 +10,7 @@ function handleTripData(
       end_date: todayStartMidnight(),
     },
     today_closest: [],
+    date_open: false,
     today_trips: getTodayTrips(
       { start_date: todayStartMidnight(), end_date: todayStartMidnight() },
       'All_Branches',
@@ -33,9 +34,13 @@ function handleTripData(
         
         break
 
-    case 'SET_TODAY_BRANCH_SELECTED':
-      return { ...state, today_branch_selected: action.payload }
+    case 'TOGGLE DATE OPEN':
+      return { ...state, date_open: !state.date_open }
       break
+
+      case 'SET_TODAY_BRANCH_SELECTED':
+        return { ...state, today_branch_selected: action.payload }
+        break
 
       case 'CLOSEST_TRIPS_FULFILLED':
       var today_closest_trips = action.payload.map(trip => {

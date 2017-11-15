@@ -39,9 +39,9 @@
   display: grid;
   height: 95vh;
   grid-template-areas:
-  "fil "
-  "fil "
-  "fil "
+  "date "
+  "date "
+  "date "
   "todli "
   "todli "
   "todli "
@@ -58,7 +58,22 @@
   grid-template-rows: repeat(15,1fr);
 }
 
+.today_date_outer{
+   display: grid;
+   height: 95vh;
+   grid-area: date;
+   grid-template-areas:
+  'date_left date_right';
+}
 
+.filter_today{
+  grid-area: date_right;
+}
+
+.today_date_selector{
+z-index:2;
+  grid-area: date_left;
+}
 
 .grid-item-list-today{
   grid-area:todli;
