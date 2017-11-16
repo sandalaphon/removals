@@ -26,7 +26,7 @@ class Today extends React.Component {
           <TruckFlicker />
           <SliderToday />
         </div>
-        <div div className="grid-item-today-left">
+        <div div className="grid-item-today-left width50vw">
          
           <ListToday />
           </div>

@@ -1,7 +1,7 @@
 
 .grid-today{
   margin-left: 20px;
-  border: 9px solid yellow;
+  /*border: 9px solid yellow;*/
    display: grid;
    height: 95vh;
    grid-template-areas:
@@ -12,7 +12,7 @@
 .grid-item-today-right{
   grid-area: rIG;
   display: grid;
-  border: 9px solid pink;
+  /*border: 9px solid pink;*/
   height: 95vh;
  /*width 50vw in main.css*/
   /*border: 3px solid green;*/
@@ -40,7 +40,7 @@
   grid-area: lEF;
   display: grid;
   height: 95vh;
-  border:9px solid blue;
+  /*border:9px solid blue;*/
   grid-template-areas:
   "todli "
   "todli "
@@ -60,7 +60,7 @@
 
 
 .date-range-new{
-  border: 15px solid hotpink;
+ /* border: 15px solid hotpink;*/
   position:absolute;
   z-index: 45;
 }
@@ -70,7 +70,7 @@
 }
 
 .today_date_outer{
-    border: 9px solid black;
+    border: 1px solid black;
    display: grid;
    height: 95vh;
    grid-area: date;
@@ -80,13 +80,13 @@
 
 .filter_today{
   grid-area: date_right;
-  border: 9px solid purple;
+  /*border: 9px solid purple;*/
 }
 
 .today_date_selector{
   /*position:absolute;*/
 /*z-index:2;*/
-border: 9px solid green;
+/*border: 9px solid green;*/
   grid-area: date_left;
 }
 
