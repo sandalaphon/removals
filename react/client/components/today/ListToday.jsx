@@ -120,6 +120,7 @@ class ListToday extends React.Component {
     var haystack = String(row[filter.id])
     var needle = filter.value
     var bool 
+    console.log('haystack', haystack)
     if (needle == 'All_Branches'){
       bool = true
     }else{
@@ -149,13 +150,84 @@ class ListToday extends React.Component {
 
  }
 
+ getStartEndDateStrings(){
+  var start_string
+  var end_string
+  var format = "ddd, D MMM YY"
+  var now = moment()
+  var tomorrow = moment()
+  tomorrow = tomorrow.add(1, "days")
+  now = now.toDate()
+  tomorrow = tomorrow.toDate()
+  now.setHours(0, 0, 0, 0)
+  tomorrow.setHours(0,0,0,0)
+  var {start_date, end_date} = this.props.date_range_obj
+  if(+now == start_date){
+    console.log('Today!')
+    start_string = 'Today'
+    end_string =  +tomorrow == end_date ? 'Tomorrow' : moment(end_date).format(format).toString()
+    
+   
+  }else if(+tomorrow==start_date){
+    console.log('TOMORROW')
+    start_string = 'Tomorrow'
+   end_string =  +tomorrow == end_date ? 'Tomorrow' : moment(end_date).format(format).toString()
+  }else{
+    console.log('now, start_date', now, +now, start_date)
+    console.log('neither today or tomorrow')
+    start_string = moment(start_date).format(format).toString()
+    end_string = moment(end_date).format(format).toString()
+
+  }
+return {start_string, end_string}
+ }
+
+ getTitleString(){
+  var date_string
+  var {start_date, end_date} = this.props.date_range_obj
+  var {start_string, end_string} = this.getStartEndDateStrings()
  
+  if(start_date == end_date){
+    date_string = ` ${start_string}`
+  }else{
+    date_string = `from ${start_string}    to    ${end_string}`
+  }
+  const title_string = `Routes of ${this.props.selected_branch} ${date_string}`
+  return <p><b>
+        <em> {title_string} </em>
+      </b></p>
+ }
+
+ getClosestToPostcodeString(){
+  var date_string
+  var {start_date, end_date} = this.props.date_range_obj
+  var {start_string, end_string} = this.getStartEndDateStrings()
+  
+  if(start_date == end_date){
+    date_string = ` ${start_string}`
+  }else{
+    date_string = `from ${start_string}    to    ${end_string}`
+  }
+
+  const title_string = `${this.props.selected_branch} Routes closest to ${this.props.postcode} ${date_string}`
+  return <p><b>
+        <em> {title_string} </em>
+      </b></p>
+
+ }
 
   render() {
     if(!this.state.mapObject) return <div></div>
+      var title
+      if(!this.props.today_closest.length){
+        title = this.getTitleString()
+      }else{
+        title = this.getClosestToPostcodeString()
+      }
     console.log('called how many times?')
     return (
       <div className="grid-item-list-today">
+      {title}
        <ReactTable
 
        getTrProps={(state, rowInfo, column) => {
@@ -184,7 +256,13 @@ class ListToday extends React.Component {
        columns={this.getInitialTableColumns.call(this)}
        className="-striped -highlight"
        defaultFilterMethod={this.filterMethod.bind(this)}
-       onFilteredChange={(column, value) => {this.props.actions.common_actions.clearCurrentTruckFlickerJob('today')
+       onFilteredChange={(column, value) => {
+        console.log('filter change', column, value)
+        if(column[0].id=='branch'){
+         console.log('branch............', column[0].value)
+         this.props.actions.today_actions.setTodayBranchSelected(column[0].value)
+        }
+        this.props.actions.common_actions.clearCurrentTruckFlickerJob('today')
          this.state.mapObject.displayArrayOfJobRoutes(this.relevant_array)
      }}
        />
@@ -203,6 +281,9 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mapStateToProps = state => ({
+  postcode: state.today.today_post_code,
+  date_range_obj: state.today.today_date_range,
+  selected_branch: state.today.today_branch_selected,
   all_branches: state.common.all_branches,
   today_closest: state.today.today_closest,
   all_trips: state.common.all_trips,
