@@ -414,13 +414,7 @@ class RosCandidateList extends React.Component {
           className="-striped -highlight"
           defaultFilterMethod={this.filterMethod.bind(this)}
           SubComponent={row => {
-            // var returned_array  = this.getSubComponent1.call(this, row)
-            // var subComponent1 = returned_array[0]
-
             var subComponent1 = this.getSubComponent1.call(this, row)
-
-            // var sub_component_data = returned_array[1]
-
             return <div style={{ padding: '20px' }}>{subComponent1}</div>
           }}
         />

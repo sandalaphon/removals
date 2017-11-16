@@ -33,18 +33,6 @@ class ListToday extends React.Component {
     }
   }
 
-  // componentWillReceiveProps(nextProps){
-  //   if (!this.state.mapObject) {
-  //     this.setState({
-  //       mapObject: mapObjectInstances.today
-  //     })
-  //   }
-  //   if(this.props != nextProps  && this.state.mapObject){
-  //     this.state.mapObject.clearMap()
-  //   }
-    
-  // }
-
   getInitialTableColumns(){
     var branches
     if (this.props.all_branches){
@@ -99,21 +87,8 @@ class ListToday extends React.Component {
     ]
   }
 
-  // <div
-  //   style={{
-  //     width: `${row.value}%`,
-  //     height: '100%',
-  //     backgroundColor: row.value > 66 ? '#85cc00'
-  //       : row.value > 33 ? '#ffbf00'
-  //       : '#ff2e00',
-  //     borderRadius: '2px',
-  //     transition: 'all .2s ease-out'
-  //   }}
-  // />
-
   displayRoutes(trip){
     if (!this.props.current_today_truckflicker_job) {
-    // this.state.mapObject.displayArrayOfJobRoutes(this.relevant_array)
     this.state.mapObject.drawRouteWithGoogleResponse(trip)
   }else{
     console.log('truck flicker...')
@@ -121,16 +96,12 @@ class ListToday extends React.Component {
   }
 
   getInitialTableData(){
-    // if(!this.state.mapObject) return
-
     if(this.props.today_closest.length){
       this.relevant_array = this.props.today_closest
     }else{
       this.relevant_array = this.props.today_trips
     }
-    // if (!this.props.current_today_truckflicker_job) {
-    //   this.state.mapObject.displayArrayOfJobRoutes(this.relevant_array)
-    // }
+
     var data = []
     this.relevant_array.forEach((trip)=>{
       data.push({
@@ -145,13 +116,6 @@ class ListToday extends React.Component {
   }
 
   filterMethod(filter, row) {
-    // if(row._index%10==0){
-    //   this.state.mapObject.clearMap()
-    // }
-    // if(this.props.current_today_truckflicker_job){
-    //   this.props.actions.common_actions.clearCurrentTruckFlickerJob('today')
-    // }
-    
     console.log('row in filter', row)
     var haystack = String(row[filter.id])
     var needle = filter.value
@@ -230,29 +194,6 @@ class ListToday extends React.Component {
     
   }
 }
-
-// getTdProps= {(state, rowInfo, column) => {
-//  if(!rowInfo) return {}
-//           console.log('state, rowInfo, column', state, rowInfo, column)
-//           return { style:{
-//             background: rowInfo.original.colour
-//           }}
-//        }}
-
-// <table>
-  // <tbody>
-    // <tr>
-      // <th>Moveware Code </th>
-      // <th>Client Name </th>
-      // <th>Colour </th>
-      // <th>Spare Capacity</th>
-      // <th>Men Requested </th>
-      // <th>Notes</th>
-      // <th>Truck Type</th>
-    // </tr>
-    // {this.jobs2()}
-  // </tbody>
-// </table>
 
 const mapDispatchToProps = dispatch => ({
   actions: {

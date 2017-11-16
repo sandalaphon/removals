@@ -45,18 +45,18 @@ class TodayDateSelector extends React.Component {
     e.preventDefault()
     this.props.actions.today_actions.toggleDateOpen()
     var el = document.getElementById("date_range")
-    el.classList.contains("hidden")
-      ? el.classList.remove("hidden")
-      : el.classList.add("hidden")
+    el.classList.toggle('hidden')
+    el.classList.toggle('zIndexMinus1')
+    el.classList.toggle('zIndex10')
   }
 
   handleClickOutside() {
       console.log('click outside')
      this.props.actions.today_actions.toggleDateOpen()
       var el = document.getElementById("date_range")
-      el.classList.contains("hidden")
-        ? el.classList.remove("hidden")
-        : el.classList.add("hidden")
+      el.classList.toggle('hidden')
+      el.classList.toggle('zIndexMinus1')
+      el.classList.toggle('zIndex10')
   }
 
 
@@ -163,7 +163,7 @@ class TodayDateSelector extends React.Component {
             onChange={this.handleChange.bind(this)}
             ranges={defined_ranges}
             theme={{
-              Calendar: { width: 200 },
+              Calendar: { width: 275 },
               PredefinedRanges: { marginLeft: 10, marginTop: 10 }
             }}
           />

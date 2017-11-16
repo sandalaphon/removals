@@ -41,7 +41,7 @@
   grid-template-areas:
   "date "
   "date "
-  "date "
+  "todli "
   "todli "
   "todli "
   "todli "
@@ -60,7 +60,6 @@
 
 .today_date_outer{
    display: grid;
-   height: 95vh;
    grid-area: date;
    grid-template-areas:
   'date_left date_right';
@@ -71,7 +70,7 @@
 }
 
 .today_date_selector{
-z-index:2;
+/*z-index:2;*/
   grid-area: date_left;
 }
 

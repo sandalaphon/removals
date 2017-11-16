@@ -13,18 +13,22 @@
 }
 
 .zIndexMinus1{
+  position:absolute;
   z-index: -1;
 }
 
 .zIndex0{
+  position:absolute;
   z-index: 0;
 }
 
-.zIndex1{
-  z-index: 1;
+.zIndex10{
+  position:absolute;
+  z-index: 10;
 }
 
 .zIndex2{
+  position:absolute;
   z-index: 2;
 }
 
