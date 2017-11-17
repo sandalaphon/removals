@@ -14,6 +14,13 @@ export function toggleDateOpen(){
   }
 }
 
+export function togglePostcodeLoading(){
+  return {
+    type: 'TOGGLE POSTCODE LOADING'
+  }
+}
+
+
 export function setTodayDateRange(date_range_object_milli) {
   return {
     type: "SET_TODAY_DATE_RANGE",

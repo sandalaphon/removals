@@ -11,6 +11,7 @@ function handleTripData(
     },
     today_closest: [],
     date_open: false,
+    postcode_loading: false,
     today_trips: getTodayTrips(
       { start_date: todayStartMidnight(), end_date: todayStartMidnight() },
       'All_Branches',
@@ -38,6 +39,10 @@ function handleTripData(
       return { ...state, date_open: !state.date_open }
       break
 
+      case 'TOGGLE POSTCODE LOADING':
+        return { ...state, postcode_loading: !state.postcode_loading }
+        break
+
       case 'SET_TODAY_BRANCH_SELECTED':
         return { ...state, today_branch_selected: action.payload }
         break
@@ -46,11 +51,11 @@ function handleTripData(
       var today_closest_trips = action.payload.map(trip => {
         return Trip.getTripById(trip.id)
       })
-        return { ...state, today_closest: today_closest_trips, today_closest_error: null }
+        return { ...state, today_closest: today_closest_trips, today_closest_error: null, postcode_loading: !state.postcode_loading }
         break
 
         case "CLOSEST_TRIPS_REJECTED":
-          return { ...state, today_closest: [], today_closest_error: action.payload }
+          return { ...state, today_closest: [], today_closest_error: action.payload, postcode_loading: !state.postcode_loading }
           break
 
     case 'SET_TODAY_TRIPS':

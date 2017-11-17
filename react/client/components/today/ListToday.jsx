@@ -216,56 +216,77 @@ return {start_string, end_string}
 
  }
 
+ getTable(title){
+  if(this.props.postcode_loading){
+    return(
+            <div>
+               <p><b>
+                <em> {`Finding Closest Routes to ${this.props.postcode}`}</em>
+               </b></p>
+               <img src={loadingGIF} />
+             </div>
+      )
+  }else{
+    return(
+      <div>
+        {title}
+        <ReactTable
+        getTrProps={(state, rowInfo, column) => {
+         if(!rowInfo) return {}
+           var trip = Trip.getTripById(rowInfo.original.id)
+         this.displayRoutes(trip)
+            return {
+              style: {
+                color: rowInfo.original.id == this.props.current_today_truckflicker_job.id ? 'red' : null,
+                border: rowInfo.original.colour
+              },
+              onClick: (e, handleOriginal) => {
+            var trip = Trip.getTripById(rowInfo.original.id)
+            this.props.actions.common_actions.setCurrentTruckFlickerJob(trip, 'today')
+            this.state.mapObject.clearMap()
+            this.state.mapObject.drawRouteWithGoogleResponse(trip)
+            }
+            }
+          }}
+      
+        filterable
+        style={{ height: '90vh' }}
+        collapseOnDataChange={false}
+        data={this.getInitialTableData.call(this)}
+        defaultPageSize={10}
+        columns={this.getInitialTableColumns.call(this)}
+        className="-striped -highlight"
+        defaultFilterMethod={this.filterMethod.bind(this)}
+        onFilteredChange={(column, value) => {
+         console.log('filter change', column, value)
+         if(column[0].id=='branch'){
+          console.log('branch............', column[0].value)
+          this.props.actions.today_actions.setTodayBranchSelected(column[0].value)
+         }
+         this.props.actions.common_actions.clearCurrentTruckFlickerJob('today')
+          this.state.mapObject.displayArrayOfJobRoutes(this.relevant_array)
+      }}
+        />
+     </div>
+      )
+  }
+  
+ }
+
   render() {
     if(!this.state.mapObject) return <div></div>
-      var title
+      var title, tableOrLoading
       if(!this.props.today_closest.length){
         title = this.getTitleString()
       }else{
         title = this.getClosestToPostcodeString()
       }
+     
     console.log('called how many times?')
     return (
       <div className="grid-item-list-today">
-      {title}
-       <ReactTable
-
-       getTrProps={(state, rowInfo, column) => {
-        if(!rowInfo) return {}
-          var trip = Trip.getTripById(rowInfo.original.id)
-        this.displayRoutes(trip)
-           return {
-             style: {
-               color: rowInfo.original.id == this.props.current_today_truckflicker_job.id ? 'red' : null,
-               border: rowInfo.original.colour
-             },
-             onClick: (e, handleOriginal) => {
-           var trip = Trip.getTripById(rowInfo.original.id)
-           this.props.actions.common_actions.setCurrentTruckFlickerJob(trip, 'today')
-           this.state.mapObject.clearMap()
-           this.state.mapObject.drawRouteWithGoogleResponse(trip)
-           }
-           }
-         }}
-    
-       filterable
-       style={{ height: '90vh' }}
-       collapseOnDataChange={false}
-       data={this.getInitialTableData.call(this)}
-       defaultPageSize={10}
-       columns={this.getInitialTableColumns.call(this)}
-       className="-striped -highlight"
-       defaultFilterMethod={this.filterMethod.bind(this)}
-       onFilteredChange={(column, value) => {
-        console.log('filter change', column, value)
-        if(column[0].id=='branch'){
-         console.log('branch............', column[0].value)
-         this.props.actions.today_actions.setTodayBranchSelected(column[0].value)
-        }
-        this.props.actions.common_actions.clearCurrentTruckFlickerJob('today')
-         this.state.mapObject.displayArrayOfJobRoutes(this.relevant_array)
-     }}
-       />
+      
+      {this.getTable.call(this, title)}
 
       </div>
     )
@@ -281,6 +302,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mapStateToProps = state => ({
+  postcode_loading: state.today.postcode_loading,
   postcode: state.today.today_post_code,
   date_range_obj: state.today.today_date_range,
   selected_branch: state.today.today_branch_selected,

@@ -7,37 +7,10 @@ import { mapObjectInstances } from "../../models/mapObject"
 import Geocoder from "../../models/geocoder.js"
 
 class FilterToday extends React.Component {
-  // handleBranchSelectorChange(e) {
-  //   mapObjectInstances.today.clearMap()
-  //   this.props.actions.today_actions.setTodayBranchSelected(e.target.value)
-  //   this.props.actions.today_actions.setTodayTrips()
-  //   this.props.actions.common_actions.setCurrentTruckFlickerJob("", "today")
-  // }
-
-  // getBranchesAsOptions() {
-  //   if (this.props.all_branches) {
-  //     var options = []
-  //     options.push(
-  //       <option value={"All_Branches"} key={"today_all_branches"}>
-  //         All_Branches
-  //       </option>
-  //     )
-  //     this.props.all_branches.forEach((branch, i) => {
-  //       options.push(
-  //         <option value={branch.branch_code} key={branch.id}>
-  //           {branch.branch_code}
-  //         </option>
-  //       )
-  //     })
-
-  //     return options
-  //   }
-  // }
 
   handlePostCodeChange(event){
     event.preventDefault()
     this.props.actions.today_actions.setTodayPostCode(event.target.value)
-
   }
 
   handlePostCodeSubmit(e){
@@ -48,6 +21,7 @@ class FilterToday extends React.Component {
     }
     this.props.actions.common_actions.clearCurrentTruckFlickerJob('today')
     mapObjectInstances.today.clearMap()
+    this.props.actions.today_actions.togglePostcodeLoading()
 
     console.log('mapobject', mapObjectInstances.today)
     console.log('branch_selected', this.props.branch_selected)

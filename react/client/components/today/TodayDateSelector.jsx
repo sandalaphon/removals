@@ -4,10 +4,7 @@ import { connect } from "react-redux"
 import * as todayActions from "../../actions/today_actions"
 import * as commonActions from "../../actions/_common_actions"
 import { mapObjectInstances } from "../../models/mapObject"
-// import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates'
 import moment from "moment"
-// import 'react-dates/lib/css/_datepicker.css';
-// import { defaultRanges, Calendar, DateRange } from 'react-date-range';
 import { Calendar, DateRange } from "react-date-range"
 import onClickOutside from 'react-onclickoutside'
 import FilterToday from './FilterToday'
@@ -59,30 +56,6 @@ class TodayDateSelector extends React.Component {
       el.classList.toggle('zIndex10')
   }
 
-
-
-
-  // handleNextDayClick(event){
-  //   event.preventDefault()
-  //   this.date.setDate(this.date.getDate()+1)
-  //   this.props.actions.today_actions.setTodayDateSelector(+this.date)
-  //   mapObjectInstances.today.clearMap()
-  //   this.props.actions.common_actions.setCurrentTruckFlickerJob('', 'today')
-  //   this.props.actions.today_actions.setTodayTrips()
-  // }
-
-  // handlePreviousDayClick(event){
-  //   event.preventDefault()
-  //   mapObjectInstances.today.clearMap()
-  //   this.date.setDate(this.date.getDate()-1)
-  //   this.props.actions.today_actions.setTodayDateSelector(+this.date)
-  //   this.props.actions.common_actions.setCurrentTruckFlickerJob('', 'today')
-  //   this.props.actions.today_actions.setTodayTrips()
-  // }
-
-  // handleSelect(e){
-  //   console.log(e)
-  // }
 
   render() {
     var now = moment()
@@ -188,7 +161,3 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(onClickOutside(TodayDateSelector))
-
-// <button onClick = {this.handlePreviousDayClick.bind(this)}>Previous Day</button>
-//  <div>{date_display}</div>
-//  <button onClick = {this.handleNextDayClick.bind(this)}>Next Day</button>
