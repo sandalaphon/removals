@@ -13,8 +13,11 @@ class BranchesInfo extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      rowStatus: {}
+      rowStatus: {},
+      picOpen: false,
+      currentPicId: null
     }
+    this.handleOutsidePicClick = this.handleOutsidePicClick.bind(this)
   }
 
   openRow(viewIndex){
@@ -30,16 +33,42 @@ class BranchesInfo extends React.Component {
 
 
   handleImageClick(id){
+
     var pic = document.getElementById(id)
     var picHolder = document.getElementById(`holder${id}`)
-    var picX = document.getElementById(`x${id}`)
+    
 
-    pic.classList.toggle('employee-pic-large');
-    picHolder.classList.toggle('employee-pic-holder-large')
-    picX.classList.toggle('employee-pic-open')
+    if(this.state.picOpen){
+      document.removeEventListener('click',this.handleOutsidePicClick)
+      pic.classList.toggle('employee-pic-large');
+      picHolder.classList.toggle('employee-pic-holder-large')
+     
+      this.setState({picOpen : false})
+
+    }else{
+      document.addEventListener('click',this.handleOutsidePicClick)
+      pic.classList.toggle('employee-pic-large');
+      picHolder.classList.toggle('employee-pic-holder-large')
+      
+      this.setState({currentPicId: id})
+      this.setState({picOpen : true})
+    }
+
   }
 
-
+  handleOutsidePicClick(e){
+    var picHolder = document.querySelector(".employee-pic-holder")
+    if(e.target != picHolder || !picHolder.contains(e.target)){
+      document.removeEventListener('click',this.handleOutsidePicClick)
+      var pic = document.getElementById(this.state.currentPicId)
+      var picHolder = document.getElementById(`holder${this.state.currentPicId}`)
+    
+      pic.classList.toggle('employee-pic-large');
+      picHolder.classList.toggle('employee-pic-holder-large')
+      
+      this.setState({picOpen : false})
+    }
+  }
 
   render() {
     var branches = []
@@ -107,10 +136,7 @@ class BranchesInfo extends React.Component {
                     id={`holder${uniqueId}`}
                     onClick={this.handleImageClick.bind(this, uniqueId)}
                   >
-                    <div className="employee-pic-closed"
-                    id={`x${uniqueId}`}
-
-                    ></div>
+                    
                     <img 
                       className="employee-pic" 
                       id={uniqueId} 
@@ -140,10 +166,6 @@ class BranchesInfo extends React.Component {
     );
   }
   
-
-
-
-
 
 }
 
