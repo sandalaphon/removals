@@ -59,20 +59,7 @@ function handleTripData(
     action,
 ) {
     switch (action.type) {
-        /////////////
-        // case 'GET_SURVEY_OBJECT_FULFILLED':
-        // console.log('s o f', action.payload)
-        // var parsed_survey_object = JSON.parse(action.payload[0].all_surveys_object)
-
-        // return {...state, survey_object_from_rails: parsed_survey_object, getSurveyObjectError: null}
-        // break;
-
-        // case 'GET_SURVEY_OBJECT_REJECTED':
-        // return {...state,  getSurveyObjectError: action.payload}
-        // break;
-
-        /////////////////////////
-
+  
         case 'SET_IDS_OF_TRIPS':
             return {
                 ...state,
@@ -104,8 +91,7 @@ function handleTripData(
             })
             if (state.asynch_loading_total == 3) {
                 console.log('SURVEYS')
-                // console.log(compose_survey_object(state.all_branches, state.all_surveys))
-
+    
                 return {
                     ...state,
                     all_surveys: received_surveys,
@@ -276,18 +262,6 @@ function handleTripData(
             return { ...state, clicked_branch_id: theId }
             break
 
-        // case 'TOGGLE_BRANCH_LIST_DISPLAYED':
-
-        //     var branch_list_displayed =
-        //     {
-        //         partload: 'branch_list_displayed_partload',
-        //         today: 'branch_list_displayed_today',
-        //         planner: 'branch_list_displayed_planner'
-        //     }
-        //     console.log(branch_list_displayed[action.pathname])
-        //     return { ...state, [branch_list_displayed[action.pathname]]: !state[branch_list_displayed[action.pathname]]}
-        //     break;
-
         case 'TOGGLE_BRANCHES_ON_MAP':
             switch (action.pathname) {
                 case 'partload':
@@ -360,17 +334,9 @@ function handleTripData(
             return { ...state, full_screen_map: !state.full_screen_map }
             break
 
-        // case 'SET_SHOW_FROM_BRANCH':
-        // return { ...state, show_from_branch: !state.show_from_branch}
-        // break;
-
         case 'TOGGLE_ANIMATION_RUNNING':
             return { ...state, animation_running: !state.animation_running }
             break
-
-        // case 'SET_SHOW_TO_BRANCH':
-        // return { ...state, show_to_branch: !state.show_to_branch}
-        // break;
 
         case 'SET_FILTER_SEARCH_STRING':
             return { ...state, filter_search_string: action.payload }
@@ -403,10 +369,6 @@ function handleTripData(
                 return trip
             })
             if (state.asynch_loading_total === 3) {
-                console.log('trips')
-                // console.log(compose_survey_object(state.all_branches, state.all_surveys))
-                // compose_survey_object(state.all_branches, state.all_surveys)
-                // return {...state, all_trips: anotherNewArray, getTripsError: null, asynch_loading_total: state.asynch_loading_total + 1, survey_object: compose_survey_object(state.all_branches, state.all_surveys)}
 
                 return {
                     ...state,
@@ -432,9 +394,6 @@ function handleTripData(
         case 'GET_EMPLOYEES_FULFILLED':
             if (state.asynch_loading_total === 3) {
                 console.log('EMPLOYEES')
-                // compose_survey_object(state.all_branches, state.all_surveys)
-
-                // return {...state, all_employees: action.payload, getEmployeesError: null, asynch_loading_total: state.asynch_loading_total+1, survey_object: compose_survey_object(state.all_branches, state.all_surveys)}
 
                 return {
                     ...state,
@@ -574,18 +533,3 @@ function handleTripData(
 }
 
 export default handleTripData
-
-// function compose_survey_object(branches, surveys){
-//     var object = {}
-//     branches.forEach((branch)=>{
-//         object[branch.branch_code]={}
-//     })
-//     surveys.forEach((survey)=>{
-//         if(object[survey.branch_code][survey.moveware_employee_code]){
-//             object[survey.branch_code][survey.moveware_employee_code].push(survey)
-//         }else{
-//             object[survey.branch_code][survey.moveware_employee_code]=[survey]
-//         }
-//     })
-//     return object
-// }

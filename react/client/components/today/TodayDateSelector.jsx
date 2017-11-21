@@ -99,6 +99,7 @@ class TodayDateSelector extends React.Component {
     this.date = new Date(this.props.today_date_selector)
     var date_display = this.date.toLocaleDateString()
     var border_style = this.props.date_open ? {border: '1px solid black'}:{border: ''}
+
     return (
       <div style = {border_style} className = 'today_date_outer'>
       <div className = 'filter_today'><FilterToday/></div>
@@ -136,7 +137,7 @@ class TodayDateSelector extends React.Component {
             onChange={this.handleChange.bind(this)}
             ranges={defined_ranges}
             theme={{
-              Calendar: { width: 275 },
+              Calendar: { width: 275, height: 500 },
               PredefinedRanges: { marginLeft: 10, marginTop: 10 }
             }}
           />
@@ -160,4 +161,4 @@ const mapStateToProps = state => ({
   date_open: state.today.date_open
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(onClickOutside(TodayDateSelector))
+// export default connect(mapStateToProps, mapDispatchToProps)(onClickOutside(TodayDateSelector))

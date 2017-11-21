@@ -12,6 +12,7 @@
   grid-area: rIG;
   display: grid;
   height: 95vh;
+  width: 50vw;
  /*width 50vw in main.css*/
   /*border: 3px solid green;*/
   grid-template-areas:
@@ -38,9 +39,10 @@
   grid-area: lEF;
   display: grid;
   height: 95vh;
+  width: 50vw;
   grid-template-areas:
-  "date "
-  "date "
+  "todli "
+  "todli "
   "todli "
   "todli "
   "todli "

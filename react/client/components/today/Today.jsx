@@ -4,11 +4,12 @@ import Filter from "../planner/Filter"
 import ListToday from "./ListToday"
 import FilterToday from "./FilterToday"
 import SliderToday from "./SliderToday"
-import TodayDateSelector from "./TodayDateSelector"
+// import TodayDateSelector from "./TodayDateSelector"
 import TruckFlicker from "../TruckFlicker"
 import BranchesInfo from "../BranchesInfo"
 import { bindActionCreators } from "redux"
 import { connect } from "react-redux"
+import DateSelector from './DateSelector'
 
 class Today extends React.Component {
   render() {
@@ -18,6 +19,7 @@ class Today extends React.Component {
       height: "95vh",
       width: "50vw"
     }
+ 
 
     return (
       <div className="grid-today">
@@ -28,9 +30,9 @@ class Today extends React.Component {
         </div>
 
         <div className="grid-item-today-left width50vw">
-          <TodayDateSelector disableOnClickOutside = {!this.props.date_open}/>
-         
-          <ListToday />
+         <DateSelector disableOnClickOutside = {!this.props.date_open}/>
+         <ListToday/>
+  
           <div className="branch-info-table-today hidden" style={branchStyle}>
             <BranchesInfo />
           </div>
@@ -53,4 +55,4 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(Today)
 
-
+// <TodayDateSelector disableOnClickOutside = {!this.props.date_open}/>

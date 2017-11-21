@@ -9,6 +9,10 @@ import 'react-table/react-table.css'
 import moment from 'moment'
 import loadingGIF from '../../build/images/loading.svg'
 import Trip from '../../models/trip'
+import Geocoder from '../../models/geocoder'
+
+import { Calendar, DateRange } from "react-date-range"
+
 
 
 class ListToday extends React.Component {
@@ -16,13 +20,21 @@ class ListToday extends React.Component {
     super(props)
     this.state = {
       mapObject: null,
-      relevant_array: []
+      relevant_array: [],
+      rangePicker: {
+        startDate: moment(this.props.today_date_range['start_date']),
+        endDate: moment(this.props.today_date_range['end_date'])
+      },
+      datePicker: null
     }
     this.relevant_array = []
   }
 
   componentDidMount() {
     this.setState({ mapObject: mapObjectInstances.today })
+    // this.setState( {rangePicker: {
+           
+    //       }})
   }
 
   componentDidUpdate() {
@@ -31,9 +43,42 @@ class ListToday extends React.Component {
         mapObject: mapObjectInstances.today
       })
     }
+
   }
 
+  handlePostCodeChange(event){
+    event.preventDefault()
+    this.props.actions.today_actions.setTodayPostCode(event.target.value)
+  }
+
+
+  handleDateClick(e) {
+    e.preventDefault()
+    this.props.actions.today_actions.toggleDateOpen()
+    var el = document.getElementById("date_range")
+    el.classList.toggle('hidden')
+    // console.log('element found', el)
+    // el.classList.toggle('zIndexMinus1')
+    // el.classList.toggle('zIndex10')
+    var list = document.getElementById("today_list")
+    list.classList.toggle('hidden')
+  }
+
+  // makePlaceholderFilter(placeholder) {
+  //   return ({filter, onFilterChange}) => (
+  //       <input type='text'
+  //         placeholder={placeholder}
+  //         style={{
+  //           width: '100%'
+  //         }}
+  //         value={filter ? filter.value : ''}
+  //         onChange={(event) => onFilterChange(event.target.value)}
+  //       />
+  //     )
+  // }
+
   getInitialTableColumns(){
+
     var branches
     if (this.props.all_branches){
       branches = this.getBranchesAsOptions.call(this)
@@ -41,6 +86,28 @@ class ListToday extends React.Component {
       branches = []
     }
     return [
+   
+    {
+      Header: 'Date Range',
+      headerStyle: {overflow: 'visible'},
+      accessor: 'date_range',
+      maxWidth: 175,
+      Filter: ({filter, onChange}) =>{
+              const { rangePicker, datePicker } = this.state
+              return(
+              <div>  
+              <input 
+              onClick={this.handleDateClick.bind(this)}
+              readOnly
+              value = {moment(this.props.today_date_range['start_date']).format('DD/MM/YY') + " to " + 
+            moment(this.props.today_date_range["end_date"]).format('DD/MM/YY')}
+              >
+              </input>
+              </div>
+              )}
+
+    },
+
     {
       Header: 'Mware No.',
       accessor: 'moveware_code',
@@ -54,7 +121,7 @@ class ListToday extends React.Component {
         <select
         onChange={event => onChange(event.target.value)}
         style={{ width: '100%' }}
-        value={filter ? filter.value : 'all'}
+        // value={filter ? filter.value : 'all'}
         >
        
         {branches}
@@ -65,6 +132,31 @@ class ListToday extends React.Component {
       Header: 'Client',
       accessor: 'client_name',
       maxWidth: 150
+    },
+    {
+      Header: 'Find Closest',
+      accessor: 'postcode',
+      maxWidth: 150,
+      // filterRender: this.makePlaceholderFilter("Custom Text"),
+      Filter: ({filter, onChange}) =>{
+              
+              return(
+         
+              <input 
+              style={{maxWidth: 130}}
+              type="text"
+              value={this.props.today_post_code}
+              onChange={this.handlePostCodeChange.bind(this)}
+              onKeyPress={this.handleKeyPress.bind(this)}
+              ref="collection_postcode"
+              id="collection_postcode"
+              placeholder = 'Enter PostCode'
+              >
+              </input>
+            
+              )}
+     
+
     },
     {
       Header: 'Colour',
@@ -95,6 +187,30 @@ class ListToday extends React.Component {
   }
   }
 
+  handleKeyPress(e){
+      if (e.key === 'Enter') {
+       console.log('Enter', e)
+       if(!this.props.today_postcode){
+         alert('Please Enter a Collection Postcode')
+         return
+       }
+       this.props.actions.common_actions.clearCurrentTruckFlickerJob('today')
+       mapObjectInstances.today.clearMap()
+       this.props.actions.today_actions.togglePostcodeLoading()
+
+       console.log('mapobject', mapObjectInstances.today)
+       console.log('branch_selected', this.props.branch_selected)
+       var geocoder = new Geocoder()
+       var branch = this.props.selected_branch
+       var f = this.props.actions.today_actions.getClosestTripsToPostCodeInGivenDateRange
+       geocoder.getLatLngPromise(this.props.today_postcode)
+       .then((lat_lng)=>{
+         mapObjectInstances.today.placeTodayPostCodeMarker.call(mapObjectInstances.today, lat_lng, this.props.today_postcode)
+         f.call(this, this.props.today_date_range, lat_lng, branch)
+       })
+      }
+    }
+
   getInitialTableData(){
     if(this.props.today_closest.length){
       this.relevant_array = this.props.today_closest
@@ -109,7 +225,8 @@ class ListToday extends React.Component {
         branch: trip.branch_code,
         id: trip.id,
         client_name: trip.client_name,
-        colour: trip.colour
+        colour: trip.colour,
+        date_range: moment(trip.dateMilli).format('DD/MM/YY')
       })
     })
     return data
@@ -161,7 +278,7 @@ class ListToday extends React.Component {
   tomorrow = tomorrow.toDate()
   now.setHours(0, 0, 0, 0)
   tomorrow.setHours(0,0,0,0)
-  var {start_date, end_date} = this.props.date_range_obj
+  var {start_date, end_date} = this.props.today_date_range
   if(+now == start_date){
     console.log('Today!')
     start_string = 'Today'
@@ -184,7 +301,7 @@ return {start_string, end_string}
 
  getTitleString(){
   var date_string
-  var {start_date, end_date} = this.props.date_range_obj
+  var {start_date, end_date} = this.props.today_date_range
   var {start_string, end_string} = this.getStartEndDateStrings()
  
   if(start_date == end_date){
@@ -200,7 +317,7 @@ return {start_string, end_string}
 
  getClosestToPostcodeString(){
   var date_string
-  var {start_date, end_date} = this.props.date_range_obj
+  var {start_date, end_date} = this.props.today_date_range
   var {start_string, end_string} = this.getStartEndDateStrings()
   
   if(start_date == end_date){
@@ -209,7 +326,7 @@ return {start_string, end_string}
     date_string = `from ${start_string}    to    ${end_string}`
   }
 
-  const title_string = `${this.props.selected_branch} Routes closest to ${this.props.postcode} ${date_string}`
+  const title_string = `${this.props.selected_branch} Routes closest to ${this.props.today_postcode} ${date_string}`
   return <p><b>
         <em> {title_string} </em>
       </b></p>
@@ -221,7 +338,7 @@ return {start_string, end_string}
     return(
             <div>
                <p><b>
-                <em> {`Finding Closest Routes to ${this.props.postcode}`}</em>
+                <em> {`Finding Closest Routes to ${this.props.today_postcode}`}</em>
                </b></p>
                <img src={loadingGIF} />
              </div>
@@ -274,6 +391,7 @@ return {start_string, end_string}
  }
 
   render() {
+    console.log('state.rangePicker["stateDate"]', this.state.rangePicker["startDate"] )
     if(!this.state.mapObject) return <div></div>
       var title, tableOrLoading
       if(!this.props.today_closest.length){
@@ -281,10 +399,9 @@ return {start_string, end_string}
       }else{
         title = this.getClosestToPostcodeString()
       }
-     
-    console.log('called how many times?')
+
     return (
-      <div className="grid-item-list-today">
+      <div className = "grid-item-list-today" id = 'today_list'>
       
       {this.getTable.call(this, title)}
 
@@ -302,9 +419,10 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mapStateToProps = state => ({
+  today_date_range: state.today.today_date_range,
   postcode_loading: state.today.postcode_loading,
-  postcode: state.today.today_post_code,
-  date_range_obj: state.today.today_date_range,
+  today_postcode: state.today.today_post_code,
+  // date_range_obj: state.today.today_date_range,
   selected_branch: state.today.today_branch_selected,
   all_branches: state.common.all_branches,
   today_closest: state.today.today_closest,

@@ -279,7 +279,8 @@ class MapObject {
   }
 
   drawRouteWithGoogleResponse(job, addStartFinishMarkers = true) {
-    console.log('job in drawRoute' , job, job.hidden[this.pathname])
+    // console.log('job in drawRoute' , job, job.hidden[this.pathname])
+  
     if (job.hidden[this.pathname]) return
 
     var {
