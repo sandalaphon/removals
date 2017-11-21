@@ -39,7 +39,7 @@ class Trip {
     this.dateMilli = trip_object.dateMilli
     this.colour = this.getUniqueColor(trips.length)
     this.complementary_color = this.getComplementaryColour(this.color)
-    this.hidden = false
+    this.hidden = {} 
     this.possible_diversions = []
     this.add_trip_to_trips()
   }
@@ -65,6 +65,12 @@ class Trip {
     return trips.filter(trip => {
       return this.out_of_store_suggestion == true
     })
+  }
+
+  static hideOrShowById(id, pathname, hide = true){
+    var trip = Trip.getTripById(id)
+    trip.hidden[pathname] = hide
+    console.log('Trip hide or show', trip)
   }
 
   static getTripsByDateRangeAndBranch(dateRange, branch_code) {

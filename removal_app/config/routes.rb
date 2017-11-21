@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   delete '/users/:id(.:format)' => 'users#delete'
 
   post   '/api/trips/new' => 'trips#create'
+  post   '/api/trips/today_closest.json' => 'trips#today_closest'
+  post   '/api/trips/partload_closest_pickup' => 'trips#partload_closest_pickup'
+  get    '/api/rosCandidates' => 'trips#rosCandidates'
   get    '/api/trips' => 'trips#index'
 
   get    '/api/surveys' => 'surveys#index'
@@ -13,13 +16,13 @@ Rails.application.routes.draw do
 
   get    '/api/branches' => 'branches#index'
 
+
   get    '/api/employees' => 'employees#index'
 
-  get    '/api/rosCandidates' => 'trips#rosCandidates'
 
   get   '/api/get_trip_by_id/:trip_id' => 'removal_from_store#get_trip_by_id'
   
-  post   '/api/trips/partload_closest_pickup' => 'trips#partload_closest_pickup'
+  
 
   get    '/api/survey_object' => 'survey_objects#index'
   post    '/api/survey_object/new' => 'survey_objects#create'

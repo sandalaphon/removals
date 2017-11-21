@@ -32,7 +32,12 @@ class TruckFlicker extends React.Component {
       case "today":
         this.current_truckflicker_job = this.props.trips.current_today_truckflicker_job
         this.mapObject = mapObjectInstances.today
-        this.relevantArray = this.props.today_trips
+        if(this.props.today_closest.length){
+          this.relevantArray = this.props.today_closest
+        }else{
+          this.relevantArray = this.props.today_trips
+        }
+        
         this.branchStatus = this.props.trips.branches_status_today
         break
       case "planner":
@@ -64,6 +69,7 @@ class TruckFlicker extends React.Component {
     this.mapObject.clearMap()
     this.relevantArray.forEach(job => {
       this.props.actions.common_actions.setHiddenStatus(job)
+      // write to include pathname ...trip.hidden[pathname]
     })
     this.props.actions.common_actions.clearCurrentTruckFlickerJob(this.pathname)
     this.mapObject.displayArrayOfJobRoutes(this.relevantArray)
@@ -102,7 +108,7 @@ class TruckFlicker extends React.Component {
     var unfound = true
     if (!this.current_truckflicker_job) {
       arrayToUse.forEach(job => {
-        if (!job.hidden && unfound) {
+        if (!job.hidden[this.pathname] && unfound) {
           jobToReturn = job
           unfound = false
         }
@@ -110,14 +116,14 @@ class TruckFlicker extends React.Component {
     } else {
       let currentIndex = arrayToUse.indexOf(this.current_truckflicker_job)
       arrayToUse.forEach((job, index) => {
-        if (!job.hidden && index > currentIndex && unfound) {
+        if (!job.hidden[this.pathname] && index > currentIndex && unfound) {
           jobToReturn = job
           unfound = false
         }
       })
       if (unfound) {
         arrayToUse.forEach((job, index) => {
-          if (!job.hidden && index <= currentIndex && unfound) {
+          if (!job.hidden[this.pathname] && index <= currentIndex && unfound) {
             jobToReturn = job
             unfound = false
           }
@@ -222,6 +228,7 @@ class TruckFlicker extends React.Component {
 
     return (
       <div className="grid-item-truck-flicker">
+        <button className={"show_all_button"} onClick={this.showAllRoutes.bind(this)}>Show All</button>
         <div className={"left-holder"} />
 
         <i
@@ -271,6 +278,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const mapStateToProps = state => ({
+  today_closest: state.today.today_closest,
   trips: state.common,
   today_trips: state.today.today_trips,
   best_pick_up_jobs: state.partload.best_pick_up_jobs

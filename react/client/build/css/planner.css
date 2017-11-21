@@ -103,7 +103,11 @@ th {
 
   align-self: center;
   width: 1fr;
-  grid-template-areas: " l l l l l l l l l l a b c d e f g r r r r r r r r r r ";
+  grid-template-areas: " button button l l l l l l a b c d e f g r r r r r r r r r r ";
+}
+
+.show_all_button {
+  grid-area: button;
 }
 
 .left-holder {

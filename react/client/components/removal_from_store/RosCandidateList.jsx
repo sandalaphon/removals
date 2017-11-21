@@ -30,76 +30,7 @@ class RosCandidateList extends React.Component {
     // alert(diversion_id)
   }
 
-  get_sub_sub_columns() {
-    return [
-      {
-        Header: 'View Undiverted Job',
-        accessor: 'undiverted'
-      },
-      {
-        Header: 'View Diverted Job',
-        accessor: 'xfer'
-      },
-      {
-        Header: 'View Delivery',
-        accessor: 'delivery'
-      }
-    ]
-  }
-
-  format_sub_sub_data(diversion_id) {
-    let diversion = Diversion.get_diversion_by_id(diversion_id)
-    let formatted_data = [
-      {
-        id: diversion_id,
-        undiverted: (
-          <button
-            onClick={this.handleUndivertedClick.bind(
-              this,
-              diversion.undiverted_job
-            )}
-          >
-            Undiverted
-          </button>
-        ),
-        xfer: (
-          <button
-            onClick={this.handleDivertedClick.bind(
-              this,
-              diversion.reRouted_g_directions
-            )}
-          >
-            Transfer
-          </button>
-        ),
-        delivery: (
-          <button
-            onClick={this.handleDeliveryClick.bind(
-              this,
-              diversion.g_dir_from_new_branch_to_storage_delivery
-            )}
-          >
-            Delivery
-          </button>
-        )
-      }
-    ]
-    return formatted_data
-  }
-
-  get_sub_sub_table(diversion_id) {
-    return (
-      <ReactTable
-        // style={{ height: '90vh' }}
-        defaultPageSize={1}
-        collapseOnDataChange={false}
-        data={this.format_sub_sub_data.call(this, diversion_id)}
-        // defaultPageSize={10}
-        columns={this.get_sub_sub_columns()}
-        className="-striped -highlight"
-      />
-    )
-  }
+  
 
   handleUndivertedClick(diversion) {
     this.mapObject.drawRouteWithGoogleResponse(diversion.undiverted_job)
@@ -235,12 +166,9 @@ class RosCandidateList extends React.Component {
             .branch_code}`
       formatted_data.push({
         id: diversion.id,
-        undiverted: this.getCheckbox(diversion, this.handleMapCheckBoxChecked),
-        xfer: (
-          <button onClick={this.handleDivertedClick.bind(this, diversion)}>
-            Transfer
-          </button>
-        ),
+        undiverted: this.getCheckbox(diversion.undiverted_job, this.handleMapCheckBoxChecked),
+        
+        xfer: this.getCheckbox(diversion, this.handleDivertedRouteChecked),
         delivery: (
           <button onClick={this.handleDeliveryClick.bind(this, diversion)}>
             Delivery
@@ -268,9 +196,9 @@ class RosCandidateList extends React.Component {
     return formatted_data
   }
 
-  handleUndivertedCheckBoxChecked(diversion) {
-    var isChecked = document.getElementById(diversion).checked
-  }
+  // handleUndivertedCheckBoxChecked(diversion) {
+  //   var isChecked = document.getElementById(diversion).checked
+  // }
 
   handleMapCheckBoxChecked(trip) {
     console.log('e', trip.id)
@@ -291,6 +219,22 @@ class RosCandidateList extends React.Component {
       }
     } else {
       this.props.actions.partload_actions.getTripByIdFromRails(trip.id)
+    }
+  }
+
+  handleDivertedRouteChecked(diversion){
+    var isChecked = document.getElementById(diversion.id).checked
+    var haveRouteAlready = this.mapObject.isRouteDisplaySaved(diversion.id)
+
+    if(!isChecked){
+      this.mapObject.hideRouteById(diversion.id)
+    }else{
+      if(haveRouteAlready){
+        this.mapObject.showRouteById(diversion.id)
+      }else{
+        this.mapObject.drawDiversionRoute(diversion.reRouted_g_directions, diversion)
+      }
+     
     }
   }
 
@@ -470,13 +414,7 @@ class RosCandidateList extends React.Component {
           className="-striped -highlight"
           defaultFilterMethod={this.filterMethod.bind(this)}
           SubComponent={row => {
-            // var returned_array  = this.getSubComponent1.call(this, row)
-            // var subComponent1 = returned_array[0]
-
             var subComponent1 = this.getSubComponent1.call(this, row)
-
-            // var sub_component_data = returned_array[1]
-
             return <div style={{ padding: '20px' }}>{subComponent1}</div>
           }}
         />

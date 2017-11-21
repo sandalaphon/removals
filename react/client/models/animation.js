@@ -16,7 +16,7 @@ class Animation {
 
     if (currentTruckFlickerJob) {
       var trip = currentTruckFlickerJob
-      if (trip.hidden) return
+      if (trip.hidden[this.pathname]) return
       sliderMarkerObjectArray = this.getSliderMarkerObject(
         trip,
         sliderSecondsFromStart,
@@ -25,7 +25,7 @@ class Animation {
         : []
     } else {
       arrayOfTrips.forEach((trip, index) => {
-        if (trip.hidden) return
+        if (trip.hidden[this.pathname]) return
         var sliderMarkerObject = this.getSliderMarkerObject(
           trip,
           sliderSecondsFromStart,
@@ -197,7 +197,12 @@ class Animation {
 
         break
       case 'today':
-        arrayOfTrips = store.getState().today.today_trips
+      if(store.getState().today.today_closest.length){
+        arrayOfTrips = store.getState().today.today_closest
+      }else{ 
+             arrayOfTrips = store.getState().today.today_trips
+      }
+        
         currentTruckFlickerJob = store.getState().common
           .current_today_truckflicker_job
 
