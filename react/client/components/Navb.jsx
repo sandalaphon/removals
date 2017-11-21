@@ -13,13 +13,13 @@ class Navb extends React.Component {
   }
 
   handleOutsideClick(e){
-    var branchListTop    =  document.getElementById('myDropdown')
+    var branchListTop    =  document.getElementById('branch-info')
     var branchListButton =  document.getElementById('button-branch-list-nav')
 
     if (e.target == branchListButton){ // button click
       document.removeEventListener('click', this.handleOutsideClick)
     }else if(!branchListTop.contains(e.target)){  //click outside
-      document.getElementById("myDropdown").classList.toggle("show")
+      document.getElementById("branch-info").classList.toggle("show")
       document.removeEventListener('click', this.handleOutsideClick)
       this.setState({branchOpen: false})
     }
@@ -28,11 +28,11 @@ class Navb extends React.Component {
   toggleBranchList() {
     if (this.state.branchOpen){
       document.removeEventListener('click', this.handleOutsideClick)
-      document.getElementById("myDropdown").classList.toggle("show")
+      document.getElementById("branch-info").classList.toggle("show")
       this.setState({branchOpen : false})
     }else{
       document.addEventListener('click', this.handleOutsideClick)
-      document.getElementById("myDropdown").classList.toggle("show")
+      document.getElementById("branch-info").classList.toggle("show")
       this.setState({branchOpen : true})
     }
   }
@@ -131,10 +131,8 @@ class Navb extends React.Component {
             Sign Out
           </button>
         </nav>
-        <div className="branch-sidebar" id="myDropdown">
-          <div className="branch-list">
+        <div className="branch-sidebar" id="branch-info">
             <BranchesInfo />
-          </div>
         </div>
         
       </div>

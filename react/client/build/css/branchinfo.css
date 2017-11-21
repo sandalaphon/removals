@@ -1,3 +1,68 @@
+.branch-sidebar {
+  transition: 1s;
+  /*display: none;*/
+  /*margin: 60px;*/
+  /*height: 90vh;*/
+  position: absolute;
+  left: -45vw;
+  background-color: #f9f9f9;
+  width: 45vw;
+  min-width: 160px;
+  z-index: 1;
+  white-space: nowrap;
+  max-height: 90vh;
+
+  overflow-y:scroll;
+  /*border: 1px solid black;*/
+}
+.show {
+  /*must be under sidebar*/
+  transition: 1s;
+  left: 0px;
+  /*border: solid 2px red;*/
+}
+
+/*PIC CLICK*/
+.employee-pic-holder{
+  height: 100%;
+  width: 100%;
+}
+
+
+.employee-pic{
+  width: 30px;
+  height: 40px;
+}
+
+/*toggled by clicking on employee pic*/
+.employee-pic-holder-large{
+  position: absolute;
+  z-index: 30;
+  width: 375px;
+  height: 400px;
+  padding: 25px;
+  top: -10%;
+  background-color: rgba(255,255,255,0.7);
+  /*border:2px solid black;*/
+}
+
+
+.employee-pic-large{
+  position: absolute;
+  /*display:block;*/
+  width: 325px;
+  height: 350px;
+  top: -10%;
+  z-index: 20;
+}
+
+
+
+
+
+
+/*vvvvvvvvvvvvvvv   dunnoo what are these for anymore  vvvvvvvvvv*/
+
 .employee-panel {
   padding: 0 18px;
   display: none;
