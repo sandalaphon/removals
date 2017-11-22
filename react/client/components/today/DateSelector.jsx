@@ -102,6 +102,8 @@ class DateSelector extends React.Component{
       <div className="date-range hidden" id="date_range">
       <i class="fa fa-window-close fa-3x" aria-hidden="true" onClick = {this.handleClickOutside.bind(this)}></i>
         <DateRange
+          startDate={moment(this.props.today_date_range.start_date)}
+          endDate={moment(this.props.today_date_range.end_date)}
           linkedCalendars={true}
           onInit={this.handleChange.bind(this)}
           onChange={this.handleChange.bind(this)}

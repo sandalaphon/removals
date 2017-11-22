@@ -36,6 +36,7 @@ export function setTodayBranchSelected(branch_code) {
 }
 
 export function setTodayPostCode(post_code) {
+  console.log('setting postcode to ', post_code)
   return {
     type: "SET_TODAY_POSTCODE",
     payload: post_code

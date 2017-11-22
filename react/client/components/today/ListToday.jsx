@@ -48,7 +48,9 @@ class ListToday extends React.Component {
 
   handlePostCodeChange(event){
     event.preventDefault()
+
     this.props.actions.today_actions.setTodayPostCode(event.target.value)
+    console.log('postcode change', this.props.today_postcode)
   }
 
 
@@ -122,6 +124,7 @@ class ListToday extends React.Component {
         onChange={event => onChange(event.target.value)}
         style={{ width: '100%' }}
         // value={filter ? filter.value : 'all'}
+        value={this.props.selected_branch}
         >
        
         {branches}
@@ -145,7 +148,7 @@ class ListToday extends React.Component {
               <input 
               style={{maxWidth: 130}}
               type="text"
-              value={this.props.today_post_code}
+              value={this.props.today_postcode}
               onChange={this.handlePostCodeChange.bind(this)}
               onKeyPress={this.handleKeyPress.bind(this)}
               ref="collection_postcode"
@@ -163,7 +166,7 @@ class ListToday extends React.Component {
       filterable: false,
       maxWidth: 60,
       Cell: row => {
-        console.log('row cell...........', row)
+       
             return    (<div
                         style={{
                           width: '100%',
@@ -225,7 +228,7 @@ class ListToday extends React.Component {
         branch: trip.branch_code,
         id: trip.id,
         client_name: trip.client_name,
-        colour: trip.colour,
+        colour: trip.complementary_color,
         date_range: moment(trip.dateMilli).format('DD/MM/YY')
       })
     })

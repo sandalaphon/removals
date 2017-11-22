@@ -38,7 +38,7 @@ class Trip {
     this.seconds_to_unload = trip_object.seconds_to_unload
     this.dateMilli = trip_object.dateMilli
     this.colour = this.getUniqueColor(trips.length)
-    this.complementary_color = this.getComplementaryColour(this.color)
+    this.complementary_color = this.getComplementaryColour(this.colour)
     this.hidden = {} 
     this.possible_diversions = []
     this.add_trip_to_trips()
